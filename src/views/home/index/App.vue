@@ -377,11 +377,13 @@
                 display: flex;
                 display: -webkit-flex;
                 align-items: center;
+				justify-content: space-between;
                 height: 105px;
                 >div{
                     display: flex;
                     display: -webkit-flex;
                     align-items: center;
+					justify-content: space-between;
                     >p{
                         flex: 0 0 75px;
                     }
