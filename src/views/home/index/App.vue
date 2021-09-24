@@ -177,7 +177,7 @@
         },
         async  mounted(){
             if(!this.until.seGet('userInfo')){
-                this.until.href('./login.html')
+                this.until.href('../index/login.html')
             }
             this.getWidth()
             this.getList()
