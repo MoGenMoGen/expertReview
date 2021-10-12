@@ -85,24 +85,28 @@
             },
             //提交
             submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        this.api.login(this.ruleForm).then(res=>{
-                            this.until.seSave('token',res.token)
-                            this.until.seSave('userInfo',JSON.stringify(res.userInfo))
-                            this.$message({
-                                message: '登录成功',
-                                type: 'success',
-                                duration:'1500'
-                            });
-                            setTimeout(()=>{
-                                this.toPage('./index.html')
-                            },1500)
-                        })
-                    } else {
-                        return false;
-                    }
-                });
+				if(this.selectIndex==0) {
+					this.toPage('./index.html')
+				} else if (this.selectIndex==1) {
+					this.$refs[formName].validate((valid) => {
+					    if (valid) {
+					        this.api.login(this.ruleForm).then(res=>{
+					            this.until.seSave('token',res.token)
+					            this.until.seSave('userInfo',JSON.stringify(res.userInfo))
+					            this.$message({
+					                message: '登录成功',
+					                type: 'success',
+					                duration:'1500'
+					            });
+					            setTimeout(()=>{
+					                this.toPage('./index.html')
+					            },1500)
+					        })
+					    } else {
+					        return false;
+					    }
+					});
+				}
             },
             //页面跳转
             toPage(url){
@@ -127,7 +131,7 @@
         }
     }
 </script>
-<style lang="less">
+<style lang="less" scoped>
     #register{
         .el-input__inner{
             border: none;

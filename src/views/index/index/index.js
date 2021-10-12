@@ -5,5 +5,5 @@ Vue.use(init);
 import App from './App';
 
 new Vue({
-  render: h => h(App)
+  render: h => h(App),
 }).$mount('#container')

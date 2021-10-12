@@ -1,11 +1,15 @@
 <template>
     <div id="home" :style="{width:bWidth + 'px'}" v-loading="loading">
-        
+		<my-header></my-header>
+		<leftMenu></leftMenu>
+        <my-footer></my-footer>
     </div>
 </template>
 
 <script>
-    
+    import myFooter from '@/components/footer';
+	import myHeader from '@/components/myHeader';
+	import leftMenu from '@/components/leftMenu';
     export default {
         data(){
             return{
@@ -22,14 +26,16 @@
 
         },
         components: {
+			myFooter,myHeader,leftMenu
         },
         async  mounted(){
-            if(!this.until.seGet('userInfo')){
-                this.until.href('./login.html')
-            }
+            // if(!this.until.seGet('userInfo')){
+            //     this.until.href('./login.html')
+            // }
+			console.log(this.navList)
             this.getWidth()
-            this.getList()
-            this.userInfo = JSON.parse(this.until.seGet('userInfo'))
+            // this.getList()
+            // this.userInfo = JSON.parse(this.until.seGet('userInfo'))
             window.onresize = () => {
                 this.getWidth()
             }
@@ -50,11 +56,11 @@
         }
     }
 </script>
-<style lang="less">
+<style lang="less" scoped>
     #home{
         .tableHeader{
             background: @themeColor;
-            color: #ffffff;
+            color: #FFF;
             border: 0;
             text-align: center;
         }
@@ -66,7 +72,7 @@
 <style lang="less" scoped>
     @import url("../../../assets/css/init.less");
     #home{
-        background-color: #FFFFFF;
+        background-color: #F3F3F3;
         .blue{
             color: @themeColor;
         }
