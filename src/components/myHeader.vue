@@ -4,8 +4,7 @@
 			<div class="title main" :style="{width:width + 'px'}">
 				<img :src="logo" alt="" @click="toPage('./index.html')" />
 				<p>招投标系统</p><!-- {{userInfo.nickname}} -->
-				<p><span @click="toPage('../home/personInfo.html')">管理员</span>|<span
-						@click="toLogOut">退出</span></p>
+				<p><span @click="toPage('../home/personInfo.html')">管理员</span>|<span @click="toLogOut">退出</span></p>
 			</div>
 		</div>
 	</div>
@@ -17,24 +16,22 @@
 			return {
 				// bWidth: 0,
 				// width: 0,
-				logo:'https://sinovat.oss-cn-shanghai.aliyuncs.com/9cc91287abfa4ab7a6c5b917123a4e12_96f8a1087df345a99de5708bc15ae537_logo.png',
+				logo: 'https://sinovat.oss-cn-shanghai.aliyuncs.com/9cc91287abfa4ab7a6c5b917123a4e12_96f8a1087df345a99de5708bc15ae537_logo.png',
 			};
 		},
-		props:{
-			width:{
+		props: {
+			width: {
 				type: Number,
 				default: 0
 			},
-			bWidth:{
+			bWidth: {
 				type: Number,
-				default: 0
-			}
+				default: 0,
+			},
 		},
-		created() {
-			// this.getWidth()
-			// window.onresize = () => {
-			// 	this.getWidth()
-			// }
+		created() {},
+		mounted() {
+
 		},
 		methods: {
 			getWidth() {
@@ -45,8 +42,8 @@
 				this.bWidth = bWidth
 				this.width = width
 			},
-			toLogOut(){
-			    this.api.logout()
+			toLogOut() {
+				this.api.logout()
 			},
 		},
 		computed: {
@@ -56,10 +53,10 @@
 </script>
 
 <style lang="less" scoped>
-
 	.header1 {
 		box-shadow: 0px 6px 10px 0px rgba(13, 4, 8, 0.1);
 		background-color: #fff;
+
 		.title {
 			width: 100%;
 			display: flex;
