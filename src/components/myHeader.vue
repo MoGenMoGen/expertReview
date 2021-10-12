@@ -15,16 +15,26 @@
 	export default {
 		data() {
 			return {
-				bWidth: 0,
-				width: 0,
+				// bWidth: 0,
+				// width: 0,
 				logo:'https://sinovat.oss-cn-shanghai.aliyuncs.com/9cc91287abfa4ab7a6c5b917123a4e12_96f8a1087df345a99de5708bc15ae537_logo.png',
 			};
 		},
-		created() {
-			this.getWidth()
-			window.onresize = () => {
-				this.getWidth()
+		props:{
+			width:{
+				type: Number,
+				default: 0
+			},
+			bWidth:{
+				type: Number,
+				default: 0
 			}
+		},
+		created() {
+			// this.getWidth()
+			// window.onresize = () => {
+			// 	this.getWidth()
+			// }
 		},
 		methods: {
 			getWidth() {

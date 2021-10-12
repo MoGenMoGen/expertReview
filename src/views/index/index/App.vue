@@ -1,6 +1,6 @@
 <template>
     <div id="home" :style="{width:bWidth + 'px'}" v-loading="loading">
-		<my-header></my-header>
+		<my-header :width="width" :bWidth="bWidth"></my-header>
 		<leftMenu></leftMenu>
         <my-footer></my-footer>
     </div>
