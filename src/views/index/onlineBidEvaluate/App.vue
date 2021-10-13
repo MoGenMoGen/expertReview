@@ -66,6 +66,7 @@
         <div style="margin-top: 20px">
           <signin v-if="sonTabIndex == 0"></signin>
           <decrypt v-if="sonTabIndex == 1"></decrypt>
+          <reviewResults v-if="sonTabIndex == 2"></reviewResults>
           <uploadVideo v-if="sonTabIndex == 3"></uploadVideo>
         </div>
       </div>
@@ -80,6 +81,7 @@ import myHeader from "@/components/myHeader";
 import leftMenu from "@/components/leftMenu";
 import signin from "@/components/onlineBidEvaluate/signin";
 import decrypt from "@/components/onlineBidEvaluate/decrypt";
+import reviewResults from "@/components/onlineBidEvaluate/reviewResults";
 import uploadVideo from "@/components/onlineBidEvaluate/uploadVideo";
 export default {
   data() {
@@ -118,6 +120,7 @@ export default {
     leftMenu,
     signin,
     decrypt,
+    reviewResults,
     uploadVideo,
   },
   async mounted() {

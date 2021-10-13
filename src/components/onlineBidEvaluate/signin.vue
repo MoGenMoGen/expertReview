@@ -162,6 +162,9 @@ export default {
     handleClick(row) {
       console.log(row);
     },
+     handleCurrentChange(val){
+       console.log(`当前页: ${val}`);
+    }
   },
 };
 </script>

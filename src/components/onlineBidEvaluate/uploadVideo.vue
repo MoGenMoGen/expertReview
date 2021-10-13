@@ -7,8 +7,8 @@
       <div class="btn_upload">上传</div>
     </div>
     <div class="video_list" style="margin-top:20px;">
-      <video width="320" height="240" controls>
-        <source src="https://www.bilibili.com/video/BV173411C7LV?spm_id_from=333.851.b_7265636f6d6d656e64.2" type="video/mp4" />
+      <video width="220" height="140" controls>
+        <source src="https://video.sinovatocean.com/sv/2042112e-17c11863ea1/2042112e-17c11863ea1.mp4" type="video/mp4" />
         <source src="https://www.bilibili.com/video/BV173411C7LV?spm_id_from=333.851.b_7265636f6d6d656e64.2" type="video/ogg" />
         <source src="https://www.bilibili.com/video/BV173411C7LV?spm_id_from=333.851.b_7265636f6d6d656e64.2" type="video/webm" />
         您的浏览器不支持 HTML5 video 标签。
