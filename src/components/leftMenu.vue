@@ -1,7 +1,7 @@
 <template>
   <div class="leftMenu">
     <el-menu
-      default-active="0"
+      :default-active="tabIndex"
       unique-opened
       class="el-menu-vertical-demo"
       @select="handleSelect"
@@ -51,13 +51,19 @@ export default {
     return {
 		zhaobiao:[],
 		currentIndex:0,
-		currentIndexTwo:-1,
-		
-		
-		
 	};
   },
-  mounted() {},
+  props:{
+	  tabIndex:{
+		  type:String,
+		  default:'0'
+	  }
+  },
+  mounted() {
+	  console.log('321',this.tabIndex);
+	  this.currentIndex=this.tabIndex
+	  console.log('321',this.currentIndex);
+  },
   methods: {
     handleSelect(key, keyPath) {
 		this.currentIndex=key
@@ -67,7 +73,7 @@ export default {
 			this.until.href('/views/index/onlineBidEvaluate.html')
 		}
 		if(key=='1-1'){
-			this.until.href('/views/index/zhaobiao.html?key='+key)
+			this.until.href('/views/index/zhaobiao.html')
 		}
     },
     handleOpen(key, keyPath) {
@@ -85,7 +91,8 @@ export default {
 <style lang="less" scoped>
 .leftMenu {
   width: 200px;
-    height: calc(~"100vh - 298px");
+    // height: calc(~"100vh - 298px");
+	height: 800px;
   background-color: #2778be;
 	 .el-menu-item{
 		 font-size: 14px;
