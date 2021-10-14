@@ -13,7 +13,7 @@
 						<img src="">
 					</div>
 				</div>
-				<div class="content">
+				<div class="content" v-if="showDetail==false">
 					<div class="topSeachBox">
 						<el-input placeholder="项目编号" v-model="input" clearable>
 						</el-input>
@@ -48,45 +48,75 @@
 							  }">
 							<el-table-column prop="date" label="序号" min-width="50">
 							</el-table-column>
-							<el-table-column prop="name" label="项目编号"  min-width="150">
+							<el-table-column prop="name" label="项目编号" min-width="150">
 							</el-table-column>
-							<el-table-column prop="address" label="项目名称"  min-width="150">
+							<el-table-column prop="address" label="项目名称" min-width="150">
 							</el-table-column>
-							<el-table-column prop="address" label="联系人"  min-width="100">
+							<el-table-column prop="address" label="联系人" min-width="100">
 							</el-table-column>
-							<el-table-column prop="address" label="采购方式"  min-width="100">
+							<el-table-column prop="address" label="采购方式" min-width="100">
 							</el-table-column>
-							<el-table-column prop="address" label="预算金额(万元)"  min-width="100">
+							<el-table-column prop="address" label="预算金额(万元)" min-width="100">
 							</el-table-column>
-							<el-table-column prop="address" label="创建时间"min-width="150">
+							<el-table-column prop="address" label="创建时间" min-width="150">
 							</el-table-column>
-							<el-table-column prop="address" label="状态"min-width="100">
+							<el-table-column prop="zhuangtai" label="状态" min-width="100">
+								<template slot-scope="scope">
+									<span v-if="scope.row.zhuangtai=='待审批'" style="color: #E4393C;">
+										待审批
+									</span>
+									<span v-if="scope.row.zhuangtai=='已审批'" style="color: #2778BE;">
+										已审批
+									</span>
+
+								</template>
 							</el-table-column>
-							<el-table-column  label="操作" min-width="50" >
-							 <template slot-scope="scope">
-							        <el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
-							        <br>
+							<el-table-column label="操作" min-width="50">
+								<template slot-scope="scope">
+									<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+									<br>
 									<el-button type="text" size="small" style="color: #E4393C;">修改</el-button>
 									<br>
 									<el-button type="text" size="small" style="color: #909090;">删除</el-button>
-							      </template>
+								</template>
 							</el-table-column>
 						</el-table>
 					</div>
+					<div class="Footer">
+						<el-pagination background @current-change="handleCurrentChange" :current-page.sync="currentPage"
+							:page-size="pageSize" layout="prev, pager, next, jumper" :total="total">
+						</el-pagination>
+					</div>
+				</div>
+				<div class="navBar" v-if="showDetail==true">
+					<el-tabs v-model="activeName" @tab-click="changeNav">
+					    <el-tab-pane label="项目详情" name="first">
+							<detail></detail>
+						</el-tab-pane>
+					    <el-tab-pane label="招标变更/澄清" name="second">
+							<change></change>
+						</el-tab-pane>
+					    <el-tab-pane label="全部项目" name="third">全部项目</el-tab-pane>
+					  </el-tabs>
+				</div>
 				</div>
 			</div>
+			<my-footer></my-footer>
+ 
 		</div>
-		<my-footer></my-footer>
-	</div>
 </template>
 
 <script>
 	import myFooter from '@/components/footer';
 	import myHeader from '@/components/myHeader';
 	import leftMenu from '@/components/leftMenu';
+	import detail   from '@/components/zhaobiao/detail';
+	import change  from '@/components/zhaobiao/change';
 	export default {
 		data() {
 			return {
+				activeName:'first',
+				showDetail: false, //是否显示详情页
 				loading: false,
 				bWidth: 0,
 				width: 0,
@@ -102,19 +132,23 @@
 				tableData: [{
 					date: '1',
 					name: 'BHZC2021-G3-0001',
-					address: '12米玻璃钢新型渔船'
+					address: '12米玻璃钢新型渔船',
+					zhuangtai: '待审批'
 				}, {
 					date: '2',
 					name: 'BHZC2021-G3-0001',
-					address: '12米玻璃钢新型渔船'
+					address: '12米玻璃钢新型渔船',
+					zhuangtai: '待审批'
 				}, {
 					date: '3',
 					name: 'BHZC2021-G3-0001',
-					address: '12米玻璃钢新型渔船'
+					address: '12米玻璃钢新型渔船',
+					zhuangtai: '待审批'
 				}, {
 					date: '4',
 					name: 'BHZC2021-G3-0001',
-					address: '12米玻璃钢新型渔船'
+					address: '12米玻璃钢新型渔船',
+					zhuangtai: '已审批'
 				}],
 				options: [{
 						value: "选项3",
@@ -150,7 +184,10 @@
 		components: {
 			myFooter,
 			myHeader,
-			leftMenu
+			leftMenu,
+			detail,
+			change,
+			
 		},
 		mounted() {
 			// if(!this.until.seGet('userInfo')){
@@ -181,10 +218,24 @@
 			//页面跳转
 			toPage(url) {
 				this.until.href(url)
+			},
+			handleClick(row) {
+				console.log('21', row);
+				this.showDetail = true
+			},
+			changeNav(tab,event){
+				console.log(tab,event);
 			}
 		}
 	}
 </script>
+<style type="text/css">
+	.el-tabs__item{
+		width: 100px;
+		padding: 0;
+		text-align: center;
+	}
+</style>
 <style lang="less" scoped>
 	#home {
 		.tableHeader {
@@ -229,6 +280,8 @@
 		display: flex;
 
 		.right {
+			height: 800px;
+			background-color: white;
 			margin-left: 10px;
 			width: calc(~"100% - 210px");
 
@@ -308,8 +361,13 @@
 						width: 100%;
 						background-color: #F8F8F8;
 						text-align: center;
-						
+
 					}
+				}
+
+				.Footer {
+					width: 100%;
+					text-align: center;
 				}
 			}
 		}
