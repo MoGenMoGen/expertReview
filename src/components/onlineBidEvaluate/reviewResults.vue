@@ -17,32 +17,39 @@
         'text-align': 'center',
       }"
     >
-      <el-table-column type="index" label="序号" width="100"> </el-table-column>
-      <el-table-column label="供应商名称" prop="name" width="230">
+      <el-table-column type="index" label="序号" min-width="70">
       </el-table-column>
-      <el-table-column label="报价是否有效" width="120">
+      <el-table-column label="供应商名称" prop="name" min-width="172">
+      </el-table-column>
+      <el-table-column label="报价是否有效" min-width="172">
         <template slot-scope="scope">
           <div v-if="scope.row.status == 0">无效</div>
           <div v-if="scope.row.status == 1">有效</div>
         </template>
       </el-table-column>
-      <el-table-column prop="offer" label="投标报价（万元）" width="160">
+      <el-table-column prop="offer" label="投标报价（万元）" min-width="172">
       </el-table-column>
-      <el-table-column label="专家评分" width="150">
+      <el-table-column label="专家评分" min-width="172">
         <template slot-scope="scope">
           <div v-for="(item, index) in scope.row.expertScore" :key="index">
             {{ item.nm }}：{{ item.score }}
             <img
               src="~assets/img/edit.png"
-              style="width: 15px; display: inline-block; margin-left: 4px;cursor:pointer;"
-              @click="showModifyReview=true"
+              style="
+                width: 15px;
+                display: inline-block;
+                margin-left: 4px;
+                cursor: pointer;
+              "
+              @click="showModifyReview = true"
             />
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="总得分" prop="totalScore" width="100">
+      <el-table-column label="总得分" prop="totalScore" min-width="172">
       </el-table-column>
-      <el-table-column label="排名" prop="rank" width="100"> </el-table-column>
+      <el-table-column label="排名" prop="rank" min-width="70">
+      </el-table-column>
     </el-table>
 
     <modifyReview v-show="showModifyReview"></modifyReview>
@@ -115,19 +122,17 @@ export default {
       total: 0,
       // 当前页
       currentPage: 1,
-      showModifyReview:false
+      showModifyReview: false,
     };
   },
   methods: {
     handleClick(row) {
       console.log(row);
     },
-    modifyReview() {
-       
+    modifyReview() {},
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
     },
-    handleCurrentChange(val){
-       console.log(`当前页: ${val}`);
-    }
   },
   components: {
     modifyReview,

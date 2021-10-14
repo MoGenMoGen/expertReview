@@ -17,10 +17,11 @@
         'text-align': 'center',
       }"
     >
-      <el-table-column type="index" label="序号" width="100"> </el-table-column>
-      <el-table-column label="供应商名称" prop="name" width="230">
+      <el-table-column type="index" label="序号" min-width="101">
       </el-table-column>
-      <el-table-column prop="status" label="标书上传状态" width="200">
+      <el-table-column label="供应商名称" prop="name" min-width="266">
+      </el-table-column>
+      <el-table-column prop="status" label="标书上传状态" min-width="266">
         <template slot-scope="scope">
           <div v-if="scope.row.SCstatus == 0" style="color: #39a520">
             未上传
@@ -28,7 +29,7 @@
           <div v-if="scope.row.SCstatus == 1" style="color: 'pink'">已上传</div>
         </template>
       </el-table-column>
-      <el-table-column prop="status" label="解密状态" width="200">
+      <el-table-column prop="status" label="解密状态" min-width="266">
         <template slot-scope="scope">
           <div v-if="scope.row.JMstatus == 0" style="color: #e4393c">
             待解密
@@ -38,7 +39,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" width="200">
+      <el-table-column label="操作" fixed="right" min-width="101">
         <template slot-scope="scope">
           <div
             v-if="scope.row.JMstatus == 0"
@@ -109,9 +110,9 @@ export default {
     handleClick(row) {
       console.log(row);
     },
-    handleCurrentChange(val){
-       console.log(`当前页: ${val}`);
-    }
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
   },
 };
 </script>

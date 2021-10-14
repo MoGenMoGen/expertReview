@@ -11,14 +11,56 @@
       <div class="content">
         <div class="line1">
           <div
-            class="line_title_text border"
+            class="line_title_text border row_height"
             v-for="(item, index) in lineTitleList"
             :key="index"
           >
             {{ item }}
           </div>
         </div>
-        <div class="right"></div>
+        <div class="right">
+          <div
+            class="row_height row_content"
+            v-for="(item1, index1) in rowContentList"
+            :key="index1"
+          >
+            <div
+              class="border line_content"
+              v-for="(item2, index2) in item1.lineContentList"
+              :key="index2"
+            >
+              <div class="line_content_wrapper">{{ item2.value }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="btn">
+        <el-button
+          style="
+            background: #2778be;
+            color: #fff;
+            margin-right: 20px;
+            padding: 10px 25px;
+            border-radius: 4px;
+          "
+          @click="handleClick(scope.row)"
+          type="text"
+          size="small"
+          >提交</el-button
+        >
+        <el-button
+          style="
+            background: #fff;
+            color: #333;
+            border: 1px solid #dddddd;
+            padding: 10px 25px;
+            border-radius: 4px;
+          "
+          @click="handleClick(scope.row)"
+          type="text"
+          size="small"
+          >取消</el-button
+        >
       </div>
     </div>
   </div>
@@ -45,6 +87,149 @@ export default {
         "加权得分",
         "评分说明",
         "评分标准",
+      ],
+      rowContentList: [
+        {
+          lineContentList: [
+            {
+              value: "40%",
+            },
+            {
+              value: "40%",
+            },
+            {
+              value: "40%",
+            },
+            {
+              value: "40%",
+            },
+            {
+              value: "40%",
+            },
+            {
+              value: "40%",
+            },
+          ],
+        },
+        {
+          lineContentList: [
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+          ],
+        },
+        {
+          lineContentList: [
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+          ],
+        },
+        {
+          lineContentList: [
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+          ],
+        },
+        {
+          lineContentList: [
+            {
+              value: `得分就是投标报价与基准价的比值，
+               每高
+出基准价1%就在40的
+基础上扣2分 每低于基
+准价1%就在其基础上
+扣1分 在40分的基础
+上扣，扣完为止(不超
+过5家 不用去掉最高值
+和最低值)
+`,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+          ],
+        },
+        {
+          lineContentList: [
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+            {
+              value: 10,
+            },
+          ],
+        },
       ],
     };
   },
@@ -102,11 +287,31 @@ export default {
         border-right: 1px solid #e5e5e5;
         border-bottom: 1px solid #e5e5e5;
       }
+      .row_height {
+        box-sizing: border-box;
+      }
+      .row_height:nth-child(1) {
+        height: 55px;
+      }
+      .row_height:nth-child(2) {
+        height: 65px;
+      }
+      .row_height:nth-child(3) {
+        height: 77px;
+      }
+      .row_height:nth-child(4) {
+        height: 77px;
+      }
+      .row_height:nth-child(5) {
+        height: 233px;
+      }
+      .row_height:nth-child(6) {
+        height: 77px;
+      }
       .line1 {
         flex: 1;
         border-left: 1px solid #e5e5e5;
         .line_title_text {
-          height: 60px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -117,8 +322,57 @@ export default {
       }
       .right {
         flex: 6;
-        border: 1px solid #e5e5e5;
+        .row_content {
+          display: flex;
+          align-items: center;
+          .line_content {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            .line_content_wrapper {
+              width: 100%;
+              height: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+          }
+        }
+        .row_content:nth-child(3) {
+          .line_content_wrapper {
+            width: 121px;
+            height: 37px;
+            background: #f5f5f5;
+            border: 1px solid #e6e6e6;
+            background-image: url(~assets/img/edit.png);
+            background-size: 14px;
+            background-repeat: no-repeat;
+            background-position: 86px center;
+            cursor: pointer;
+          }
+        }
+        .row_content:nth-child(4) {
+          .line_content_wrapper {
+            width: 121px;
+            height: 37px;
+            background: #f5f5f5;
+            border: 1px solid #e6e6e6;
+            background-image: url(~assets/img/edit.png);
+            background-size: 14px;
+            background-repeat: no-repeat;
+            background-position: 86px center;
+            cursor: pointer;
+          }
+        }
       }
+    }
+    .btn {
+      width: 300px;
+      margin: 40px auto 0;
+      display: flex;
+      justify-content: center;
     }
   }
 }

@@ -2,22 +2,21 @@
   <!-- 在线评标页面 -->
   <div id="home" :style="{ width: bWidth + 'px' }" v-loading="loading">
     <my-header :width="width" :bWidth="bWidth"></my-header>
-    <div class="container" :style="{ width: width + 'px' }">
+    <div class="container" :style="{ width: bWidth + 'px' }">
       <leftMenu></leftMenu>
-      <div class="rightMenu" :style="{ width: width - 200 + 'px' }">
+      <div class="rightMenu" :style="{ width: bWidth - 200 + 'px' }">
         <div class="search_box">
-          <div>
-            <div class="search_item">
+          <!-- <div> -->
+            <!-- <div class="search_item"> -->
               <el-input placeholder="项目编号" v-model="input" clearable>
               </el-input>
               <el-input placeholder="项目名称" v-model="input" clearable>
               </el-input>
               <el-input placeholder="采购单位" v-model="input" clearable>
               </el-input>
-            </div>
-            <div class="search_item">
+            <!-- </div> -->
+            <!-- <div class="search_item"> -->
               <el-input
-                style="margin-top: 20px"
                 placeholder="专家"
                 v-model="input"
                 clearable
@@ -41,8 +40,8 @@
                 >
                 </el-option>
               </el-select>
-            </div>
-          </div>
+            <!-- </div> -->
+          <!-- </div> -->
           <button class="btn_query">查询</button>
         </div>
         <div class="son_tablist">
@@ -196,10 +195,12 @@ export default {
     box-sizing: border-box;
     .search_box {
       display: flex;
-      justify-content: center;
-      .search_item {
-        display: flex;
-        justify-content: space-around;
+      align-items: center;
+      height:60px;
+      // justify-content: center;
+      // .search_item {
+      //   display: flex;
+      //   justify-content: space-around;
         .el-input {
           width: 202px;
           margin-right: 20px;
@@ -209,9 +210,9 @@ export default {
           width: 202px;
 
           margin-right: 20px;
-          margin-top: 20px;
+          // margin-top: 20px;
         }
-      }
+      // }
       .btn_query {
         width: 60px;
         height: 40px;
@@ -224,7 +225,7 @@ export default {
         text-align: center;
         line-height: 40px;
         border: none;
-        margin-top: 20px;
+        // margin-top: 20px;
       }
     }
     .son_tablist {

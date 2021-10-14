@@ -15,12 +15,13 @@
         'text-align': 'center',
       }"
     >
-      <el-table-column type="index" label="序号" width="60"> </el-table-column>
-      <el-table-column prop="no" label="项目编号" width="140">
+      <el-table-column type="index" label="序号" min-width="62">
       </el-table-column>
-      <el-table-column prop="name" label="项目名称" width="130">
+      <el-table-column prop="no" label="项目编号" min-width="146">
       </el-table-column>
-      <el-table-column label="采购单位" width="200">
+      <el-table-column prop="name" label="项目名称" min-width="146">
+      </el-table-column>
+      <el-table-column label="采购单位" min-width="146">
         <template slot-scope="scope">
           <div
             style="margin-top: 0px"
@@ -31,7 +32,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="评标专家" width="150">
+      <el-table-column label="评标专家" min-width="146">
         <template slot-scope="scope">
           <div
             style="margin-top: 0px"
@@ -58,15 +59,15 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="date" label="开标时间" width="100">
+      <el-table-column prop="date" label="开标时间" min-width="146">
       </el-table-column>
-      <el-table-column prop="status" label="状态" width="80">
+      <el-table-column prop="status" label="状态" min-width="146">
         <template slot-scope="scope">
           <div v-if="scope.row.status == 1" style="color: #39a520">评标中</div>
           <div v-if="scope.row.status == 2" style="color: 'pink'">已完成</div>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="60">
+      <el-table-column fixed="right" label="操作" min-width="62">
         <template slot-scope="scope">
           <el-button
             style="color: #2778be"
@@ -162,9 +163,9 @@ export default {
     handleClick(row) {
       console.log(row);
     },
-     handleCurrentChange(val){
-       console.log(`当前页: ${val}`);
-    }
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+    },
   },
 };
 </script>
