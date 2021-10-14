@@ -350,6 +350,20 @@ class until {
       }
     }, 1000);
   }
+  // 顶部导航
+  checkNav(obj,list) {
+	let data = ''
+	list.forEach(item => {
+		if(item.name == obj.name) {
+			data = obj.name
+			return
+		} else {
+			data = false
+			return
+		}
+	})
+	return data
+  }
 }
 //touch判断方向
 class judge {

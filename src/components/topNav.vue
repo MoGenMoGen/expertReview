@@ -43,7 +43,6 @@
 			}
 		},
 		mounted() {
-
 		},
 		methods: {
 			handleClick() {

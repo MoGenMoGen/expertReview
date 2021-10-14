@@ -30,14 +30,18 @@
         components: {
 			myFooter,myHeader,leftMenu
         },
-        async  mounted(){
-            // if(!this.until.seGet('userInfo')){
-            //     this.until.href('./login.html')
-            // }
+        mounted(){
+			let obj = {
+				name: '招标',
+				url: '/zhaobiao.html'
+			}
+			if(this.until.checkNav(obj,this.navList)) {
+				
+			} else {
+				this.navList.push(obj)
+			}
 			console.log(this.navList)
             this.getWidth()
-            // this.getList()
-            // this.userInfo = JSON.parse(this.until.seGet('userInfo'))
             window.onresize = () => {
                 this.getWidth()
             }
