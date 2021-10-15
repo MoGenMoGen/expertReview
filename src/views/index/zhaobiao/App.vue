@@ -4,7 +4,7 @@
 		<div class="container" :style="{width:bWidth + 'px'}">
 			<leftMenu tabIndex='1-1'></leftMenu>
 			<div class="right">
-				<div class="header">
+				<!-- <div class="header">
 					<div class="headerItem">
 						首页
 					</div>
@@ -12,7 +12,8 @@
 						更多
 						<img src="">
 					</div>
-				</div>
+				</div> -->
+				<topNav :activeName='activeName' :list="thisNavList"></topNav>
 				<div class="content" v-if="showDetail==false">
 					<div class="topSeachBox">
 						<el-input placeholder="项目编号" v-model="input" clearable>
@@ -112,10 +113,12 @@
 	import leftMenu from '@/components/leftMenu';
 	import detail   from '@/components/zhaobiao/detail';
 	import change  from '@/components/zhaobiao/change';
+	import topNav from '@/components/topNav';
 	export default {
 		data() {
 			return {
-				activeName:'first',
+				activeName:'',
+				thisNavList: [],
 				showDetail: false, //是否显示详情页
 				loading: false,
 				bWidth: 0,
@@ -187,16 +190,18 @@
 			leftMenu,
 			detail,
 			change,
-			
+			topNav
 		},
 		mounted() {
-			// if(!this.until.seGet('userInfo')){
-			//     this.until.href('./login.html')
-			// }
-			console.log(this.navList)
+			let obj = {
+				name: '招标',
+				url: './zhaobiao.html',
+				canClose: true
+			}
+			let data = this.until.checkNav(obj,JSON.parse(this.until.seGet('navList')))
+			this.activeName = obj.name
+			this.thisNavList = data
 			this.getWidth()
-			// this.getList()
-			// this.userInfo = JSON.parse(this.until.seGet('userInfo'))
 			window.onresize = () => {
 				this.getWidth()
 			}
@@ -281,7 +286,6 @@
 
 		.right {
 			height: 800px;
-			background-color: white;
 			margin-left: 10px;
 			width: calc(~"100% - 210px");
 
@@ -329,6 +333,7 @@
 				margin-top: 10px;
 				background-color: #ffffff;
 				width: 100%;
+				height: 740px;
 
 				.topSeachBox {
 					// width: 100%;

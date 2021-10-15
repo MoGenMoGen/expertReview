@@ -353,15 +353,18 @@ class until {
   // 顶部导航
   checkNav(obj,list) {
 	let data = ''
+	console.log(list)
 	list.forEach(item => {
 		if(item.name == obj.name) {
-			data = obj.name
-			return
-		} else {
-			data = false
+			data = list
 			return
 		}
 	})
+	if(data=='') {
+		list.push(obj);
+		data = list;
+		this.seSave('navList',JSON.stringify(data))
+	}
 	return data
   }
 }

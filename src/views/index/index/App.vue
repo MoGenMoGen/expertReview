@@ -1,8 +1,61 @@
 <template>
     <div id="home" :style="{width:bWidth + 'px'}" v-loading="loading">
 		<my-header :width="width" :bWidth="bWidth"></my-header>
-		<div class="container" :style="{width:width + 'px'}">
-			<leftMenu></leftMenu>
+		<div class="container" :style="{width:bWidth + 'px'}">
+			<leftMenu tabIndex='0'></leftMenu>
+			<div class="right">
+				<topNav :activeName='activeName' :list="thisNavList"></topNav>
+				<div class="content">
+					<div class="content-top">
+						<div v-for="(item,index) in menuList" :key="index" class="content-top-item">
+							<img :src="item.imgUrl">
+							<div style="width: 56px;">
+								<p :style="{color: item.color}">{{item.num}}</p>
+								<p>{{item.name}}</p>
+							</div>
+						</div>
+					</div>
+					<div class="content-list">
+						<div class="content-list-top">
+							<div><img :src="ing">进行中项目</div>
+							<p>更多 ></p>
+						</div>
+						<div class="bodyTable">
+							<el-table :data="tableData" style="width: 100%" :cell-style="{
+								    'text-align': 'center',
+								    color: '#333',
+								    'font-weight': '500',
+								  }" :header-cell-style="{
+								    color: '#606060',
+								    background: '#f8f8f8',
+								    'text-align': 'center',
+								  }">
+								<el-table-column prop="region" label="项目区划" min-width="100">
+								</el-table-column>
+								<el-table-column prop="cd" label="项目编号" min-width="150">
+								</el-table-column>
+								<el-table-column prop="name" label="项目名称" min-width="150">
+								</el-table-column>
+								<el-table-column prop="people" label="采购人" min-width="100">
+								</el-table-column>
+								<el-table-column prop="type" label="采购方式" min-width="100">
+								</el-table-column>
+								<el-table-column prop="money" label="预算金额(万元)" min-width="100">
+								</el-table-column>
+								<el-table-column prop="time" label="开标时间" min-width="150">
+								</el-table-column>
+								<el-table-column prop="zhuangtai" label="状态" min-width="100">
+								</el-table-column>
+								<el-table-column label="操作" min-width="50">
+									<template slot-scope="scope">
+										<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+									</template>
+								</el-table-column>
+							</el-table>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
         <my-footer></my-footer>
     </div>
@@ -12,9 +65,20 @@
     import myFooter from '@/components/footer';
 	import myHeader from '@/components/myHeader';
 	import leftMenu from '@/components/leftMenu';
+	import topNav from '@/components/topNav';
+	import img1 from '@/assets/img/项目立项.png';
+	import img2 from '@/assets/img/招标文件.png';
+	import img3 from '@/assets/img/发标.png';
+	import img4 from '@/assets/img/报名企业.png';
+	import img5 from '@/assets/img/开标.png';
+	import img6 from '@/assets/img/定标.png';
+	import img7 from '@/assets/img/缴费管理.png';
+	import img8 from '@/assets/img/已归档.png';
+	import ing from '@/assets/img/进行中.png';
     export default {
         data(){
             return{
+				ing,
                 loading:false,
                 bWidth:0,
                 width:0,
@@ -22,25 +86,87 @@
                 pageNo:1,
                 pageSize:10,
                 total:0,
+				activeName: '首页',
+				thisNavList: [],
+				menuList: [{
+					imgUrl: img1,
+					num: 1,
+					name: '项目立项',
+					color: '#1D8BEB'
+				},{
+					imgUrl: img2,
+					num: 0,
+					name: '招标文件',
+					color: '#FF8F35'
+				},{
+					imgUrl: img3,
+					num: 1,
+					name: '发标',
+					color: '#7944F6'
+				},{
+					imgUrl: img4,
+					num: 3,
+					name: '报名企业',
+					color: '#07D2D8'
+				},{
+					imgUrl: img5,
+					num: 1,
+					name: '开标',
+					color: '#C832DA'
+				},{
+					imgUrl: img6,
+					num: 0,
+					name: '定标',
+					color: '#476EEC'
+				},{
+					imgUrl: img7,
+					num: 1,
+					name: '缴费管理',
+					color: '#FF434C'
+				},{
+					imgUrl: img8,
+					num: 3,
+					name: '已归档',
+					color: '#29B382'
+				}],
+				tableData: [{
+					region: '宁波市本级',
+					cd: 'BHZC2021-G3-0001',
+					name: '12米玻璃钢新型渔船',
+					people: '澳新船厂有限公司',
+					type: '竞争性磋商',
+					money: '52',
+					time: '2021-07-15 14:00:00',
+					zhuangtai: '评标中'
+				}]
             }
         },
         computed: {
 
         },
         components: {
-			myFooter,myHeader,leftMenu
+			myFooter,myHeader,leftMenu,topNav
         },
         mounted(){
 			let obj = {
-				name: '招标',
-				url: '/zhaobiao.html'
+				name: '首页',
+				url: './index.html',
+				canClose: false
 			}
-			if(this.until.checkNav(obj,this.navList)) {
-				
+			if(this.until.seGet('navList')) {
+				let data = this.until.checkNav(obj,JSON.parse(this.until.seGet('navList')))
+				this.activeName = obj.name
+				this.thisNavList = data
 			} else {
-				this.navList.push(obj)
+				let list = [{
+					name: '首页',
+					url: './index.html',
+					canClose: false
+				}]
+				this.until.seSave('navList',JSON.stringify(list))
+				this.activeName = obj.name
+				this.thisNavList = list
 			}
-			console.log(this.navList)
             this.getWidth()
             window.onresize = () => {
                 this.getWidth()
@@ -97,6 +223,94 @@
 		background-repeat: no-repeat;
 		background-position: bottom center;
 		margin: 0 auto;
+		display: flex;
+		.right {
+			height: 800px;
+			margin-left: 10px;
+			width: calc(~"100% - 210px");
+			.content {
+				margin-top: 10px;
+				width: 100%;
+				height: 740px;
+				display: flex;
+				flex-direction: column;
+				.content-top {
+					display: flex;
+					flex-wrap: wrap;
+					// padding: 0 10px;
+					// box-sizing: border-box;
+					.content-top-item {
+						width: calc(~"(100% - 30px)/4");
+						height: 130px;
+						display: flex;
+						padding: 30px;
+						box-sizing: border-box;
+						justify-content: center;
+						align-items: center;
+						margin-right: 10px;
+						margin-bottom: 10px;
+						background-color: #fff;
+						img {
+							width: 70px;
+							height: 70px;
+							margin-right: 42px;
+						}
+						div {
+							font-size: 14px;
+							color: #909090;
+							display: flex;
+							flex-direction: column;
+							justify-content: center;
+							align-items: center;
+							p:first-child {
+								font-size: 30px;
+								margin-bottom: 15px;
+							}
+						}
+					}
+					.content-top-item:nth-child(4n) {
+						margin-right: 0;
+					}
+				}
+				.content-list {
+					display: flex;
+					flex-direction: column;
+					height: 460px;
+					background-color: #FFF;
+					padding: 20px;
+					box-sizing: border-box;
+					.content-list-top {
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+						margin-bottom: 20px;
+						div {
+							font-size: 18px;
+							color: #333333;
+							display: flex;
+							align-items: center;
+							img {
+								width: 21px;
+								height: 21px;
+								margin-right: 10px;
+							}
+						}
+						p {
+							font-size: 14px;
+							color: #909090;
+						}
+					}
+					.bodyTable {
+						box-sizing: border-box;
+						.el-table {
+							width: 100%;
+							background-color: #F8F8F8;
+							text-align: center;
+						}
+					}
+				}
+			}
+		}
 	}
     .gray{
         color: #999999;

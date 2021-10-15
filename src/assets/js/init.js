@@ -63,6 +63,6 @@ export default {
         Vue.prototype.until = new until();
         Vue.prototype.reg = new reg();
         Vue.prototype.query = query;
-		Vue.prototype.navList = [{name:'首页',url:'/'},{name:'招标',url:'/zhaobiao.html'}];
+		// Vue.prototype.navList = [{name:'首页',url:'./index.html',canClose:false}];
     }
 };

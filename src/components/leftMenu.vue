@@ -215,6 +215,9 @@ export default {
   // height: calc(~"100vh - 298px");
   height: 800px;
   background-color: #2778be;
+  .el-menu {
+	  width: 200px;
+  }
   .el-menu-item {
     font-size: 14px;
     font-weight: 400;
