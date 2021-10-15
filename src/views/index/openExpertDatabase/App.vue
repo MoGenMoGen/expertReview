@@ -3,8 +3,9 @@
   <div id="home" :style="{ width: bWidth + 'px' }" v-loading="loading">
     <my-header :width="width" :bWidth="bWidth"></my-header>
     <div class="container" :style="{ width: bWidth + 'px' }">
-      <leftMenu></leftMenu>
+      <leftMenu tabIndex='3-2'></leftMenu>
       <div class="rightMenu" :style="{ width: bWidth - 200 + 'px' }">
+       <new-expert-database v-show="showNewExpertDatabase"></new-expert-database>
         <div class="condition_box">
           <el-select
             v-model="value"
@@ -47,6 +48,7 @@
           <button
             class="btn margin_right"
             style="background: #409eff; color: #fff; border: none"
+            @click="showNewExpertDatabase=true"
           >
             新增
           </button>
@@ -187,6 +189,7 @@ import signin from "@/components/onlineBidEvaluate/signin";
 import decrypt from "@/components/onlineBidEvaluate/decrypt";
 import reviewResults from "@/components/onlineBidEvaluate/reviewResults";
 import uploadVideo from "@/components/onlineBidEvaluate/uploadVideo";
+import NewExpertDatabase from '@/components/openBid/newExpertDatabase.vue';
 export default {
   data() {
     return {
@@ -199,6 +202,7 @@ export default {
       total: 0,
       input: "",
       value: "",
+      showNewExpertDatabase:false,
       options: [
         {
           value: "选项3",
@@ -248,6 +252,7 @@ export default {
     decrypt,
     reviewResults,
     uploadVideo,
+    NewExpertDatabase,
   },
   async mounted() {
     // if(!this.until.seGet('userInfo')){

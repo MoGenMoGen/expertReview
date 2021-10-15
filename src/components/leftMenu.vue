@@ -85,7 +85,11 @@
           >
         </el-menu-item-group>
       </el-submenu>
-      <el-menu-item index="2">
+
+      <el-menu-item
+        index="2"
+        :class="currentIndex == '2' ? 'activeTwo' : ''"
+      >
         <i class="el-icon-menu"></i>
         <span slot="title">在线评标</span>
       </el-menu-item>
@@ -164,7 +168,7 @@ export default {
   data() {
     return {
       zhaobiao: [],
-      currentIndex: 0,
+      currentIndex: "0",
     };
   },
   props: {
@@ -178,24 +182,27 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-		this.currentIndex=key
-		console.log('1233',this.currentIndex);
-		console.log(1111,key,keyPath);
-		if(key==2){
-			this.until.href('/views/index/onlineBidEvaluate.html')
-		}
-		if(key=='1-1'){
-			this.until.href('/views/index/zhaobiao.html')
-		}
-		if(key=='1-2'){
-			this.until.href('/views/index/shenpi.html')
-		}
-		 if (key == "3-1") {
-		  this.until.href("/views/index/openSelectRule.html");
-		} 
-		 if (key == "3-2") {
-		  this.until.href("/views/index/openExpertDatabase.html");
-		}
+      this.currentIndex = key;
+      // console.log("1233", this.currentIndex);
+      console.log(1111, key, keyPath);
+      if (key == "2") {
+        this.until.href("/views/index/onlineBidEvaluate.html");
+      }
+      if (key == "1-1") {
+        this.until.href("/views/index/zhaobiao.html");
+      }
+      if (key == "1-2") {
+        this.until.href("/views/index/shenpi.html");
+      }
+      if (key == "3-1") {
+        this.until.href("/views/index/openSelectRule.html");
+      }
+      if (key == "3-2") {
+        this.until.href("/views/index/openExpertDatabase.html");
+      }
+      if (key == "3-4") {
+        this.until.href("/views/index/openOnlineBid.html");
+      }
     },
     handleOpen(key, keyPath) {
       this.currentIndex = key;

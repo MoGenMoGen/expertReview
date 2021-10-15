@@ -1,54 +1,38 @@
 <template>
   <!-- 新增开标选取规则 -->
-  <div id="mask" @click="closeMask">
+  <div id="mask" @click.stop="closeMask">
     <div class="table_box" @click.stop="">
       <div class="top">
         <p style="font-size: 20px">新增</p>
         <img
-          @click="closeMask"
+        @click="closeMask"
           src="~assets/img/close.png"
           style="width: 25px; height: 25px"
           alt=""
         />
       </div>
-      <div class="row2">
-        <div class="title">
-          <span style="color: red; margin-right: 5px; display: inline-block"
-            >* </span
-          ><span>规则名称</span>
-        </div>
-        <div class="right">
-          <el-input
-            v-model="input"
+      <div class="row1">
+        <div class="leftpart">
+          <span style="color: red">* </span><span>选取范围</span>
+          <el-select
+            v-model="value"
             class="margin_right"
             clearable
-            placeholder="规则名称"
+            placeholder="专家分组"
           >
-          </el-input>
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         </div>
-      </div>
-      <div class="row2">
-        <div class="title">
-          <p>备注</p>
-        </div>
-        <div class="right">
-          <el-input
-            type="textarea"
-            :rows="2"
-            placeholder="备注"
-            v-model="textarea"
-          >
-          </el-input>
-        </div>
-      </div>
-      <div class="row2">
-        <div class="title">
-          <span style="color: red; margin-right: 5px; display: inline-block"
-            >* </span
-          ><span>排序</span>
-        </div>
-        <div class="right">
+        <div class="rightpart">
+          <span style="color: red">* </span><span>选取数量</span>
           <el-input-number
+            style="margin-left: 5px"
             v-model="num"
             @change="handleChange"
             :min="1"
@@ -56,6 +40,17 @@
             label=""
           ></el-input-number>
         </div>
+      </div>
+      <div class="row2">
+        <p style="width:30px;">备注</p> 
+        <el-input
+        style="margin-left:10px;"
+          type="textarea"
+          :rows="2"
+          placeholder="备注"
+          v-model="textarea"
+        >
+        </el-input>
       </div>
 
       <div class="btn">
@@ -80,7 +75,7 @@
             padding: 10px 25px;
             border-radius: 4px;
           "
-          @click="closeMask"
+         @click="closeMask"
           type="text"
           size="small"
           >取消</el-button
@@ -95,8 +90,22 @@ export default {
   data() {
     return {
       num: 1,
-      input: "",
-      textarea: "",
+      value: "",
+      textarea:"",
+      options: [
+        {
+          value: "选项3",
+          label: "蚵仔煎",
+        },
+        {
+          value: "选项4",
+          label: "龙须面",
+        },
+        {
+          value: "选项5",
+          label: "北京烤鸭",
+        },
+      ],
     };
   },
   methods: {
@@ -104,9 +113,9 @@ export default {
       console.log(row);
     },
     closeMask() {
-      this.$parent.showNewRule = false;
+      this.$parent.newManageRule = false;
     },
-    handleChange() {},
+    handleChange(){}
   },
   mounted() {
     let { bWidth, width } = this.until.getWidth();
@@ -139,33 +148,25 @@ export default {
       width: 100%;
       justify-content: space-between;
     }
-
-    .row2 {
+    .row1 {
       width: 700px;
       margin: 30px auto 20px;
       display: flex;
+      justify-content: space-between;
+      .leftpart {
+        .el-select {
+          width: 202px;
+          margin-left: 5px;
+        }
+      }
+    }
+    .row2{
+        width: 700px;
+      margin: 30px auto 20px;
+      display: flex;
       align-items: center;
-      // justify-content: space-between;
-      .title {
-        width: 100px;
-        display: flex;
-        align-items: center;
-        justify-content: end;
-        margin-right: 10px;
-      }
-      .right {
-        .el-input,
-        .el-textarea {
-          height: 32px;
-          width: 370px;
-          margin-left: 12px;
-        }
-        .el-input-number {
-          height: 32px;
-          width: 160px;
-          margin-left: 12px;
-        }
-      }
+      justify-content: space-between;
+
     }
 
     .btn {
