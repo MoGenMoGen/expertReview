@@ -1,5 +1,150 @@
 <template>
 	<div id="home" :style="{width:bWidth + 'px'}" v-loading="loading">
+		<div class="mask" @click="closeMask" v-if="newShow==true">
+		  <div class="table_box" @click.stop="">
+		    <div class="top">
+		      <p style="font-size: 20px">新增项目</p>
+		      <img
+		        @click="closeMask"
+				 src="~assets/img/close.png"
+		        style="width: 25px; height: 25px;cursor: pointer;"
+		        alt=""
+		      />
+		    </div>
+		    <div class="row2">
+		      <div class="title">
+		        <span style="color: red; margin-right: 5px; display: inline-block"
+		          >* </span
+		        ><span>项目名称</span>
+		      </div>
+		      <div class="right">
+		        <el-input
+		          v-model="input1"
+		          class="margin_right"
+		          clearable
+		          placeholder="项目名称"
+		        >
+		        </el-input>
+		      </div>
+		    </div>
+			<div class="row2">
+			  <div class="title">
+			    <span style="color: red; margin-right: 5px; display: inline-block"
+			      >* </span
+			    ><span>项目编号</span>
+			  </div>
+			  <div class="right">
+			    <el-input
+			      v-model="input1"
+			      class="margin_right"
+			      clearable
+			      placeholder="项目编号"
+			    >
+			    </el-input>
+			  </div>
+			</div>
+			<div class="row2">
+			  <div class="title">
+			    <span style="color: red; margin-right: 5px; display: inline-block"
+			      >* </span
+			    ><span>开始时间</span>
+			  </div>
+			  <div class="right">
+			     <el-date-picker
+			       v-model="date1"
+			       type="date"
+			       placeholder="投标开始时间">
+			     </el-date-picker>
+			    </el-input>
+			  </div>
+			</div>
+			<div class="row2">
+			  <div class="title">
+			    <span style="color: red; margin-right: 5px; display: inline-block"
+			      >* </span
+			    ><span>截止时间</span>
+			  </div>
+			  <div class="right">
+			     <el-date-picker
+			       v-model="date1"
+			       type="date"
+			       placeholder="投标截止时间">
+			     </el-date-picker>
+			    </el-input>
+			  </div>
+			</div>
+			<div class="row2">
+			  <div class="title">
+			   <span>预算金额</span>
+			  </div>
+			  <div class="right">
+			    <el-input
+			      v-model="input1"
+			      class="margin_right"
+			      clearable
+			      placeholder="预算金额(万元)"
+			    >
+			    </el-input>
+			  </div>
+			</div>
+			<div class="row2">
+			  <div class="title">
+			   <span>保证金</span>
+			  </div>
+			  <div class="right">
+			  <el-radio-group v-model="radio" style="margin-left: 12px;">
+			     <el-radio :label="1">是</el-radio>
+			     <el-radio :label="2">否</el-radio>
+			   </el-radio-group>
+			  </div>
+			</div>
+			<div class="row2" style="margin-top: -20px;">
+			  <div class="title">
+			   <span>招标文件</span>
+			  </div>
+			  <div class="right" style="padding-top: 30px;">
+				<el-form :model="form" style="margin-left: 12px; display: flex; align-items: center;">
+				  <el-form-item >
+				    <el-upload ref="uploadExcel" action="/general/oss/upload" :auto-upload="true"
+				       :on-change="fileChange" :on-success="handleSuccess" :on-remove="handleRemove"
+				      :on-error="handleError" :file-list="fileInfo" :on-preview="HandFilePreView">
+				      <el-button size="small" plain style="width: 100px;height: 30px;">选择文件</el-button>
+				    </el-upload>
+				  </el-form-item>
+				</el-form>
+			  </div>
+			</div>
+			
+		    <div class="btn">
+		      <el-button
+		        style="
+		          background: #2778be;
+		          color: #fff;
+		          margin-right: 20px;
+		          padding: 10px 25px;
+		          border-radius: 4px;
+		        "
+		        @click="handleClick(scope.row)"
+		        type="text"
+		        size="small"
+		        >确定</el-button
+		      >
+		      <el-button
+		        style="
+		          background: #fff;
+		          color: #333;
+		          border: 1px solid #dddddd;
+		          padding: 10px 25px;
+		          border-radius: 4px;
+		        "
+		        @click="closeMask"
+		        type="text"
+		        size="small"
+		        >取消</el-button
+		      >
+		    </div>
+		  </div>
+		</div>
 		<my-header :width="width" :bWidth="bWidth"></my-header>
 		<div class="container" :style="{width:bWidth + 'px'}">
 			<leftMenu tabIndex='1-1'></leftMenu>
@@ -35,7 +180,7 @@
 							</el-option>
 						</el-select>
 						<el-button plain>查询</el-button>
-						<el-button type="primary" style="background-color:  #2778BE;">新增</el-button>
+						<el-button type="primary" style="background-color:  #2778BE;" @click='addNew'>新增</el-button>
 					</div>
 					<div class="bodyTable">
 						<el-table :data="tableData" style="width: 100%" :cell-style="{
@@ -90,34 +235,41 @@
 					</div>
 				</div>
 				<div class="navBar" v-if="showDetail==true">
-					<el-tabs v-model="activeName" @tab-click="changeNav">
-					    <el-tab-pane label="项目详情" name="first">
+					<el-tabs v-model="activeNameTwo" @tab-click="changeNav">
+						<el-tab-pane label="项目详情" name="first">
 							<detail></detail>
 						</el-tab-pane>
-					    <el-tab-pane label="招标变更/澄清" name="second">
+						<el-tab-pane label="招标变更/澄清" name="second">
 							<change></change>
 						</el-tab-pane>
-					    <el-tab-pane label="全部项目" name="third">全部项目</el-tab-pane>
-					  </el-tabs>
-				</div>
+						<el-tab-pane label="全部项目" name="third">全部项目</el-tab-pane>
+					</el-tabs>
 				</div>
 			</div>
-			<my-footer></my-footer>
- 
 		</div>
+		<my-footer></my-footer>
+	</div>
 </template>
 
 <script>
 	import myFooter from '@/components/footer';
 	import myHeader from '@/components/myHeader';
 	import leftMenu from '@/components/leftMenu';
-	import detail   from '@/components/zhaobiao/detail';
-	import change  from '@/components/zhaobiao/change';
+	import detail from '@/components/zhaobiao/detail';
+	import change from '@/components/zhaobiao/change';
 	import topNav from '@/components/topNav';
 	export default {
 		data() {
 			return {
-				activeName:'',
+				form:{
+					file:''
+				},
+				fileInfo:[],
+				fileInfoList:[],
+				radio:1,
+				activeName: '',
+				newShow: false,
+				activeNameTwo: 'first',
 				thisNavList: [],
 				showDetail: false, //是否显示详情页
 				loading: false,
@@ -198,7 +350,7 @@
 				url: './zhaobiao.html',
 				canClose: true
 			}
-			let data = this.until.checkNav(obj,JSON.parse(this.until.seGet('navList')))
+			let data = this.until.checkNav(obj, JSON.parse(this.until.seGet('navList')))
 			this.activeName = obj.name
 			this.thisNavList = data
 			this.getWidth()
@@ -228,14 +380,40 @@
 				console.log('21', row);
 				this.showDetail = true
 			},
-			changeNav(tab,event){
-				console.log(tab,event);
+			changeNav(tab, event) {
+				console.log(tab, event);
+			},
+			addNew() {
+				this.newShow = true
+			},
+			closeMask(){
+				this.newShow=false
+			},
+			fileChange(file, fileList) {
+			  this.formTwo.file = file.raw
+			},
+			handleSuccess(res, file, fileList) {
+			  this.fileInfoList=fileList.map((item) => item.response.data)
+			  .join(",");
+			},
+			handleRemove(file,fileList){
+			  this.fileInfoList=fileList.map((item) => item.response.data)
+			  .join(",");
+			},
+			handleError(err, file, fileList) {
+			  this.$notify.error({
+			    title: '错误',
+			    message: `文件上传失败`
+			  });
+			},
+			HandFilePreView(){
+				
 			}
 		}
 	}
 </script>
 <style type="text/css">
-	.el-tabs__item{
+	.el-tabs__item {
 		width: 100px;
 		padding: 0;
 		text-align: center;
@@ -273,7 +451,68 @@
 			cursor: pointer;
 		}
 	}
-
+	.mask {
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	  width: 100vw;
+	  height: 100vh;
+	  background: rgba(0, 0, 0, 0.5);
+	  z-index: 50;
+	  display: flex;
+	  justify-content: center;
+	  align-items: center;
+	
+	  .table_box {
+	    background: #fff;
+	    padding: 20px;
+	    width: 850px;
+		max-height: 80%;
+		overflow-y: scroll;
+			
+	    .top {
+	      display: flex;
+	      width: 100%;
+	      justify-content: space-between;
+	    }
+	
+	    .row2 {
+	      width: 700px;
+	      margin: 30px auto 20px;
+	      display: flex;
+	      align-items: center;
+		 
+	      // justify-content: space-between;
+	      .title {
+	        width: 100px;
+	        display: flex;
+	        align-items: center;
+	        justify-content: end;
+	        margin-right: 10px;
+	      }
+	      .right {
+	        .el-input,
+	        .el-textarea {
+	          height: 32px;
+	          width: 370px;
+	          margin-left: 12px;
+	        }
+	        .el-input-number {
+	          height: 32px;
+	          width: 160px;
+	          margin-left: 12px;
+	        }
+	      }
+	    }
+	
+	    .btn {
+	      width: 300px;
+	      margin: 40px auto 0;
+	      display: flex;
+	      justify-content: center;
+	    }
+	  }
+	}
 	.container {
 		padding-top: 20px;
 		padding-bottom: 100px;
@@ -375,6 +614,7 @@
 					text-align: center;
 				}
 			}
+
 			.navBar {
 				margin-top: 10px;
 				background-color: #ffffff;

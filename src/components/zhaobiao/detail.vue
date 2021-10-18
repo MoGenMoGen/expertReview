@@ -191,11 +191,11 @@
 
 <style lang="less" >
 	.detail {
-		height: 696px;
+		height: 690px;
 		box-sizing: border-box;
 		overflow-y: scroll;
 		background-color: white;
-		margin-left: 10px;
+		// margin-left: 10px;
 		padding: 29px 41px;
 	
 		.detailBox {

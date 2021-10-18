@@ -86,45 +86,101 @@
         </el-menu-item-group>
       </el-submenu>
 
-      <el-menu-item
-        index="2"
-        :class="currentIndex == '2' ? 'activeTwo' : ''"
-      >
-        <i class="el-icon-menu"></i>
-        <span slot="title">在线评标</span>
-      </el-menu-item>
-      <el-submenu index="3">
+		<el-submenu index="2">
         <template slot="title">
           <img
-            src="../assets/img/招标-未选.png"
+            src="../assets/img/投标-未选.png"
             style="width: 18px; height: 18px; margin-left: 5px"
             v-if="
-              currentIndex != '1' &&
-              currentIndex != '1-1' &&
-              currentIndex != '1-2' &&
-              currentIndex != '1-3' &&
-              currentIndex != '1-4'
+              currentIndex != '2' &&
+              currentIndex != '2-1' &&
+              currentIndex != '2-2' 
             "
           />
           <img
-            src="../assets/img/招标-选中.png"
+            src="../assets/img/投标-选中.png"
             style="width: 18px; height: 18px; margin-left: 5px"
             v-if="
-              currentIndex == '1' ||
-              currentIndex == '1-1' ||
-              currentIndex == '1-2' ||
-              currentIndex == '1-3' ||
-              currentIndex == '1-4'
+              currentIndex == '2' ||
+              currentIndex == '2-1' ||
+              currentIndex == '2-2' 
             "
           />
           <span
             style="opacity: 0.5"
             :class="
-              currentIndex == '1' ||
-              currentIndex == '1-1' ||
-              currentIndex == '1-2' ||
-              currentIndex == '1-3' ||
-              currentIndex == '1-4'
+              currentIndex == '2' ||
+              currentIndex == '2-1' ||
+              currentIndex == '2-2' 
+                ? 'activeThree'
+                : ''
+            "
+            >投标</span
+          >
+        </template>
+        <el-menu-item-group>
+          <el-menu-item
+            index="2-1"
+            :class="currentIndex == '2-1' ? 'active' : ''"
+            >报名审核</el-menu-item
+          >
+          <el-menu-item
+            index="2-2"
+            :class="currentIndex == '2-2' ? 'active' : ''"
+            >投标项目</el-menu-item
+          >
+        </el-menu-item-group>
+      </el-submenu>
+
+
+      <el-menu-item
+        index="4"
+        :class="currentIndex == '4' ? 'activeTwo' : ''"
+      >
+       <img
+         src="../assets/img/在线评标-未选.png"
+         style="width: 18px; height: 18px; margin-left: 5px"
+         v-if="currentIndex != '4'"
+       />
+	   <img
+	     src="../assets/img/在线评标-选中.png"
+	     style="width: 18px; height: 18px; margin-left: 5px"
+	     v-if="currentIndex == '4'"
+	   />
+        <span slot="title">在线评标</span>
+      </el-menu-item>
+      <el-submenu index="3">
+        <template slot="title">
+          <img
+            src="../assets/img/开标-未选.png"
+            style="width: 18px; height: 18px; margin-left: 5px"
+            v-if="
+              currentIndex != '3' &&
+              currentIndex != '3-1' &&
+              currentIndex != '3-2' &&
+              currentIndex != '3-3' &&
+              currentIndex != '3-4'
+            "
+          />
+          <img
+            src="../assets/img/开标-选中.png"
+            style="width: 18px; height: 18px; margin-left: 5px"
+            v-if="
+              currentIndex == '3' ||
+              currentIndex == '3-1' ||
+              currentIndex == '3-2' ||
+              currentIndex == '3-3' ||
+              currentIndex == '3-4'
+            "
+          />
+          <span
+            style="opacity: 0.5"
+            :class="
+              currentIndex == '3' ||
+              currentIndex == '3-1' ||
+              currentIndex == '3-2' ||
+              currentIndex == '3-3' ||
+              currentIndex == '3-4'
                 ? 'activeThree'
                 : ''
             "
@@ -155,10 +211,96 @@
           >
         </el-menu-item-group>
       </el-submenu>
-      <el-menu-item index="4">
-        <i class="el-icon-setting"></i>
-        <span slot="title">导航四</span>
-      </el-menu-item>
+	  <el-submenu index="5">
+	    <template slot="title">
+	      <img
+	        src="../assets/img/定标-未选.png"
+	        style="width: 18px; height: 18px; margin-left: 5px"
+	        v-if="
+	          currentIndex != '5' &&
+	          currentIndex != '5-1' &&
+	          currentIndex != '5-2' 
+	        "
+	      />
+	      <img
+	        src="../assets/img/定标-选中.png"
+	        style="width: 18px; height: 18px; margin-left: 5px"
+	        v-if="
+	          currentIndex == '5' ||
+	          currentIndex == '5-1' ||
+	          currentIndex == '5-2' 
+	        "
+	      />
+	      <span
+	        style="opacity: 0.5"
+	        :class="
+	          currentIndex == '5' ||
+	          currentIndex == '5-1' ||
+	          currentIndex == '5-2' 
+	            ? 'activeThree'
+	            : ''
+	        "
+	        >定标</span
+	      >
+	    </template>
+	    <el-menu-item-group>
+	      <el-menu-item
+	        index="5-1"
+	        :class="currentIndex == '5-1' ? 'active' : ''"
+	        >定标项目</el-menu-item
+	      >
+	      <el-menu-item
+	        index="5-2"
+	        :class="currentIndex == '5-2' ? 'active' : ''"
+	        >中标公示</el-menu-item
+	      >
+	    </el-menu-item-group>
+	  </el-submenu>
+  <el-submenu index="6">
+    <template slot="title">
+      <img
+        src="../assets/img/标后-未选.png"
+        style="width: 18px; height: 18px; margin-left: 5px"
+        v-if="
+          currentIndex != '6' &&
+          currentIndex != '6-1' &&
+          currentIndex != '6-2' 
+        "
+      />
+      <img
+        src="../assets/img/标后-选中.png"
+        style="width: 18px; height: 18px; margin-left: 5px"
+        v-if="
+          currentIndex == '6' ||
+          currentIndex == '6-1' ||
+          currentIndex == '6-2' 
+        "
+      />
+      <span
+        style="opacity: 0.5"
+        :class="
+          currentIndex == '6' ||
+          currentIndex == '6-1' ||
+          currentIndex == '6-2' 
+            ? 'activeThree'
+            : ''
+        "
+        >标后</span
+      >
+    </template>
+    <el-menu-item-group>
+      <el-menu-item
+        index="6-1"
+        :class="currentIndex == '6-1' ? 'active' : ''"
+        >保证金退还</el-menu-item
+      >
+      <el-menu-item
+        index="6-2"
+        :class="currentIndex == '6-2' ? 'active' : ''"
+        >招标文件归档</el-menu-item
+      >
+    </el-menu-item-group>
+  </el-submenu>
     </el-menu>
   </div>
 </template>
