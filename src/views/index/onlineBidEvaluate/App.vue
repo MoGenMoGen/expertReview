@@ -3,7 +3,7 @@
   <div id="home" :style="{ width: bWidth + 'px' }" v-loading="loading">
     <my-header :width="width" :bWidth="bWidth"></my-header>
     <div class="container" :style="{ width: bWidth + 'px' }">
-      <leftMenu tabIndex='2'></leftMenu>
+      <leftMenu tabIndex='4'></leftMenu>
       <div class="rightMenu" :style="{ width: bWidth - 200 + 'px' }">
         <div class="search_box">
           <!-- <div> -->
