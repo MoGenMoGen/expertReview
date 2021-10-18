@@ -23,7 +23,7 @@
         <button
           class="btn margin_right"
           style="background: #409eff; color: #fff; border: none"
-          @click="showNewRule = true"
+          @click="newManageRule = true"
         >
           新增
         </button>
@@ -52,12 +52,7 @@
         }"
       >
         <el-table-column type="selection" min-width="48"> </el-table-column>
-        <el-table-column
-          label="选取范围"
-          prop="range"
-          sortable
-          min-width="240"
-        >
+        <el-table-column label="选取范围" prop="range" sortable min-width="240">
         </el-table-column>
         <el-table-column prop="num" label="选取数量" sortable min-width="240">
         </el-table-column>
@@ -111,10 +106,15 @@
         >
       </div>
     </div>
+    <div class="son_mask">
+      <!-- 新增同一选取规则->管理规则 -->
+      <newManageRule v-show="newManageRule"></newManageRule>
+    </div>
   </div>
 </template>
 
 <script>
+import newManageRule from "components/openBid/newManageRule.vue";
 export default {
   data() {
     return {
@@ -124,6 +124,7 @@ export default {
       pageNo: 1,
       pageSize: 10,
       total: 0,
+      newManageRule: false,
       options: [
         {
           value: "选项3",
@@ -141,19 +142,19 @@ export default {
       tableData: [
         {
           range: "全部专家",
-          num:1,
+          num: 1,
           remarks: "啊啊啊啊啊啊啊啊",
           weight: 1,
         },
         {
           range: "全部专家",
-          num:5,
+          num: 5,
           remarks: "不不不不不不",
           weight: 3,
         },
         {
           range: "全部专家",
-          num:10,
+          num: 10,
           remarks: "超超超超",
           weight: 2,
         },
@@ -176,6 +177,9 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
+  },
+  components: {
+    newManageRule,
   },
   mounted() {
     let { bWidth, width } = this.until.getWidth();
@@ -238,6 +242,18 @@ export default {
     .btn2 {
       float: right;
     }
+  }
+  #son_mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 60;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>

@@ -3,12 +3,13 @@
   <div id="home" :style="{ width: bWidth + 'px' }" v-loading="loading">
     <my-header :width="width" :bWidth="bWidth"></my-header>
     <div class="container" :style="{ width: bWidth + 'px' }">
-      <leftMenu></leftMenu>
+      <leftMenu tabIndex='3-1'></leftMenu>
       <div class="rightMenu" :style="{ width: bWidth - 200 + 'px' }">
         <!-- 新增选取规则 -->
         <new-select-rule v-show="showNewRule"></new-select-rule>
         <!-- 选取规则详情 -->
         <selectRuleDetail :bWidth="bWidth" v-show="showRuleDetail"></selectRuleDetail>
+
         <div class="condition_box">
           <el-input
             placeholder="专家选取规则名称"
