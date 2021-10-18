@@ -348,6 +348,9 @@ export default {
       if (key == "3-4") {
         this.until.href("/views/index/openOnlineBid.html");
       }
+	  if(key=="6-1"){
+		this.until.href("/views/index/biaohou.html");
+	  }
     },
     handleOpen(key, keyPath) {
       this.currentIndex = key;
