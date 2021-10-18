@@ -1,56 +1,33 @@
 <template>
-  <!--开标-专家库 页面 -->
+  <!--开标-项目评定标准 页面 -->
   <div id="home" :style="{ width: bWidth + 'px' }" v-loading="loading">
     <my-header :width="width" :bWidth="bWidth"></my-header>
     <div class="container" :style="{ width: bWidth + 'px' }">
-      <leftMenu tabIndex="3-2"></leftMenu>
+      <leftMenu tabIndex="3-3"></leftMenu>
       <div class="rightMenu" :style="{ width: bWidth - 200 + 'px' }">
-        <new-expert-database
-          v-show="showNewExpertDatabase"
-        ></new-expert-database>
+        <!-- 新增评定标准 -->
+        <newEvaluateStandard
+          v-show="showNewEvaluateStandard"
+        ></newEvaluateStandard>
+        <!-- 评定标准项管理 -->
+        <magEvaluateStandard
+          v-show="showMagEvaluateStandard"
+        ></magEvaluateStandard>
         <div class="condition_box">
-          <el-select
-            v-model="value"
-            class="margin_right"
-            clearable
-            placeholder="专家分组"
-          >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
           <el-input
-            placeholder="专家姓名"
+            placeholder="评估标准名称"
             class="margin_right"
             v-model="input"
             clearable
           >
           </el-input>
-          <el-input
-            placeholder="用户名"
-            class="margin_right"
-            v-model="input"
-            clearable
-          >
-          </el-input>
-          <el-input
-            placeholder="手机号"
-            class="margin_right"
-            v-model="input"
-            clearable
-          >
-          </el-input>
-          <button class="btn" style="border: 1px solid #e0e0e0">查询</button>
-        </div>
-        <div class="btn_box">
+          <button class="btn margin_right" style="border: 1px solid #e0e0e0">
+            查询
+          </button>
           <button
             class="btn margin_right"
             style="background: #409eff; color: #fff; border: none"
-            @click="showNewExpertDatabase = true"
+            @click="showNewEvaluateStandard = true"
           >
             新增
           </button>
@@ -66,7 +43,7 @@
         </div>
         <el-table
           :data="tableData"
-          style="width: 960px."
+          style="width: 100%"
           border
           :cell-style="{
             'text-align': 'center',
@@ -78,86 +55,49 @@
             'text-align': 'center',
           }"
         >
-          <el-table-column type="selection" min-width="60"> </el-table-column>
+          <el-table-column type="selection" min-width="48"> </el-table-column>
           <el-table-column
-            label="专家分组"
-            prop="group"
+            label="评定标准名称"
+            prop="nm"
             sortable
-            min-width="90"
+            min-width="240"
           >
           </el-table-column>
-          <el-table-column prop="name" label="专家姓名" sortable min-width="90">
-          </el-table-column>
           <el-table-column
-            prop="phone"
-            label="手机号码"
+            label="满分分数"
+            prop="fullScore"
             sortable
-            min-width="90"
+            min-width="240"
           >
           </el-table-column>
-          <el-table-column prop="email" label="邮箱" sortable min-width="144">
-          </el-table-column>
-          <el-table-column
-            prop="username"
-            label="用户名"
-            sortable
-            min-width="90"
-          >
-          </el-table-column>
-          <el-table-column label="头像" min-width="90">
-            <template slot-scope="scope">
-              <img
-                :src="scope.row.pic"
-                style="width: 67px; height: 100px; margin: 0 auto"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="position"
-            label="职位/称呼"
-            sortable
-            min-width="90"
-          >
-          </el-table-column>
-          <el-table-column prop="company" label="公司" sortable min-width="90">
-          </el-table-column>
-          <el-table-column prop="company" label="状态" sortable min-width="90">
-            <template slot-scope="scope">
+          <el-table-column label="评定标准项" sortable min-width="144">
+            <template>
               <div
+                @click="showMagEvaluateStandard = true"
                 style="
                   margin: 0 auto;
-                  background: #f0f9eb;
-                  color: #91c35b;
+                  background: #409eff;
+                  color: #fff;
                   border: none;
-                  width: 50px;
-                  height: 30px;
-                  line-height: 30px;
+                  width: 120px;
+                  height: 36px;
+                  line-height: 36px;
+                  cursor: pointer;
                 "
-                v-show="scope.row.status == 1"
               >
-                启用
-              </div>
-              <div
-                style="
-                  margin: 0 auto;
-                  background: pink;
-                  color: red;
-                  border: none;
-                  width: 50px;
-                  height: 30px;
-                  line-height: 30px;
-                "
-                v-show="scope.row.status == 0"
-              >
-                未启用
+                评定标准项
               </div>
             </template>
           </el-table-column>
-          <el-table-column label="操作" min-width="90">
+          <el-table-column prop="remarks" label="备注" sortable min-width="240">
+          </el-table-column>
+
+          <el-table-column label="操作" min-width="96">
             <template>
               <i
                 class="el-icon-edit"
                 style="color: #409eff; margin-right: 10px; cursor: pointer"
+                @click="showRuleDetail = true"
               ></i>
               <i
                 class="el-icon-delete"
@@ -191,7 +131,9 @@ import signin from "@/components/onlineBidEvaluate/signin";
 import decrypt from "@/components/onlineBidEvaluate/decrypt";
 import reviewResults from "@/components/onlineBidEvaluate/reviewResults";
 import uploadVideo from "@/components/onlineBidEvaluate/uploadVideo";
-import NewExpertDatabase from "@/components/openBid/newExpertDatabase.vue";
+import newSelectRule from "../../../components/openBid/newSelectRule.vue";
+import newEvaluateStandard from "../../../components/openBid/newEvaluateStandard.vue";
+import magEvaluateStandard from "components/openBid/magEvaluatestandard.vue";
 export default {
   data() {
     return {
@@ -203,44 +145,25 @@ export default {
       pageSize: 10,
       total: 0,
       input: "",
-      value: "",
-      showNewExpertDatabase: false,
-      options: [
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
+      showNewRule: false,
+      showRuleDetail: false,
+      showNewEvaluateStandard: false,
+      showMagEvaluateStandard: false,
       tableData: [
         {
-          group: "行业专家1",
-          name: "张三",
-          phone: "13581442016",
-          email: "123456@163.com",
-          username: "张三",
-          pic: "https://tse4-mm.cn.bing.net/th/id/OIP-C.RFmRXYNnJQizc9wK1l_-IgAAAA?w=204&h=204&c=7&r=0&o=5&pid=1.7",
-          position: "总经理",
-          company: "聚联科技",
-          status: 0,
+          nm: "项目议标评定标准",
+          fullScore: 100,
+          remarks: "这是一个备注",
         },
         {
-          group: "行业专家2",
-          name: "李四",
-          phone: "15184565111",
-          email: "456844@163.com",
-          username: "李四",
-          pic: "https://tse4-mm.cn.bing.net/th/id/OIP-C.RFmRXYNnJQizc9wK1l_-IgAAAA?w=204&h=204&c=7&r=0&o=5&pid=1.7",
-          position: "秘书",
-          company: "广志科技",
-          status: 1,
+          nm: "项目议标评定标准",
+          fullScore: 100,
+          remarks: "这是一个备注",
+        },
+        {
+          nm: "项目议标评定标准",
+          fullScore: 100,
+          remarks: "这是一个备注",
         },
       ],
     };
@@ -254,7 +177,9 @@ export default {
     decrypt,
     reviewResults,
     uploadVideo,
-    NewExpertDatabase,
+    newSelectRule,
+    newEvaluateStandard,
+    magEvaluateStandard,
   },
   async mounted() {
     // if(!this.until.seGet('userInfo')){
@@ -281,7 +206,6 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
-    
   },
 };
 </script>
@@ -319,30 +243,23 @@ export default {
       height: 100%;
       padding: 20px;
       box-sizing: border-box;
-      .btn {
-        height: 40px;
-        line-height: 40px;
-        padding: 0 20px;
-        border-radius: 5px;
-      }
-
-      .margin_right {
-        margin-right: 15px;
-      }
       .condition_box {
         height: 40px;
         display: flex;
         align-items: center;
-        margin-bottom: 10px;
+        margin-bottom: 40px;
         .el-input {
           width: 202px;
         }
-        .el-select {
-          width: 202px;
+        .btn {
+          height: 40px;
+          line-height: 40px;
+          padding: 0 20px;
+          border-radius: 5px;
         }
-      }
-      .btn_box {
-        margin-bottom: 20px;
+        .margin_right {
+          margin-right: 15px;
+        }
       }
       .Footer {
         display: flex;

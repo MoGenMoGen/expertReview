@@ -19,7 +19,7 @@
         </div>
         <div class="right">
           <el-input
-            v-model="input"
+            v-model="info.nm"
             class="margin_right"
             clearable
             placeholder="规则名称"
@@ -36,7 +36,7 @@
             type="textarea"
             :rows="2"
             placeholder="备注"
-            v-model="textarea"
+            v-model="info.rmks"
           >
           </el-input>
         </div>
@@ -49,10 +49,9 @@
         </div>
         <div class="right">
           <el-input-number
-            v-model="num"
+            v-model="info.seq"
             @change="handleChange"
             :min="1"
-            :max="10"
             label=""
           ></el-input-number>
         </div>
@@ -67,7 +66,7 @@
             padding: 10px 25px;
             border-radius: 4px;
           "
-          @click="handleClick(scope.row)"
+          @click="handleNewRule"
           type="text"
           size="small"
           >确定</el-button
@@ -94,25 +93,54 @@
 export default {
   data() {
     return {
-      num: 1,
-      input: "",
-      textarea: "",
+      info: {
+        seq: 1,
+        nm: "",
+        rmks: "",
+      },
     };
   },
+  props: {
+    id: { default: "", type: String },
+    type: {
+      // 0默认,2编辑
+      default: 0,
+      type: Number,
+    },
+  },
   methods: {
-    handleClick(row) {
-      console.log(row);
+    async handleNewRule() {
+      let data = await this.api.addSelectRule(this.info);
+      if (data.code == 0) {
+        this.$message({
+          message: "保存成功",
+          type: "success",
+        });
+        this.$emit("handleNewSelectRule");
+      } else {
+        this.$message.error("保存失败");
+      }
+      this.$parent.showNewRule = false;
     },
     closeMask() {
       this.$parent.showNewRule = false;
     },
     handleChange() {},
   },
-  mounted() {
+  async mounted() {
+    console.log('子组件mounted出发');
     let { bWidth, width } = this.until.getWidth();
     //   this.bWidth = bWidth;
     this.width = width;
-    console.log("width", this.width);
+    // console.log('子组件',this.id,"dfsdf",this.type);
+    if (this.type == 2) this.info = await this.api.SelectRuleDetail(this.id);
+    else {
+      this.info = {
+        seq: 1,
+        nm: "",
+        rmks: "",
+      };
+    }
   },
 };
 </script>

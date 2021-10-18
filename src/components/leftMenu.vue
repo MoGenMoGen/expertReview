@@ -345,6 +345,9 @@ export default {
       if (key == "3-2") {
         this.until.href("/views/index/openExpertDatabase.html");
       }
+      if (key == "3-3") {
+        this.until.href("/views/index/openEvaluationStandard.html");
+      }
       if (key == "3-4") {
         this.until.href("/views/index/openOnlineBid.html");
       }

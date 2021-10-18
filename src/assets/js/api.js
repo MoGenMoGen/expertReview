@@ -7,7 +7,8 @@ function get(url, data) {
     let header={}
     if(process.client && window.sessionStorage.getItem('token')){
         header = {
-            "sinovat-token":window.sessionStorage.getItem("token"),
+            // "sinovat-token":window.sessionStorage.getItem("token"),
+            "sinovat-token":"sinovat-sid-41ab5f19-7ccc-4aba-b1c7-6ea21c2ea6bc",
             'Cache-Control': 'no-cache'
         }
     }else {
@@ -208,6 +209,31 @@ class api {
             })
         })
     }
+    // 专家选区规则列表
+    selectRuleList(data){
+        return new Promise(resolve => {
+            get('/ship/bidRule/page?query='+data).then(res=>{
+                resolve(res)
+            })
+        })
+    }
+    // 新增选取规则标准
+    addSelectRule(data){
+        return new Promise(resolve => {
+            post('/ship/bidRule/add',data).then(res=>{
+                resolve(res)
+            })
+        })
+    }
+    // 选取规则详情
+    SelectRuleDetail(id){
+        return new Promise(resolve => {
+            get('/ship/bidRule/info/'+id).then(res=>{
+                resolve(res.data)
+            })
+        })
+    }
+
 }
 
 export { api };
