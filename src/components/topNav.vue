@@ -83,6 +83,9 @@
 	.el-tabs__nav-wrap::after {
 		height: 0 !important;
 	}
+	.el-tabs__header {
+		margin-bottom: 0;
+	}
 </style>
 
 <style lang="less" scoped>

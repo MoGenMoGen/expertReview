@@ -375,6 +375,12 @@
 					text-align: center;
 				}
 			}
+			.navBar {
+				margin-top: 10px;
+				background-color: #ffffff;
+				width: 100%;
+				height: 740px;
+			}
 		}
 	}
 
