@@ -4,8 +4,8 @@
         <div class="home">
             <div class="header1">
                 <div class="content" :style="{width:width + 'px'}">
-                    <img :src="logo" alt="" @click="toPage('./index.html')"/>
-                    <p @click="toPage('./login.html')"><span class="textRed">请登录<i class="el-icon-arrow-right"></i></span></p>
+                    <img :src="logo" alt="" @click="toPage('../index/index.html')"/>
+                    <p @click="toPage('../index/login.html')"><span class="textRed">请登录<i class="el-icon-arrow-right"></i></span></p>
                 </div>
             </div>
             <div class="header">
@@ -165,7 +165,7 @@
                                 type: 'success'
                             });
                             setTimeout(()=>{
-                                this.toPage('./login.html')
+                                this.toPage('../index/login.html')
                             },1500)
                         })
                     } else {

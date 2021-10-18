@@ -185,6 +185,9 @@ export default {
       this.currentIndex = key;
       // console.log("1233", this.currentIndex);
       console.log(1111, key, keyPath);
+	  if (key == '0') {
+		this.until.href('./index.html')
+	  }
       if (key == "2") {
         this.until.href("/views/index/onlineBidEvaluate.html");
       }

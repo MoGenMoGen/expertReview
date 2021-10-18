@@ -99,7 +99,7 @@ function post(url, data) {
 
 
 class api {
-    //登录
+    //专家登录
     login(data) {
         return new Promise((resolve, reject) => {
             post("/general/access/expertLogin",qs.stringify(data)).then(res => {
@@ -108,6 +108,15 @@ class api {
             });
         });
     }
+	// 招投标登录
+	admLogin(data) {
+	    return new Promise((resolve, reject) => {
+	        post("/general/access/adminLogin",qs.stringify(data)).then(res => {
+	            window.sessionStorage.setItem("token",res.data.token)
+	            resolve(res.data)
+	        });
+	    });
+	}
     //修改密码获取验证码
     getCode2(data) {
         return new Promise((resolve, reject) => {

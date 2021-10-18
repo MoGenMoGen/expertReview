@@ -44,6 +44,7 @@
 			},
 			toLogOut() {
 				this.api.logout()
+				this.until.href('../index/login.html')
 			},
 		},
 		computed: {

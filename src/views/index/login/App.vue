@@ -21,7 +21,7 @@
                     </el-form-item>
                     <el-form-item prop="password" @keyup.enter="submitForm('ruleForm')">
                         <el-input class="input1" placeholder="请输入密码" maxlength="24" v-model="ruleForm.password" type="password" prefix-icon="el-icon-lock"></el-input>
-                        <p class="blue" @click="toPage('./changePWD.html')">忘记密码</p>
+                        <p class="blue" @click="toPage('../home/changePWD.html')">忘记密码</p>
                     </el-form-item>
                     <el-form-item>
                         <el-button class="button1" type="primary" @click="submitForm('ruleForm')" @keyup.enter="submitForm('ruleForm')">登录</el-button>
@@ -86,7 +86,24 @@
             //提交
             submitForm(formName) {
 				if(this.selectIndex==0) {
-					this.toPage('./index.html')
+					this.$refs[formName].validate((valid) => {
+					    if (valid) {
+					        this.api.admLogin(this.ruleForm).then(res=>{
+					            this.until.seSave('token',res.token)
+					            this.until.seSave('userInfo',JSON.stringify(res.userInfo))
+					            this.$message({
+					                message: '登录成功',
+					                type: 'success',
+					                duration:'1500'
+					            });
+					            setTimeout(()=>{
+					                this.toPage('./index.html')
+					            },1500)
+					        })
+					    } else {
+					        return false;
+					    }
+					});
 				} else if (this.selectIndex==1) {
 					this.$refs[formName].validate((valid) => {
 					    if (valid) {
@@ -99,7 +116,7 @@
 					                duration:'1500'
 					            });
 					            setTimeout(()=>{
-					                this.toPage('./index.html')
+					                this.toPage('../home/index.html')
 					            },1500)
 					        })
 					    } else {
