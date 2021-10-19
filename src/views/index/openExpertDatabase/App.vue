@@ -5,177 +5,195 @@
     <div class="container" :style="{ width: bWidth + 'px' }">
       <leftMenu tabIndex="3-2"></leftMenu>
       <div class="rightMenu" :style="{ width: bWidth - 200 + 'px' }">
-        <new-expert-database
-          v-show="showNewExpertDatabase"
-        ></new-expert-database>
-        <div class="condition_box">
-          <el-select
-            v-model="value"
-            class="margin_right"
-            clearable
-            placeholder="专家分组"
-          >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+        <topNav :activeName="activeName" :list="thisNavList"></topNav>
+        <div class="right_content">
+          <new-expert-database
+            v-if="showNewExpertDatabase"
+          ></new-expert-database>
+          <div class="condition_box">
+            <el-select
+              v-model="value"
+              class="margin_right"
+              clearable
+              placeholder="专家分组"
             >
-            </el-option>
-          </el-select>
-          <el-input
-            placeholder="专家姓名"
-            class="margin_right"
-            v-model="input"
-            clearable
-          >
-          </el-input>
-          <el-input
-            placeholder="用户名"
-            class="margin_right"
-            v-model="input"
-            clearable
-          >
-          </el-input>
-          <el-input
-            placeholder="手机号"
-            class="margin_right"
-            v-model="input"
-            clearable
-          >
-          </el-input>
-          <button class="btn" style="border: 1px solid #e0e0e0">查询</button>
-        </div>
-        <div class="btn_box">
-          <button
-            class="btn margin_right"
-            style="background: #409eff; color: #fff; border: none"
-            @click="showNewExpertDatabase = true"
-          >
-            新增
-          </button>
-          <button
-            class="btn margin_right"
-            style="background: #fab6b6; color: #fff; border: none"
-          >
-            删除
-          </button>
-          <button class="btn margin_right" style="border: 1px solid #e0e0e0">
-            导出
-          </button>
-        </div>
-        <el-table
-          :data="tableData"
-          style="width: 960px."
-          border
-          :cell-style="{
-            'text-align': 'center',
-            color: '#333',
-            'font-weight': '500',
-          }"
-          :header-cell-style="{
-            color: '#606060',
-            'text-align': 'center',
-          }"
-        >
-          <el-table-column type="selection" min-width="60"> </el-table-column>
-          <el-table-column
-            label="专家分组"
-            prop="group"
-            sortable
-            min-width="90"
-          >
-          </el-table-column>
-          <el-table-column prop="name" label="专家姓名" sortable min-width="90">
-          </el-table-column>
-          <el-table-column
-            prop="phone"
-            label="手机号码"
-            sortable
-            min-width="90"
-          >
-          </el-table-column>
-          <el-table-column prop="email" label="邮箱" sortable min-width="144">
-          </el-table-column>
-          <el-table-column
-            prop="username"
-            label="用户名"
-            sortable
-            min-width="90"
-          >
-          </el-table-column>
-          <el-table-column label="头像" min-width="90">
-            <template slot-scope="scope">
-              <img
-                :src="scope.row.pic"
-                style="width: 67px; height: 100px; margin: 0 auto"
-              />
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="position"
-            label="职位/称呼"
-            sortable
-            min-width="90"
-          >
-          </el-table-column>
-          <el-table-column prop="company" label="公司" sortable min-width="90">
-          </el-table-column>
-          <el-table-column prop="company" label="状态" sortable min-width="90">
-            <template slot-scope="scope">
-              <div
-                style="
-                  margin: 0 auto;
-                  background: #f0f9eb;
-                  color: #91c35b;
-                  border: none;
-                  width: 50px;
-                  height: 30px;
-                  line-height: 30px;
-                "
-                v-show="scope.row.status == 1"
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
               >
-                启用
-              </div>
-              <div
-                style="
-                  margin: 0 auto;
-                  background: pink;
-                  color: red;
-                  border: none;
-                  width: 50px;
-                  height: 30px;
-                  line-height: 30px;
-                "
-                v-show="scope.row.status == 0"
-              >
-                未启用
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column label="操作" min-width="90">
-            <template>
-              <i
-                class="el-icon-edit"
-                style="color: #409eff; margin-right: 10px; cursor: pointer"
-              ></i>
-              <i
-                class="el-icon-delete"
-                style="color: #409eff; cursor: pointer"
-              ></i>
-            </template>
-          </el-table-column>
-        </el-table>
-        <!-- 分页 -->
-        <div class="Footer">
-          <el-pagination
-            background
-            @current-change="handleCurrentChange"
-            :page-size="pageSize"
-            layout="prev, pager, next, jumper"
-            :total="total"
+              </el-option>
+            </el-select>
+            <el-input
+              placeholder="专家姓名"
+              class="margin_right"
+              v-model="input"
+              clearable
+            >
+            </el-input>
+            <el-input
+              placeholder="用户名"
+              class="margin_right"
+              v-model="input"
+              clearable
+            >
+            </el-input>
+            <el-input
+              placeholder="手机号"
+              class="margin_right"
+              v-model="input"
+              clearable
+            >
+            </el-input>
+            <button class="btn" style="border: 1px solid #e0e0e0">查询</button>
+          </div>
+          <div class="btn_box">
+            <button
+              class="btn margin_right"
+              style="background: #409eff; color: #fff; border: none"
+              @click="showNewExpertDatabase = true"
+            >
+              新增
+            </button>
+            <button
+              class="btn margin_right"
+              style="background: #fab6b6; color: #fff; border: none"
+            >
+              删除
+            </button>
+            <button class="btn margin_right" style="border: 1px solid #e0e0e0">
+              导出
+            </button>
+          </div>
+          <el-table
+            :data="tableData"
+            style="width: 960px."
+            border
+            :cell-style="{
+              'text-align': 'center',
+              color: '#333',
+              'font-weight': '500',
+            }"
+            :header-cell-style="{
+              color: '#606060',
+              'text-align': 'center',
+            }"
           >
-          </el-pagination>
+            <el-table-column type="selection" min-width="60"> </el-table-column>
+            <el-table-column
+              label="专家分组"
+              prop="group"
+              sortable
+              min-width="90"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="name"
+              label="专家姓名"
+              sortable
+              min-width="90"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="phone"
+              label="手机号码"
+              sortable
+              min-width="90"
+            >
+            </el-table-column>
+            <el-table-column prop="email" label="邮箱" sortable min-width="144">
+            </el-table-column>
+            <el-table-column
+              prop="username"
+              label="用户名"
+              sortable
+              min-width="90"
+            >
+            </el-table-column>
+            <el-table-column label="头像" min-width="90">
+              <template slot-scope="scope">
+                <img
+                  :src="scope.row.pic"
+                  style="width: 67px; height: 100px; margin: 0 auto"
+                />
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="position"
+              label="职位/称呼"
+              sortable
+              min-width="90"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="company"
+              label="公司"
+              sortable
+              min-width="90"
+            >
+            </el-table-column>
+            <el-table-column
+              prop="company"
+              label="状态"
+              sortable
+              min-width="90"
+            >
+              <template slot-scope="scope">
+                <div
+                  style="
+                    margin: 0 auto;
+                    background: #f0f9eb;
+                    color: #91c35b;
+                    border: none;
+                    width: 50px;
+                    height: 30px;
+                    line-height: 30px;
+                  "
+                  v-show="scope.row.status == 1"
+                >
+                  启用
+                </div>
+                <div
+                  style="
+                    margin: 0 auto;
+                    background: pink;
+                    color: red;
+                    border: none;
+                    width: 50px;
+                    height: 30px;
+                    line-height: 30px;
+                  "
+                  v-show="scope.row.status == 0"
+                >
+                  未启用
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="操作" min-width="90">
+              <template>
+                <i
+                  class="el-icon-edit"
+                  style="color: #409eff; margin-right: 10px; cursor: pointer"
+                ></i>
+                <i
+                  class="el-icon-delete"
+                  style="color: #409eff; cursor: pointer"
+                ></i>
+              </template>
+            </el-table-column>
+          </el-table>
+          <!-- 分页 -->
+          <div class="Footer">
+            <el-pagination
+              background
+              @current-change="handleCurrentChange"
+              :page-size="pageSize"
+              layout="prev, pager, next, jumper"
+              :total="total"
+            >
+            </el-pagination>
+          </div>
         </div>
       </div>
     </div>
@@ -192,6 +210,8 @@ import decrypt from "@/components/onlineBidEvaluate/decrypt";
 import reviewResults from "@/components/onlineBidEvaluate/reviewResults";
 import uploadVideo from "@/components/onlineBidEvaluate/uploadVideo";
 import NewExpertDatabase from "@/components/openBid/newExpertDatabase.vue";
+import topNav from "@/components/topNav";
+
 export default {
   data() {
     return {
@@ -243,6 +263,8 @@ export default {
           status: 1,
         },
       ],
+      thisNavList: [],
+      activeName: "",
     };
   },
   computed: {},
@@ -255,6 +277,7 @@ export default {
     reviewResults,
     uploadVideo,
     NewExpertDatabase,
+    topNav,
   },
   async mounted() {
     // if(!this.until.seGet('userInfo')){
@@ -267,6 +290,17 @@ export default {
     window.onresize = () => {
       this.getWidth();
     };
+    let obj = {
+      name: "专家库",
+      url: "./openExpertDatabase.html",
+      canClose: true,
+    };
+    let data = this.until.checkNav(
+      obj,
+      JSON.parse(this.until.seGet("navList"))
+    );
+    this.activeName = obj.name;
+    this.thisNavList = data;
   },
   methods: {
     getWidth() {
@@ -281,7 +315,6 @@ export default {
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     },
-    
   },
 };
 </script>
@@ -314,40 +347,49 @@ export default {
     height: calc(~"100vh - 298px");
     display: flex;
     .rightMenu {
+      height: 800px;
+      margin-left: 10px;
+      width: calc(~"100% - 210px");
+      // box-sizing: border-box;
+      // height: 100%;
+      // padding: 20px;
       box-sizing: border-box;
-      background: #fff;
-      height: 100%;
-      padding: 20px;
-      box-sizing: border-box;
-      .btn {
-        height: 40px;
-        line-height: 40px;
-        padding: 0 20px;
-        border-radius: 5px;
-      }
+      .right_content {
+        margin-top: 10px;
+        box-sizing: border-box;
+        padding: 20px;
+        height: 740px;
+        background: #fff;
+        .btn {
+          height: 40px;
+          line-height: 40px;
+          padding: 0 20px;
+          border-radius: 5px;
+        }
 
-      .margin_right {
-        margin-right: 15px;
-      }
-      .condition_box {
-        height: 40px;
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-        .el-input {
-          width: 202px;
+        .margin_right {
+          margin-right: 15px;
         }
-        .el-select {
-          width: 202px;
+        .condition_box {
+          height: 40px;
+          display: flex;
+          align-items: center;
+          margin-bottom: 10px;
+          .el-input {
+            width: 202px;
+          }
+          .el-select {
+            width: 202px;
+          }
         }
-      }
-      .btn_box {
-        margin-bottom: 20px;
-      }
-      .Footer {
-        display: flex;
-        justify-content: center;
-        margin: 44px 0 20px;
+        .btn_box {
+          margin-bottom: 20px;
+        }
+        .Footer {
+          display: flex;
+          justify-content: center;
+          margin: 44px 0 20px;
+        }
       }
     }
   }

@@ -3,9 +3,11 @@
   <div id="mask" @click.stop="closeMask">
     <div class="table_box" @click.stop="">
       <div class="top">
-        <p style="font-size: 20px">新增</p>
+        <p style="font-size: 20px" v-if="type != 2">新增</p>
+        <p style="font-size: 20px" v-else>编辑</p>
+
         <img
-        @click="closeMask"
+          @click="closeMask"
           src="~assets/img/close.png"
           style="width: 25px; height: 25px"
           alt=""
@@ -15,16 +17,17 @@
         <div class="leftpart">
           <span style="color: red">* </span><span>选取范围</span>
           <el-select
-            v-model="value"
+            v-model="info.nm"
             class="margin_right"
             clearable
             placeholder="专家分组"
+            @change="handleSelectExpertGroup"
           >
             <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="(item, index) in expertGroups"
+              :key="index"
+              :label="item.nm"
+              :value="index"
             >
             </el-option>
           </el-select>
@@ -33,22 +36,22 @@
           <span style="color: red">* </span><span>选取数量</span>
           <el-input-number
             style="margin-left: 5px"
-            v-model="num"
+            v-model="info.num"
             @change="handleChange"
             :min="1"
-            :max="10"
+            :max="100"
             label=""
           ></el-input-number>
         </div>
       </div>
       <div class="row2">
-        <p style="width:30px;">备注</p> 
+        <p style="width: 30px">备注</p>
         <el-input
-        style="margin-left:10px;"
+          style="margin-left: 10px"
           type="textarea"
           :rows="2"
           placeholder="备注"
-          v-model="textarea"
+          v-model="info.rmks"
         >
         </el-input>
       </div>
@@ -62,7 +65,7 @@
             padding: 10px 25px;
             border-radius: 4px;
           "
-          @click="handleClick(scope.row)"
+          @click="handleConfirm"
           type="text"
           size="small"
           >确定</el-button
@@ -75,7 +78,7 @@
             padding: 10px 25px;
             border-radius: 4px;
           "
-         @click="closeMask"
+          @click="closeMask"
           type="text"
           size="small"
           >取消</el-button
@@ -89,24 +92,24 @@
 export default {
   data() {
     return {
-      num: 1,
-      value: "",
-      textarea:"",
-      options: [
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
+      info: {
+        num: 1,
+        nm: "",
+        rmks: "",
+        cd: "",
+      },
+      expertGroups: [],
     };
+  },
+  props: {
+    // 选取规则单条详情id
+    ruleId: { default: "", type: String },
+    editId: { default: "", type: String },
+    type: {
+      // 0默认,2编辑
+      default: 0,
+      type: Number,
+    },
   },
   methods: {
     handleClick(row) {
@@ -115,13 +118,52 @@ export default {
     closeMask() {
       this.$parent.newManageRule = false;
     },
-    handleChange(){}
+    handleChange() {},
+    handleSelectExpertGroup(e) {
+      this.info.nm = this.expertGroups[e].nm;
+      this.info.cd = this.expertGroups[e].cd;
+    },
+    // 提交数据
+    async handleConfirm() {
+      let data = {};
+      // 编辑
+      if (this.type == 2) {
+        data = await this.api.modifyMagSelectRule(this.info);
+      }
+      // 新增
+      else {
+        this.info.ruleId = this.ruleId;
+        data = await this.api.addMagSelectRule(this.info);
+      }
+
+      if (data.code == 0) {
+        this.$message({
+          message: "保存成功",
+          type: "success",
+        });
+        this.$emit("handleNewMagRule");
+      } else {
+        this.$message.error("保存失败");
+      }
+      this.$parent.newManageRule = false;
+    },
   },
-  mounted() {
+  async mounted() {
     let { bWidth, width } = this.until.getWidth();
     //   this.bWidth = bWidth;
     this.width = width;
-    console.log("width", this.width);
+    // console.log("width", this.width);
+    this.expertGroups = await this.api.getExpertGroup();
+    this.expertGroups.unshift({ cd: "ALL", nm: "全部专家" });
+    if (this.type == 2) {
+      this.info = await this.api.magSelectRuleDetail(this.editId);
+    } else {
+      this.info = {
+        num: 1,
+        nm: "",
+        rmks: "",
+      };
+    }
   },
 };
 </script>
@@ -160,13 +202,12 @@ export default {
         }
       }
     }
-    .row2{
-        width: 700px;
+    .row2 {
+      width: 700px;
       margin: 30px auto 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-
     }
 
     .btn {

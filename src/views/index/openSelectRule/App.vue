@@ -4,7 +4,7 @@
     <my-header :width="width" :bWidth="bWidth"></my-header>
     <div class="container" :style="{ width: bWidth + 'px' }">
       <leftMenu tabIndex="3-1"></leftMenu>
-      <div class="rightMenu" :style="{ width: bWidth - 200 + 'px' }">
+      <div class="rightMenu">
         <topNav :activeName="activeName" :list="thisNavList"></topNav>
         <div class="right_content">
           <!-- 新增选取规则 -->
@@ -16,8 +16,9 @@
           ></new-select-rule>
           <!-- 选取规则详情 -->
           <selectRuleDetail
+            :id="id"
             :bWidth="bWidth"
-            v-show="showRuleDetail"
+            v-if="showRuleDetail"
           ></selectRuleDetail>
 
           <div class="condition_box">
@@ -42,19 +43,30 @@
             >
               新增
             </button>
-            <button
+            <el-button
+              :disabled="!isDel"
               class="btn margin_right"
-              style="background: #fab6b6; color: #fff; border: none"
+              :style="{
+                background: isDel ? 'red' : '#fab6b6',
+                color: '#fff',
+                border: 'none',
+              }"
+              @click="DelSelectRule(ids)"
             >
               删除
-            </button>
-            <button class="btn margin_right" style="border: 1px solid #e0e0e0">
+            </el-button>
+            <!-- <button
+              @click="exptExcel"
+              class="btn margin_right"
+              style="border: 1px solid #e0e0e0"
+            >
               导出
-            </button>
+            </button> -->
           </div>
           <el-table
             :data="tableData"
             style="width: 100%"
+            @selection-change="handleSelectionChange"
             border
             :cell-style="{
               'text-align': 'center',
@@ -77,9 +89,9 @@
             <el-table-column prop="rmks" label="备注" sortable min-width="240">
             </el-table-column>
             <el-table-column label="管理规则项" sortable min-width="144">
-              <template>
+              <template slot-scope="scope">
                 <div
-                  @click="showRuleDetail = true"
+                  @click="toDetail(scope.row.id)"
                   style="
                     margin: 0 auto;
                     background: #409eff;
@@ -110,6 +122,7 @@
                   style="color: #409eff; margin-right: 10px; cursor: pointer"
                 ></i>
                 <i
+                  @click="DelSelectRule(scope.row.id)"
                   class="el-icon-delete"
                   style="color: #409eff; cursor: pointer"
                 ></i>
@@ -149,6 +162,7 @@ export default {
   data() {
     return {
       loading: false,
+      isDel: false,
       bWidth: 0,
       width: 0,
       list: [],
@@ -163,6 +177,7 @@ export default {
       activeName: "",
       id: "",
       type: 0,
+      ids: "",
     };
   },
   computed: {},
@@ -209,7 +224,7 @@ export default {
       this.until.href(url);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
       this.pageNo = val;
       this.getList();
     },
@@ -243,6 +258,56 @@ export default {
       this.showNewRule = true;
       this.id = id.toString();
       this.type = 2;
+    },
+    // 进入详情
+    toDetail(id) {
+      this.showRuleDetail = true;
+      this.id = id.toString();
+    },
+    // 删除
+    DelSelectRule(ids) {
+      this.$confirm("确认删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          return this.api.delSelectRule({ ids });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        })
+        .then((res) => {
+          if (res.code == 0) {
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            this.getList();
+          } else {
+            this.$message({
+              type: "error",
+              message: "删除失败!",
+            });
+          }
+        });
+    },
+    // 多选框选中项变化
+    handleSelectionChange(val) {
+      if (val.length != 0) {
+        this.isDel = true;
+      } else {
+        this.isDel = false;
+      }
+      let ids = val.map((item) => item.id);
+      this.ids = ids.join(",");
+    },
+    async exptExcel() {
+      let data = await this.api.exportExcel();
+      console.log(11111, data);
     },
   },
 };
@@ -306,7 +371,7 @@ export default {
             line-height: 40px;
             padding: 0 20px;
             border-radius: 5px;
-            cursor: pointer;
+            // cursor: pointer;
           }
           .margin_right {
             margin-right: 15px;

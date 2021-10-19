@@ -4,118 +4,126 @@
     <my-header :width="width" :bWidth="bWidth"></my-header>
     <div class="container" :style="{ width: bWidth + 'px' }">
       <leftMenu tabIndex="3-3"></leftMenu>
-      <div class="rightMenu" :style="{ width: bWidth - 200 + 'px' }">
-        <!-- 新增评定标准 -->
-        <newEvaluateStandard
-          v-show="showNewEvaluateStandard"
-        ></newEvaluateStandard>
-        <!-- 评定标准项管理 -->
-        <magEvaluateStandard
-          v-show="showMagEvaluateStandard"
-        ></magEvaluateStandard>
-        <div class="condition_box">
-          <el-input
-            placeholder="评估标准名称"
-            class="margin_right"
-            v-model="input"
-            clearable
+      <div class="rightMenu">
+        <topNav :activeName="activeName" :list="thisNavList"></topNav>
+        <div class="right_content">
+          <!-- 新增评定标准 -->
+          <newEvaluateStandard
+            v-show="showNewEvaluateStandard"
+          ></newEvaluateStandard>
+          <!-- 评定标准项管理 -->
+          <magEvaluateStandard
+            v-show="showMagEvaluateStandard"
+          ></magEvaluateStandard>
+          <div class="condition_box">
+            <el-input
+              placeholder="评估标准名称"
+              class="margin_right"
+              v-model="input"
+              clearable
+            >
+            </el-input>
+            <button class="btn margin_right" style="border: 1px solid #e0e0e0">
+              查询
+            </button>
+            <button
+              class="btn margin_right"
+              style="background: #409eff; color: #fff; border: none"
+              @click="showNewEvaluateStandard = true"
+            >
+              新增
+            </button>
+            <button
+              class="btn margin_right"
+              style="background: #fab6b6; color: #fff; border: none"
+            >
+              删除
+            </button>
+            <button class="btn margin_right" style="border: 1px solid #e0e0e0">
+              导出
+            </button>
+          </div>
+          <el-table
+            :data="tableData"
+            style="width: 100%"
+            border
+            :cell-style="{
+              'text-align': 'center',
+              color: '#333',
+              'font-weight': '500',
+            }"
+            :header-cell-style="{
+              color: '#606060',
+              'text-align': 'center',
+            }"
           >
-          </el-input>
-          <button class="btn margin_right" style="border: 1px solid #e0e0e0">
-            查询
-          </button>
-          <button
-            class="btn margin_right"
-            style="background: #409eff; color: #fff; border: none"
-            @click="showNewEvaluateStandard = true"
-          >
-            新增
-          </button>
-          <button
-            class="btn margin_right"
-            style="background: #fab6b6; color: #fff; border: none"
-          >
-            删除
-          </button>
-          <button class="btn margin_right" style="border: 1px solid #e0e0e0">
-            导出
-          </button>
-        </div>
-        <el-table
-          :data="tableData"
-          style="width: 100%"
-          border
-          :cell-style="{
-            'text-align': 'center',
-            color: '#333',
-            'font-weight': '500',
-          }"
-          :header-cell-style="{
-            color: '#606060',
-            'text-align': 'center',
-          }"
-        >
-          <el-table-column type="selection" min-width="48"> </el-table-column>
-          <el-table-column
-            label="评定标准名称"
-            prop="nm"
-            sortable
-            min-width="240"
-          >
-          </el-table-column>
-          <el-table-column
-            label="满分分数"
-            prop="fullScore"
-            sortable
-            min-width="240"
-          >
-          </el-table-column>
-          <el-table-column label="评定标准项" sortable min-width="144">
-            <template>
-              <div
-                @click="showMagEvaluateStandard = true"
-                style="
-                  margin: 0 auto;
-                  background: #409eff;
-                  color: #fff;
-                  border: none;
-                  width: 120px;
-                  height: 36px;
-                  line-height: 36px;
-                  cursor: pointer;
-                "
-              >
-                评定标准项
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column prop="remarks" label="备注" sortable min-width="240">
-          </el-table-column>
+            <el-table-column type="selection" min-width="48"> </el-table-column>
+            <el-table-column
+              label="评定标准名称"
+              prop="nm"
+              sortable
+              min-width="240"
+            >
+            </el-table-column>
+            <el-table-column
+              label="满分分数"
+              prop="fullScore"
+              sortable
+              min-width="240"
+            >
+            </el-table-column>
+            <el-table-column label="评定标准项" sortable min-width="144">
+              <template>
+                <div
+                  @click="showMagEvaluateStandard = true"
+                  style="
+                    margin: 0 auto;
+                    background: #409eff;
+                    color: #fff;
+                    border: none;
+                    width: 120px;
+                    height: 36px;
+                    line-height: 36px;
+                    cursor: pointer;
+                  "
+                >
+                  评定标准项
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="remarks"
+              label="备注"
+              sortable
+              min-width="240"
+            >
+            </el-table-column>
 
-          <el-table-column label="操作" min-width="96">
-            <template>
-              <i
-                class="el-icon-edit"
-                style="color: #409eff; margin-right: 10px; cursor: pointer"
-                @click="showRuleDetail = true"
-              ></i>
-              <i
-                class="el-icon-delete"
-                style="color: #409eff; cursor: pointer"
-              ></i>
-            </template>
-          </el-table-column>
-        </el-table>
-        <!-- 分页 -->
-        <div class="Footer">
-          <el-pagination
-            background
-            @current-change="handleCurrentChange"
-            :page-size="pageSize"
-            layout="prev, pager, next, jumper"
-            :total="total"
-          >
-          </el-pagination>
+            <el-table-column label="操作" min-width="96">
+              <template>
+                <i
+                  class="el-icon-edit"
+                  style="color: #409eff; margin-right: 10px; cursor: pointer"
+                  @click="showRuleDetail = true"
+                ></i>
+                <i
+                  class="el-icon-delete"
+                  style="color: #409eff; cursor: pointer"
+                ></i>
+              </template>
+            </el-table-column>
+          </el-table>
+          <!-- 分页 -->
+          <div class="Footer">
+            <el-pagination
+              background
+              @current-change="handleCurrentChange"
+              :page-size="pageSize"
+              layout="prev, pager, next, jumper"
+              :total="total"
+            >
+            </el-pagination>
+          </div>
         </div>
       </div>
     </div>
@@ -134,6 +142,8 @@ import uploadVideo from "@/components/onlineBidEvaluate/uploadVideo";
 import newSelectRule from "../../../components/openBid/newSelectRule.vue";
 import newEvaluateStandard from "../../../components/openBid/newEvaluateStandard.vue";
 import magEvaluateStandard from "components/openBid/magEvaluatestandard.vue";
+import topNav from "@/components/topNav";
+
 export default {
   data() {
     return {
@@ -180,6 +190,7 @@ export default {
     newSelectRule,
     newEvaluateStandard,
     magEvaluateStandard,
+    topNav,
   },
   async mounted() {
     // if(!this.until.seGet('userInfo')){
@@ -187,11 +198,22 @@ export default {
     // }
     console.log(this.navList);
     this.getWidth();
-    // this.getList()
     // this.userInfo = JSON.parse(this.until.seGet('userInfo'))
     window.onresize = () => {
       this.getWidth();
     };
+    let obj = {
+      name: "专家选取规则",
+      url: "./openSelectRule.html",
+      canClose: true,
+    };
+    let data = this.until.checkNav(
+      obj,
+      JSON.parse(this.until.seGet("navList"))
+    );
+    this.activeName = obj.name;
+    this.thisNavList = data;
+    // this.getList();
   },
   methods: {
     getWidth() {
@@ -238,33 +260,42 @@ export default {
     height: calc(~"100vh - 298px");
     display: flex;
     .rightMenu {
+      height: 800px;
+      margin-left: 10px;
+      width: calc(~"100% - 210px");
+      // box-sizing: border-box;
+      // height: 100%;
+      // padding: 20px;
       box-sizing: border-box;
-      background: #fff;
-      height: 100%;
-      padding: 20px;
-      box-sizing: border-box;
-      .condition_box {
-        height: 40px;
-        display: flex;
-        align-items: center;
-        margin-bottom: 40px;
-        .el-input {
-          width: 202px;
-        }
-        .btn {
+      .right_content {
+        margin-top: 10px;
+        box-sizing: border-box;
+        padding: 20px;
+        height: 740px;
+        background: #fff;
+        .condition_box {
           height: 40px;
-          line-height: 40px;
-          padding: 0 20px;
-          border-radius: 5px;
+          display: flex;
+          align-items: center;
+          margin-bottom: 40px;
+          .el-input {
+            width: 202px;
+          }
+          .btn {
+            height: 40px;
+            line-height: 40px;
+            padding: 0 20px;
+            border-radius: 5px;
+          }
+          .margin_right {
+            margin-right: 15px;
+          }
         }
-        .margin_right {
-          margin-right: 15px;
+        .Footer {
+          display: flex;
+          justify-content: center;
+          margin: 44px 0 20px;
         }
-      }
-      .Footer {
-        display: flex;
-        justify-content: center;
-        margin: 44px 0 20px;
       }
     }
   }

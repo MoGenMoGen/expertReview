@@ -209,10 +209,18 @@ class api {
             })
         })
     }
-    // 专家选区规则列表
+    // 专家选取规则列表
     selectRuleList(data){
         return new Promise(resolve => {
             get('/ship/bidRule/page?query='+data).then(res=>{
+                resolve(res)
+            })
+        })
+    }
+    // 选取规则-》管理规则列表
+    selectRuleMagList(data){
+        return new Promise(resolve => {
+            get('/ship/bidRuleItem/page?query='+data).then(res=>{
                 resolve(res)
             })
         })
@@ -225,11 +233,79 @@ class api {
             })
         })
     }
+    // 新增选取规则->管理规则
+    addMagSelectRule(data){
+        return new Promise(resolve => {
+            post('/ship/bidRuleItem/add',data).then(res=>{
+                resolve(res)
+            })
+        })
+    }
     // 选取规则详情
     SelectRuleDetail(id){
         return new Promise(resolve => {
             get('/ship/bidRule/info/'+id).then(res=>{
                 resolve(res.data)
+            })
+        })
+    }
+     // 选取->管理规则详情
+     magSelectRuleDetail(id){
+        return new Promise(resolve => {
+            get('/ship/bidRuleItem/info/'+id).then(res=>{
+                resolve(res.data)
+            })
+        })
+    }
+    // 修改选取规则
+    modifySelectRule(data){
+        return new Promise(resolve => {
+            post('/ship/bidRule/upd',data).then(res=>{
+                resolve(res)
+            })
+        })
+    }
+     // 修改选取规则->管理规则
+     modifyMagSelectRule(data){
+        return new Promise(resolve => {
+            post('/ship/bidRuleItem/upd',data).then(res=>{
+                resolve(res)
+            })
+        })
+    }
+    // 删除选取规则
+    delSelectRule(data){
+        return new Promise(resolve => {
+            get('/ship/bidRule/del',data)
+            .then(res=>{
+                resolve(res)
+            })
+        })
+    }
+     // 删除选取规则->管理规则
+     delMagSelectRule(data){
+        return new Promise(resolve => {
+            get('/ship/bidRuleItem/del',data)
+            .then(res=>{
+                resolve(res)
+            })
+        })
+    }
+    // 专家范围列表
+    getExpertGroup(){
+        return new Promise(resolve => {
+            get('/sys/cat/listByPcd?cd=EXPERT_GROUP')
+            .then(res=>{
+                resolve(res.data.list)
+            })
+        })
+    }
+    // 导出excel
+    exportExcel(ids){
+        return new Promise(resolve => {
+            get('/ship/bidRule/expt',ids)
+            .then(res=>{
+                resolve(res)
             })
         })
     }

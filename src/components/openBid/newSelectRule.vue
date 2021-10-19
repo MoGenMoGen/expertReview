@@ -3,7 +3,8 @@
   <div id="mask" @click="closeMask">
     <div class="table_box" @click.stop="">
       <div class="top">
-        <p style="font-size: 20px">新增</p>
+        <p style="font-size: 20px" v-if="type!=2">新增</p>
+        <p style="font-size: 20px" v-else>编辑</p>
         <img
           @click="closeMask"
           src="~assets/img/close.png"
@@ -110,7 +111,12 @@ export default {
   },
   methods: {
     async handleNewRule() {
-      let data = await this.api.addSelectRule(this.info);
+      let data = {};
+      // 编辑
+      if (this.type == 2) data = await this.api.modifySelectRule(this.info);
+      // 新增
+      else data = await this.api.addSelectRule(this.info);
+
       if (data.code == 0) {
         this.$message({
           message: "保存成功",
@@ -128,7 +134,8 @@ export default {
     handleChange() {},
   },
   async mounted() {
-    console.log('子组件mounted出发');
+
+    console.log("子组件mounted出发",this.id);
     let { bWidth, width } = this.until.getWidth();
     //   this.bWidth = bWidth;
     this.width = width;
