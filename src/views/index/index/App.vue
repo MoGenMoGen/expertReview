@@ -298,10 +298,13 @@
 						p {
 							font-size: 14px;
 							color: #909090;
+							cursor: pointer;
 						}
 					}
 					.bodyTable {
 						box-sizing: border-box;
+						height: 379px;
+						overflow-y: auto;
 						.el-table {
 							width: 100%;
 							background-color: #F8F8F8;

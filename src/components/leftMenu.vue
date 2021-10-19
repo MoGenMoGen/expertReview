@@ -216,6 +216,9 @@ export default {
 	  if (key == '4') {
 	  	this.until.href("/views/index/onlineBidEvaluate.html");
 	  }
+	  if (key == '5-1') {
+	  	this.until.href("/views/index/dingbiao.html");
+	  }
 	  if(key=="6-1"){
 		this.until.href("/views/index/biaohou.html");
 	  }
