@@ -219,6 +219,9 @@ export default {
 	  if(key=="6-1"){
 		this.until.href("/views/index/biaohou.html");
 	  }
+	  if(key=='6-2'){
+		  this.until.href("/views/index/biaohouguidang.html");
+	  }
     },
     handleOpen(key, keyPath) {
       this.currentIndex = key;
