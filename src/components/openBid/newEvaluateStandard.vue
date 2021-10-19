@@ -7,30 +7,23 @@
         <img
         @click="closeMask"
           src="~assets/img/close.png"
-          style="width: 25px; height: 25px"
+          style="width: 25px; height: 25px;cursor: pointer;"
           alt=""
         />
       </div>
       <div class="row1">
         <div class="leftpart">
-          <span style="color: red">* </span><span>选取范围</span>
-          <el-select
-            v-model="value"
+          <span style="color: red">* </span><span>评估标准名称</span>
+          <el-input
+            v-model="input"
             class="margin_right"
             clearable
-            placeholder="专家分组"
+            placeholder="评估标准名称"
           >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
+          </el-input>
         </div>
         <div class="rightpart">
-          <span style="color: red">* </span><span>选取数量</span>
+          <span style="color: red">* </span><span>满减分数</span>
           <el-input-number
             style="margin-left: 5px"
             v-model="num"
@@ -90,22 +83,8 @@ export default {
   data() {
     return {
       num: 1,
-      value: "",
       textarea:"",
-      options: [
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
+      input:""
     };
   },
   methods: {
@@ -113,7 +92,7 @@ export default {
       console.log(row);
     },
     closeMask() {
-      this.$parent.newManageRule = false;
+      this.$parent.showNewEvaluateStandard = false;
     },
     handleChange(){}
   },
@@ -134,7 +113,7 @@ export default {
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 60;
+  z-index: 50;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -154,7 +133,7 @@ export default {
       display: flex;
       justify-content: space-between;
       .leftpart {
-        .el-select {
+        .el-input {
           width: 202px;
           margin-left: 5px;
         }

@@ -1,40 +1,48 @@
 <template>
-  <!-- 新增开标选取规则 -->
+  <!-- 新增 项目评定标准-管理规则-->
   <div id="mask" @click.stop="closeMask">
     <div class="table_box" @click.stop="">
       <div class="top">
         <p style="font-size: 20px">新增</p>
         <img
-        @click="closeMask"
+          @click="closeMask"
           src="~assets/img/close.png"
           style="width: 25px; height: 25px"
           alt=""
         />
       </div>
+      <div class="row2">
+        <!-- <div style="display: flex"> -->
+        <span style="color: red">* </span>
+        <span style="width: 70px; display: inline-block">评定指标</span>
+        <!-- </div> -->
+        <el-input
+          style="margin-left: 10px"
+          type="text"
+          placeholder="评定指标"
+          v-model="input"
+        >
+        </el-input>
+      </div>
       <div class="row1">
         <div class="leftpart">
-          <span style="color: red">* </span><span>选取范围</span>
-          <el-select
-            v-model="value"
-            class="margin_right"
-            clearable
-            placeholder="专家分组"
-          >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
+          <span style="color: red">* </span><span>指标权重</span>
+          <el-input-number
+            style="margin-left: 5px"
+            v-model="weight"
+            @change="handleChange1"
+            :min="0.0"
+            :max="100.0"
+            label=""
+          ></el-input-number
+          >%
         </div>
         <div class="rightpart">
           <span style="color: red">* </span><span>选取数量</span>
           <el-input-number
             style="margin-left: 5px"
             v-model="num"
-            @change="handleChange"
+            @change="handleChange2"
             :min="1"
             :max="10"
             label=""
@@ -42,9 +50,20 @@
         </div>
       </div>
       <div class="row2">
-        <p style="width:30px;">备注</p> 
+        <p style="width: 70px">评分标准</p>
         <el-input
-        style="margin-left:10px;"
+          style="margin-left: 10px"
+          type="textarea"
+          :rows="2"
+          placeholder="评分标准"
+          v-model="textarea"
+        >
+        </el-input>
+      </div>
+      <div class="row2">
+        <p style="width: 70px">备注</p>
+        <el-input
+          style="margin-left: 10px"
           type="textarea"
           :rows="2"
           placeholder="备注"
@@ -52,7 +71,19 @@
         >
         </el-input>
       </div>
-
+      <div class="row1">
+        <div class="leftpart">
+          <span>排序权重</span>
+          <el-input-number
+            style="margin-left: 13px"
+            v-model="sortWeight"
+            @change="handleChange3"
+            :min="1"
+            :max="10"
+            label=""
+          ></el-input-number>
+        </div>
+      </div>
       <div class="btn">
         <el-button
           style="
@@ -75,7 +106,7 @@
             padding: 10px 25px;
             border-radius: 4px;
           "
-         @click="closeMask"
+          @click="closeMask"
           type="text"
           size="small"
           >取消</el-button
@@ -90,8 +121,11 @@ export default {
   data() {
     return {
       num: 1,
+      weight: 0.0,
+      sortWeight: 0,
       value: "",
-      textarea:"",
+      input: "",
+      textarea: "",
       options: [
         {
           value: "选项3",
@@ -113,9 +147,9 @@ export default {
       console.log(row);
     },
     closeMask() {
-      this.$parent.newManageRule = false;
+      this.$parent.showEvaMagRule = false;
     },
-    handleChange(){}
+    handleChange() {},
   },
   mounted() {
     let { bWidth, width } = this.until.getWidth();
@@ -156,17 +190,16 @@ export default {
       .leftpart {
         .el-select {
           width: 202px;
-          margin-left: 5px;
+          margin-left: 10px;
         }
       }
     }
-    .row2{
-        width: 700px;
+    .row2 {
+      width: 700px;
       margin: 30px auto 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-
     }
 
     .btn {
