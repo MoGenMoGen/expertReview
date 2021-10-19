@@ -145,19 +145,155 @@
 		    </div>
 		  </div>
 		</div>
+		<div class="mask" @click="closeMask" v-if="showModify==true">
+		  <div class="table_box" @click.stop="">
+		    <div class="top">
+		      <p style="font-size: 20px">修改项目</p>
+		      <img
+		        @click="closeMask"
+				 src="~assets/img/close.png"
+		        style="width: 25px; height: 25px;cursor: pointer;"
+		        alt=""
+		      />
+		    </div>
+		    <div class="row2">
+		      <div class="title">
+		        <span style="color: red; margin-right: 5px; display: inline-block"
+		          >* </span
+		        ><span>项目名称</span>
+		      </div>
+		      <div class="right">
+		        <el-input
+		          v-model="input1"
+		          class="margin_right"
+		          clearable
+		          placeholder="项目名称"
+		        >
+		        </el-input>
+		      </div>
+		    </div>
+			<div class="row2">
+			  <div class="title">
+			    <span style="color: red; margin-right: 5px; display: inline-block"
+			      >* </span
+			    ><span>项目编号</span>
+			  </div>
+			  <div class="right">
+			    <el-input
+			      v-model="input1"
+			      class="margin_right"
+			      clearable
+			      placeholder="项目编号"
+			    >
+			    </el-input>
+			  </div>
+			</div>
+			<div class="row2">
+			  <div class="title">
+			    <span style="color: red; margin-right: 5px; display: inline-block"
+			      >* </span
+			    ><span>开始时间</span>
+			  </div>
+			  <div class="right">
+			     <el-date-picker
+			       v-model="date1"
+			       type="date"
+			       placeholder="投标开始时间">
+			     </el-date-picker>
+			    </el-input>
+			  </div>
+			</div>
+			<div class="row2">
+			  <div class="title">
+			    <span style="color: red; margin-right: 5px; display: inline-block"
+			      >* </span
+			    ><span>截止时间</span>
+			  </div>
+			  <div class="right">
+			     <el-date-picker
+			       v-model="date1"
+			       type="date"
+			       placeholder="投标截止时间">
+			     </el-date-picker>
+			    </el-input>
+			  </div>
+			</div>
+			<div class="row2">
+			  <div class="title">
+			   <span>预算金额</span>
+			  </div>
+			  <div class="right">
+			    <el-input
+			      v-model="input1"
+			      class="margin_right"
+			      clearable
+			      placeholder="预算金额(万元)"
+			    >
+			    </el-input>
+			  </div>
+			</div>
+			<div class="row2">
+			  <div class="title">
+			   <span>保证金</span>
+			  </div>
+			  <div class="right">
+			  <el-radio-group v-model="radio" style="margin-left: 12px;">
+			     <el-radio :label="1">是</el-radio>
+			     <el-radio :label="2">否</el-radio>
+			   </el-radio-group>
+			  </div>
+			</div>
+			<div class="row2" style="margin-top: -20px;">
+			  <div class="title">
+			   <span>招标文件</span>
+			  </div>
+			  <div class="right" style="padding-top: 30px;">
+				<el-form :model="form" style="margin-left: 12px; display: flex; align-items: center;">
+				  <el-form-item >
+				    <el-upload ref="uploadExcel" action="/general/oss/upload" :auto-upload="true"
+				       :on-change="fileChange" :on-success="handleSuccess" :on-remove="handleRemove"
+				      :on-error="handleError" :file-list="fileInfo" :on-preview="HandFilePreView">
+				      <el-button size="small" plain style="width: 100px;height: 30px;">选择文件</el-button>
+				    </el-upload>
+				  </el-form-item>
+				</el-form>
+			  </div>
+			</div>
+			
+		    <div class="btn">
+		      <el-button
+		        style="
+		          background: #2778be;
+		          color: #fff;
+		          margin-right: 20px;
+		          padding: 10px 25px;
+		          border-radius: 4px;
+		        "
+		        @click="handleClick(scope.row)"
+		        type="text"
+		        size="small"
+		        >确定</el-button
+		      >
+		      <el-button
+		        style="
+		          background: #fff;
+		          color: #333;
+		          border: 1px solid #dddddd;
+		          padding: 10px 25px;
+		          border-radius: 4px;
+		        "
+		        @click="closeMask"
+		        type="text"
+		        size="small"
+		        >取消</el-button
+		      >
+		    </div>
+		  </div>
+		</div>	
 		<my-header :width="width" :bWidth="bWidth"></my-header>
 		<div class="container" :style="{width:bWidth + 'px'}">
 			<leftMenu tabIndex='1-1'></leftMenu>
 			<div class="right">
-				<!-- <div class="header">
-					<div class="headerItem">
-						首页
-					</div>
-					<div class="btn">
-						更多
-						<img src="">
-					</div>
-				</div> -->
 				<topNav :activeName='activeName' :list="thisNavList"></topNav>
 				<div class="content" v-if="showDetail==false">
 					<div class="topSeachBox">
@@ -219,9 +355,9 @@
 							</el-table-column>
 							<el-table-column label="操作" min-width="50">
 								<template slot-scope="scope">
-									<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+									<el-button @click="tolook(scope.row)" type="text" size="small">查看</el-button>
 									<br>
-									<el-button type="text" size="small" style="color: #E4393C;">修改</el-button>
+									<el-button type="text" size="small" style="color: #E4393C;" @click='toModify(scope.row)'>修改</el-button>
 									<br>
 									<el-button type="text" size="small" style="color: #909090;">删除</el-button>
 								</template>
@@ -272,6 +408,7 @@
 				activeNameTwo: 'first',
 				thisNavList: [],
 				showDetail: false, //是否显示详情页
+				showModify:false,//是否显示修改页面
 				loading: false,
 				bWidth: 0,
 				width: 0,
@@ -376,9 +513,14 @@
 			toPage(url) {
 				this.until.href(url)
 			},
-			handleClick(row) {
+			//查看详情
+			tolook(row) {
 				console.log('21', row);
 				this.showDetail = true
+			},
+			//修改
+			toModify(row){
+				this.showModify=true
 			},
 			changeNav(tab, event) {
 				console.log(tab, event);
@@ -388,6 +530,7 @@
 			},
 			closeMask(){
 				this.newShow=false
+				this.showModify=false
 			},
 			fileChange(file, fileList) {
 			  this.formTwo.file = file.raw

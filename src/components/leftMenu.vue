@@ -168,62 +168,65 @@
 </template>
 
 <script>
-	export default {
-		data() {
-			return {
-				zhaobiao: [],
-				currentIndex: "0",
-			};
-		},
-		props: {
-			tabIndex: {
-				type: String,
-				default: "0",
-			},
-		},
-		mounted() {
-			this.currentIndex = this.tabIndex;
-		},
-		methods: {
-			handleSelect(key, keyPath) {
-				this.currentIndex = key;
-				// console.log("1233", this.currentIndex);
-				console.log(1111, key, keyPath);
-				if (key == '0') {
-					this.until.href('./index.html')
-				}
-				if (key == "2") {
-					this.until.href("/views/index/onlineBidEvaluate.html");
-				}
-				if (key == "1-1") {
-					this.until.href("/views/index/zhaobiao.html");
-				}
-				if (key == "1-2") {
-					this.until.href("/views/index/shenpi.html");
-				}
-				if (key == "3-1") {
-					this.until.href("/views/index/openSelectRule.html");
-				}
-				if (key == "3-2") {
-					this.until.href("/views/index/openExpertDatabase.html");
-				}
-				if (key == "3-4") {
-					this.until.href("/views/index/openOnlineBid.html");
-				}
-				if (key == '4') {
-					this.until.href("/views/index/onlineBidEvaluate.html");
-				}
-			},
-			handleOpen(key, keyPath) {
-				this.currentIndex = key;
-				console.log(key, keyPath);
-			},
-			handleClose(key, keyPath) {
-				console.log(key, keyPath);
-			},
-		},
-		computed: {},
-	};
+export default {
+  data() {
+    return {
+      zhaobiao: [],
+      currentIndex: "0",
+    };
+  },
+  props: {
+    tabIndex: {
+      type: String,
+      default: "0",
+    },
+  },
+  mounted() {
+    this.currentIndex = this.tabIndex;
+  },
+  methods: {
+    handleSelect(key, keyPath) {
+      this.currentIndex = key;
+      // console.log("1233", this.currentIndex);
+      console.log(1111, key, keyPath);
+	  if (key == '0') {
+		this.until.href('./index.html')
+	  }
+      if (key == "2") {
+        this.until.href("/views/index/onlineBidEvaluate.html");
+      }
+      if (key == "1-1") {
+        this.until.href("/views/index/zhaobiao.html");
+      }
+      if (key == "1-2") {
+        this.until.href("/views/index/shenpi.html");
+      }
+      if (key == "3-1") {
+        this.until.href("/views/index/openSelectRule.html");
+      }
+      if (key == "3-2") {
+        this.until.href("/views/index/openExpertDatabase.html");
+      }
+      if (key == "3-4") {
+        this.until.href("/views/index/openOnlineBid.html");
+      }
+	  if (key == '4') {
+	  	this.until.href("/views/index/onlineBidEvaluate.html");
+	  }
+	  if(key=="6-1"){
+		this.until.href("/views/index/biaohou.html");
+	  }
+    },
+    handleOpen(key, keyPath) {
+      this.currentIndex = key;
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    },
+  },
+  computed: {},
+};
 </script>
 
 <style lang="less" scoped>
