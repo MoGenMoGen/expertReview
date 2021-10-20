@@ -378,7 +378,7 @@
 		<div class="mask" @click="closeMask" v-if="editShow==true">
 		  <div class="table_box" @click.stop="">
 		    <div class="top">
-		      <p style="font-size: 20px">新增</p>
+		      <p style="font-size: 20px">编辑</p>
 		      <img
 		        @click="closeMask"
 		        src="~assets/img/close.png"

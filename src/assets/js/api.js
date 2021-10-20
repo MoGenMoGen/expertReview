@@ -310,6 +310,64 @@ class api {
         })
     }
 
+	//获取项目评定标准
+	getBidSvsList(data){
+		return new Promise(resolve => {
+		    get('/ship/bidSvs/list?query='+data).then(res=>{
+		        resolve(res.data)
+		    })
+		})
+	}
+	//获取专家列表
+	getBidExpertPage(data){
+		return new Promise(resolve => {
+		    get('/ship/bidExpert/page?query='+data).then(res=>{
+		        resolve(res.data)
+		    })
+		})
+	}
+	//数据字典
+	getCatListByPcd(data){
+		return new Promise(resolve => {
+		    get('/sys/cat/listByPcd',data).then(res=>{
+		        resolve(res.data)
+		    })
+		})
+	}
+	//获取招标范围（自选）
+	getOrgEnterList(data){
+		return new Promise(resolve => {
+		    get('/ship/orgEnter/list?query='+data).then(res=>{
+		        resolve(res.data)
+		    })
+		})
+	}
+	//获取专家-随机三个
+	getBidExpertRamdomList(data){
+		return new Promise(resolve => {
+		    get('/ship/bidExpert/ramdomList',data).then(res=>{
+		        resolve(res.data)
+		    })
+		})
+	}
+	//招标新建
+	postBidAdd(data){
+		return new Promise(resolve => {
+		    post('/ship/bid/add',data).then(res=>{
+		        resolve(res)
+		    })
+		})
+	}
+	//获取招标列表
+	getBidPage(data){
+		return new Promise(resolve => {
+		    get('/ship/bid/page?query='+data).then(res=>{
+		        resolve(res.data)
+		    })
+		})
+	}
+
+
 }
 
 export { api };
