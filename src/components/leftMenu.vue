@@ -201,6 +201,12 @@ export default {
       if (key == "1-2") {
         this.until.href("/views/index/shenpi.html");
       }
+	  if (key == "2-1") {
+	    this.until.href("/views/index/baomingshenhe.html");
+	  }
+	  if (key == "2-2") {
+	    this.until.href("/views/index/toubiaoxiangmu.html");
+	  }
       if (key == "3-1") {
         this.until.href("/views/index/openSelectRule.html");
       }
@@ -218,6 +224,9 @@ export default {
 	  }
 	  if (key == '5-1') {
 	  	this.until.href("/views/index/dingbiao.html");
+	  }
+	  if (key == '5-2') {
+	  	this.until.href("/views/index/zhongbiaogongshi.html");
 	  }
 	  if(key=="6-1"){
 		this.until.href("/views/index/biaohou.html");

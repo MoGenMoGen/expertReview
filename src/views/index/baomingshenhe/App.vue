@@ -2,7 +2,7 @@
 	<div id="home" :style="{width:bWidth + 'px'}" v-loading="loading">
 		<my-header :width="width" :bWidth="bWidth"></my-header>
 		<div class="container" :style="{width:bWidth + 'px'}">
-			<leftMenu tabIndex='5-1'></leftMenu>
+			<leftMenu tabIndex='2-1'></leftMenu>
 			<div class="right">
 				<topNav :activeName='activeName' :list="thisNavList"></topNav>
 				<div class="content">
@@ -10,20 +10,39 @@
 						<div>
 							<el-input placeholder="项目编号" v-model="input" clearable></el-input>
 							<el-input placeholder="项目名称" v-model="input" clearable></el-input>
-							<el-input placeholder="采购单位" style="flex: 2;" v-model="input" clearable></el-input>
+							<el-input placeholder="采购单位" v-model="input" clearable></el-input>
 							<el-input placeholder="联系人" v-model="input" clearable></el-input>
 							<el-input placeholder="联系电话" v-model="input" clearable></el-input>
-							<el-select v-model="value" style="flex: 2;" clearable placeholder="采购方式">
+							<el-select v-model="value" style="margin-right: 10px;" clearable placeholder="采购方式">
+								<el-option v-for="item in options" :key="item.value" :label="item.label"
+									:value="item.value">
+								</el-option>
+							</el-select>
+							<el-select v-model="value" style="flex: 2;" clearable placeholder="项目状态">
 								<el-option v-for="item in options" :key="item.value" :label="item.label"
 									:value="item.value">
 								</el-option>
 							</el-select>
 						</div>
 						<div>
-							<el-date-picker v-model="value2" type="datetime" style="flex: 2;" placeholder="投标开始时间"></el-date-picker>
-							<el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="投标截止时间"></el-date-picker>
-							<el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间"></el-date-picker>
+							<el-date-picker v-model="value2" type="datetime" style="flex: 2;" placeholder="投标开始时间">
+							</el-date-picker>
+							<el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="投标截止时间">
+							</el-date-picker>
+							<el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间">
+							</el-date-picker>
 							<el-button plain type="primary">查询</el-button>
+						</div>
+					</div>
+					<div class="son_tablist">
+						<div class="left">
+							<div class="son_tab_title projectNm" v-for="(item, index) in sonTabList" :key="index"
+								@click="sonTabIndex = index" :style="{
+					        background: sonTabIndex == index ? '#2778be' : '',
+					        color: sonTabIndex == index ? '#fff' : '#666666',
+					      }">
+								{{ item }}
+							</div>
 						</div>
 					</div>
 					<div class="content-list">
@@ -37,23 +56,39 @@
 								    background: '#f8f8f8',
 									'text-align': 'center',
 								  }">
-								<el-table-column type="index" label="序号" min-width="50"></el-table-column>
-								<el-table-column prop="name" label="项目信息" min-width="250">
-									<template slot-scope="scope">
-										<p>项目编号：{{scope.row.cd}}</p>
-										<p>项目名称：{{scope.row.name}}</p>
+								<el-table-column type="expand">
+									<template slot-scope="props">
+										<el-table :data="tableData" style="width: 100%;" :cell-style="{
+								    'text-align': 'center',
+								    color: '#333',
+								    'font-weight': '500',
+								  }" :header-cell-style="{
+								    color: '#606060',
+								    background: '#f8f8f8',
+									'text-align': 'center',
+								  }">
+											<el-table-column prop="unit" label="采购单位" min-width="150"></el-table-column>
+											<el-table-column prop="unit" label="联系人" min-width="150"></el-table-column>
+											<el-table-column prop="unit" label="联系电话" min-width="150"></el-table-column>
+											<el-table-column prop="unit" label="采购方式" min-width="150"></el-table-column>
+											<el-table-column prop="unit" label="申请时间" min-width="150"></el-table-column>
+											<el-table-column label="操作" min-width="100">
+												<template slot-scope="scope">
+													<el-button type="text" size="small"
+														style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;">
+														审核</el-button>
+												</template>
+											</el-table-column>
+										</el-table>
 									</template>
 								</el-table-column>
-								<el-table-column prop="unit" label="采购单位" min-width="150"></el-table-column>
-								<el-table-column prop="buyType" label="采购方式" min-width="150"></el-table-column>
-								<el-table-column prop="time" label="开标时间" min-width="100"></el-table-column>
-								<el-table-column prop="money" label="金额(万元)" min-width="100"></el-table-column>
-								<el-table-column prop="num" label="投标项" min-width="100"></el-table-column>
+								<el-table-column type="index" label="序号" min-width="50"></el-table-column>
+								<el-table-column prop="unit" label="项目编号" min-width="150"></el-table-column>
+								<el-table-column prop="unit" label="项目名称" min-width="150"></el-table-column>
+								<el-table-column prop="unit" label="投标开始时间" min-width="150"></el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
-										<el-button @click="handleClick(scope.row)" type="text" size="small">查看结果</el-button>
-										<br>
-										<el-button type="text" size="small" style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;" >确认</el-button>
+										<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
 									</template>
 								</el-table-column>
 							</el-table>
@@ -89,9 +124,19 @@
 				pageNo: 1,
 				pageSize: 10,
 				total: 0,
-				value2:'',
-				value3:'',
+				value2: '',
+				value3: '',
+				sonTabList: ["待审核", "已审核"],
+				sonTabIndex: 0,
 				tableData: [{
+					name: '12米玻璃钢新型渔船',
+					cd: 'BHZC2021-G3-0001',
+					unit: '澳新船厂有限公司',
+					buyType: '竞争性磋商',
+					time: '2021-07-12 14:00:00',
+					money: 52,
+					num: 1
+				},{
 					name: '12米玻璃钢新型渔船',
 					cd: 'BHZC2021-G3-0001',
 					unit: '澳新船厂有限公司',
@@ -115,8 +160,8 @@
 		},
 		mounted() {
 			let obj = {
-				name: '定标项目',
-				url: './dingbiao.html',
+				name: '报名审核',
+				url: './baomingshenhe.html',
 				canClose: true
 			}
 			let data = this.until.checkNav(obj, JSON.parse(this.until.seGet('navList')))
@@ -155,6 +200,9 @@
 		padding: 0;
 		text-align: center;
 	}
+	.el-table__expanded-cell[class*=cell] {
+		padding: 0;
+	}
 </style>
 <style lang="less" scoped>
 	#home {
@@ -188,6 +236,7 @@
 			cursor: pointer;
 		}
 	}
+
 	.container {
 		padding-top: 20px;
 		padding-bottom: 100px;
@@ -204,45 +253,69 @@
 			width: calc(~"100% - 210px");
 
 			// width: 100%;
-			.content{
+			.content {
 				margin-top: 10px;
 				background-color: #ffffff;
 				width: 100%;
 				height: 740px;
-				.topSeachBox{
+
+				.topSeachBox {
 					padding: 20px;
 					box-sizing: border-box;
 					display: flex;
 					flex-direction: column;
+
 					div {
 						display: flex;
 						align-items: center;
 						justify-content: center;
+
 						.el-input {
 							flex: 1;
 							margin-right: 10px;
 							margin-bottom: 10px;
 						}
+
 						.el-select {
 							flex: 1;
 							margin-bottom: 10px;
 						}
+
 						.el-button {
 							flex: 1;
 							margin-bottom: 10px;
 						}
+
 						.el-date-picker {
 							margin-right: 10px;
 						}
 					}
 				}
+				.son_tablist {
+					width: calc(~"100% - 40px");
+				  margin: 0 auto 20px;
+				  display: flex;
+				  align-items: center;
+				  justify-content: space-between;
+				  border-bottom: 1px solid #2778be;
+				  .left {
+				    .son_tab_title {
+				      display: inline-block;
+				      width: 129px;
+				      height: 40px;
+				      text-align: center;
+				      line-height: 40px;
+				    }
+				  }
+				}
 				.content-list {
 					display: flex;
 					flex-direction: column;
-					height: 528px;
+					height: 467px;
 					background-color: #FFF;
 					padding: 0 20px;
 					box-sizing: border-box;
+					overflow-y: auto;
 				}
 				.Footer {
 					width: 100%;

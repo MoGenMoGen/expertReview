@@ -2,7 +2,7 @@
 	<div id="home" :style="{width:bWidth + 'px'}" v-loading="loading">
 		<my-header :width="width" :bWidth="bWidth"></my-header>
 		<div class="container" :style="{width:bWidth + 'px'}">
-			<leftMenu tabIndex='5-1'></leftMenu>
+			<leftMenu tabIndex='5-2'></leftMenu>
 			<div class="right">
 				<topNav :activeName='activeName' :list="thisNavList"></topNav>
 				<div class="content">
@@ -20,9 +20,12 @@
 							</el-select>
 						</div>
 						<div>
-							<el-date-picker v-model="value2" type="datetime" style="flex: 2;" placeholder="投标开始时间"></el-date-picker>
-							<el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="投标截止时间"></el-date-picker>
-							<el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间"></el-date-picker>
+							<el-date-picker v-model="value2" type="datetime" style="flex: 2;" placeholder="投标开始时间">
+							</el-date-picker>
+							<el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="投标截止时间">
+							</el-date-picker>
+							<el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间">
+							</el-date-picker>
 							<el-button plain type="primary">查询</el-button>
 						</div>
 					</div>
@@ -51,9 +54,16 @@
 								<el-table-column prop="num" label="投标项" min-width="100"></el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
-										<el-button @click="handleClick(scope.row)" type="text" size="small">查看结果</el-button>
+										<el-button @click="handleClick(scope.row)" type="text" size="small">查看公示
+										</el-button>
 										<br>
-										<el-button type="text" size="small" style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;" >确认</el-button>
+										<el-button type="text" size="small"
+											style="background: #FFF;color: #2778BE; border-radius: 2px;width: 50px;border: 1px solid #2778BE;box-sizing: border-box;margin-bottom: 10px;">
+											发布</el-button>
+										<br>
+										<el-button type="text" size="small"
+											style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;">
+											审核</el-button>
 									</template>
 								</el-table-column>
 							</el-table>
@@ -89,8 +99,8 @@
 				pageNo: 1,
 				pageSize: 10,
 				total: 0,
-				value2:'',
-				value3:'',
+				value2: '',
+				value3: '',
 				tableData: [{
 					name: '12米玻璃钢新型渔船',
 					cd: 'BHZC2021-G3-0001',
@@ -115,8 +125,8 @@
 		},
 		mounted() {
 			let obj = {
-				name: '定标项目',
-				url: './dingbiao.html',
+				name: '中标公示',
+				url: './zhongbiaogongshi.html',
 				canClose: true
 			}
 			let data = this.until.checkNav(obj, JSON.parse(this.until.seGet('navList')))
@@ -188,6 +198,7 @@
 			cursor: pointer;
 		}
 	}
+
 	.container {
 		padding-top: 20px;
 		padding-bottom: 100px;
@@ -204,33 +215,39 @@
 			width: calc(~"100% - 210px");
 
 			// width: 100%;
-			.content{
+			.content {
 				margin-top: 10px;
 				background-color: #ffffff;
 				width: 100%;
 				height: 740px;
-				.topSeachBox{
+
+				.topSeachBox {
 					padding: 20px;
 					box-sizing: border-box;
 					display: flex;
 					flex-direction: column;
+
 					div {
 						display: flex;
 						align-items: center;
 						justify-content: center;
+
 						.el-input {
 							flex: 1;
 							margin-right: 10px;
 							margin-bottom: 10px;
 						}
+
 						.el-select {
 							flex: 1;
 							margin-bottom: 10px;
 						}
+
 						.el-button {
 							flex: 1;
 							margin-bottom: 10px;
 						}
+
 						.el-date-picker {
 							margin-right: 10px;
 						}
@@ -243,6 +260,7 @@
 					background-color: #FFF;
 					padding: 0 20px;
 					box-sizing: border-box;
+					overflow-y: auto;
 				}
 				.Footer {
 					width: 100%;
