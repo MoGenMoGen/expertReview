@@ -32,13 +32,18 @@
             <button
               class="btn margin_right"
               @click="Search"
-              style="border: 1px solid #e0e0e0"
+              style="border: 1px solid #e0e0e0; cursor: pointer"
             >
               查询
             </button>
             <button
               class="btn margin_right"
-              style="background: #409eff; color: #fff; border: none"
+              style="
+                background: #409eff;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+              "
               @click="newSelectRule"
             >
               新增
@@ -63,72 +68,80 @@
               导出
             </button> -->
           </div>
-          <el-table
-            :data="tableData"
-            style="width: 100%"
-            @selection-change="handleSelectionChange"
-            border
-            :cell-style="{
-              'text-align': 'center',
-              color: '#333',
-              'font-weight': '500',
-            }"
-            :header-cell-style="{
-              color: '#606060',
-              'text-align': 'center',
-            }"
-          >
-            <el-table-column type="selection" min-width="48"> </el-table-column>
-            <el-table-column
-              label="专家选取规则名称"
-              prop="nm"
-              sortable
-              min-width="240"
+          <div class="table_box">
+            <el-table
+              :data="tableData"
+              @selection-change="handleSelectionChange"
+              border
+              :cell-style="{
+                'text-align': 'center',
+                color: '#333',
+                'font-weight': '500',
+              }"
+              :header-cell-style="{
+                color: '#606060',
+                'text-align': 'center',
+              }"
             >
-            </el-table-column>
-            <el-table-column prop="rmks" label="备注" sortable min-width="240">
-            </el-table-column>
-            <el-table-column label="管理规则项" sortable min-width="144">
-              <template slot-scope="scope">
-                <div
-                  @click="toDetail(scope.row.id)"
-                  style="
-                    margin: 0 auto;
-                    background: #409eff;
-                    color: #fff;
-                    border: none;
-                    width: 120px;
-                    height: 36px;
-                    line-height: 36px;
-                    cursor: pointer;
-                  "
-                >
-                  管理规则项
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="seq"
-              label="排序权重"
-              sortable
-              min-width="144"
-            >
-            </el-table-column>
-            <el-table-column label="操作" min-width="96">
-              <template slot-scope="scope">
-                <i
-                  @click="EditSelectRule(scope.row.id)"
-                  class="el-icon-edit"
-                  style="color: #409eff; margin-right: 10px; cursor: pointer"
-                ></i>
-                <i
-                  @click="DelSelectRule(scope.row.id)"
-                  class="el-icon-delete"
-                  style="color: #409eff; cursor: pointer"
-                ></i>
-              </template>
-            </el-table-column>
-          </el-table>
+              <el-table-column type="selection" min-width="48">
+              </el-table-column>
+              <el-table-column
+                label="专家选取规则名称"
+                prop="nm"
+                sortable
+                min-width="240"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="rmks"
+                label="备注"
+                sortable
+                min-width="240"
+              >
+              </el-table-column>
+              <el-table-column label="管理规则项" sortable min-width="144">
+                <template slot-scope="scope">
+                  <div
+                    @click="toDetail(scope.row.id)"
+                    style="
+                      margin: 0 auto;
+                      background: #409eff;
+                      color: #fff;
+                      border: none;
+                      width: 120px;
+                      height: 36px;
+                      line-height: 36px;
+                      cursor: pointer;
+                    "
+                  >
+                    管理规则项
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="seq"
+                label="排序权重"
+                sortable
+                min-width="144"
+              >
+              </el-table-column>
+              <el-table-column label="操作" min-width="96">
+                <template slot-scope="scope">
+                  <i
+                    @click="EditSelectRule(scope.row.id)"
+                    class="el-icon-edit"
+                    style="color: #409eff; margin-right: 10px; cursor: pointer"
+                  ></i>
+                  <i
+                    @click="DelSelectRule(scope.row.id)"
+                    class="el-icon-delete"
+                    style="color: #409eff; cursor: pointer"
+                  ></i>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
+
           <!-- 分页 -->
           <div class="Footer">
             <el-pagination
@@ -307,7 +320,6 @@ export default {
     },
     async exptExcel() {
       let data = await this.api.exportExcel();
-      console.log(11111, data);
     },
   },
 };
@@ -376,6 +388,17 @@ export default {
           .margin_right {
             margin-right: 15px;
           }
+        }
+        .table_box::-webkit-scrollbar {
+          display: none; /* Chrome Safari */
+        }
+        .table_box {
+          width: 100%;
+          max-height: 524px;
+          overflow-y: auto;
+          overflow-x: hidden;
+          scrollbar-width: none; /* firefox */
+          -ms-overflow-style: none; /* IE 10+ */
         }
         .Footer {
           display: flex;

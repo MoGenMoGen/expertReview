@@ -8,47 +8,80 @@
         <topNav :activeName="activeName" :list="thisNavList"></topNav>
         <div class="right_content">
           <new-expert-database
+            @saveAndUpdate="getList"
+            :type="type"
+            :id="id"
             v-if="showNewExpertDatabase"
           ></new-expert-database>
           <div class="condition_box">
             <el-select
-              v-model="value"
+              v-model="info.groupCd"
               class="margin_right"
               clearable
               placeholder="专家分组"
             >
               <el-option
-                v-for="item in options"
+                v-for="item in expertGroups"
                 :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                :label="item.nm"
+                :value="item.cd"
               >
               </el-option>
             </el-select>
             <el-input
               placeholder="专家姓名"
               class="margin_right"
-              v-model="input"
+              v-model="info.realNm"
               clearable
             >
             </el-input>
             <el-input
               placeholder="用户名"
               class="margin_right"
-              v-model="input"
+              v-model="info.username"
               clearable
             >
             </el-input>
             <el-input
               placeholder="手机号"
               class="margin_right"
-              v-model="input"
+              v-model="info.mob"
               clearable
             >
             </el-input>
-            <button class="btn" style="border: 1px solid #e0e0e0">查询</button>
+            <el-button
+              class="btn margin_right"
+              @click="Search"
+              style="border: 1px solid #e0e0e0; cursor: pointer"
+            >
+              查询
+            </el-button>
+            <el-button
+              class="btn margin_right"
+              style="
+                background: #409eff;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+              "
+              @click="newExpertBase"
+            >
+              新增
+            </el-button>
+            <el-button
+              :disabled="!isDel"
+              class="btn margin_right"
+              :style="{
+                background: isDel ? 'red' : '#fab6b6',
+                color: '#fff',
+                border: 'none',
+              }"
+              @click="DelSelectRule(ids)"
+            >
+              删除
+            </el-button>
           </div>
-          <div class="btn_box">
+          <!-- <div class="btn_box">
             <button
               class="btn margin_right"
               style="background: #409eff; color: #fff; border: none"
@@ -65,124 +98,142 @@
             <button class="btn margin_right" style="border: 1px solid #e0e0e0">
               导出
             </button>
+          </div> -->
+
+          <div class="table_box">
+            <el-table
+              :data="tableData"
+              @selection-change="handleSelectionChange"
+              border
+              :cell-style="{
+                'text-align': 'center',
+                color: '#333',
+                'font-weight': '500',
+              }"
+              :header-cell-style="{
+                color: '#606060',
+                'text-align': 'center',
+              }"
+            >
+              <el-table-column type="selection" min-width="60">
+              </el-table-column>
+              <el-table-column
+                label="专家分组"
+                prop="groupNm"
+                sortable
+                min-width="90"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="realNm"
+                label="专家姓名"
+                sortable
+                min-width="90"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="mob"
+                label="手机号码"
+                sortable
+                min-width="90"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="email"
+                label="邮箱"
+                sortable
+                min-width="144"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="username"
+                label="用户名"
+                sortable
+                min-width="90"
+              >
+              </el-table-column>
+              <el-table-column label="头像" min-width="90">
+                <template slot-scope="scope">
+                  <div v-if="!scope.row.imgUrl"></div>
+                  <img
+                    v-else
+                    v-viewer
+                    :src="scope.row.imgUrl"
+                    style="
+                      cursor: pointer;
+                      width: 63px;
+                      height: 80px;
+                      margin: 0 auto;
+                    "
+                  />
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="job"
+                label="职位/称呼"
+                sortable
+                min-width="90"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="company"
+                label="公司"
+                sortable
+                min-width="90"
+              >
+              </el-table-column>
+              <el-table-column
+                prop="company"
+                label="状态"
+                sortable
+                min-width="90"
+              >
+                <template slot-scope="scope">
+                  <div
+                    style="
+                      margin: 0 auto;
+                      background: #f0f9eb;
+                      color: #91c35b;
+                      border: none;
+                      width: 50px;
+                      height: 30px;
+                      line-height: 30px;
+                    "
+                    v-show="scope.row.status == 1"
+                  >
+                    启用
+                  </div>
+                  <div
+                    style="
+                      margin: 0 auto;
+                      background: pink;
+                      color: red;
+                      border: none;
+                      width: 50px;
+                      height: 30px;
+                      line-height: 30px;
+                    "
+                    v-show="scope.row.status == 0"
+                  >禁用</div>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" min-width="90">
+                <template slot-scope="scope">
+                  <i
+                    class="el-icon-edit"
+                    style="color: #409eff; margin-right: 10px; cursor: pointer"
+                    @click="EditExpertBase(scope.row.id)"
+                  ></i>
+                  <i
+                    @click="DelSelectRule(scope.row.id)"
+                    class="el-icon-delete"
+                    style="color: #409eff; cursor: pointer"
+                  ></i>
+                </template>
+              </el-table-column>
+            </el-table>
           </div>
-          <el-table
-            :data="tableData"
-            style="width: 960px."
-            border
-            :cell-style="{
-              'text-align': 'center',
-              color: '#333',
-              'font-weight': '500',
-            }"
-            :header-cell-style="{
-              color: '#606060',
-              'text-align': 'center',
-            }"
-          >
-            <el-table-column type="selection" min-width="60"> </el-table-column>
-            <el-table-column
-              label="专家分组"
-              prop="group"
-              sortable
-              min-width="90"
-            >
-            </el-table-column>
-            <el-table-column
-              prop="name"
-              label="专家姓名"
-              sortable
-              min-width="90"
-            >
-            </el-table-column>
-            <el-table-column
-              prop="phone"
-              label="手机号码"
-              sortable
-              min-width="90"
-            >
-            </el-table-column>
-            <el-table-column prop="email" label="邮箱" sortable min-width="144">
-            </el-table-column>
-            <el-table-column
-              prop="username"
-              label="用户名"
-              sortable
-              min-width="90"
-            >
-            </el-table-column>
-            <el-table-column label="头像" min-width="90">
-              <template slot-scope="scope">
-                <img
-                  :src="scope.row.pic"
-                  style="width: 67px; height: 100px; margin: 0 auto"
-                />
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="position"
-              label="职位/称呼"
-              sortable
-              min-width="90"
-            >
-            </el-table-column>
-            <el-table-column
-              prop="company"
-              label="公司"
-              sortable
-              min-width="90"
-            >
-            </el-table-column>
-            <el-table-column
-              prop="company"
-              label="状态"
-              sortable
-              min-width="90"
-            >
-              <template slot-scope="scope">
-                <div
-                  style="
-                    margin: 0 auto;
-                    background: #f0f9eb;
-                    color: #91c35b;
-                    border: none;
-                    width: 50px;
-                    height: 30px;
-                    line-height: 30px;
-                  "
-                  v-show="scope.row.status == 1"
-                >
-                  启用
-                </div>
-                <div
-                  style="
-                    margin: 0 auto;
-                    background: pink;
-                    color: red;
-                    border: none;
-                    width: 50px;
-                    height: 30px;
-                    line-height: 30px;
-                  "
-                  v-show="scope.row.status == 0"
-                >
-                  未启用
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column label="操作" min-width="90">
-              <template>
-                <i
-                  class="el-icon-edit"
-                  style="color: #409eff; margin-right: 10px; cursor: pointer"
-                ></i>
-                <i
-                  class="el-icon-delete"
-                  style="color: #409eff; cursor: pointer"
-                ></i>
-              </template>
-            </el-table-column>
-          </el-table>
+
           <!-- 分页 -->
           <div class="Footer">
             <el-pagination
@@ -222,47 +273,18 @@ export default {
       pageNo: 1,
       pageSize: 10,
       total: 0,
-      input: "",
-      value: "",
+      isDel: false,
       showNewExpertDatabase: false,
-      options: [
-        {
-          value: "选项3",
-          label: "蚵仔煎",
-        },
-        {
-          value: "选项4",
-          label: "龙须面",
-        },
-        {
-          value: "选项5",
-          label: "北京烤鸭",
-        },
-      ],
-      tableData: [
-        {
-          group: "行业专家1",
-          name: "张三",
-          phone: "13581442016",
-          email: "123456@163.com",
-          username: "张三",
-          pic: "https://tse4-mm.cn.bing.net/th/id/OIP-C.RFmRXYNnJQizc9wK1l_-IgAAAA?w=204&h=204&c=7&r=0&o=5&pid=1.7",
-          position: "总经理",
-          company: "聚联科技",
-          status: 0,
-        },
-        {
-          group: "行业专家2",
-          name: "李四",
-          phone: "15184565111",
-          email: "456844@163.com",
-          username: "李四",
-          pic: "https://tse4-mm.cn.bing.net/th/id/OIP-C.RFmRXYNnJQizc9wK1l_-IgAAAA?w=204&h=204&c=7&r=0&o=5&pid=1.7",
-          position: "秘书",
-          company: "广志科技",
-          status: 1,
-        },
-      ],
+      expertGroups: [],
+      type: 0,
+      id: "",
+      info: {
+        groupCd: "",
+        realNm: "",
+        username: "",
+        mob: "",
+      },
+      tableData: [],
       thisNavList: [],
       activeName: "",
     };
@@ -280,12 +302,7 @@ export default {
     topNav,
   },
   async mounted() {
-    // if(!this.until.seGet('userInfo')){
-    //     this.until.href('./login.html')
-    // }
-    console.log(this.navList);
     this.getWidth();
-    // this.getList()
     // this.userInfo = JSON.parse(this.until.seGet('userInfo'))
     window.onresize = () => {
       this.getWidth();
@@ -301,6 +318,11 @@ export default {
     );
     this.activeName = obj.name;
     this.thisNavList = data;
+    // 获取专家分组列表
+    this.expertGroups = await this.api.getExpertGroup();
+    this.expertGroups.unshift({ cd: "", nm: "全部专家" });
+
+    this.getList();
   },
   methods: {
     getWidth() {
@@ -313,7 +335,96 @@ export default {
       this.until.href(url);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
+      this.pageNo = val;
+      this.getList();
+    },
+    async getList() {
+      let query = {
+        r: [
+          {
+            n: "a1",
+            t: "and",
+            w: [
+              { k: "groupCd", v: "", m: "LK" },
+              { k: "realNm", v: "", m: "LK" },
+              { k: "username", v: "", m: "LK" },
+              { k: "mob", v: "", m: "LK" },
+            ],
+          },
+        ],
+        o: [{ k: "crtTm", t: "desc" }],
+        p: { n: 1, s: 10 },
+      };
+      query.p.n = this.pageNo;
+      query.p.s = this.pageSize;
+      query.r[0].w[0].v = this.info.groupCd;
+      query.r[0].w[1].v = this.info.realNm;
+      query.r[0].w[2].v = this.info.username;
+      query.r[0].w[3].v = this.info.mob;
+
+      // 选取列表
+      let data = await this.api.getExpertBaseList(
+        encodeURIComponent(JSON.stringify(query))
+      );
+      this.tableData = data.data.list;
+      this.total = data.page.total;
+      console.log(1111111, this.tableData);
+    },
+    Search() {
+      this.getList();
+    },
+    // 删除
+    DelSelectRule(ids) {
+      this.$confirm("确认删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          return this.api.delexpert({ ids });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        })
+        .then((res) => {
+          if (res.code == 0) {
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            this.getList();
+          } else {
+            this.$message({
+              type: "error",
+              message: "删除失败!",
+            });
+          }
+        });
+    },
+    // 多选框选中项变化
+    handleSelectionChange(val) {
+      if (val.length != 0) {
+        this.isDel = true;
+      } else {
+        this.isDel = false;
+      }
+      let ids = val.map((item) => item.id);
+      this.ids = ids.join(",");
+    },
+    // 新增
+    newExpertBase() {
+      this.showNewExpertDatabase = true;
+      this.type = 1;
+    },
+    // 修改
+    EditExpertBase(id) {
+      this.showNewExpertDatabase = true;
+      this.id = id.toString();
+      this.type = 2;
     },
   },
 };
@@ -344,10 +455,10 @@ export default {
     background-repeat: no-repeat;
     background-position: bottom center;
     margin: 0 auto;
-    height: calc(~"100vh - 298px");
+    // height: calc(~"100vh - 298px");
     display: flex;
     .rightMenu {
-      height: 800px;
+      min-height: 800px;
       margin-left: 10px;
       width: calc(~"100% - 210px");
       // box-sizing: border-box;
@@ -374,7 +485,7 @@ export default {
           height: 40px;
           display: flex;
           align-items: center;
-          margin-bottom: 10px;
+          margin-bottom: 30px;
           .el-input {
             width: 202px;
           }
@@ -384,6 +495,17 @@ export default {
         }
         .btn_box {
           margin-bottom: 20px;
+        }
+        .table_box::-webkit-scrollbar {
+          display: none; /* Chrome Safari */
+        }
+        .table_box {
+          width: 100%;
+          max-height: 524px;
+          overflow-y: auto;
+          overflow-x: hidden;
+          scrollbar-width: none; /* firefox */
+          -ms-overflow-style: none; /* IE 10+ */
         }
         .Footer {
           display: flex;

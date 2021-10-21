@@ -9,11 +9,15 @@
         <div class="right_content">
           <!-- 新增评定标准 -->
           <newEvaluateStandard
-            v-show="showNewEvaluateStandard"
+            v-if="showNewEvaluateStandard"
+            :id="id"
+            :type="type"
+            @saveAndUpdate="getList"
           ></newEvaluateStandard>
           <!-- 评定标准项管理 -->
           <magEvaluateStandard
-            v-show="showMagEvaluateStandard"
+            :id="id"
+            v-if="showMagEvaluateStandard"
           ></magEvaluateStandard>
           <div class="condition_box">
             <el-input
@@ -23,96 +27,116 @@
               clearable
             >
             </el-input>
-            <button class="btn margin_right" style="border: 1px solid #e0e0e0">
+            <button
+              @click="Search"
+              class="btn margin_right"
+              style="border: 1px solid #e0e0e0; cursor: pointer"
+            >
               查询
             </button>
             <button
               class="btn margin_right"
-              style="background: #409eff; color: #fff; border: none"
-              @click="showNewEvaluateStandard = true"
+              style="
+                background: #409eff;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+              "
+              @click="newEvaStandard"
             >
               新增
             </button>
-            <button
+            <el-button
+              :disabled="!isDel"
               class="btn margin_right"
-              style="background: #fab6b6; color: #fff; border: none"
+              :style="{
+                background: isDel ? 'red' : '#fab6b6',
+                color: '#fff',
+                border: 'none',
+              }"
+              @click="DelSelectRule(ids)"
             >
               删除
-            </button>
-            <button class="btn margin_right" style="border: 1px solid #e0e0e0">
+            </el-button>
+            <!-- <button class="btn margin_right" style="border: 1px solid #e0e0e0">
               导出
-            </button>
+            </button> -->
           </div>
-          <el-table
-            :data="tableData"
-            style="width: 100%"
-            border
-            :cell-style="{
-              'text-align': 'center',
-              color: '#333',
-              'font-weight': '500',
-            }"
-            :header-cell-style="{
-              color: '#606060',
-              'text-align': 'center',
-            }"
-          >
-            <el-table-column type="selection" min-width="48"> </el-table-column>
-            <el-table-column
-              label="评定标准名称"
-              prop="nm"
-              sortable
-              min-width="240"
+          <div class="table_box">
+            <el-table
+              @selection-change="handleSelectionChange"
+              :data="tableData"
+              style="width: 100%"
+              border
+              :cell-style="{
+                'text-align': 'center',
+                color: '#333',
+                'font-weight': '500',
+              }"
+              :header-cell-style="{
+                color: '#606060',
+                'text-align': 'center',
+              }"
             >
-            </el-table-column>
-            <el-table-column
-              label="满分分数"
-              prop="fullScore"
-              sortable
-              min-width="240"
-            >
-            </el-table-column>
-            <el-table-column label="评定标准项" sortable min-width="144">
-              <template>
-                <div
-                  @click="showMagEvaluateStandard = true"
-                  style="
-                    margin: 0 auto;
-                    background: #409eff;
-                    color: #fff;
-                    border: none;
-                    width: 120px;
-                    height: 36px;
-                    line-height: 36px;
-                    cursor: pointer;
-                  "
-                >
-                  评定标准项
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="remarks"
-              label="备注"
-              sortable
-              min-width="240"
-            >
-            </el-table-column>
+              <el-table-column type="selection" min-width="48">
+              </el-table-column>
+              <el-table-column
+                label="评定标准名称"
+                prop="nm"
+                sortable
+                min-width="240"
+              >
+              </el-table-column>
+              <el-table-column
+                label="满分分数"
+                prop="score"
+                sortable
+                min-width="240"
+              >
+              </el-table-column>
+              <el-table-column label="评定标准项" sortable min-width="144">
+                <template slot-scope="scope">
+                  <div
+                    @click="toSonList(scope.row.id)"
+                    style="
+                      margin: 0 auto;
+                      background: #409eff;
+                      color: #fff;
+                      border: none;
+                      width: 120px;
+                      height: 36px;
+                      line-height: 36px;
+                      cursor: pointer;
+                    "
+                  >
+                    评定标准项
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="rmks"
+                label="备注"
+                sortable
+                min-width="240"
+              >
+              </el-table-column>
 
-            <el-table-column label="操作" min-width="96">
-              <template>
-                <i
-                  class="el-icon-edit"
-                  style="color: #409eff; margin-right: 10px; cursor: pointer"
-                  @click="showRuleDetail = true"
-                ></i>
-                <i
-                  class="el-icon-delete"
-                  style="color: #409eff; cursor: pointer"
-                ></i>
-              </template>
-            </el-table-column>
-          </el-table>
+              <el-table-column label="操作" min-width="96">
+                <template slot-scope="scope">
+                  <i
+                    class="el-icon-edit"
+                    style="color: #409eff; margin-right: 10px; cursor: pointer"
+                    @click="EditExpertBase(scope.row.id)"
+                  ></i>
+                  <i
+                    @click="DelSelectRule(scope.row.id)"
+                    class="el-icon-delete"
+                    style="color: #409eff; cursor: pointer"
+                  ></i>
+                </template>
+              </el-table-column>
+            </el-table>
+          </div>
           <!-- 分页 -->
           <div class="Footer">
             <el-pagination
@@ -139,7 +163,6 @@ import signin from "@/components/onlineBidEvaluate/signin";
 import decrypt from "@/components/onlineBidEvaluate/decrypt";
 import reviewResults from "@/components/onlineBidEvaluate/reviewResults";
 import uploadVideo from "@/components/onlineBidEvaluate/uploadVideo";
-import newSelectRule from "../../../components/openBid/newSelectRule.vue";
 import newEvaluateStandard from "../../../components/openBid/newEvaluateStandard.vue";
 import magEvaluateStandard from "components/openBid/magEvaluatestandard.vue";
 import topNav from "@/components/topNav";
@@ -148,34 +171,21 @@ export default {
   data() {
     return {
       loading: false,
+      isDel: false,
       bWidth: 0,
       width: 0,
-      list: [],
       pageNo: 1,
       pageSize: 10,
       total: 0,
+      thisNavList: [],
+      activeName: "",
       input: "",
-      showNewRule: false,
-      showRuleDetail: false,
       showNewEvaluateStandard: false,
       showMagEvaluateStandard: false,
-      tableData: [
-        {
-          nm: "项目议标评定标准",
-          fullScore: 100,
-          remarks: "这是一个备注",
-        },
-        {
-          nm: "项目议标评定标准",
-          fullScore: 100,
-          remarks: "这是一个备注",
-        },
-        {
-          nm: "项目议标评定标准",
-          fullScore: 100,
-          remarks: "这是一个备注",
-        },
-      ],
+      tableData: [],
+      ids: "",
+      id: "",
+      type: 0,
     };
   },
   computed: {},
@@ -187,7 +197,6 @@ export default {
     decrypt,
     reviewResults,
     uploadVideo,
-    newSelectRule,
     newEvaluateStandard,
     magEvaluateStandard,
     topNav,
@@ -213,7 +222,7 @@ export default {
     );
     this.activeName = obj.name;
     this.thisNavList = data;
-    // this.getList();
+    this.getList();
   },
   methods: {
     getWidth() {
@@ -226,7 +235,86 @@ export default {
       this.until.href(url);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
+      this.pageNo = val;
+      this.getList();
+    },
+    async getList() {
+      let query = {
+        r: [{ n: "a1", t: "and", w: [{ k: "nm", v: "", m: "LK" }] }],
+        o: [{ k: "crtTm", t: "desc" }],
+        p: { n: 1, s: 10 },
+      };
+      query.p.n = this.pageNo;
+      query.p.s = this.pageSize;
+      query.r[0].w[0].v = this.input;
+
+      // 选取列表
+      let data = await this.api.getEvaStandardList(
+        encodeURIComponent(JSON.stringify(query))
+      );
+      this.tableData = data.data.list;
+      this.total = data.page.total;
+    },
+    Search() {
+      this.getList();
+    },
+    newEvaStandard() {
+      this.showNewEvaluateStandard = true;
+      this.type = 1;
+    },
+    // 修改
+    EditExpertBase(id) {
+      this.showNewEvaluateStandard = true;
+      this.id = id.toString();
+      this.type = 2;
+    },
+    // 进入子列表
+    toSonList(id) {
+      this.showMagEvaluateStandard = true;
+      this.id = id.toString();
+    },
+    // 删除
+    DelSelectRule(ids) {
+      this.$confirm("确认删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          return this.api.delEvaStandard({ ids });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        })
+        .then((res) => {
+          if (res.code == 0) {
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            this.getList();
+          } else {
+            this.$message({
+              type: "error",
+              message: "删除失败!",
+            });
+          }
+        });
+    },
+    // 多选框选中项变化
+    handleSelectionChange(val) {
+      if (val.length != 0) {
+        this.isDel = true;
+      } else {
+        this.isDel = false;
+      }
+      console.log(3453465, this.isDel);
+      let ids = val.map((item) => item.id);
+      this.ids = ids.join(",");
     },
   },
 };
@@ -290,6 +378,17 @@ export default {
           .margin_right {
             margin-right: 15px;
           }
+        }
+        .table_box::-webkit-scrollbar {
+          display: none; /* Chrome Safari */
+        }
+        .table_box {
+          width: 100%;
+          max-height: 524px;
+          overflow-y: auto;
+          overflow-x: hidden;
+          scrollbar-width: none; /* firefox */
+          -ms-overflow-style: none; /* IE 10+ */
         }
         .Footer {
           display: flex;

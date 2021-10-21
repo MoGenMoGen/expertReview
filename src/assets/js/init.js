@@ -9,30 +9,39 @@ require('../css/common.css')
 require('element-ui/lib/theme-chalk/index.css')
 
 import ElementUI from 'element-ui';
+
+
+import Viewer from 'v-viewer'
+import 'viewerjs/dist/viewer.css'
+Vue.use(Viewer, {
+    defaultOptions: {
+        zIndex: 9999
+    }
+})
 // {
- //    Pagination,
- //    Input,
- //    InputNumber,
- //    Select,
- //    Option,
- //    OptionGroup,
- //    Button,
- //    ButtonGroup,
- //    Table,
- //    TableColumn,
- //    DatePicker,
- //    Form,
- //    FormItem,
- //    Alert,
- //    Icon,
- //    Row,
- //    Col,
- //    Loading,
- //    MessageBox,
- //    Message,
- //    Notification,
-	// NavMenu
-	
+//    Pagination,
+//    Input,
+//    InputNumber,
+//    Select,
+//    Option,
+//    OptionGroup,
+//    Button,
+//    ButtonGroup,
+//    Table,
+//    TableColumn,
+//    DatePicker,
+//    Form,
+//    FormItem,
+//    Alert,
+//    Icon,
+//    Row,
+//    Col,
+//    Loading,
+//    MessageBox,
+//    Message,
+//    Notification,
+// NavMenu
+
 // }
 
 // Vue.use(Pagination);
@@ -63,6 +72,6 @@ export default {
         Vue.prototype.until = new until();
         Vue.prototype.reg = new reg();
         Vue.prototype.query = query;
-		// Vue.prototype.navList = [{name:'首页',url:'./index.html',canClose:false}];
+        // Vue.prototype.navList = [{name:'首页',url:'./index.html',canClose:false}];
     }
 };

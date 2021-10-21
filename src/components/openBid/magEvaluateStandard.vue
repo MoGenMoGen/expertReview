@@ -15,37 +15,47 @@
           alt=""
         />
       </div>
-      <div class="row1">评定指标名称：项目议标评定标准</div>
+      <div class="row1">评定指标名称：{{ title }}</div>
       <div class="row2">
         <el-input
           placeholder="评议指标"
           style="margin-right: 10px; width: 202px"
-          v-model="input"
+          v-model="serachValue"
           clearable
         >
         </el-input>
-        <button class="btn margin_right" style="border: 1px solid #e0e0e0">
+        <button
+          class="btn margin_right"
+          style="border: 1px solid #e0e0e0;cursor:pointer;"
+          @click="Search"
+        >
           查询
         </button>
         <button
           class="btn margin_right"
-          style="background: #409eff; color: #fff; border: none"
+          style="background: #409eff; color: #fff; border: none;cursor:pointer;"
           @click="showEvaMagRule = true"
         >
           新增
         </button>
-        <button
-
+        <el-button
+          :disabled="!isDel"
           class="btn margin_right"
-          style="background: #fab6b6; color: #fff; border: none"
+          :style="{
+            background: isDel ? 'red' : '#fab6b6',
+            color: '#fff',
+            border: 'none',
+          }"
+          @click="DelSonItem(ids)"
         >
           删除
-        </button>
-        <button class="btn margin_right" style="border: 1px solid #e0e0e0">
+        </el-button>
+        <!-- <button class="btn margin_right" style="border: 1px solid #e0e0e0">
           导出
-        </button>
+        </button> -->
       </div>
       <el-table
+        @selection-change="handleSelectionChange"
         :data="tableData"
         style="width: 100%; margin-top: 10px"
         border
@@ -60,12 +70,7 @@
         }"
       >
         <el-table-column type="selection" min-width="48"> </el-table-column>
-        <el-table-column
-          label="评定指标"
-          prop="target"
-          sortable
-          min-width="200"
-        >
+        <el-table-column label="评定指标" prop="nm" sortable min-width="200">
         </el-table-column>
         <el-table-column
           prop="weight"
@@ -81,35 +86,21 @@
           min-width="160"
         >
         </el-table-column>
-        <el-table-column
-          prop="intro"
-          label="评分说明"
-          sortable
-          min-width="204"
-        >
+        <el-table-column prop="tips" label="评分说明" sortable min-width="204">
         </el-table-column>
-         <el-table-column
-          prop="standard"
-          label="评分标准"
-          sortable
-          min-width="204"
-        >
+        <el-table-column prop="norm" label="评分标准" sortable min-width="204">
         </el-table-column>
-          <el-table-column
-          prop="sort"
-          label="排序(正序)"
-          sortable
-          min-width="144"
-        >
+        <el-table-column prop="seq" label="排序(正序)" sortable min-width="144">
         </el-table-column>
         <el-table-column label="操作" min-width="96">
-          <template>
+          <template slot-scope="scope">
             <i
               class="el-icon-edit"
               style="color: #409eff; margin-right: 10px; cursor: pointer"
               @click="showRuleDetail = true"
             ></i>
             <i
+              @click="DelSonItem(scope.row.id)"
               class="el-icon-delete"
               style="color: #409eff; cursor: pointer"
             ></i>
@@ -155,13 +146,16 @@ import newEvaluateManageRule from "components/openBid/newEvaluateManageRule.vue"
 export default {
   data() {
     return {
+      title: "",
       num: 1,
       value: "",
-      input: "",
+      serachValue: "",
       textarea: "",
       pageNo: 1,
       pageSize: 10,
       total: 0,
+      ids: "",
+      isDel: false,
       showEvaMagRule: false,
       options: [
         {
@@ -177,32 +171,7 @@ export default {
           label: "北京烤鸭",
         },
       ],
-      tableData: [
-        {
-          target: "项目报价",
-          weight: "30%",
-          fullScore: 100,
-          intro:'快乐即可了解了解了解',
-          standard:"发动机是老公就是大概了解了",
-          sort:1
-        },
-           {
-          target: "项目报价",
-          weight: "30%",
-          fullScore: 100,
-          intro:'快乐即可了解了解了解',
-          standard:"发动机是老公就是大概了解了",
-          sort:1
-        },
-           {
-          target: "项目报价",
-          weight: "30%",
-          fullScore: 100,
-          intro:'快乐即可了解了解了解',
-          standard:"发动机是老公就是大概了解了",
-          sort:1
-        },
-      ],
+      tableData: [],
     };
   },
   props: {
@@ -210,6 +179,7 @@ export default {
       type: Number,
       default: 0,
     },
+    id: { default: "", type: String },
   },
   methods: {
     handleClick(row) {
@@ -219,17 +189,93 @@ export default {
       this.$parent.showMagEvaluateStandard = false;
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
+      this.pageNo = val;
+      this.getList();
+    },
+    Search() {
+      this.getList();
+    },
+    async getList() {
+      let query = {
+        r: [
+          {
+            n: "a1",
+            t: "and",
+            w: [
+              { k: "svsId", v: "", m: "LK" },
+              { k: "nm", v: "", m: "LK" },
+            ],
+          },
+        ],
+        o: [{ k: "seq", t: "asc" }],
+        p: { n: 1, s: 10 },
+      };
+      query.p.n = this.pageNo;
+      query.p.s = this.pageSize;
+      query.r[0].w[0].v = this.id;
+      query.r[0].w[1].v = this.serachValue;
+      // 选取列表
+      let data = await this.api.getEvaStandardSonList(
+        encodeURIComponent(JSON.stringify(query))
+      );
+      this.tableData = data.data.list;
+      this.tableData.map(item=>item.weight=`${item.weight}%`)
+      this.total = data.page.total;
+    },
+    // 删除评定指标子列表项
+    DelSonItem(ids) {
+      this.$confirm("确认删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          return this.api.delEvaStandardSonitem({ ids });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        })
+        .then((res) => {
+          if (res.code == 0) {
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            this.getList();
+          } else {
+            this.$message({
+              type: "error",
+              message: "删除失败!",
+            });
+          }
+        });
+    },
+    // 多选框选中项变化
+    handleSelectionChange(val) {
+      if (val.length != 0) {
+        this.isDel = true;
+      } else {
+        this.isDel = false;
+      }
+      let ids = val.map((item) => item.id);
+      this.ids = ids.join(",");
     },
   },
   components: {
     newEvaluateManageRule,
   },
-  mounted() {
+  async mounted() {
     let { bWidth, width } = this.until.getWidth();
     //   this.bWidth = bWidth;
     this.width = width;
     console.log("width", this.width);
+    let data = await this.api.EvaStandardDetail(this.id);
+    this.title = data.nm;
+    this.getList();
   },
 };
 </script>

@@ -149,7 +149,9 @@ export default {
     closeMask() {
       this.$parent.showEvaMagRule = false;
     },
-    handleChange() {},
+    handleChange1() {},
+    handleChange2() {},
+    handleChange3() {},
   },
   mounted() {
     let { bWidth, width } = this.until.getWidth();
