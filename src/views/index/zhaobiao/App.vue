@@ -1,6 +1,6 @@
 <template>
 	<div id="home" :style="{width:bWidth + 'px'}" v-loading="loading">
-		<div class="mask" @click="closeMask" v-if="newShow==true">
+		<div class="mask" @click="closeMask" v-if="newShow==true||showModify==true">
 		  <div class="table_box" @click.stop="">
 		    <div class="top">
 		      <p style="font-size: 20px">新增项目</p>
@@ -50,7 +50,7 @@
 			    ><span>项目评定标准</span>
 			  </div>
 			  <div class="right">
-			        <el-select v-model="svs"  clearable filterable placeholder="项目评定标准"  style="margin-left: 12px;" @change="select1">
+			        <el-select v-model="svsId"  clearable filterable placeholder="项目评定标准"  style="margin-left: 12px;" @change="select1">
 			          <el-option
 			            v-for="item in options"
 			            :key="item.nm"
@@ -196,6 +196,23 @@
 				  <span style="color: red; margin-right: 5px; display: inline-block"
 				    >* </span
 				  >
+			   <span>联系人</span>
+			  </div>
+			  <div class="right">
+			    <el-input
+			      v-model="linkman"
+			      class="margin_right"
+			      clearable
+			      placeholder="联系人"
+			    >
+			    </el-input>
+			  </div>
+			</div>
+			<div class="row2">
+			  <div class="title">
+				  <span style="color: red; margin-right: 5px; display: inline-block"
+				    >* </span
+				  >
 			   <span>联系电话</span>
 			  </div>
 			  <div class="right">
@@ -204,6 +221,23 @@
 			      class="margin_right"
 			      clearable
 			      placeholder="联系电话"
+			    >
+			    </el-input>
+			  </div>
+			</div>
+			<div class="row2">
+			  <div class="title">
+				  <span style="color: red; margin-right: 5px; display: inline-block"
+				    >* </span
+				  >
+			   <span>预算金额（万元）</span>
+			  </div>
+			  <div class="right">
+			    <el-input
+			      v-model="budget"
+			      class="margin_right"
+			      clearable
+			      placeholder="预算金额(万元)"
 			    >
 			    </el-input>
 			  </div>
@@ -273,12 +307,12 @@
 			    ><span>招标范围</span>
 			  </div>
 			  <div class="right">
-			        <el-select v-model="viewRangeNm" clearable filterable placeholder="招标范围(机构类型)"  style="margin-left: 12px;">
+			        <el-select v-model="viewRangeNm" clearable filterable placeholder="招标范围(机构类型)"  style="margin-left: 12px;" @change="select8">
 			          <el-option
 			            v-for="item in optionsFive"
 			            :key="item.nm"
 			            :label="item.nm"
-			            :value="item.cd">
+			            :value="item">
 			          </el-option>
 			        </el-select>
 			  </div>
@@ -293,7 +327,7 @@
 			          <el-select v-model="orgEnterIdsList" multiple filterable placeholder="招标范围(机构)" style="margin-left: 12px;" @change="select5">
 			            <el-option
 			              v-for="item in optionsSix"
-			              :key="item.company"
+			              :key="item.id"
 			              :label="item.company"
 			              :value="item.id">
 			            </el-option>
@@ -307,7 +341,7 @@
 			    ><span>专家选取规则</span>
 			  </div>
 			  <div class="right">
-			        <el-select v-model="rule" placeholder="专家选取规则模板"  clearable filterable style="margin-left: 12px;" @change="select6">
+			        <el-select v-model="ruleId" placeholder="专家选取规则模板"  clearable filterable style="margin-left: 12px;" @change="select6">
 			          <el-option
 			            v-for="item in optionsSeven"
 			            :key="item.nm"
@@ -328,7 +362,7 @@
 			          <el-select v-model="expertIdsList" multiple filterable placeholder="已选专家" style="margin-left: 12px;"@change="select7">
 			            <el-option
 			              v-for="item in optionsEight"
-			              :key="item.realNm"
+			              :key="item.id"
 			              :label="item.realNm"
 			              :value="item.id">
 			            </el-option>
@@ -379,152 +413,7 @@
 		    </div>
 		  </div>
 		</div>
-		<div class="mask" @click="closeMask" v-if="showModify==true">
-		  <div class="table_box" @click.stop="">
-		    <div class="top">
-		      <p style="font-size: 20px">修改项目</p>
-		      <img
-		        @click="closeMask"
-				 src="~assets/img/close.png"
-		        style="width: 25px; height: 25px;cursor: pointer;"
-		        alt=""
-		      />
-		    </div>
-		    <div class="row2">
-		      <div class="title">
-		        <span style="color: red; margin-right: 5px; display: inline-block"
-		          >* </span
-		        ><span>项目名称</span>
-		      </div>
-		      <div class="right">
-		        <el-input
-		          v-model="input1"
-		          class="margin_right"
-		          clearable
-		          placeholder="项目名称"
-		        >
-		        </el-input>
-		      </div>
-		    </div>
-			<div class="row2">
-			  <div class="title">
-			    <span style="color: red; margin-right: 5px; display: inline-block"
-			      >* </span
-			    ><span>项目编号</span>
-			  </div>
-			  <div class="right">
-			    <el-input
-			      v-model="input1"
-			      class="margin_right"
-			      clearable
-			      placeholder="项目编号"
-			    >
-			    </el-input>
-			  </div>
-			</div>
-			<div class="row2">
-			  <div class="title">
-			    <span style="color: red; margin-right: 5px; display: inline-block"
-			      >* </span
-			    ><span>开始时间</span>
-			  </div>
-			  <div class="right">
-			     <el-date-picker
-			       v-model="date1"
-			       type="date"
-			       placeholder="投标开始时间">
-			     </el-date-picker>
-			    </el-input>
-			  </div>
-			</div>
-			<div class="row2">
-			  <div class="title">
-			    <span style="color: red; margin-right: 5px; display: inline-block"
-			      >* </span
-			    ><span>截止时间</span>
-			  </div>
-			  <div class="right">
-			     <el-date-picker
-			       v-model="date1"
-			       type="date"
-			       placeholder="投标截止时间">
-			     </el-date-picker>
-			    </el-input>
-			  </div>
-			</div>
-			<div class="row2">
-			  <div class="title">
-			   <span>预算金额</span>
-			  </div>
-			  <div class="right">
-			    <el-input
-			      v-model="input1"
-			      class="margin_right"
-			      clearable
-			      placeholder="预算金额(万元)"
-			    >
-			    </el-input>
-			  </div>
-			</div>
-			<div class="row2">
-			  <div class="title">
-			   <span>保证金</span>
-			  </div>
-			  <div class="right">
-			  <el-radio-group v-model="radio" style="margin-left: 12px;">
-			     <el-radio :label="1">是</el-radio>
-			     <el-radio :label="2">否</el-radio>
-			   </el-radio-group>
-			  </div>
-			</div>
-			<div class="row2" style="margin-top: -20px;">
-			  <div class="title">
-			   <span>招标文件</span>
-			  </div>
-			  <div class="right" style="padding-top: 30px;">
-				<el-form :model="form" style="margin-left: 12px; display: flex; align-items: center;">
-				  <el-form-item >
-				    <el-upload ref="uploadExcel" action="/general/oss/upload" :auto-upload="true"
-				       :on-change="fileChange" :on-success="handleSuccess" :on-remove="handleRemove"
-				      :on-error="handleError" :file-list="fileInfo" :on-preview="HandFilePreView">
-				      <el-button size="small" plain style="width: 100px;height: 30px;">选择文件</el-button>
-				    </el-upload>
-				  </el-form-item>
-				</el-form>
-			  </div>
-			</div>
-			
-			
-		    <div class="btn">
-		      <el-button
-		        style="
-		          background: #2778be;
-		          color: #fff;
-		          margin-right: 20px;
-		          padding: 10px 25px;
-		          border-radius: 4px;
-		        "
-		        @click="handleClick(scope.row)"
-		        type="text"
-		        size="small"
-		        >确定</el-button
-		      >
-		      <el-button
-		        style="
-		          background: #fff;
-		          color: #333;
-		          border: 1px solid #dddddd;
-		          padding: 10px 25px;
-		          border-radius: 4px;
-		        "
-		        @click="closeMask"
-		        type="text"
-		        size="small"
-		        >取消</el-button
-		      >
-		    </div>
-		  </div>
-		</div>	
+		
 		<my-header :width="width" :bWidth="bWidth"></my-header>
 		<div class="container" :style="{width:bWidth + 'px'}">
 			<leftMenu tabIndex='1-1'></leftMenu>
@@ -597,7 +486,7 @@
 									<br>
 									<el-button type="text" size="small" style="color: #E4393C;" @click='toModify(scope.row)'>修改</el-button>
 									<br>
-									<el-button type="text" size="small" style="color: #909090;">删除</el-button>
+									<el-button type="text" size="small" style="color: #909090;"@click='toDelite(scope.row)'>删除</el-button>
 								</template>
 							</el-table-column>
 						</el-table>
@@ -611,7 +500,7 @@
 				<div class="navBar" v-if="showDetail==true">
 					<el-tabs v-model="activeNameTwo" @tab-click="changeNav">
 						<el-tab-pane label="项目详情" name="first">
-							<detail></detail>
+							<detail :detailId='detailId'></detail>
 						</el-tab-pane>
 						<el-tab-pane label="招标变更/澄清" name="second">
 							<change></change>
@@ -635,6 +524,9 @@
 	export default {
 		data() {
 			return {
+				detailId:'',
+				list:[],
+				currentPage:1,
 				pageNum:1,
 				formTwo:{
 					
@@ -644,6 +536,7 @@
 				nm:'',//项目名称
 				svs:'',//项目评定标准name
 				svsId:'',//项目评定标准id
+				budget:'',//预算金额
 				procurementMethodNm:[],//采购方式name
 				procurementMethodCd:[],//采购方式id
 				bidTypesNm:'',//项目需求类型
@@ -654,6 +547,7 @@
 				bidEndTm:'',//截标时间
 				publisher:'',//发布人
 				mob:'',//联系电话
+				linkman:'',//联系人
 				needDeposit:0,//是否需缴纳保证金
 				status:0,//发布状态
 				svsOn:0,//专家评定开关
@@ -682,9 +576,8 @@
 				loading: false,
 				bWidth: 0,
 				width: 0,
-				list: [],
 				pageNo: 1,
-				pageSize: 10,
+				pageSize: 4,
 				total: 0,
 				tabIndex: '',
 				value: "",
@@ -788,18 +681,21 @@
 			this.api.getOrgEnterList(this.query.toEncode(query4)).then(res=>{
 				this.optionsSix=res.list
 			})
-			//获取招标列表
-			let query5=this.query.new()
-			this.query.toO(query5,'crtTm','desc')
-			this.query.toP(query5,this.pageNum,'4')
-			this.api.getBidPage(this.query.toEncode(query5)).then(res=>{
-				this.tableData=res.list
-				console.log('111',res);
-			})
-
+			this.getList()
 
 		},
 		methods: {
+			//获取招标列表
+			getList(){
+				let query5=this.query.new()
+				this.query.toO(query5,'crtTm','desc')
+				this.query.toP(query5,this.pageNo,this.pageSize)
+				this.api.getBidPage(this.query.toEncode(query5)).then(res=>{
+					this.tableData=res.data.list
+					this.total=res.page.total
+					console.log('111',res);
+				})
+			},
 			getWidth() {
 				let {
 					bWidth,
@@ -819,10 +715,53 @@
 			tolook(row) {
 				console.log('21', row);
 				this.showDetail = true
+				this.detailId=row.id
 			},
 			//修改
 			toModify(row){
 				this.showModify=true
+				this.api.getBidInfo(row.id).then(res=>{
+					this.cd=res.data.cd
+					this.budget=res.data.budget
+					this.nm=res.data.nm
+					this.svsId=res.data.svsId
+					this.purchasingUnit=res.data.purchasingUnit
+					this.procurementMethodNm=res.data.procurementMethodNm
+					this.procurementMethodCd=res.data.procurementMethodCd
+					this.bidTypesCd=res.data.bidTypesCd
+					this.bidTypesNm=res.data.bidTypesNm
+					this.publishTm=res.data.publishTm
+				    this.completeTm=res.data.completeTm
+				    this.bidOpenTm=res.data.bidOpenTm
+					this.bidEndTm=res.data.bidEndTm
+					this.publisher=res.data.publisher
+					this.mob=res.data.mob
+					this.linkman=res.data.linkman
+					this.needDeposit=res.data.needDeposit
+					this.status=res.data.status
+					this.svsOn=res.data.svsOn
+					let modelList=res.data.attachment.split(',')
+					this.getInfo(modelList)
+					for(let i=0;i<this.list.length;i++){
+						this.fileInfo.push({
+							name:this.list[i].fileNm,
+							url:this.list[i].url
+						})
+					}
+				
+					this.viewRangeNm=res.data.viewRangeNm
+					this.viewRangeCd=res.data.viewRangeCd
+					this.orgEnterIds=res.data.orgEnterIds
+					this.orgEnterIdsList=res.data.orgEnterIds.split(',').map(Number)
+					this.ruleId=res.data.ruleId
+					this.expertIds=res.data.expertIds
+						this.expertIdsList=res.data.expertIds.split(',').map(Number)
+					this.rmks=res.data.rmks
+				})
+			},
+			toDelite(row){
+				this.api.getBidDel({ids:row.id})
+				this.getList()
 			},
 			changeNav(tab, event) {
 				console.log(tab, event);
@@ -833,14 +772,48 @@
 			closeMask(){
 				this.newShow=false
 				this.showModify=false
+				this.purchasingUnit=''//采购单位
+				this.cd=''//项目工程编号
+				this.nm=''//项目名称
+				this.svs=''//项目评定标准name
+				this.svsId=''//项目评定标准id
+				this.budget=''//预算金额
+				this.procurementMethodNm=[]//采购方式name
+				this.procurementMethodCd=[]//采购方式id
+				this.bidTypesNm=''//项目需求类型
+				this.bidTypesCd=''//项目需求id
+				this.publishTm=''//发布时间
+				this.completeTm=''//完成时间
+				this.bidOpenTm=''//开标时间
+				this.bidEndTm=''//截标时间
+				this.publisher=''//发布人
+				this.mob=''//联系电话
+				this.linkman=''//联系人
+				this.needDeposit=0//是否需缴纳保证金
+				this.status=0//发布状态
+				this.svsOn=0//专家评定开关
+				this.attachment=''//附件上传
+				this.viewRangeNm=''//招标范围name（机构类型）
+				this.viewRangeCd=''//招标范围id（机构类型）
+				this.orgEnterIdsList=[]//招标范围name（机构）
+				this.orgEnterIds=''//招标范围id（机构）
+				this.expertIdsList=[]//专家name
+				this.expertIds=''//专家id
+				this.rule=''//专家选取规则模板name
+				this.ruleId=''//专家选取规则模板id
+				this.rmks=''//备注
+				this.list=[]
+				this.fileInfo=[]
 			},
 			confirmTo(){
 				let obj={
 					cd:this.cd,
+					budget:this.budget,
 					nm:this.nm,
 					svsId:this.svsId,
 					purchasingUnit:'',
 					procurementMethodNm:'',
+					procurementMethodCd:'',
 					bidTypesCd:this.bidTypesCd,
 					bidTypesNm:this.bidTypesNm,
 					publishTm:this.publishTm,
@@ -849,6 +822,7 @@
 					bidEndTm:this.bidEndTm,
 					publisher:this.publisher,
 					mob:this.mob,
+					linkman:this.linkman,
 					needDeposit:this.needDeposit,
 					status:this.status,
 					svsOn:this.svsOn,
@@ -865,6 +839,68 @@
 				this.api.postBidAdd(obj).then(res=>{
 					
 				})
+			},
+			async getInfo(info) {
+				this.list = []
+				let data = info
+				let data1 = []
+				let fileList2 = []
+				if (data.length > 0) {
+					data.forEach(v => {
+						let type = v.split('.')[v.split('.').length - 1]
+						let nmList = v.split('.com/') //分割出url后的内容
+						let nm = ""
+						nmList.forEach((j, z) => { //防止文件名中有 .com/ 所以循环加入
+							if (z != 0) {
+								nm += j
+							}
+						})
+						nmList = nm.split('_') //分割随机字符后的内容
+						nm = ""
+						nmList.forEach((j, z) => { //防止文件名中有 _ 所以循环
+							if (z != 0) {
+								nm += j
+							}
+						})
+						nm = nm.split('.' + type)[0]
+						if (type == 'pdf') {
+							fileList2.push({
+								url: v,
+								img: this.pdf,
+								'fileNm': nm
+							})
+						} else if (type == 'doc' || type == 'docx') {
+							fileList2.push({
+								url: v,
+								img: this.word,
+								'fileNm': nm
+							})
+						} else if (type == 'ppt' || type == 'pptx') {
+							fileList2.push({
+								url: v,
+								img: this.ppt,
+								'fileNm': nm
+							})
+						} else if (type == 'xls' || type == 'xlsx') {
+							fileList2.push({
+								url: v,
+								img: this.excel,
+								'fileNm': nm
+							})
+						} else {
+							fileList2.push({
+								url: v,
+								img: v,
+								'fileNm': nm
+							})
+						}
+			
+					})
+				}
+				console.log(fileList2)
+				this.list = fileList2
+				console.log('151', this.list)
+			
 			},
 			fileChange(file, fileList) {
 			  this.formTwo.file = file.raw
@@ -909,6 +945,10 @@
 			select7(val){
 				this.expertIds=val.join(',')
 			},
+			select8(val){
+				this.viewRangeCd=val.cd
+				this.viewRangeNm=val.nm
+			},
 			pick1(val){
 			},
 			pick2(val){
@@ -928,7 +968,9 @@
 				}
 			},
 			handleCurrentChange(val){
-				
+				console.log(val);
+				this.pageNo=`${val}`
+				this.getList()
 			}
 			
 			

@@ -362,11 +362,34 @@ class api {
 	getBidPage(data){
 		return new Promise(resolve => {
 		    get('/ship/bid/page?query='+data).then(res=>{
-		        resolve(res.data)
+		        resolve(res)
 		    })
 		})
 	}
-
+	//获取招标详情
+	getBidInfo(data){
+		return new Promise(resolve => {
+		    get('/ship/bid/info/'+data).then(res=>{
+		        resolve(res)
+		    })
+		})
+	}
+	//招标审核
+	postBidExamine(data){
+		return new Promise(resolve => {
+		    post('/ship/bid/examine',data).then(res=>{
+		        resolve(res)
+		    })
+		})
+	}
+	//招标列表删除
+	getBidDel(data){
+		return new Promise(resolve => {
+		    get('/ship/bid/del',data).then(res=>{
+		        resolve(res)
+		    })
+		})
+	}
 
 }
 
