@@ -498,6 +498,47 @@ class api {
                 })
         })
     }
+     // 新增评定标准子列表项
+     newEvaStandardSonItem(data) {
+        return new Promise(resolve => {
+            post('/ship/bidSvsItem/add', data).then(res => {
+                resolve(res)
+            })
+        })
+    }
+     // 评定标准子列表项详情
+     EvaStandardSonItemDetail(id) {
+        return new Promise(resolve => {
+            get('/ship/bidSvsItem/info/' + id).then(res => {
+                resolve(res.data)
+            })
+        })
+    }
+     // 修改标准子列表项
+     modifyEvaStandardSonItem(data) {
+        return new Promise(resolve => {
+            post('/ship/bidSvsItem/upd', data).then(res => {
+                resolve(res)
+            })
+        })
+    }
+    // 在线开标列表
+    onlineBidList(data) {
+        return new Promise(resolve => {
+            get('/ship/bid/evaluation?query=' + data).then(res => {
+                resolve(res)
+            })
+        })
+    }
+    // 在线开标列表项详情
+    onlineBidDetail(id) {
+        return new Promise(resolve => {
+            get('/ship/bid/infoWithApply/' + id).then(res => {
+                resolve(res.data)
+            })
+        })
+    }
+
 }
 
 export { api };
