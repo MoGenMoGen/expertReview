@@ -192,9 +192,6 @@ export default {
 	  if (key == '0') {
 		this.until.href('./index.html')
 	  }
-      if (key == "2") {
-        this.until.href("/views/index/onlineBidEvaluate.html");
-      }
       if (key == "1-1") {
         this.until.href("/views/index/zhaobiao.html");
       }

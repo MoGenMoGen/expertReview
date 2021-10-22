@@ -2,7 +2,7 @@
 	<div id="home" :style="{width:bWidth + 'px'}" v-loading="loading">
 		<my-header :width="width" :bWidth="bWidth"></my-header>
 		<div class="container" :style="{width:bWidth + 'px'}">
-			<leftMenu tabIndex='2-1'></leftMenu>
+			<leftMenu tabIndex='2-2'></leftMenu>
 			<div class="right">
 				<topNav :activeName='activeName' :list="thisNavList"></topNav>
 				<div class="content">

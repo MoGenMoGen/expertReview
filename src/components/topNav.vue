@@ -66,6 +66,7 @@
 						url: './index.html',
 						canClose: false
 					})
+					this.list = objList
 					this.until.seSave('navList', JSON.stringify(objList))
 				} else if (e == 'all') {
 					let list = [{
