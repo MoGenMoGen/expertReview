@@ -7,6 +7,7 @@
       <div class="rightMenu" :style="{ width: bWidth - 200 + 'px' }">
         <topNav :activeName="activeName" :list="thisNavList"></topNav>
         <div class="right_content">
+          <onlineBidDetail v-if="showDetail" :id="id"> </onlineBidDetail>
           <div class="search_box">
             <!-- <div> -->
             <!-- <div class="search_item"> -->
@@ -40,7 +41,12 @@
             <!-- </div> -->
             <!-- </div> -->
             <button class="btn_query">查询</button>
-            <button class="btn_evaluation">在线评标</button>
+            <button
+              class="btn_evaluation"
+              @click="toPage('./onlineBidEvaluate.html')"
+            >
+              在线评标
+            </button>
           </div>
           <div class="son_tablist">
             <div class="left">
@@ -95,7 +101,7 @@
                   {{ item1.st }}
                 </div>
 
-                <div class="td">查看</div>
+                <div class="td" @click="toDetail(item1.id)">查看</div>
               </div>
               <div v-show="item1.isshow">
                 <div class="th other_th">
@@ -137,6 +143,17 @@
               </div>
             </div>
           </div>
+          <!-- 分页 -->
+          <div class="Footer">
+            <el-pagination
+              background
+              @current-change="handleCurrentChange"
+              :page-size="pageSize"
+              layout="prev, pager, next, jumper"
+              :total="total"
+            >
+            </el-pagination>
+          </div>
         </div>
       </div>
     </div>
@@ -153,17 +170,29 @@ import decrypt from "@/components/onlineBidEvaluate/decrypt";
 import reviewResults from "@/components/onlineBidEvaluate/reviewResults";
 import uploadVideo from "@/components/onlineBidEvaluate/uploadVideo";
 import topNav from "@/components/topNav";
+import onlineBidDetail from "components/openBid/onlineBidDetail";
 
 export default {
   data() {
     return {
       loading: false,
+      showDetail: false,
+      id: "",
       bWidth: 0,
       width: 0,
       list: [],
       pageNo: 1,
       pageSize: 10,
       total: 0,
+      SearchInfo: {
+        cd: "", //编号
+        nm: "", //项目名称
+        purchasingUnit: "", //采购单位
+        expertIds: "", //专家id
+        procurementMethodCd: "", //采购方式
+        procurementMethodNm: "", //采购方式
+        status: 1, //(0:未发布, 1:已发布)
+      },
       input: "",
       value: "",
       options: [
@@ -226,6 +255,7 @@ export default {
     reviewResults,
     uploadVideo,
     topNav,
+    onlineBidDetail,
   },
   async mounted() {
     // if(!this.until.seGet('userInfo')){
@@ -247,7 +277,7 @@ export default {
     );
     this.activeName = obj.name;
     this.thisNavList = data;
-    // this.getList();
+    this.getList();
   },
   methods: {
     getWidth() {
@@ -261,6 +291,55 @@ export default {
     //页面跳转
     toPage(url) {
       this.until.href(url);
+    },
+    handleCurrentChange(val) {
+      // console.log(`当前页: ${val}`);
+      this.pageNo = val;
+      this.getList();
+    },
+    async getList() {
+      let query = {
+        r: [
+          {
+            n: "a1",
+            t: "and",
+            w: [
+              { k: "cd", v: "", m: "LK" },
+              { k: "nm", v: "", m: "LK" },
+              { k: "purchasingUnit", v: "", m: "LK" },
+              { k: "expertIds", v: "", m: "LK" },
+              { k: "procurementMethodCd", v: "", m: "LK" },
+              { k: "status", v: 1, m: "LK" },
+            ],
+          },
+        ],
+        o: [{ k: "crtTm", t: "desc" }],
+        p: { n: 1, s: 10 },
+      };
+      query.p.n = this.pageNo;
+      query.p.s = this.pageSize;
+      query.r[0].w[0].v = this.SearchInfo.cd;
+      query.r[0].w[1].v = this.SearchInfo.nm;
+      query.r[0].w[2].v = this.SearchInfo.purchasingUnit;
+      query.r[0].w[3].v = this.SearchInfo.expertIds;
+      query.r[0].w[4].v = this.SearchInfo.procurementMethodCd;
+      query.r[0].w[5].v = this.SearchInfo.status;
+
+      // 选取列表
+      let data = await this.api.onlineBidList(
+        encodeURIComponent(JSON.stringify(query))
+      );
+      // this.tableData = data.data.list;
+      // this.total = data.page.total;
+      console.log(1111111, data);
+    },
+    Search() {
+      this.getList();
+    },
+    toDetail(id) {
+      // this.id=id.toString();
+      this.id = "5192675191477248";
+      this.showDetail = true;
     },
   },
 };
@@ -360,6 +439,7 @@ export default {
           font-weight: 400;
           color: #ffffff;
           border: none;
+          cursor: pointer;
         }
       }
       .son_tablist {
@@ -380,6 +460,14 @@ export default {
         }
       }
       .tablist {
+        width: 100%;
+        max-height: 524px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-width: none; /* firefox */
+        -ms-overflow-style: none; /* IE 10+ */
+        box-sizing: border-box;
+
         padding: 20px 0px;
         .th {
           background: #f8f8f8;
@@ -440,6 +528,14 @@ export default {
             cursor: pointer;
           }
         }
+      }
+      .tablist::-webkit-scrollbar {
+        display: none; /* Chrome Safari */
+      }
+      .Footer {
+        display: flex;
+        justify-content: center;
+        margin: 44px 0 20px;
       }
     }
   }

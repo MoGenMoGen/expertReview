@@ -26,15 +26,20 @@
         </el-input>
         <button
           class="btn margin_right"
-          style="border: 1px solid #e0e0e0;cursor:pointer;"
+          style="border: 1px solid #e0e0e0; cursor: pointer"
           @click="Search"
         >
           查询
         </button>
         <button
           class="btn margin_right"
-          style="background: #409eff; color: #fff; border: none;cursor:pointer;"
-          @click="showEvaMagRule = true"
+          style="
+            background: #409eff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+          "
+          @click="newSonItem"
         >
           新增
         </button>
@@ -97,7 +102,7 @@
             <i
               class="el-icon-edit"
               style="color: #409eff; margin-right: 10px; cursor: pointer"
-              @click="showRuleDetail = true"
+              @click="EditEvaStandard(scope.row.id)"
             ></i>
             <i
               @click="DelSonItem(scope.row.id)"
@@ -136,7 +141,13 @@
     </div>
     <div>
       <!-- 新增同一评定标准->管理规则 -->
-      <newEvaluateManageRule v-show="showEvaMagRule"></newEvaluateManageRule>
+      <newEvaluateManageRule
+        v-if="showEvaMagRule"
+        :svsId="id"
+        :editId="editId"
+        :type="type"
+        @SaveAndUpdate="getList"
+      ></newEvaluateManageRule>
     </div>
   </div>
 </template>
@@ -146,6 +157,9 @@ import newEvaluateManageRule from "components/openBid/newEvaluateManageRule.vue"
 export default {
   data() {
     return {
+      // 默认为0，编辑为2
+      type: 0,
+      editId: "",
       title: "",
       num: 1,
       value: "",
@@ -220,7 +234,7 @@ export default {
         encodeURIComponent(JSON.stringify(query))
       );
       this.tableData = data.data.list;
-      this.tableData.map(item=>item.weight=`${item.weight}%`)
+      this.tableData.map((item) => (item.weight = `${item.weight}%`));
       this.total = data.page.total;
     },
     // 删除评定指标子列表项
@@ -254,6 +268,13 @@ export default {
           }
         });
     },
+    EditEvaStandard(id) {
+      console.log('修改id',id);
+      this.showEvaMagRule = true;
+      this.editId = id.toString();
+      this.type = 2;
+      
+    },
     // 多选框选中项变化
     handleSelectionChange(val) {
       if (val.length != 0) {
@@ -263,6 +284,11 @@ export default {
       }
       let ids = val.map((item) => item.id);
       this.ids = ids.join(",");
+    },
+    // 新增子列表项
+    newSonItem() {
+      this.showEvaMagRule = true;
+      this.type = 1;
     },
   },
   components: {
