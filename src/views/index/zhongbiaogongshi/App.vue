@@ -57,7 +57,7 @@
 										<el-button @click="handleClick(scope.row)" type="text" size="small">查看公示
 										</el-button>
 										<br>
-										<el-button type="text" size="small"
+										<el-button type="text" size="small" @click="handleClickShenhe(scope.row.id)"
 											style="background: #FFF;color: #2778BE; border-radius: 2px;width: 50px;border: 1px solid #2778BE;box-sizing: border-box;margin-bottom: 10px;">
 											发布</el-button>
 										<br>
@@ -78,6 +78,7 @@
 			</div>
 		</div>
 		<my-footer></my-footer>
+		<gongshishenhe :id='id' :type='0' v-if="showShenhe"></gongshishenhe>
 	</div>
 </template>
 
@@ -85,12 +86,12 @@
 	import myFooter from '@/components/footer';
 	import myHeader from '@/components/myHeader';
 	import leftMenu from '@/components/leftMenu';
-	import detail from '@/components/zhaobiao/detail';
-	import change from '@/components/zhaobiao/change';
+	import gongshishenhe from '@/components/dingbiao/gongshishenhe';
 	import topNav from '@/components/topNav';
 	export default {
 		data() {
 			return {
+				id: '11111',
 				activeName: '',
 				thisNavList: [],
 				loading: false,
@@ -109,7 +110,8 @@
 					time: '2021-07-12 14:00:00',
 					money: 52,
 					num: 1
-				}]
+				}],
+				showShenhe: false,
 			}
 		},
 		computed: {
@@ -119,9 +121,8 @@
 			myFooter,
 			myHeader,
 			leftMenu,
-			detail,
-			change,
-			topNav
+			topNav,
+			gongshishenhe
 		},
 		mounted() {
 			let obj = {
@@ -155,6 +156,9 @@
 			},
 			handleCurrentChange(val){
 				
+			},
+			handleClickShenhe(id) {
+				this.showShenhe = true
 			}
 		}
 	}

@@ -52,8 +52,8 @@
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
 										<el-button @click="handleClick(scope.row)" type="text" size="small">查看结果</el-button>
-										<br>
-										<el-button type="text" size="small" style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;" >确认</el-button>
+										<!-- <br>
+										<el-button type="text" size="small" style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;" >确认</el-button> -->
 									</template>
 								</el-table-column>
 							</el-table>
