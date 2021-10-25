@@ -47,7 +47,7 @@
 					</div>
 					<div class="content-list">
 						<div class="bodyTable">
-							<el-table :data="tableData" style="width: 100%" :cell-style="{
+							<el-table :data="tableData" max-height="467" style="width: 100%" :cell-style="{
 								    'text-align': 'center',
 								    color: '#333',
 								    'font-weight': '500',
@@ -70,7 +70,6 @@
 											<el-table-column prop="unit" label="采购单位" min-width="150"></el-table-column>
 											<el-table-column prop="unit" label="联系人" min-width="150"></el-table-column>
 											<el-table-column prop="unit" label="联系电话" min-width="150"></el-table-column>
-											<el-table-column prop="unit" label="采购方式" min-width="150"></el-table-column>
 											<el-table-column prop="unit" label="申请时间" min-width="150"></el-table-column>
 											<el-table-column label="操作" min-width="100">
 												<template slot-scope="scope">
@@ -85,6 +84,7 @@
 								<el-table-column type="index" label="序号" min-width="50"></el-table-column>
 								<el-table-column prop="unit" label="项目编号" min-width="150"></el-table-column>
 								<el-table-column prop="unit" label="项目名称" min-width="150"></el-table-column>
+								<el-table-column prop="unit" label="采购方式" min-width="150"></el-table-column>
 								<el-table-column prop="unit" label="投标开始时间" min-width="150"></el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
@@ -311,7 +311,6 @@
 				.content-list {
 					display: flex;
 					flex-direction: column;
-					height: 467px;
 					background-color: #FFF;
 					padding: 0 20px;
 					box-sizing: border-box;

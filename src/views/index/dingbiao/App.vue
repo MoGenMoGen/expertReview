@@ -13,9 +13,9 @@
 							<el-input placeholder="采购单位" style="flex: 2;" v-model="input" clearable></el-input>
 							<el-input placeholder="联系人" v-model="input" clearable></el-input>
 							<el-input placeholder="联系电话" v-model="input" clearable></el-input>
-							<el-select v-model="value" style="flex: 2;" clearable placeholder="采购方式">
-								<el-option v-for="item in options" :key="item.value" :label="item.label"
-									:value="item.value">
+							<el-select v-model="procurementMethodCd" style="flex: 2;" clearable placeholder="采购方式">
+								<el-option v-for="item in options" :key="item.cd" :label="item.nm"
+									:value="item.cd">
 								</el-option>
 							</el-select>
 						</div>
@@ -52,8 +52,8 @@
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
 										<el-button @click="handleClick(scope.row)" type="text" size="small">查看结果</el-button>
-										<!-- <br>
-										<el-button type="text" size="small" style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;" >确认</el-button> -->
+										<br>
+										<el-button type="text" size="small" style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;" >确认</el-button>
 									</template>
 								</el-table-column>
 							</el-table>
@@ -99,7 +99,9 @@
 					time: '2021-07-12 14:00:00',
 					money: 52,
 					num: 1
-				}]
+				}],
+				options: [], //采购方式
+				procurementMethodCd: ''
 			}
 		},
 		computed: {
@@ -126,6 +128,9 @@
 			window.onresize = () => {
 				this.getWidth()
 			}
+			this.api.getCatListByPcd({cd:'PROCUREMENT_METHOD'}).then(res => {
+				this.options = res.list
+			})
 		},
 		methods: {
 			getWidth() {

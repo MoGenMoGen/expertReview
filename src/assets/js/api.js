@@ -538,6 +538,14 @@ class api {
             })
         })
     }
+	// 首页8个数据
+	getHomePage() {
+	    return new Promise(resolve => {
+	        get('/ship/bid/homePageNum').then(res => {
+	            resolve(res.data)
+	        })
+	    })
+	}
 
 }
 

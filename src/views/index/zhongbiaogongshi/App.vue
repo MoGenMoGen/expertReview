@@ -54,14 +54,14 @@
 								<el-table-column prop="num" label="投标项" min-width="100"></el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
-										<el-button @click="handleClick(scope.row)" type="text" size="small">查看公示
+										<el-button @click="handleClickShenhe(scope.row.id,2)" type="text" size="small">查看公示
 										</el-button>
 										<br>
-										<el-button type="text" size="small" @click="handleClickShenhe(scope.row.id)"
+										<el-button type="text" size="small" @click="handleClickShenhe(scope.row.id,0)"
 											style="background: #FFF;color: #2778BE; border-radius: 2px;width: 50px;border: 1px solid #2778BE;box-sizing: border-box;margin-bottom: 10px;">
 											发布</el-button>
 										<br>
-										<el-button type="text" size="small"
+										<el-button type="text" size="small" @click="handleClickShenhe(scope.row.id,1)"
 											style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;">
 											审核</el-button>
 									</template>
@@ -78,7 +78,7 @@
 			</div>
 		</div>
 		<my-footer></my-footer>
-		<gongshishenhe :id='id' :type='0' v-if="showShenhe"></gongshishenhe>
+		<gongshishenhe :id='id' :type='type' v-if="showShenhe"></gongshishenhe>
 	</div>
 </template>
 
@@ -92,6 +92,7 @@
 		data() {
 			return {
 				id: '11111',
+				type: 0,
 				activeName: '',
 				thisNavList: [],
 				loading: false,
@@ -157,8 +158,9 @@
 			handleCurrentChange(val){
 				
 			},
-			handleClickShenhe(id) {
+			handleClickShenhe(id,type) {
 				this.showShenhe = true
+				this.type = type
 			}
 		}
 	}

@@ -367,6 +367,21 @@ class until {
 	}
 	return data
   }
+  // 格式化日期,返回年月日时分秒
+  formatTen(num) {
+    return num > 9 ? (num + "") : ("0" + num);
+  }
+  formatTime(date) {
+    let myDate = new Date(date)
+    let year = myDate.getFullYear();
+    let month = myDate.getMonth() + 1;
+    let day = myDate.getDate();
+    let hour = myDate.getHours();
+    let minute = myDate.getMinutes();
+    let second = myDate.getSeconds();
+    return year + "-" + this.formatTen(month) + "-" + this.formatTen(day) + " " + this.formatTen(hour) + ":" + this.formatTen(minute) +
+      ":" + this.formatTen(second);
+  }
 }
 //touch判断方向
 class judge {

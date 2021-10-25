@@ -18,7 +18,7 @@
 					<div class="content-list">
 						<div class="content-list-top">
 							<div><img :src="ing">进行中项目</div>
-							<p>更多 ></p>
+							<p @click="toMore">更多 ></p>
 						</div>
 						<div class="bodyTable">
 							<el-table :data="tableData" style="width: 100%" :cell-style="{
@@ -123,22 +123,15 @@
 					num: 1,
 					name: '缴费管理',
 					color: '#FF434C'
-				},{
-					imgUrl: img8,
-					num: 3,
-					name: '已归档',
-					color: '#29B382'
-				}],
-				tableData: [{
-					region: '宁波市本级',
-					cd: 'BHZC2021-G3-0001',
-					name: '12米玻璃钢新型渔船',
-					people: '澳新船厂有限公司',
-					type: '竞争性磋商',
-					money: '52',
-					time: '2021-07-15 14:00:00',
-					zhuangtai: '评标中'
-				}]
+				},
+				// {
+				// 	imgUrl: img8,
+				// 	num: 3,
+				// 	name: '已归档',
+				// 	color: '#29B382'
+				// },
+				],
+				tableData: []
             }
         },
         computed: {
@@ -171,6 +164,7 @@
             window.onresize = () => {
                 this.getWidth()
             }
+			this.getData()
         },
         methods:{
             getWidth(){
@@ -184,7 +178,31 @@
             //页面跳转
             toPage(url){
                 this.until.href(url)
-            }
+            },
+			toMore() {
+				this.toPage('./onlineBidEvaluate.html')
+			},
+			getData(){
+				this.api.getHomePage().then(res => {
+					console.log(111,res)
+					this.menuList[0].num = res.data.bidOpening
+					this.menuList[1].num = res.data.biddingDocuments
+					this.menuList[2].num = res.data.bidIssuance
+					this.menuList[3].num = res.data.calibration
+					this.menuList[4].num = res.data.bid
+					this.menuList[5].num = res.data.ProjectInitiation
+					this.menuList[6].num = res.data.paymentManagement
+				})
+				let nowTime = this.until.formatTime(new Date())
+				let qry=this.query.new()
+				this.query.toO(qry,'crtTm','desc')
+				this.query.toP(qry,1,6)
+				this.query.toW(qry,'bidOpenTm',nowTime,'LT')
+				this.query.toW(qry,'bidColseTm',nowTime,'GT')
+				this.api.getBidPage(this.query.toEncode(qry)).then(res=>{
+					this.tableData=res.data.list
+				})
+			}
         }
     }
 </script>

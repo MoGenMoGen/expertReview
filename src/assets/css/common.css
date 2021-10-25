@@ -3,6 +3,14 @@ body,button,input,select,textarea{
     font: 14px/19px "Microsoft YaHei", "lucida grande", "lucida sans unicode", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei",Arial, Helvetica, sans-serif;
 }
 
+::-webkit-scrollbar {
+	width: 4px;
+	height: 4px;
+}
+::-webkit-scrollbar-thumb {
+	background-color: #dcdde1;
+	border-radius: 2px;
+}
 /*nuxt*/
 #__nuxt,#__layout{
   height: 100%;
