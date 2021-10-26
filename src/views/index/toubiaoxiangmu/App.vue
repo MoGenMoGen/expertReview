@@ -10,27 +10,25 @@
 						<div>
 							<el-input placeholder="项目编号" v-model="input" clearable></el-input>
 							<el-input placeholder="项目名称" v-model="input" clearable></el-input>
-							<el-input placeholder="采购单位" v-model="input" clearable></el-input>
+							<!-- <el-input placeholder="采购单位" v-model="input" clearable></el-input>
 							<el-input placeholder="联系人" v-model="input" clearable></el-input>
-							<el-input placeholder="联系电话" v-model="input" clearable></el-input>
-							<el-select v-model="value" style="margin-right: 10px;" clearable placeholder="采购方式">
+							<el-input placeholder="联系电话" v-model="input" clearable></el-input> -->
+							<el-select v-model="procurementMethodCd" style="margin-right: 10px;" clearable placeholder="采购方式">
+								<el-option v-for="item in options" :key="item.cd" :label="item.nm"
+									:value="item.cd">
+								</el-option>
+							</el-select>
+							<!-- <el-select v-model="value" style="flex: 2;" clearable placeholder="项目状态">
 								<el-option v-for="item in options" :key="item.value" :label="item.label"
 									:value="item.value">
 								</el-option>
-							</el-select>
-							<el-select v-model="value" style="flex: 2;" clearable placeholder="项目状态">
-								<el-option v-for="item in options" :key="item.value" :label="item.label"
-									:value="item.value">
-								</el-option>
-							</el-select>
-						</div>
-						<div>
+							</el-select> -->
 							<el-date-picker v-model="value2" type="datetime" style="flex: 2;" placeholder="投标开始时间">
 							</el-date-picker>
 							<el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="投标截止时间">
 							</el-date-picker>
-							<el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间">
-							</el-date-picker>
+							<!-- <el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间">
+							</el-date-picker> -->
 							<el-button plain type="primary">查询</el-button>
 						</div>
 					</div>
@@ -47,7 +45,7 @@
 					</div>
 					<div class="content-list">
 						<div class="bodyTable">
-							<el-table :data="tableData" style="width: 100%" :cell-style="{
+							<el-table :data="tableData" max-height="517" style="width: 100%" :cell-style="{
 								    'text-align': 'center',
 								    color: '#333',
 								    'font-weight': '500',
@@ -124,7 +122,7 @@
 				total: 0,
 				value2: '',
 				value3: '',
-				sonTabList: ["待审核", "已审核"],
+				sonTabList: ["进行中", "已结束"],
 				sonTabIndex: 0,
 				tableData: [{
 					name: '12米玻璃钢新型渔船',
@@ -142,7 +140,13 @@
 					time: '2021-07-12 14:00:00',
 					money: 52,
 					num: 1
-				}]
+				}],
+				cd: '',
+				nm: '',
+				options: [],
+				procurementMethodCd: '',
+				bidOpenTm: '',
+				bidEndTm: ''
 			}
 		},
 		computed: {
@@ -169,6 +173,9 @@
 			window.onresize = () => {
 				this.getWidth()
 			}
+			this.api.getCatListByPcd({cd:'PROCUREMENT_METHOD'}).then(res => {
+				this.options = res.list
+			})
 		},
 		methods: {
 			getWidth() {
@@ -309,7 +316,6 @@
 				.content-list {
 					display: flex;
 					flex-direction: column;
-					height: 467px;
 					background-color: #FFF;
 					padding: 0 20px;
 					box-sizing: border-box;

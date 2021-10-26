@@ -10,7 +10,7 @@
 						<div>
 							<el-input placeholder="项目编号" v-model="input" clearable></el-input>
 							<el-input placeholder="项目名称" v-model="input" clearable></el-input>
-							<el-input placeholder="采购单位" style="flex: 2;" v-model="input" clearable></el-input>
+							<!-- <el-input placeholder="采购单位" style="flex: 2;" v-model="input" clearable></el-input> -->
 							<el-input placeholder="联系人" v-model="input" clearable></el-input>
 							<el-input placeholder="联系电话" v-model="input" clearable></el-input>
 							<el-select v-model="procurementMethodCd" style="flex: 2;" clearable placeholder="采购方式">
@@ -44,16 +44,16 @@
 										<p>项目名称：{{scope.row.name}}</p>
 									</template>
 								</el-table-column>
-								<el-table-column prop="unit" label="采购单位" min-width="150"></el-table-column>
+								<!-- <el-table-column prop="unit" label="采购单位" min-width="150"></el-table-column> -->
 								<el-table-column prop="buyType" label="采购方式" min-width="150"></el-table-column>
 								<el-table-column prop="time" label="开标时间" min-width="100"></el-table-column>
-								<el-table-column prop="money" label="金额(万元)" min-width="100"></el-table-column>
+								<el-table-column prop="money" label="预算金额(万元)" min-width="100"></el-table-column>
 								<el-table-column prop="num" label="投标项" min-width="100"></el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
 										<el-button @click="handleClick(scope.row)" type="text" size="small">查看结果</el-button>
-										<br>
-										<el-button type="text" size="small" style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;" >确认</el-button>
+										<!-- <br>
+										<el-button type="text" size="small" style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;" >确认</el-button> -->
 									</template>
 								</el-table-column>
 							</el-table>

@@ -30,25 +30,26 @@
 								    background: '#f8f8f8',
 								    'text-align': 'center',
 								  }">
-								<el-table-column prop="region" label="项目区划" min-width="100">
-								</el-table-column>
+								<!-- <el-table-column prop="region" label="项目区划" min-width="100">
+								</el-table-column> -->
 								<el-table-column prop="cd" label="项目编号" min-width="150">
 								</el-table-column>
-								<el-table-column prop="name" label="项目名称" min-width="150">
+								<el-table-column prop="nm" label="项目名称" min-width="150">
 								</el-table-column>
-								<el-table-column prop="people" label="采购人" min-width="100">
+								<el-table-column prop="publisher" label="发布人" min-width="100">
 								</el-table-column>
-								<el-table-column prop="type" label="采购方式" min-width="100">
+								<el-table-column prop="procurementMethodNm" label="采购方式" min-width="100">
 								</el-table-column>
-								<el-table-column prop="money" label="预算金额(万元)" min-width="100">
+								<el-table-column prop="budget" label="预算金额(万元)" min-width="100">
 								</el-table-column>
-								<el-table-column prop="time" label="开标时间" min-width="150">
+								<el-table-column prop="bidOpenTm" label="开标时间" min-width="150">
 								</el-table-column>
 								<el-table-column prop="zhuangtai" label="状态" min-width="100">
+									<template slot-scope="scope">评标中</template>
 								</el-table-column>
 								<el-table-column label="操作" min-width="50">
 									<template slot-scope="scope">
-										<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+										<el-button @click="handleClick(scope.row.id)" type="text" size="small">查看</el-button>
 									</template>
 								</el-table-column>
 							</el-table>
@@ -90,7 +91,7 @@
 				thisNavList: [],
 				menuList: [{
 					imgUrl: img1,
-					num: 1,
+					num: 0,
 					name: '项目立项',
 					color: '#1D8BEB'
 				},{
@@ -100,17 +101,17 @@
 					color: '#FF8F35'
 				},{
 					imgUrl: img3,
-					num: 1,
+					num: 0,
 					name: '发标',
 					color: '#7944F6'
 				},{
 					imgUrl: img4,
-					num: 3,
+					num: 0,
 					name: '报名企业',
 					color: '#07D2D8'
 				},{
 					imgUrl: img5,
-					num: 1,
+					num: 0,
 					name: '开标',
 					color: '#C832DA'
 				},{
@@ -120,13 +121,13 @@
 					color: '#476EEC'
 				},{
 					imgUrl: img7,
-					num: 1,
+					num: 0,
 					name: '缴费管理',
 					color: '#FF434C'
 				},
 				// {
 				// 	imgUrl: img8,
-				// 	num: 3,
+				// 	num: 0,
 				// 	name: '已归档',
 				// 	color: '#29B382'
 				// },
@@ -184,24 +185,26 @@
 			},
 			getData(){
 				this.api.getHomePage().then(res => {
-					console.log(111,res)
-					this.menuList[0].num = res.data.bidOpening
-					this.menuList[1].num = res.data.biddingDocuments
-					this.menuList[2].num = res.data.bidIssuance
-					this.menuList[3].num = res.data.calibration
-					this.menuList[4].num = res.data.bid
-					this.menuList[5].num = res.data.ProjectInitiation
-					this.menuList[6].num = res.data.paymentManagement
+					this.menuList[0].num = res.bidOpening
+					this.menuList[1].num = res.biddingDocuments
+					this.menuList[2].num = res.bidIssuance
+					this.menuList[3].num = res.calibration
+					this.menuList[4].num = res.bid
+					this.menuList[5].num = res.ProjectInitiation
+					this.menuList[6].num = res.paymentManagement
 				})
 				let nowTime = this.until.formatTime(new Date())
 				let qry=this.query.new()
 				this.query.toO(qry,'crtTm','desc')
-				this.query.toP(qry,1,6)
+				this.query.toP(qry,1,5)
 				this.query.toW(qry,'bidOpenTm',nowTime,'LT')
 				this.query.toW(qry,'bidColseTm',nowTime,'GT')
 				this.api.getBidPage(this.query.toEncode(qry)).then(res=>{
 					this.tableData=res.data.list
 				})
+			},
+			handleClick(id) {
+				console.log(id)
 			}
         }
     }

@@ -50,7 +50,7 @@
 								<el-table-column prop="unit" label="采购单位" min-width="150"></el-table-column>
 								<el-table-column prop="buyType" label="采购方式" min-width="150"></el-table-column>
 								<el-table-column prop="time" label="开标时间" min-width="100"></el-table-column>
-								<el-table-column prop="money" label="金额(万元)" min-width="100"></el-table-column>
+								<el-table-column prop="money" label="预算金额(万元)" min-width="100"></el-table-column>
 								<el-table-column prop="num" label="投标项" min-width="100"></el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">

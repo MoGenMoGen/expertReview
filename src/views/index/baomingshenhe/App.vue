@@ -8,36 +8,34 @@
 				<div class="content">
 					<div class="topSeachBox">
 						<div>
-							<el-input placeholder="项目编号" v-model="input" clearable></el-input>
-							<el-input placeholder="项目名称" v-model="input" clearable></el-input>
-							<el-input placeholder="采购单位" v-model="input" clearable></el-input>
-							<el-input placeholder="联系人" v-model="input" clearable></el-input>
-							<el-input placeholder="联系电话" v-model="input" clearable></el-input>
-							<el-select v-model="value" style="margin-right: 10px;" clearable placeholder="采购方式">
+							<el-input placeholder="项目编号" v-model="cd" clearable></el-input>
+							<el-input placeholder="项目名称" v-model="nm" clearable></el-input>
+							<!-- <el-input placeholder="采购单位" v-model="input" clearable></el-input> -->
+							<!-- <el-input placeholder="联系人" v-model="input" clearable></el-input>
+							<el-input placeholder="联系电话" v-model="input" clearable></el-input> -->
+							<el-select v-model="procurementMethodCd" style="margin-right: 10px;" clearable placeholder="采购方式">
+								<el-option v-for="item in options" :key="item.cd" :label="item.nm"
+									:value="item.cd">
+								</el-option>
+							</el-select>
+							<!-- <el-select v-model="value" style="flex: 2;" clearable placeholder="项目状态">
 								<el-option v-for="item in options" :key="item.value" :label="item.label"
 									:value="item.value">
 								</el-option>
-							</el-select>
-							<el-select v-model="value" style="flex: 2;" clearable placeholder="项目状态">
-								<el-option v-for="item in options" :key="item.value" :label="item.label"
-									:value="item.value">
-								</el-option>
-							</el-select>
-						</div>
-						<div>
-							<el-date-picker v-model="value2" type="datetime" style="flex: 2;" placeholder="投标开始时间">
+							</el-select> -->
+							<el-date-picker v-model="bidOpenTm" type="datetime" style="flex: 2;" placeholder="投标开始时间">
 							</el-date-picker>
-							<el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="投标截止时间">
+							<el-date-picker v-model="bidEndTm" type="datetime" style="flex: 2;" placeholder="投标截止时间">
 							</el-date-picker>
-							<el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间">
-							</el-date-picker>
+							<!-- <el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间">
+							</el-date-picker> -->
 							<el-button plain type="primary">查询</el-button>
 						</div>
 					</div>
 					<div class="son_tablist">
 						<div class="left">
 							<div class="son_tab_title projectNm" v-for="(item, index) in sonTabList" :key="index"
-								@click="sonTabIndex = index" :style="{
+								@click="changeIndex(index)" :style="{
 					        background: sonTabIndex == index ? '#2778be' : '',
 					        color: sonTabIndex == index ? '#fff' : '#666666',
 					      }">
@@ -47,7 +45,7 @@
 					</div>
 					<div class="content-list">
 						<div class="bodyTable">
-							<el-table :data="tableData" max-height="467" style="width: 100%" :cell-style="{
+							<el-table :data="tableData" max-height="517" style="width: 100%" :cell-style="{
 								    'text-align': 'center',
 								    color: '#333',
 								    'font-weight': '500',
@@ -58,7 +56,7 @@
 								  }">
 								<el-table-column type="expand">
 									<template slot-scope="props">
-										<el-table :data="tableData" style="width: 100%;" :cell-style="{
+										<el-table :data="props.row.applyItems" style="width: 100%;" v-show="props.row.applyItems.length>0" :cell-style="{
 								    'text-align': 'center',
 								    color: '#333',
 								    'font-weight': '500',
@@ -67,25 +65,32 @@
 								    background: '#f8f8f8',
 									'text-align': 'center',
 								  }">
-											<el-table-column prop="unit" label="采购单位" min-width="150"></el-table-column>
-											<el-table-column prop="unit" label="联系人" min-width="150"></el-table-column>
-											<el-table-column prop="unit" label="联系电话" min-width="150"></el-table-column>
-											<el-table-column prop="unit" label="申请时间" min-width="150"></el-table-column>
+											<el-table-column prop="orgNm" label="采购单位" min-width="150"></el-table-column>
+											<el-table-column prop="realNm" label="采购人" min-width="150"></el-table-column>
+											<el-table-column prop="rmks" label="备注" min-width="150"></el-table-column>
+											<el-table-column prop="crtTm" label="申请时间" min-width="150"></el-table-column>
 											<el-table-column label="操作" min-width="100">
 												<template slot-scope="scope">
-													<el-button type="text" size="small"
+													<el-button type="text" size="small" v-if="scope.row.audit==1"
 														style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;">
-														审核</el-button>
+														去审核</el-button>
+													<el-button type="text" size="small" style="color: #303030;" v-if="scope.row.audit==2">审核通过</el-button>
+													<el-button type="text" size="small" style="color: #303030;" v-if="scope.row.audit==3">审核驳回</el-button>
 												</template>
 											</el-table-column>
 										</el-table>
 									</template>
 								</el-table-column>
 								<el-table-column type="index" label="序号" min-width="50"></el-table-column>
-								<el-table-column prop="unit" label="项目编号" min-width="150"></el-table-column>
-								<el-table-column prop="unit" label="项目名称" min-width="150"></el-table-column>
-								<el-table-column prop="unit" label="采购方式" min-width="150"></el-table-column>
-								<el-table-column prop="unit" label="投标开始时间" min-width="150"></el-table-column>
+								<el-table-column prop="cd" label="项目编号" min-width="150"></el-table-column>
+								<el-table-column prop="nm" label="项目名称" min-width="150"></el-table-column>
+								<el-table-column prop="procurementMethodNm" label="采购方式" min-width="150"></el-table-column>
+								<el-table-column prop="publishTm" label="投标开始时间" min-width="150"></el-table-column>
+								<el-table-column prop="publishTm" label="投标项" min-width="100">
+									<template slot-scope='scope'>
+										{{scope.row.applyItems.length}}
+									</template>
+								</el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
 										<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
@@ -128,23 +133,13 @@
 				value3: '',
 				sonTabList: ["待审核", "已审核"],
 				sonTabIndex: 0,
-				tableData: [{
-					name: '12米玻璃钢新型渔船',
-					cd: 'BHZC2021-G3-0001',
-					unit: '澳新船厂有限公司',
-					buyType: '竞争性磋商',
-					time: '2021-07-12 14:00:00',
-					money: 52,
-					num: 1
-				},{
-					name: '12米玻璃钢新型渔船',
-					cd: 'BHZC2021-G3-0001',
-					unit: '澳新船厂有限公司',
-					buyType: '竞争性磋商',
-					time: '2021-07-12 14:00:00',
-					money: 52,
-					num: 1
-				}]
+				tableData: [],
+				cd: '',
+				nm: '',
+				options: [],
+				procurementMethodCd: '',
+				bidOpenTm: '',
+				bidEndTm: ''
 			}
 		},
 		computed: {
@@ -171,6 +166,10 @@
 			window.onresize = () => {
 				this.getWidth()
 			}
+			this.getList()
+			this.api.getCatListByPcd({cd:'PROCUREMENT_METHOD'}).then(res => {
+				this.options = res.list
+			})
 		},
 		methods: {
 			getWidth() {
@@ -189,7 +188,28 @@
 				this.until.href(url)
 			},
 			handleCurrentChange(val){
-				
+				this.pageNo=`${val}`
+				this.getList()
+			},
+			getList() {
+				let qry=this.query.new()
+				this.query.toO(qry,'crtTm','desc')
+				this.query.toP(qry,this.pageNo,this.pageSize)
+				let data = 0
+				if(this.sonTabIndex == 0) {
+					data = 1
+				} else if(this.sonTabIndex == 1) {
+					data = 2
+				}
+				this.api.getBidAuditList(this.query.toEncode(qry),data).then(res => {
+					console.log(res)
+					this.tableData = res.data.list
+					this.total = res.page.total
+				})
+			},
+			changeIndex(index) {
+				this.sonTabIndex = index
+				this.getList()
 			}
 		}
 	}
