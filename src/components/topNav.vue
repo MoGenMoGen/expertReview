@@ -61,11 +61,13 @@
 				if (e == 'other') {
 					let list = JSON.parse(this.until.seGet('navList'))
 					let objList = list.filter(item => item.name == this.activeName)
-					objList.unshift({
-						name: '首页',
-						url: './index.html',
-						canClose: false
-					})
+					if(objList[0].name!='首页') {
+						objList.unshift({
+							name: '首页',
+							url: './index.html',
+							canClose: false
+						})
+					}
 					this.list = objList
 					this.until.seSave('navList', JSON.stringify(objList))
 				} else if (e == 'all') {

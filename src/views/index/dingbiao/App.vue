@@ -8,27 +8,27 @@
 				<div class="content">
 					<div class="topSeachBox">
 						<div>
-							<el-input placeholder="项目编号" v-model="input" clearable></el-input>
-							<el-input placeholder="项目名称" v-model="input" clearable></el-input>
+							<el-input placeholder="项目编号" v-model="cd" clearable></el-input>
+							<el-input placeholder="项目名称" v-model="nm" clearable></el-input>
 							<!-- <el-input placeholder="采购单位" style="flex: 2;" v-model="input" clearable></el-input> -->
-							<el-input placeholder="联系人" v-model="input" clearable></el-input>
-							<el-input placeholder="联系电话" v-model="input" clearable></el-input>
-							<el-select v-model="procurementMethodCd" style="flex: 2;" clearable placeholder="采购方式">
+							<!-- <el-input placeholder="联系人" v-model="input" clearable></el-input>
+							<el-input placeholder="联系电话" v-model="input" clearable></el-input> -->
+							<el-select v-model="procurementMethodCd" style="flex: 2;margin-right: 10px;" clearable placeholder="采购方式">
 								<el-option v-for="item in options" :key="item.cd" :label="item.nm"
 									:value="item.cd">
 								</el-option>
 							</el-select>
-						</div>
-						<div>
-							<el-date-picker v-model="value2" type="datetime" style="flex: 2;" placeholder="投标开始时间"></el-date-picker>
-							<el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="投标截止时间"></el-date-picker>
-							<el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间"></el-date-picker>
+							<el-date-picker v-model="bidOpenTm" type="datetimerange" style="flex: 2;margin-right: 10px;margin-bottom: 10px;" range-separator="" start-placeholder="投标开始时间段">
+							</el-date-picker>
+							<el-date-picker v-model="bidEndTm" type="datetimerange" style="flex: 2;margin-right: 10px;margin-bottom: 10px;" range-separator="" start-placeholder="投标截止时间段">
+							</el-date-picker>
+							<!-- <el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间"></el-date-picker> -->
 							<el-button plain type="primary">查询</el-button>
 						</div>
 					</div>
 					<div class="content-list">
 						<div class="bodyTable">
-							<el-table :data="tableData" style="width: 100%" :cell-style="{
+							<el-table :data="tableData" max-height="577" style="width: 100%" :cell-style="{
 								    'text-align': 'center',
 								    color: '#333',
 								    'font-weight': '500',
@@ -37,21 +37,25 @@
 								    background: '#f8f8f8',
 									'text-align': 'center',
 								  }">
-								<el-table-column type="index" label="序号" min-width="50"></el-table-column>
-								<el-table-column prop="name" label="项目信息" min-width="250">
+								<el-table-column type="index" label="序号" min-width="50">
+									<template slot-scope="scope">
+										<span>{{(pageNo - 1) * pageSize + scope.$index + 1}}</span>
+									</template>
+								</el-table-column>
+								<el-table-column label="项目信息" min-width="250">
 									<template slot-scope="scope">
 										<p>项目编号：{{scope.row.cd}}</p>
-										<p>项目名称：{{scope.row.name}}</p>
+										<p>项目名称：{{scope.row.nm}}</p>
 									</template>
 								</el-table-column>
 								<!-- <el-table-column prop="unit" label="采购单位" min-width="150"></el-table-column> -->
-								<el-table-column prop="buyType" label="采购方式" min-width="150"></el-table-column>
-								<el-table-column prop="time" label="开标时间" min-width="100"></el-table-column>
-								<el-table-column prop="money" label="预算金额(万元)" min-width="100"></el-table-column>
-								<el-table-column prop="num" label="投标项" min-width="100"></el-table-column>
+								<el-table-column prop="procurementMethodNm" label="采购方式" min-width="150"></el-table-column>
+								<el-table-column prop="bidOpenTm" label="开标时间" min-width="100"></el-table-column>
+								<el-table-column prop="budget" label="预算金额(万元)" min-width="100"></el-table-column>
+								<el-table-column prop="applyNum" label="投标项" min-width="100"></el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
-										<el-button @click="handleClick(scope.row)" type="text" size="small">查看结果</el-button>
+										<el-button @click="handleClick(scope.row.id)" type="text" size="small">查看结果</el-button>
 										<!-- <br>
 										<el-button type="text" size="small" style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;" >确认</el-button> -->
 									</template>
@@ -60,7 +64,7 @@
 						</div>
 					</div>
 					<div class="Footer">
-						<el-pagination background @current-change="handleCurrentChange" :current-page.sync="currentPage"
+						<el-pagination background @current-change="handleCurrentChange" :current-page.sync="pageNo"
 							:page-size="pageSize" layout="prev, pager, next, jumper" :total="total">
 						</el-pagination>
 					</div>
@@ -91,17 +95,13 @@
 				total: 0,
 				value2:'',
 				value3:'',
-				tableData: [{
-					name: '12米玻璃钢新型渔船',
-					cd: 'BHZC2021-G3-0001',
-					unit: '澳新船厂有限公司',
-					buyType: '竞争性磋商',
-					time: '2021-07-12 14:00:00',
-					money: 52,
-					num: 1
-				}],
+				tableData: [],
 				options: [], //采购方式
-				procurementMethodCd: ''
+				procurementMethodCd: '',
+				cd: '',
+				nm: '',
+				bidOpenTm: '',
+				bidEndTm: ''
 			}
 		},
 		computed: {
@@ -128,6 +128,7 @@
 			window.onresize = () => {
 				this.getWidth()
 			}
+			this.getList()
 			this.api.getCatListByPcd({cd:'PROCUREMENT_METHOD'}).then(res => {
 				this.options = res.list
 			})
@@ -149,7 +150,33 @@
 				this.until.href(url)
 			},
 			handleCurrentChange(val){
-				
+				this.pageNo = val
+				this.getList()
+			},
+			getList() {
+				let qry=this.query.new()
+				this.query.toO(qry,'crtTm','desc')
+				this.query.toP(qry,this.pageNo,this.pageSize)
+				if(this.cd) {
+					this.query.toW(qry,'cd',this.cd,'LK')
+				}
+				if(this.nm) {
+					this.query.toW(qry,'nm',this.nm,'LK')
+				}
+				if(this.procurementMethodCd) {
+					this.query.toW(qry,'procurementMethodCd',this.procurementMethodCd,'EQ')
+				}
+				if(this.bidOpenTm) {
+					this.query.toW(qry,'bidOpenTm',this.until.formatTime(this.bidOpenTm[0])+','+this.until.formatTime(this.bidOpenTm[1]),'BT')
+				}
+				if(this.bidEndTm) {
+					this.query.toW(qry,'bidEndTm',this.until.formatTime(this.bidEndTm[0])+','+this.until.formatTime(this.bidEndTm[1]),'BT')
+				}
+				this.api.getBidTargetList(this.query.toEncode(qry),1).then(res => {
+					console.log(res)
+					this.tableData = res.data.list
+					this.total = res.page.total
+				})
 			}
 		}
 	}
@@ -244,7 +271,6 @@
 				.content-list {
 					display: flex;
 					flex-direction: column;
-					height: 528px;
 					background-color: #FFF;
 					padding: 0 20px;
 					box-sizing: border-box;

@@ -56,7 +56,7 @@
 								  }">
 								<el-table-column type="expand">
 									<template slot-scope="props">
-										<el-table :data="tableData" style="width: 100%;" :cell-style="{
+										<el-table :data="props.row.applyItems" style="width: 100%;" v-show="props.row.applyItems.length>0" :cell-style="{
 								    'text-align': 'center',
 								    color: '#333',
 								    'font-weight': '500',
@@ -65,10 +65,10 @@
 								    background: '#f8f8f8',
 									'text-align': 'center',
 								  }">
-											<el-table-column prop="unit" label="采购单位" min-width="150"></el-table-column>
-											<el-table-column prop="unit" label="招标文件" min-width="150"></el-table-column>
-											<el-table-column prop="unit" label="保证金" min-width="150"></el-table-column>
-											<el-table-column prop="unit" label="投标时间" min-width="150"></el-table-column>
+											<el-table-column prop="orgNm" label="采购单位" min-width="150"></el-table-column>
+											<el-table-column prop="offer" label="招标文件" min-width="150"></el-table-column>
+											<el-table-column prop="deposit" label="保证金" min-width="150"></el-table-column>
+											<el-table-column prop="crtTm" label="投标时间" min-width="150"></el-table-column>
 											<el-table-column label="状态" min-width="100">
 												<template slot-scope="scope">
 													<p>投标中</p>
@@ -77,11 +77,15 @@
 										</el-table>
 									</template>
 								</el-table-column>
-								<el-table-column type="index" label="序号" min-width="50"></el-table-column>
-								<el-table-column prop="unit" label="项目编号" min-width="150"></el-table-column>
-								<el-table-column prop="unit" label="项目名称" min-width="150"></el-table-column>
-								<el-table-column prop="unit" label="投标开始时间" min-width="150"></el-table-column>
-								<el-table-column prop="unit" label="投标截止时间" min-width="150"></el-table-column>
+								<el-table-column type="index" label="序号" min-width="50">
+									<template slot-scope="scope">
+										<span>{{(pageNo - 1) * pageSize + scope.$index + 1}}</span>
+									</template>
+								</el-table-column>
+								<el-table-column prop="cd" label="项目编号" min-width="150"></el-table-column>
+								<el-table-column prop="nm" label="项目名称" min-width="150"></el-table-column>
+								<el-table-column prop="bidOpenTm" label="投标开始时间" min-width="150"></el-table-column>
+								<el-table-column prop="bidEndTm" label="投标截止时间" min-width="150"></el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
 										<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
@@ -124,23 +128,7 @@
 				value3: '',
 				sonTabList: ["进行中", "已结束"],
 				sonTabIndex: 0,
-				tableData: [{
-					name: '12米玻璃钢新型渔船',
-					cd: 'BHZC2021-G3-0001',
-					unit: '澳新船厂有限公司',
-					buyType: '竞争性磋商',
-					time: '2021-07-12 14:00:00',
-					money: 52,
-					num: 1
-				},{
-					name: '12米玻璃钢新型渔船',
-					cd: 'BHZC2021-G3-0001',
-					unit: '澳新船厂有限公司',
-					buyType: '竞争性磋商',
-					time: '2021-07-12 14:00:00',
-					money: 52,
-					num: 1
-				}],
+				tableData: [],
 				cd: '',
 				nm: '',
 				options: [],
@@ -173,6 +161,7 @@
 			window.onresize = () => {
 				this.getWidth()
 			}
+			this.getList()
 			this.api.getCatListByPcd({cd:'PROCUREMENT_METHOD'}).then(res => {
 				this.options = res.list
 			})
@@ -194,6 +183,44 @@
 				this.until.href(url)
 			},
 			handleCurrentChange(val){
+				this.pageNo=val
+				this.getList()
+			},
+			getList() {
+				let qry=this.query.new()
+				this.query.toO(qry,'crtTm','desc')
+				this.query.toP(qry,this.pageNo,this.pageSize)
+				let data = 0
+				if(this.sonTabIndex == 0) {
+					data = 1
+				} else if(this.sonTabIndex == 1) {
+					data = 2
+				}
+				if(this.cd) {
+					this.query.toW(qry,'cd',this.cd,'LK')
+				}
+				if(this.nm) {
+					this.query.toW(qry,'nm',this.nm,'LK')
+				}
+				if(this.procurementMethodCd) {
+					this.query.toW(qry,'procurementMethodCd',this.procurementMethodCd,'EQ')
+				}
+				if(this.bidOpenTm) {
+					this.query.toW(qry,'bidOpenTm',this.until.formatTime(this.bidOpenTm[0])+','+this.until.formatTime(this.bidOpenTm[1]),'BT')
+				}
+				if(this.bidEndTm) {
+					this.query.toW(qry,'bidEndTm',this.until.formatTime(this.bidEndTm[0])+','+this.until.formatTime(this.bidEndTm[1]),'BT')
+				}
+				this.api.getBidTenderList(this.query.toEncode(qry),data).then(res => {
+					this.tableData = res.data.list
+					this.total = res.page.total
+				})
+			},
+			changeIndex(index) {
+				this.sonTabIndex = index
+				this.getList()
+			},
+			searchList() {
 				
 			}
 		}

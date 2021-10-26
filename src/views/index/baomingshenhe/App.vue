@@ -23,13 +23,13 @@
 									:value="item.value">
 								</el-option>
 							</el-select> -->
-							<el-date-picker v-model="bidOpenTm" type="datetime" style="flex: 2;" placeholder="投标开始时间">
+							<el-date-picker v-model="bidOpenTm" type="datetimerange" style="flex: 2;margin-right: 10px;margin-bottom: 10px;" range-separator="" start-placeholder="投标开始时间段">
 							</el-date-picker>
-							<el-date-picker v-model="bidEndTm" type="datetime" style="flex: 2;" placeholder="投标截止时间">
+							<el-date-picker v-model="bidEndTm" type="datetimerange" style="flex: 2;margin-right: 10px;margin-bottom: 10px;" range-separator="" start-placeholder="投标截止时间段">
 							</el-date-picker>
 							<!-- <el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间">
 							</el-date-picker> -->
-							<el-button plain type="primary">查询</el-button>
+							<el-button plain type="primary" @click="searchList()">查询</el-button>
 						</div>
 					</div>
 					<div class="son_tablist">
@@ -81,12 +81,16 @@
 										</el-table>
 									</template>
 								</el-table-column>
-								<el-table-column type="index" label="序号" min-width="50"></el-table-column>
+								<el-table-column type="index" label="序号" min-width="50">
+									<template slot-scope="scope">
+										<span>{{(pageNo - 1) * pageSize + scope.$index + 1}}</span>
+									</template>
+								</el-table-column>
 								<el-table-column prop="cd" label="项目编号" min-width="150"></el-table-column>
 								<el-table-column prop="nm" label="项目名称" min-width="150"></el-table-column>
 								<el-table-column prop="procurementMethodNm" label="采购方式" min-width="150"></el-table-column>
 								<el-table-column prop="publishTm" label="投标开始时间" min-width="150"></el-table-column>
-								<el-table-column prop="publishTm" label="投标项" min-width="100">
+								<el-table-column label="投标项" min-width="100">
 									<template slot-scope='scope'>
 										{{scope.row.applyItems.length}}
 									</template>
@@ -100,7 +104,7 @@
 						</div>
 					</div>
 					<div class="Footer">
-						<el-pagination background @current-change="handleCurrentChange" :current-page.sync="currentPage"
+						<el-pagination background @current-change="handleCurrentChange" :current-page.sync="pageNo"
 							:page-size="pageSize" layout="prev, pager, next, jumper" :total="total">
 						</el-pagination>
 					</div>
@@ -188,7 +192,7 @@
 				this.until.href(url)
 			},
 			handleCurrentChange(val){
-				this.pageNo=`${val}`
+				this.pageNo=val
 				this.getList()
 			},
 			getList() {
@@ -201,8 +205,22 @@
 				} else if(this.sonTabIndex == 1) {
 					data = 2
 				}
+				if(this.cd) {
+					this.query.toW(qry,'cd',this.cd,'LK')
+				}
+				if(this.nm) {
+					this.query.toW(qry,'nm',this.nm,'LK')
+				}
+				if(this.procurementMethodCd) {
+					this.query.toW(qry,'procurementMethodCd',this.procurementMethodCd,'EQ')
+				}
+				if(this.bidOpenTm) {
+					this.query.toW(qry,'bidOpenTm',this.until.formatTime(this.bidOpenTm[0])+','+this.until.formatTime(this.bidOpenTm[1]),'BT')
+				}
+				if(this.bidEndTm) {
+					this.query.toW(qry,'bidEndTm',this.until.formatTime(this.bidEndTm[0])+','+this.until.formatTime(this.bidEndTm[1]),'BT')
+				}
 				this.api.getBidAuditList(this.query.toEncode(qry),data).then(res => {
-					console.log(res)
 					this.tableData = res.data.list
 					this.total = res.page.total
 				})
@@ -210,6 +228,9 @@
 			changeIndex(index) {
 				this.sonTabIndex = index
 				this.getList()
+			},
+			searchList() {
+				
 			}
 		}
 	}

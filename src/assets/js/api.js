@@ -614,6 +614,23 @@ class api {
 			})
 		})
 	}
+	// 定标项目
+	getBidTargetList(data,controllerNum) {
+		return new Promise(resolve => {
+			get("/ship/bid/pageWithApplicationsNum?query=" + data+'&controllerNum=' + controllerNum).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 
+	// 投标项目
+	getBidTenderList(data) {
+		return new Promise(resolve => {
+			get("/ship/bid/pageWithApplyOdder?query=" + data).then(res => {
+				resolve(res)
+			})
+		})
+	}
 }
 
 export {
