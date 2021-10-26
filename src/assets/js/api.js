@@ -370,7 +370,7 @@ class api {
     //获取专家列表
     getBidExpertPage(data) {
         return new Promise(resolve => {
-            get('/ship/bidExpert/page?query=' + data).then(res => {
+            get('/ship/bidExpert/list?query=' + data).then(res => {
                 resolve(res.data)
             })
         })
@@ -538,6 +538,7 @@ class api {
             })
         })
     }
+
 	// 首页8个数据
 	getHomePage() {
 	    return new Promise(resolve => {
@@ -545,6 +546,47 @@ class api {
 	            resolve(res.data)
 	        })
 	    })
+
+	//项目公告分页列表
+	getBidAffichePage(data){
+		return new Promise(resolve => {
+		    get('/ship/bidAffiche/page?query=' + data).then(res => {
+		        resolve(res)
+		    })
+		})
+	}
+	//项目公告新增
+	postBidAffiche(data){
+		return new Promise(resolve => {
+		    post('/ship/bidAffiche/add', data).then(res => {
+		        resolve(res)
+		    })
+		})
+	}
+	//获取公告单位列表
+	getMemberOrgEnterLink(data){
+		return new Promise(resolve => {
+		    get('/ship/memberOrgEnterLink/apis/listIdentities' , data).then(res => {
+		        resolve(res)
+		    })
+		})
+	}
+	//获取项目公告详情
+	getBidAfficheDetail(data){
+		return new Promise(resolve => {
+		    get('/ship/bidAffiche/info/' + data).then(res => {
+		        resolve(res.data)
+		    })
+		})
+	}
+	//项目公告审核
+	postBidAfficheExamine(data){
+		return new Promise(resolve => {
+		    post('/ship/bidAffiche/examine', data).then(res => {
+		        resolve(res)
+		    })
+		})
+
 	}
 
 }

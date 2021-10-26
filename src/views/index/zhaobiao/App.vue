@@ -500,10 +500,10 @@
 				<div class="navBar" v-if="showDetail==true">
 					<el-tabs v-model="activeNameTwo" @tab-click="changeNav">
 						<el-tab-pane label="项目详情" name="first">
-							<detail :detailId='detailId'></detail>
+							<detail :detailId='detailId' ></detail>
 						</el-tab-pane>
 						<el-tab-pane label="招标变更/澄清" name="second">
-							<change></change>
+							<change :detailId='detailId' :detailName='detailName'></change>
 						</el-tab-pane>
 						<el-tab-pane label="全部项目" name="third">全部项目</el-tab-pane>
 					</el-tabs>
@@ -525,6 +525,7 @@
 		data() {
 			return {
 				detailId:'',
+				detailName:'',
 				list:[],
 				currentPage:1,
 				pageNum:1,
@@ -716,6 +717,7 @@
 				console.log('21', row);
 				this.showDetail = true
 				this.detailId=row.id
+				this.detailName=row.nm
 			},
 			//修改
 			toModify(row){

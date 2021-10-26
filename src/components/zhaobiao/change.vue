@@ -20,7 +20,7 @@
 		      </div>
 		      <div class="right">
 		        <el-input
-		          v-model="input1"
+		          v-model="title"
 		          class="margin_right"
 		          clearable
 		          placeholder="公告标题"
@@ -36,7 +36,7 @@
 			  </div>
 			  <div class="right">
 			     <el-date-picker
-			       v-model="date1"
+			       v-model="releTm"
 			       type="date"
 			       placeholder="选择日期">
 			     </el-date-picker>
@@ -51,10 +51,11 @@
 			  </div>
 			  <div class="right">
 			    <el-input
-			      v-model="input2"
+			      v-model="detailName"
 			      class="margin_right"
 			      clearable
 			      placeholder="项目名称"
+				  disabled="true"
 			    >
 			    </el-input>
 			  </div>
@@ -67,10 +68,11 @@
 			  </div>
 			  <div class="right">
 			    <el-input
-			      v-model="input3"
+			      v-model="detailId"
 			      class="margin_right"
 			      clearable
 			      placeholder="项目id"
+				   disabled="true"
 			    >
 			    </el-input>
 			  </div>
@@ -82,12 +84,29 @@
 			    ><span>公告类型</span>
 			  </div>
 			  <div class="right" style="margin-left: 12px;">
-			     <el-select v-model="value" placeholder="请选择" >
+			     <el-select v-model="value"  value-key="nm" placeholder="请选择公告类型"  @change="select1">
 			       <el-option
 			         v-for="item in options"
-			         :key="item.value"
-			         :label="item.label"
-			         :value="item.value">
+			         :key="item.id"
+			         :label="item.nm"
+			         :value="item">
+			       </el-option>
+			     </el-select>
+			  </div>
+			</div>
+			<div class="row2">
+			  <div class="title">
+			    <span style="color: red; margin-right: 1px; display: inline-block"
+			      >* </span
+			    ><span>公告单位</span>
+			  </div>
+			  <div class="right" style="margin-left: 12px;">
+			     <el-select v-model="value1"  placeholder="请选择公告单位"  @change="select2">
+			       <el-option
+			         v-for="item in optionsTwo"
+			         :key="item.id"
+			         :label="item.nm"
+			         :value="item.id">
 			       </el-option>
 			     </el-select>
 			  </div>
@@ -98,10 +117,10 @@
 		      </div>
 		      <div class="right">
 		        <el-input
-		          type="textarea"
-		          :rows="2"
+		          type="text"
 		          placeholder="备注"
-		          v-model="textarea"
+		          v-model="rmks"
+				 
 		        >
 		        </el-input>
 		      </div>
@@ -114,15 +133,23 @@
 		      </div>
 		      <div class="right">
 		        <el-input-number
-		          v-model="num"
+		          v-model="seq"
 		          @change="handleChange"
 		          :min="1"
-		          :max="10"
+		       
 		          label=""
 		        ></el-input-number>
 		      </div>
 		    </div>
-		
+			<div class="row2">
+			  <div class="title">
+			    <span>公告内容</span>
+			  </div>
+			  <div class="right" style="width: 80%;">
+			<MyEditor ref="myEditor"></MyEditor>
+						
+			  </div>
+			</div>
 		    <div class="btn">
 		      <el-button
 		        style="
@@ -132,7 +159,7 @@
 		          padding: 10px 25px;
 		          border-radius: 4px;
 		        "
-		        @click="handleClick(scope.row)"
+		        @click="addSure"
 		        type="text"
 		        size="small"
 		        >确定</el-button
@@ -154,7 +181,6 @@
 		  </div>
 		</div>
 		<div class="maskTwo" @click="closeMask" v-if="checkShow==true">
-		 
 		  <div class="table_box" @click.stop=""  style="display: flex; flex-wrap: wrap;">
 		    <div class="top">
 		      <p style="font-size: 20px">审核</p>
@@ -171,7 +197,7 @@
 		      <span>公告标题：</span>
 		      </div>
 		      <div class="right">
-		         
+		         {{detailInfo.title}}
 		      </div>
 		    </div>
 		
@@ -180,6 +206,7 @@
 			   <span>公告类型：</span>
 			  </div>
 			  <div class="right">
+				{{detailInfo.afficheTypeNm}}
 			  </div>
 			</div>
 			<div class="row2">
@@ -187,7 +214,7 @@
 			   <span>公告单位：</span>
 			  </div>
 			  <div class="right">
-			  
+				{{detailInfo.afficheUnit}}
 			  </div>
 			</div>
 			<div class="row2">
@@ -195,7 +222,7 @@
 			  <span>公告发布时间：</span>
 			  </div>
 			  <div class="right" style="margin-left: 12px;">
-		
+				{{detailInfo.releTm}}
 			  </div>
 			</div>
 			<div class="row2" >
@@ -214,7 +241,7 @@
 			   <span>审核意见：</span>
 			  </div>
 			  <div class="right">
-				<el-input v-model="input" type="text" clearable placeholder="审核意见" style="width: 300px;"> </el-input>
+				<el-input v-model="opinion" type="text" clearable placeholder="审核意见" style="width: 300px;"> </el-input>
 			  </div>
 			</div>
 			  </div>
@@ -224,6 +251,7 @@
 		        <p>排序：</p>
 		      </div>
 		      <div class="right">
+				  {{detailInfo.seq}}
 		      </div>
 		    </div>
 		    <div class="row2">
@@ -231,14 +259,14 @@
 		      <span>备注：</span>
 		      </div>
 		      <div class="right">
-	
+				{{detailInfo.rmks}}
 		      </div>
 		    </div>
 			<div class="row2">
 			  <div class="title">
 			   <span>公告内容：</span>
 			  </div>
-			  <div class="right">
+			  <div class="right" v-html="detailInfo.cont">
 			  </div>
 			</div>
 			</div>
@@ -254,7 +282,7 @@
 		          padding: 10px 25px;
 		          border-radius: 4px;
 		        "
-		        @click="handleClick(scope.row)"
+		        @click="sureTo"
 		        type="text"
 		        size="small"
 		        >确定</el-button
@@ -292,7 +320,7 @@
 		      <span>公告类型：</span>
 		      </div>
 		      <div class="right">
-		         
+		         {{detailInfo.afficheTypeNm}}
 		      </div>
 		    </div>
 		
@@ -301,6 +329,7 @@
 			   <span>公告标题：</span>
 			  </div>
 			  <div class="right">
+				  {{detailInfo.title}}
 			  </div>
 			</div>
 			<div class="row2">
@@ -308,15 +337,15 @@
 			   <span>公告单位：</span>
 			  </div>
 			  <div class="right">
-			  
+			  {{detailInfo.afficheUnit}}
 			  </div>
 			</div>
 			<div class="row2">
 			  <div class="title">
 			  <span>公告发布时间：</span>
 			  </div>
-			  <div class="right" style="margin-left: 12px;">
-		
+			  <div class="right" >
+					{{detailInfo.releTm}}
 			  </div>
 			</div>
 			<div class="row2" >
@@ -324,6 +353,7 @@
 			   <span>备注：</span>
 			  </div>
 			  <div class="right">
+				  {{detailInfo.rmks}}
 			  </div>
 			</div>
 			<div class="row2">
@@ -331,6 +361,7 @@
 			   <span>审核人：</span>
 			  </div>
 			  <div class="right">
+				  {{detailInfo.auditBy}}
 			  </div>
 			</div>
 			  </div>
@@ -339,21 +370,29 @@
 		      <div class="title">
 		        <p>公告内容：</p>
 		      </div>
-		      <div class="right">
+		      <div class="right"  v-html="detailInfo.cont">
 		      </div>
 		    </div>
 		    <div class="row2">
 		      <div class="title">
 		      <span>审核状态：</span>
 		      </div>
-		      <div class="right">
+		      <div class="right" v-if="detailInfo.audit==1">
+				  等待审核
 		      </div>
+			  <div class="right" v-if="detailInfo.audit==2">
+					审核通过
+			  </div>
+			  <div class="right" v-if="detailInfo.audit==3">
+			  		审核驳回
+			  </div>
 		    </div>
 			<div class="row2">
 			  <div class="title">
 			   <span>审核意见：</span>
 			  </div>
 			  <div class="right">
+				  {{detailInfo.options}}
 			  </div>
 			</div>
 			</div>
@@ -386,22 +425,22 @@
 		        alt=""
 		      />
 		    </div>
-		    <div class="row2">
-		      <div class="title">
-		        <span style="color: red; margin-right: 5px; display: inline-block"
-		          >* </span
-		        ><span>公告标题</span>
-		      </div>
-		      <div class="right">
-		        <el-input
-		          v-model="input1"
-		          class="margin_right"
-		          clearable
-		          placeholder="公告标题"
-		        >
-		        </el-input>
-		      </div>
-		    </div>
+			<div class="row2">
+			  <div class="title">
+			    <span style="color: red; margin-right: 5px; display: inline-block"
+			      >* </span
+			    ><span>公告标题</span>
+			  </div>
+			  <div class="right">
+			    <el-input
+			      v-model="title"
+			      class="margin_right"
+			      clearable
+			      placeholder="公告标题"
+			    >
+			    </el-input>
+			  </div>
+			</div>
 			<div class="row2">
 			  <div class="title">
 			    <span style="color: red; margin-right: 5px; display: inline-block"
@@ -410,7 +449,7 @@
 			  </div>
 			  <div class="right">
 			     <el-date-picker
-			       v-model="date1"
+			       v-model="releTm"
 			       type="date"
 			       placeholder="选择日期">
 			     </el-date-picker>
@@ -425,10 +464,11 @@
 			  </div>
 			  <div class="right">
 			    <el-input
-			      v-model="input2"
+			      v-model="detailName"
 			      class="margin_right"
 			      clearable
 			      placeholder="项目名称"
+				  disabled="true"
 			    >
 			    </el-input>
 			  </div>
@@ -441,10 +481,11 @@
 			  </div>
 			  <div class="right">
 			    <el-input
-			      v-model="input3"
+			      v-model="detailId"
 			      class="margin_right"
 			      clearable
 			      placeholder="项目id"
+				   disabled="true"
 			    >
 			    </el-input>
 			  </div>
@@ -456,47 +497,72 @@
 			    ><span>公告类型</span>
 			  </div>
 			  <div class="right" style="margin-left: 12px;">
-			     <el-select v-model="value" placeholder="请选择" >
+			     <el-select v-model="value"  value-key="nm" placeholder="请选择公告类型"  @change="select1">
 			       <el-option
 			         v-for="item in options"
-			         :key="item.value"
-			         :label="item.label"
-			         :value="item.value">
+			         :key="item.id"
+			         :label="item.nm"
+			         :value="item">
 			       </el-option>
 			     </el-select>
 			  </div>
 			</div>
-		    <div class="row2">
-		      <div class="title">
-		        <p>备注</p>
-		      </div>
-		      <div class="right">
-		        <el-input
-		          type="textarea"
-		          :rows="2"
-		          placeholder="备注"
-		          v-model="textarea"
-		        >
-		        </el-input>
-		      </div>
-		    </div>
-		    <div class="row2">
-		      <div class="title">
-		        <span style="color: red; margin-right: 5px; display: inline-block"
-		          >* </span
-		        ><span>排序</span>
-		      </div>
-		      <div class="right">
-		        <el-input-number
-		          v-model="num"
-		          @change="handleChange"
-		          :min="1"
-		          :max="10"
-		          label=""
-		        ></el-input-number>
-		      </div>
-		    </div>
-		
+			<div class="row2">
+			  <div class="title">
+			    <span style="color: red; margin-right: 1px; display: inline-block"
+			      >* </span
+			    ><span>公告单位</span>
+			  </div>
+			  <div class="right" style="margin-left: 12px;">
+			     <el-select v-model="value1"  placeholder="请选择公告单位"  @change="select2">
+			       <el-option
+			         v-for="item in optionsTwo"
+			         :key="item.id"
+			         :label="item.nm"
+			         :value="item.id">
+			       </el-option>
+			     </el-select>
+			  </div>
+			</div>
+			<div class="row2">
+			  <div class="title">
+			    <p>备注</p>
+			  </div>
+			  <div class="right">
+			    <el-input
+			      type="textarea"
+			      
+			      placeholder="备注"
+			      v-model="rmks"
+			    >
+			    </el-input>
+			  </div>
+			</div>
+			<div class="row2">
+			  <div class="title">
+			    <span style="color: red; margin-right: 5px; display: inline-block"
+			      >* </span
+			    ><span>排序</span>
+			  </div>
+			  <div class="right">
+			    <el-input-number
+			      v-model="seq"
+			      @change="handleChange"
+			      :min="1"
+			   
+			      label=""
+			    ></el-input-number>
+			  </div>
+			</div>
+			<div class="row2">
+			  <div class="title">
+			    <span>公告内容</span>
+			  </div>
+			  <div class="right" style="width: 80%;">
+			<MyEditor ref="myEditor"></MyEditor>
+						
+			  </div>
+			</div>
 		    <div class="btn">
 		      <el-button
 		        style="
@@ -544,21 +610,26 @@
 				<el-table-column type="selection" min-width="50">
 				</el-table-column>
 				<el-table-column label="公告编号" min-width="100">
-					<template slot-scope="scope">{{ scope.row.number }}</template>
+					<template slot-scope="scope">{{ scope.row.afficheTypeCd }}</template>
 				</el-table-column>
-				<el-table-column prop="type" label="公告类型" min-width="100">
+				<el-table-column prop="afficheTypeNm" label="公告类型" min-width="100">
 				</el-table-column>
 				<el-table-column prop="title" label="公告标题" min-width="100">
 				</el-table-column>
-				<el-table-column prop="Company" label="公告单位" min-width="100">
+				<el-table-column prop="afficheUnit" label="公告单位" min-width="100">
 				</el-table-column>
-				<el-table-column prop="time" label="公告发布时间" min-width="100">
+				<el-table-column prop="releTm" label="公告发布时间" min-width="100">
 				</el-table-column>
 				<el-table-column prop="rmks" label="备注" min-width="100">
 				</el-table-column>
-				<el-table-column prop="state" label="审核状态" min-width="100">
+				<el-table-column  label="审核状态" min-width="100" >
+					<template slot-scope="scope" >
+						<p v-if="scope.row.audit==1" style="color: #f56c6c;">等待审核</p>
+						<p v-if="scope.row.audit==2" style="color: #67c23a;">审核通过</p>
+						<p v-if="scope.row.audit==3" style="color: red;">审核驳回</p>
+					</template>
 				</el-table-column>
-				<el-table-column prop="opinion" label="审核意见" min-width="100">
+				<el-table-column prop="options" label="审核意见" min-width="100">
 				</el-table-column>
 				<el-table-column label="操作" min-width="50">
 					<template slot-scope="scope" >
@@ -574,6 +645,8 @@
 </template>
 
 <script>
+	import MyEditor from '@/components/myEditor'
+	
 	export default {
 		data() {
 			return {
@@ -582,80 +655,80 @@
 				input3:'',
 				date1:'',
 				value:'',
+				value1:'',
+				rmks:'',
 				textarea:'',
 				num:'',
-				radio:2,
+				seq:'',
+				radio:1,
+				title:'',
+				releTm:'',
+				opinion:'',
+				afficheTypeCd:'',//公告类型id
+				afficheTypeNm:'',//公告类型nm
 				addShow: false,//新增弹窗
 				checkShow:false,//审核弹窗
 				detailShow:false,//详情弹窗
 				editShow:false,//编辑弹窗
-				 options: [{
-				          value: '选项1',
-				          label: '结果公告'
-				        }, {
-				          value: '选项2',
-				          label: '采购公告'
-				        }, {
-				          value: '选项3',
-				          label: '更正公告'
-				        }, ],
-				        value: '',
-				tableData: [{
-					number: 'BHZC2021-G3-0001',
-					type: '结果公告',
-					title: '妙蛙种子',
-					Company: '单位',
-					time: '2021-9-28 18:00:00',
-					rmks: '小火龙',
-					state: '审核通过',
-					opinion: '',
-
-				}, {
-					number: 'BHZC2021-G3-0001',
-					type: '结果公告',
-					title: '妙蛙种子',
-					Company: '单位',
-					time: '2021-9-28 18:00:00',
-					rmks: '小火龙',
-					state: '审核通过',
-					opinion: '',
-				}, {
-					number: 'BHZC2021-G3-0001',
-					type: '结果公告',
-					title: '妙蛙种子',
-					Company: '单位',
-					time: '2021-9-28 18:00:00',
-					rmks: '小火龙',
-					state: '审核通过',
-					opinion: '',
-				}, {
-					number: 'BHZC2021-G3-0001',
-					type: '结果公告',
-					title: '妙蛙种子',
-					Company: '单位',
-					time: '2021-9-28 18:00:00',
-					rmks: '小火龙',
-					state: '等待审核',
-					opinion: '',
-				}, ],
+				 options: [ ],
+				 optionsTwo:[],
+				 value: '',
+				tableData: [],
 				multipleSelection: [],
+				detailInfo:{
+				}
 			}
 		},
+		components:{
+			MyEditor
+		},
+		props:{
+			detailId: {
+				type: Number,
+				default: "0",
+			},
+			detailName:{
+				type: String,
+				default: "0",
+			}
+		},
+		mounted() {
+			this.getList()
+			this.api.getCatListByPcd({cd:'ANNOUNCEMENT_TYPE'}).then(res=>{
+				this.options=res.list
+			})
+			this.api.getMemberOrgEnterLink({}).then(res=>{
+			})
+			
+		},
 		methods: {
+			getList(){
+				let query=this.query.new()
+				this.query.toW(query,'bidId',this.detailId,'EQ')
+				this.query.toO(query,'seq','asc')
+				this.api.getBidAffichePage(this.query.toEncode(query)).then(res=>{
+					this.tableData=res.data.list
+				})
+			},
 			handleSelectionChange(val) {
 				this.multipleSelection = val
 			},
-			toCheck(val) {
+			toCheck(val) {	
 				this.checkShow=true
+				this.api.getBidAfficheDetail(val.id).then(res=>{
+					this.detailInfo=res
+				})
 			},
 			toDetail(val){
 				this.detailShow=true
+				this.api.getBidAfficheDetail(val.id).then(res=>{
+					this.detailInfo=res
+				})
 			},
 			toEdit(val){
 			  this.editShow=true	
 			},
 			toDelite(index){
-				console.log(index);
 				this.tableData.splice(index,1)
 			},
 			add() {
@@ -666,8 +739,47 @@
 				this.checkShow=false
 				this.detailShow=false
 				this.editShow=false
+				this.detailId=''
+				this.afficheTypeNm=''
+				this.afficheTypeCd=''
+				this.title=''
+				this.afficheUnit=''
+				this.releTm=''
+				this.rmks=''
 			},
-			
+			addSure(){
+				let obj={
+					bidId:this.detailId,
+					afficheTypeCd:this.afficheTypeCd,
+					afficheTypeNm:this.afficheTypeNm,
+					title:this.title,
+					afficheUnit:'',
+					releTm:this.releTm,
+					cont:this.$refs.myEditor.msg,
+					rmks:this.rmks,
+				}
+				this.api.postBidAffiche(obj)
+				this.closeMask()
+				this.getList()
+			},
+			select1(val){
+				this.afficheTypeNm=val.nm
+				this.afficheTypeCd=val.id
+			},
+			handleChange(val){
+				this.seq=val
+			},
+			sureTo(){
+				let obj={
+					id:this.detailInfo.id,
+					audit:this.radio+1,
+					options:this.opinion
+				}
+				this.api.postBidAfficheExamine(obj)
+				this.checkShow=false
+				this.radio=1
+				this.opinion=''
+			}
 		}
 	}
 </script>
@@ -683,20 +795,19 @@
 		  top: 0;
 		  left: 0;
 		  width: 100vw;
-		  height: 100vh;
+		  height: 100%;
 		  background: rgba(0, 0, 0, 0.5);
 		  z-index: 50;
 		  display: flex;
 		  justify-content: center;
 		  align-items: center;
-		  
-		
+		 
 		  .table_box {
 		    background: #fff;
 		    padding: 20px;
 		    width: 850px;
 			max-height: 80%;
-			
+			 overflow-y: scroll;
 			
 		    .top {
 		      display: flex;
@@ -723,6 +834,8 @@
 		          height: 32px;
 		          width: 370px;
 		          margin-left: 12px;
+				 
+				  
 		        }
 		        .el-input-number {
 		          height: 32px;
