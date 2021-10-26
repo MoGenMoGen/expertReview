@@ -427,15 +427,15 @@
 						</el-input>
 						<el-input placeholder="联系人" v-model="input" clearable>
 						</el-input>
-						<el-select v-model="value" clearable placeholder="采购方式">
-							<el-option v-for="item in options" :key="item.value" :label="item.label"
-								:value="item.value">
+						<el-select v-model="search1" clearable placeholder="采购方式">
+							<el-option v-for="item in searchListOne" :key="item.cd" :label="item.nm"
+								:value="item.cd">
 							</el-option>
 						</el-select>
-						<el-date-picker v-model="value2" type="datetime" placeholder="创建时间">
+						<el-date-picker v-model="search2" type="datetime" placeholder="创建时间">
 						</el-date-picker>
 						<el-select v-model="value1" clearable placeholder="项目状态">
-							<el-option v-for="item in optionsTwo" :key="item.value" :label="item.label"
+							<el-option v-for="item in searchListTwo" :key="item.value" :label="item.label"
 								:value="item.value">
 							</el-option>
 						</el-select>
@@ -532,6 +532,10 @@
 				formTwo:{
 					
 				},
+				searchListOne:[],
+				search1:'',
+				searchListTwo:[],
+				search2:'',
 				purchasingUnit:'',//采购单位
 				cd:'',//项目工程编号
 				nm:'',//项目名称
@@ -682,6 +686,11 @@
 			this.api.getOrgEnterList(this.query.toEncode(query4)).then(res=>{
 				this.optionsSix=res.list
 			})
+			//获取采购方式
+			this.api.getCatListByPcd({cd:'PROCUREMENT_METHOD'}).then(res => {
+				this.searchListone = res.list
+				console.log('78979',this.searchListone);
+			})
 			this.getList()
 
 		},
@@ -762,8 +771,37 @@
 				})
 			},
 			toDelite(row){
-				this.api.getBidDel({ids:row.id})
-				this.getList()
+				this.$confirm("确认删除?", "提示", {
+				  confirmButtonText: "确定",
+				  cancelButtonText: "取消",
+				  type: "warning",
+				})
+				  .then(() => {
+				    return this.api.getBidDel({ids:row.id})
+				  })
+				  .catch(() => {
+				    this.$message({
+				      type: "info",
+				      message: "已取消删除",
+				    });
+				  })
+				  .then((res) => {
+					  console.log('11',res);
+				    if (res.code == 0) {
+				      this.$message({
+				        type: "success",
+				        message: "删除成功!",
+				      });
+				      this.getList();
+				    } else {
+				      this.$message({
+				        type: "error",
+				        message: "删除失败!",
+				      });
+				    }
+				  });
+				
+			
 			},
 			changeNav(tab, event) {
 				console.log(tab, event);

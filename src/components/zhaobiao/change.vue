@@ -94,23 +94,7 @@
 			     </el-select>
 			  </div>
 			</div>
-			<div class="row2">
-			  <div class="title">
-			    <span style="color: red; margin-right: 1px; display: inline-block"
-			      >* </span
-			    ><span>公告单位</span>
-			  </div>
-			  <div class="right" style="margin-left: 12px;">
-			     <el-select v-model="value1"  placeholder="请选择公告单位"  @change="select2">
-			       <el-option
-			         v-for="item in optionsTwo"
-			         :key="item.id"
-			         :label="item.nm"
-			         :value="item.id">
-			       </el-option>
-			     </el-select>
-			  </div>
-			</div>
+	
 		    <div class="row2">
 		      <div class="title">
 		        <p>备注</p>
@@ -209,19 +193,12 @@
 				{{detailInfo.afficheTypeNm}}
 			  </div>
 			</div>
-			<div class="row2">
-			  <div class="title">
-			   <span>公告单位：</span>
-			  </div>
-			  <div class="right">
-				{{detailInfo.afficheUnit}}
-			  </div>
-			</div>
+			
 			<div class="row2">
 			  <div class="title">
 			  <span>公告发布时间：</span>
 			  </div>
-			  <div class="right" style="margin-left: 12px;">
+			  <div class="right" >
 				{{detailInfo.releTm}}
 			  </div>
 			</div>
@@ -332,14 +309,7 @@
 				  {{detailInfo.title}}
 			  </div>
 			</div>
-			<div class="row2">
-			  <div class="title">
-			   <span>公告单位：</span>
-			  </div>
-			  <div class="right">
-			  {{detailInfo.afficheUnit}}
-			  </div>
-			</div>
+	
 			<div class="row2">
 			  <div class="title">
 			  <span>公告发布时间：</span>
@@ -509,29 +479,11 @@
 			</div>
 			<div class="row2">
 			  <div class="title">
-			    <span style="color: red; margin-right: 1px; display: inline-block"
-			      >* </span
-			    ><span>公告单位</span>
-			  </div>
-			  <div class="right" style="margin-left: 12px;">
-			     <el-select v-model="value1"  placeholder="请选择公告单位"  @change="select2">
-			       <el-option
-			         v-for="item in optionsTwo"
-			         :key="item.id"
-			         :label="item.nm"
-			         :value="item.id">
-			       </el-option>
-			     </el-select>
-			  </div>
-			</div>
-			<div class="row2">
-			  <div class="title">
 			    <p>备注</p>
 			  </div>
 			  <div class="right">
 			    <el-input
-			      type="textarea"
-			      
+			      type="text"
 			      placeholder="备注"
 			      v-model="rmks"
 			    >
@@ -572,7 +524,7 @@
 		          padding: 10px 25px;
 		          border-radius: 4px;
 		        "
-		        @click="handleClick(scope.row)"
+		        @click="updTo"
 		        type="text"
 		        size="small"
 		        >确定</el-button
@@ -606,8 +558,9 @@
 				    color: '#606060',
 				    background: '#f8f8f8',
 				    'text-align': 'center',
-				  }" @selection-change="handleSelectionChange">
-				<el-table-column type="selection" min-width="50">
+				  }"
+				   @selection-change="handleSelectionChange">
+				<el-table-column type="index" min-width="50">
 				</el-table-column>
 				<el-table-column label="公告编号" min-width="100">
 					<template slot-scope="scope">{{ scope.row.afficheTypeCd }}</template>
@@ -615,8 +568,6 @@
 				<el-table-column prop="afficheTypeNm" label="公告类型" min-width="100">
 				</el-table-column>
 				<el-table-column prop="title" label="公告标题" min-width="100">
-				</el-table-column>
-				<el-table-column prop="afficheUnit" label="公告单位" min-width="100">
 				</el-table-column>
 				<el-table-column prop="releTm" label="公告发布时间" min-width="100">
 				</el-table-column>
@@ -636,7 +587,7 @@
 						<p style="cursor: pointer;min-width: 30px; color:#409eff;" @click="toCheck(scope.row)" >审核</p>
 						<p style="cursor: pointer; color:#409eff;" @click="toDetail(scope.row)">详情</p>
 						<p style="cursor: pointer;color:#409eff;" @click="toEdit(scope.row)">编辑</p>
-						<p style="cursor: pointer;color:red;" @click="toDelite(scope.$index)">删除</p>
+						<p style="cursor: pointer;color:red;" @click="toDelite(scope.row)">删除</p>
 					</template>
 				</el-table-column>
 			</el-table>
@@ -727,9 +678,50 @@
 			},
 			toEdit(val){
 			  this.editShow=true	
+			  this.api.getBidAfficheDetail(val.id).then(res=>{
+				  this.detailInfo=res
+				  this.title=res.title
+				  this.releTm=res.releTm
+				  this.value=res.afficheTypeNm
+				  this.afficheTypeCd=res.afficheTypeCd,
+				  this.afficheTypeNm=res.afficheTypeNm,
+				  this.rmks=res.rmks
+				  this.seq=res.seq
+				  this.$refs.myEditor.msg=res.cont
+				  
+			  })
 			},
-			toDelite(index){
-				this.tableData.splice(index,1)
+			toDelite(val){
+				this.$confirm("确认删除?", "提示", {
+				  confirmButtonText: "确定",
+				  cancelButtonText: "取消",
+				  type: "warning",
+				})
+				  .then(() => {
+				    return this.api.getBidAfficheDel({ids:val.id})
+				  })
+				  .catch(() => {
+				    this.$message({
+				      type: "info",
+				      message: "已取消删除",
+				    });
+				  })
+				  .then((res) => {
+					  console.log('11',res);
+				    if (res.code == 0) {
+				      this.$message({
+				        type: "success",
+				        message: "删除成功!",
+				      });
+				      this.getList();
+				    } else {
+				      this.$message({
+				        type: "error",
+				        message: "删除失败!",
+				      });
+				    }
+				  });
+				
 			},
 			add() {
 				this.addShow = true
@@ -739,13 +731,12 @@
 				this.checkShow=false
 				this.detailShow=false
 				this.editShow=false
-				this.detailId=''
 				this.afficheTypeNm=''
 				this.afficheTypeCd=''
 				this.title=''
-				this.afficheUnit=''
 				this.releTm=''
 				this.rmks=''
+				this.value=''
 			},
 			addSure(){
 				let obj={
@@ -753,14 +744,15 @@
 					afficheTypeCd:this.afficheTypeCd,
 					afficheTypeNm:this.afficheTypeNm,
 					title:this.title,
-					afficheUnit:'',
 					releTm:this.releTm,
 					cont:this.$refs.myEditor.msg,
 					rmks:this.rmks,
 				}
-				this.api.postBidAffiche(obj)
-				this.closeMask()
-				this.getList()
+				this.api.postBidAffiche(obj).then(res=>{
+					this.closeMask()
+					this.getList()
+				})
+				
 			},
 			select1(val){
 				this.afficheTypeNm=val.nm
@@ -779,6 +771,23 @@
 				this.checkShow=false
 				this.radio=1
 				this.opinion=''
+			},
+			updTo(){
+				let obj={
+					id:this.detailInfo.id,
+					bidId:this.detailId,
+					afficheTypeCd:this.afficheTypeCd,
+					afficheTypeNm:this.afficheTypeNm,
+					title:this.title,
+					releTm:this.releTm,
+					cont: this.$refs.myEditor.msg,
+					rmks:this.rmks,
+					seq:this.seq,
+				}
+				this.api.postBidAfficheUpd(obj).then(res=>{
+					this.closeMask()
+					this.getList()
+				})
 			}
 		}
 	}

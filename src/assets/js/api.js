@@ -546,7 +546,7 @@ class api {
 	            resolve(res.data)
 	        })
 	    })
-
+}
 	//项目公告分页列表
 	getBidAffichePage(data){
 		return new Promise(resolve => {
@@ -588,7 +588,24 @@ class api {
 		})
 
 	}
+	//项目公告更新
+	
+	postBidAfficheUpd(data){
+		return new Promise(resolve => {
+		    post('/ship/bidAffiche/upd', data).then(res => {
+		        resolve(res)
+		    })
+		})
 
+	}
+	//项目公告删除
+	getBidAfficheDel(data){
+		return new Promise(resolve => {
+		    get('/ship/bidAffiche/del' , data).then(res => {
+		        resolve(res)
+		    })
+		})
+	}
 }
 
 export { api };
