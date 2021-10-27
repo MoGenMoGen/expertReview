@@ -24,7 +24,7 @@
 							</el-date-picker>
 							<!-- <el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间">
 							</el-date-picker> -->
-							<el-button plain type="primary">查询</el-button>
+							<el-button plain type="primary" @click="searchList">查询</el-button>
 						</div>
 					</div>
 					<div class="content-list">
@@ -56,14 +56,14 @@
 								<el-table-column prop="applyNum" label="投标项" min-width="100"></el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
-										<el-button @click="handleClickShenhe(scope.row.id,2)" type="text" size="small">查看公示
+										<el-button @click="handleClickShenhe(scope.row,2)" type="text" size="small">查看公示
 										</el-button>
 										<br>
-										<el-button type="text" size="small" @click="handleClickShenhe(scope.row.id,0)"
+										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,0)"
 											style="background: #FFF;color: #2778BE; border-radius: 2px;width: 50px;border: 1px solid #2778BE;box-sizing: border-box;margin-bottom: 10px;">
 											发布</el-button>
 										<br>
-										<el-button type="text" size="small" @click="handleClickShenhe(scope.row.id,1)"
+										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,1)"
 											style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;">
 											审核</el-button>
 									</template>
@@ -80,7 +80,7 @@
 			</div>
 		</div>
 		<my-footer></my-footer>
-		<gongshishenhe :id='id' :type='type' v-if="showShenhe"></gongshishenhe>
+		<gongshishenhe :row='row' :type='type' v-if="showShenhe"></gongshishenhe>
 	</div>
 </template>
 
@@ -93,7 +93,7 @@
 	export default {
 		data() {
 			return {
-				id: '11111',
+				row: {},
 				type: 0,
 				activeName: '',
 				thisNavList: [],
@@ -163,8 +163,9 @@
 				this.pageNo= val
 				this.getList()
 			},
-			handleClickShenhe(id,type) {
+			handleClickShenhe(row,type) {
 				this.showShenhe = true
+				this.row = row
 				this.type = type
 			},
 			getList() {
@@ -191,6 +192,9 @@
 					this.tableData = res.data.list
 					this.total = res.page.total
 				})
+			},
+			searchList() {
+				this.getList()
 			}
 		}
 	}

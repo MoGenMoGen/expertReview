@@ -5,11 +5,11 @@
 			<leftMenu tabIndex='2-2'></leftMenu>
 			<div class="right">
 				<topNav :activeName='activeName' :list="thisNavList"></topNav>
-				<div class="content">
+				<div class="content" v-if="!showDetail">
 					<div class="topSeachBox">
 						<div>
-							<el-input placeholder="项目编号" v-model="input" clearable></el-input>
-							<el-input placeholder="项目名称" v-model="input" clearable></el-input>
+							<el-input placeholder="项目编号" v-model="cd" clearable></el-input>
+							<el-input placeholder="项目名称" v-model="nm" clearable></el-input>
 							<!-- <el-input placeholder="采购单位" v-model="input" clearable></el-input>
 							<el-input placeholder="联系人" v-model="input" clearable></el-input>
 							<el-input placeholder="联系电话" v-model="input" clearable></el-input> -->
@@ -23,19 +23,19 @@
 									:value="item.value">
 								</el-option>
 							</el-select> -->
-							<el-date-picker v-model="value2" type="datetime" style="flex: 2;" placeholder="投标开始时间">
+							<el-date-picker v-model="bidOpenTm" type="datetimerange" style="flex: 2;margin-right: 10px;margin-bottom: 10px;" range-separator="" start-placeholder="投标开始时间段">
 							</el-date-picker>
-							<el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="投标截止时间">
+							<el-date-picker v-model="bidEndTm" type="datetimerange" style="flex: 2;margin-right: 10px;margin-bottom: 10px;" range-separator="" start-placeholder="投标截止时间段">
 							</el-date-picker>
 							<!-- <el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间">
 							</el-date-picker> -->
-							<el-button plain type="primary">查询</el-button>
+							<el-button plain type="primary" @click="searchList">查询</el-button>
 						</div>
 					</div>
 					<div class="son_tablist">
 						<div class="left">
 							<div class="son_tab_title projectNm" v-for="(item, index) in sonTabList" :key="index"
-								@click="sonTabIndex = index" :style="{
+								@click="changeIndex(index)" :style="{
 					        background: sonTabIndex == index ? '#2778be' : '',
 					        color: sonTabIndex == index ? '#fff' : '#666666',
 					      }">
@@ -66,12 +66,21 @@
 									'text-align': 'center',
 								  }">
 											<el-table-column prop="orgNm" label="采购单位" min-width="150"></el-table-column>
-											<el-table-column prop="offer" label="招标文件" min-width="150"></el-table-column>
-											<el-table-column prop="deposit" label="保证金" min-width="150"></el-table-column>
+											<el-table-column label="招标文件" min-width="150">
+												<template slot-scope="scope">
+													<p>{{scope.row.offer>0?'已上传':'未上传'}}</p>
+												</template>
+											</el-table-column>
+											<el-table-column label="保证金" min-width="150">
+												<template slot-scope="scope">
+													<p>{{scope.row.deposit>0?'已缴纳':'未缴纳'}}</p>
+												</template>
+											</el-table-column>
 											<el-table-column prop="crtTm" label="投标时间" min-width="150"></el-table-column>
 											<el-table-column label="状态" min-width="100">
 												<template slot-scope="scope">
-													<p>投标中</p>
+													<p v-if="sonTabIndex==0">投标中</p>
+													<p v-if="sonTabIndex==1">已结束</p>
 												</template>
 											</el-table-column>
 										</el-table>
@@ -88,7 +97,7 @@
 								<el-table-column prop="bidEndTm" label="投标截止时间" min-width="150"></el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
-										<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+										<el-button @click="handleClick(scope.row.id)" type="text" size="small">查看</el-button>
 									</template>
 								</el-table-column>
 							</el-table>
@@ -99,6 +108,9 @@
 							:page-size="pageSize" layout="prev, pager, next, jumper" :total="total">
 						</el-pagination>
 					</div>
+				</div>
+				<div class="detail" v-if="showDetail">
+					<tenderDetail :id="id"></tenderDetail>
 				</div>
 			</div>
 		</div>
@@ -113,9 +125,11 @@
 	import detail from '@/components/zhaobiao/detail';
 	import change from '@/components/zhaobiao/change';
 	import topNav from '@/components/topNav';
+	import tenderDetail from '@/components/toubiao/tenderDetail';
 	export default {
 		data() {
 			return {
+				id: '',
 				activeName: '',
 				thisNavList: [],
 				loading: false,
@@ -134,7 +148,8 @@
 				options: [],
 				procurementMethodCd: '',
 				bidOpenTm: '',
-				bidEndTm: ''
+				bidEndTm: '',
+				showDetail: false
 			}
 		},
 		computed: {
@@ -146,7 +161,8 @@
 			leftMenu,
 			detail,
 			change,
-			topNav
+			topNav,
+			tenderDetail
 		},
 		mounted() {
 			let obj = {
@@ -190,11 +206,10 @@
 				let qry=this.query.new()
 				this.query.toO(qry,'crtTm','desc')
 				this.query.toP(qry,this.pageNo,this.pageSize)
-				let data = 0
 				if(this.sonTabIndex == 0) {
-					data = 1
+					this.query.toW(qry,'bidEndTm',this.until.formatTime(new Date()),'gt')
 				} else if(this.sonTabIndex == 1) {
-					data = 2
+					this.query.toW(qry,'bidEndTm',this.until.formatTime(new Date()),'lt')
 				}
 				if(this.cd) {
 					this.query.toW(qry,'cd',this.cd,'LK')
@@ -211,7 +226,7 @@
 				if(this.bidEndTm) {
 					this.query.toW(qry,'bidEndTm',this.until.formatTime(this.bidEndTm[0])+','+this.until.formatTime(this.bidEndTm[1]),'BT')
 				}
-				this.api.getBidTenderList(this.query.toEncode(qry),data).then(res => {
+				this.api.getBidTenderList(this.query.toEncode(qry)).then(res => {
 					this.tableData = res.data.list
 					this.total = res.page.total
 				})
@@ -221,7 +236,11 @@
 				this.getList()
 			},
 			searchList() {
-				
+				this.getList()
+			},
+			handleClick(id) {
+				this.id = id
+				this.showDetail = true
 			}
 		}
 	}
@@ -353,6 +372,14 @@
 					text-align: center;
 					margin-top: 20px;
 				}
+			}
+			.detail {
+				height: 740px;
+				box-sizing: border-box;
+				overflow-y: scroll;
+				background-color: white;
+				margin-top: 10px;
+				padding: 29px 41px;
 			}
 		}
 	}

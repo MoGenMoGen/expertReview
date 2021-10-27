@@ -23,7 +23,7 @@
 							<el-date-picker v-model="bidEndTm" type="datetimerange" style="flex: 2;margin-right: 10px;margin-bottom: 10px;" range-separator="" start-placeholder="投标截止时间段">
 							</el-date-picker>
 							<!-- <el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间"></el-date-picker> -->
-							<el-button plain type="primary">查询</el-button>
+							<el-button plain type="primary" @click="searchList">查询</el-button>
 						</div>
 					</div>
 					<div class="content-list">
@@ -55,7 +55,7 @@
 								<el-table-column prop="applyNum" label="投标项" min-width="100"></el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
-										<el-button @click="handleClick(scope.row.id)" type="text" size="small">查看结果</el-button>
+										<el-button @click="handleClick(scope.row)" type="text" size="small">查看结果</el-button>
 										<!-- <br>
 										<el-button type="text" size="small" style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;" >确认</el-button> -->
 									</template>
@@ -72,6 +72,7 @@
 			</div>
 		</div>
 		<my-footer></my-footer>
+		<result :id='id' :row="row" v-if="showResult"></result>
 	</div>
 </template>
 
@@ -82,9 +83,13 @@
 	import detail from '@/components/zhaobiao/detail';
 	import change from '@/components/zhaobiao/change';
 	import topNav from '@/components/topNav';
+	import result from '@/components/dingbiao/result';
 	export default {
 		data() {
 			return {
+				id: '',
+				row: {},
+				showResult: false,
 				activeName: '',
 				thisNavList: [],
 				loading: false,
@@ -113,7 +118,8 @@
 			leftMenu,
 			detail,
 			change,
-			topNav
+			topNav,
+			result
 		},
 		mounted() {
 			let obj = {
@@ -173,10 +179,17 @@
 					this.query.toW(qry,'bidEndTm',this.until.formatTime(this.bidEndTm[0])+','+this.until.formatTime(this.bidEndTm[1]),'BT')
 				}
 				this.api.getBidTargetList(this.query.toEncode(qry),1).then(res => {
-					console.log(res)
 					this.tableData = res.data.list
 					this.total = res.page.total
 				})
+			},
+			searchList() {
+				this.getList()
+			},
+			handleClick(row) {
+				this.row = row
+				this.id = row.id
+				this.showResult = true
 			}
 		}
 	}

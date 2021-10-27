@@ -631,6 +631,62 @@ class api {
 			})
 		})
 	}
+	//项目公告详情根据项目id查询结果公告
+	getBidAfficheByBidId(data) {
+		return new Promise(resolve => {
+			get('/ship/bidAffiche/getInfoByBidId', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	//招投标报名列表全返
+	getBidApplyList(data) {
+		return new Promise(resolve => {
+			get('/ship/bidApply/list?query='+data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	//招投标报名审核
+	postBidApplyAudit(data) {
+		return new Promise(resolve => {
+			post('/ship/bidApply/audit', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	//项目评定结果（一个投标评分详情列表）
+	getResultAll(data) {
+		return new Promise(resolve => {
+			get('/ship/bidSvsResult/pageResultAOffer?query='+data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	//项目评审结果（多个投标评分列表）
+	getBidOfferAll(data) {
+		return new Promise(resolve => {
+			get('/ship/bidOffer/page?query='+data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 修改中标
+	postBidOfferUpd(data) {
+		return new Promise(resolve => {
+			post('/ship/bidOffer/upd?',data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	//招投标投标项目全返
+	getListWithOfferAndDes(data) {
+		return new Promise(resolve => {
+			get('/ship/bidApply/listWithOfferAndDes?query='+data).then(res => {
+				resolve(res)
+			})
+		})
+	}
 }
 
 export {

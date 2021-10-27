@@ -5,7 +5,7 @@
 			<leftMenu tabIndex='2-1'></leftMenu>
 			<div class="right">
 				<topNav :activeName='activeName' :list="thisNavList"></topNav>
-				<div class="content">
+				<div class="content" v-if="!showDetail">
 					<div class="topSeachBox">
 						<div>
 							<el-input placeholder="项目编号" v-model="cd" clearable></el-input>
@@ -71,11 +71,11 @@
 											<el-table-column prop="crtTm" label="申请时间" min-width="150"></el-table-column>
 											<el-table-column label="操作" min-width="100">
 												<template slot-scope="scope">
-													<el-button type="text" size="small" v-if="scope.row.audit==1"
+													<el-button type="text" size="small" v-if="scope.row.audit==1" @click="handleClick(scope.row.bidId)"
 														style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;">
 														去审核</el-button>
-													<el-button type="text" size="small" style="color: #303030;" v-if="scope.row.audit==2">审核通过</el-button>
-													<el-button type="text" size="small" style="color: #303030;" v-if="scope.row.audit==3">审核驳回</el-button>
+													<p style="color: #303030;" v-if="scope.row.audit==2">审核通过</p>
+													<p style="color: #303030;" v-if="scope.row.audit==3">审核驳回</p>
 												</template>
 											</el-table-column>
 										</el-table>
@@ -97,7 +97,7 @@
 								</el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
-										<el-button @click="handleClick(scope.row)" type="text" size="small">查看</el-button>
+										<el-button @click="handleClick(scope.row.id)" type="text" size="small">查看</el-button>
 									</template>
 								</el-table-column>
 							</el-table>
@@ -109,6 +109,9 @@
 						</el-pagination>
 					</div>
 				</div>
+				<div class="detail" v-if="showDetail">
+					<detail :id="id" :sonTabIndex="sonTabIndex"></detail>
+				</div>
 			</div>
 		</div>
 		<my-footer></my-footer>
@@ -119,12 +122,12 @@
 	import myFooter from '@/components/footer';
 	import myHeader from '@/components/myHeader';
 	import leftMenu from '@/components/leftMenu';
-	import detail from '@/components/zhaobiao/detail';
-	import change from '@/components/zhaobiao/change';
 	import topNav from '@/components/topNav';
+	import detail from '@/components/toubiao/detail';
 	export default {
 		data() {
 			return {
+				id: '',
 				activeName: '',
 				thisNavList: [],
 				loading: false,
@@ -143,7 +146,8 @@
 				options: [],
 				procurementMethodCd: '',
 				bidOpenTm: '',
-				bidEndTm: ''
+				bidEndTm: '',
+				showDetail: false
 			}
 		},
 		computed: {
@@ -154,7 +158,6 @@
 			myHeader,
 			leftMenu,
 			detail,
-			change,
 			topNav
 		},
 		mounted() {
@@ -230,7 +233,11 @@
 				this.getList()
 			},
 			searchList() {
-				
+				this.getList()
+			},
+			handleClick(id) {
+				this.id = id
+				this.showDetail = true
 			}
 		}
 	}
@@ -362,6 +369,14 @@
 					text-align: center;
 					margin-top: 20px;
 				}
+			}
+			.detail {
+				height: 740px;
+				box-sizing: border-box;
+				overflow-y: scroll;
+				background-color: white;
+				margin-top: 10px;
+				padding: 29px 41px;
 			}
 		}
 	}
