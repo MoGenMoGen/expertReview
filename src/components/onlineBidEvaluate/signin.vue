@@ -1,6 +1,6 @@
 <template>
   <!-- 签到 -->
-  <div style="max-width: 100%">
+  <div style="max-width: 100%;max-height:524px;overflow-y:scroll;">
     <el-table
       :data="tableData"
       style="width: 100%"
@@ -17,18 +17,14 @@
     >
       <el-table-column type="index" label="序号" min-width="62">
       </el-table-column>
-      <el-table-column prop="no" label="项目编号" min-width="146">
+      <el-table-column prop="cd" label="项目编号" min-width="146">
       </el-table-column>
-      <el-table-column prop="name" label="项目名称" min-width="146">
+      <el-table-column prop="nm" label="项目名称" min-width="146">
       </el-table-column>
       <el-table-column label="采购单位" min-width="146">
         <template slot-scope="scope">
-          <div
-            style="margin-top: 0px"
-            v-for="(item, index) in scope.row.units"
-            :key="index"
-          >
-            {{ item.value }}
+          <div v-for="(item, index) in scope.row.orgItems" :key="index">
+            {{ item.orgNm }}
           </div>
         </template>
       </el-table-column>
@@ -36,16 +32,15 @@
         <template slot-scope="scope">
           <div
             style="margin-top: 0px"
-            v-for="(item, index) in scope.row.experts"
+            v-for="(item, index) in scope.row.subItems"
             :key="index"
-          >
-            {{ item.value }}
+          >{{item.realNm}}
             <span
-              v-if="item.status == 0"
+              v-if="item.signinStatus == 0"
               style="
                 width: 50px;
                 height: 18px;
-                background: #2778be;
+                background: red;
                 border-radius: 9px;
                 color: #fff;
                 text-align: center;
@@ -53,25 +48,25 @@
                 margin-left: 5px;
                 display: inline-block;
               "
-              >签到</span
+              >未签到</span
             >
             <span v-else>（已签到）</span>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="date" label="开标时间" min-width="146">
+      <el-table-column prop="bidOpenTm" label="开标时间" min-width="146">
       </el-table-column>
       <el-table-column prop="status" label="状态" min-width="146">
-        <template slot-scope="scope">
-          <div v-if="scope.row.status == 1" style="color: #39a520">评标中</div>
-          <div v-if="scope.row.status == 2" style="color: 'pink'">已完成</div>
-        </template>
+        <!-- <template slot-scope="scope"> -->
+        <div style="color: #39a520">· 评标中</div>
+        <!-- <div v-if="scope.row.status == 2" style="color: 'pink'">已完成</div> -->
+        <!-- </template> -->
       </el-table-column>
       <el-table-column fixed="right" label="操作" min-width="62">
         <template slot-scope="scope">
           <el-button
             style="color: #2778be"
-            @click="handleClick(scope.row)"
+            @click="toDetail(scope.row.id)"
             type="text"
             size="small"
             >查看</el-button
@@ -95,11 +90,14 @@
   </div>
 </template>
 <script>
+import bus from "@/bus.js";
+
 export default {
   data() {
     return {
       tableData: [
         {
+          id: 123124342,
           no: "BHZC2021-G3-0001",
           name: "12米玻璃钢新型渔船",
           units: [
@@ -126,6 +124,7 @@ export default {
           status: 1,
         },
         {
+          id: 123124342,
           no: "BHZC2021-G3-0001",
           name: "12米玻璃钢新型渔船",
           units: [
@@ -157,15 +156,73 @@ export default {
       total: 0,
       // 当前页
       currentPage: 1,
+      SearchInfo: {
+        cd: "", //编号
+        nm: "", //项目名称
+        purchasingUnit: "", //采购单位
+        expertIds: "", //专家id
+        expertNm: "", //专家
+        procurementMethodCd: "", //采购方式
+        procurementMethodNm: "", //采购方式
+      },
     };
   },
+
   methods: {
-    handleClick(row) {
-      console.log(row);
+    toDetail(id) {
+      this.toPage("/views/index/onlineBidEvaDetail.html?id=" + id);
+    },
+    //页面跳转
+    toPage(url) {
+      this.until.href(url);
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.pageNo = val;
+      this.getList();
     },
+    async getList() {
+      console.log("子组件", this.SearchInfo);
+      let query = {
+        r: [
+          {
+            n: "a1",
+            t: "and",
+            w: [
+              { k: "cd", v: "", m: "LK" },
+              { k: "nm", v: "", m: "LK" },
+              { k: "purchasingUnit", v: "", m: "LK" },
+              { k: "procurementMethodCd", v: "", m: "LK" },
+            ],
+          },
+        ],
+        o: [{ k: "crtTm", t: "desc" }],
+        p: { n: 1, s: 10 },
+      };
+      query.p.n = this.pageNo;
+      query.p.s = this.pageSize;
+      query.r[0].w[0].v = this.SearchInfo.cd;
+      query.r[0].w[1].v = this.SearchInfo.nm;
+      query.r[0].w[2].v = this.SearchInfo.purchasingUnit;
+      query.r[0].w[3].v = this.SearchInfo.procurementMethodCd;
+      // 选取列表
+      let data = await this.api.onlineBidList(
+        encodeURIComponent(JSON.stringify(query)),
+        this.SearchInfo.expertNm
+      );
+      this.tableData = data.data.list;
+      this.total = data.page.total;
+      console.log(1111111, data);
+    },
+  },
+  created() {
+    bus.$on("SignSearch", (data) => {
+      this.SearchInfo = data;
+      this.getList();
+    });
+  },
+  mounted() {
+    this.getList();
   },
 };
 </script>

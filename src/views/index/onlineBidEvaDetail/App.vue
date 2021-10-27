@@ -1,5 +1,5 @@
 <template>
-  <!-- 在线评标页面 -->
+  <!-- 在线评标详情页面 -->
   <div id="home" :style="{ width: bWidth + 'px' }" v-loading="loading">
     <my-header :width="width" :bWidth="bWidth"></my-header>
     <div class="container" :style="{ width: bWidth + 'px' }">
@@ -7,8 +7,19 @@
       <div class="rightMenu" :style="{ width: bWidth - 200 + 'px' }">
         <topNav :activeName="activeName" :list="thisNavList"></topNav>
         <div class="right_content">
-          <signInQuery  v-if="sonTabIndex == 0"></signInQuery>
-          <!-- <reviewResultQuery v-else-if="sonTabIndex==2"></reviewResultQuery> -->
+          <div
+            style="
+              color: #2778be;
+              padding: 10px;
+              padding-top: 0px;
+              cursor: pointer;
+            "
+            @click="back"
+          >
+            < 返回
+          </div>
+          <!-- <signInQuery v-if="sonTabIndex == 0"></signInQuery> -->
+          <reviewResultQuery v-if="sonTabIndex == 1"></reviewResultQuery>
           <div class="son_tablist">
             <div class="left">
               <div
@@ -28,10 +39,10 @@
           </div>
           <!-- 组件表 -->
           <div style="margin-top: 20px">
-            <signin  v-if="sonTabIndex == 0"></signin>
-            <!-- <decrypt v-if="sonTabIndex == 1"></decrypt>
-            <reviewResults v-if="sonTabIndex == 2"></reviewResults>
-            <uploadVideo v-if="sonTabIndex == 3"></uploadVideo> -->
+            <!-- <signin v-if="sonTabIndex == 0"></signin> -->
+            <decrypt :id="id" v-if="sonTabIndex == 0"></decrypt>
+            <reviewResults v-else-if="sonTabIndex == 1"></reviewResults>
+            <uploadVideo :id="id" v-else-if="sonTabIndex == 2"></uploadVideo>
           </div>
         </div>
       </div>
@@ -62,20 +73,11 @@ export default {
       pageNo: 1,
       pageSize: 10,
       total: 0,
-      sonTabList: ["签到"],
-      // , "解密", "评审结果", "评标视频上传"],
+      sonTabList: ["解密", "评审结果", "评标视频上传"],
       sonTabIndex: 0,
       thisNavList: [],
       activeName: "",
-      SearchInfo: {
-        cd: "", //编号
-        nm: "", //项目名称
-        purchasingUnit: "", //采购单位
-        expertIds: "", //专家id
-        expertNm: "", //专家
-        procurementMethodCd: "", //采购方式
-        procurementMethodNm: "", //采购方式
-      },
+      id: "",
     };
   },
   computed: {},
@@ -90,6 +92,10 @@ export default {
     topNav,
     signInQuery,
     reviewResultQuery,
+  },
+  created() {
+    this.id = this.until.getQueryString("id");
+    this.id=Number(this.id)
   },
   async mounted() {
     // if(!this.until.seGet('userInfo')){
@@ -111,6 +117,8 @@ export default {
     );
     this.activeName = obj.name;
     this.thisNavList = data;
+
+    // this.getList();
   },
   methods: {
     getWidth() {
@@ -126,9 +134,46 @@ export default {
     toPage(url) {
       this.until.href(url);
     },
-    async getList(SearchInfo) {
-      console.log('主页面',SearchInfo);
-      this.SearchInfo = SearchInfo;
+    back() {
+      this.until.back();
+    },
+    async getList() {
+      let query = {
+        r: [
+          {
+            n: "a1",
+            t: "and",
+            w: [
+              { k: "cd", v: "", m: "LK" },
+              { k: "nm", v: "", m: "LK" },
+              { k: "purchasingUnit", v: "", m: "LK" },
+              { k: "procurementMethodCd", v: "", m: "LK" },
+              {},
+            ],
+          },
+        ],
+        o: [{ k: "crtTm", t: "desc" }],
+        p: { n: 1, s: 10 },
+      };
+      query.p.n = this.pageNo;
+      query.p.s = this.pageSize;
+      query.r[0].w[0].v = this.SearchInfo.cd;
+      query.r[0].w[1].v = this.SearchInfo.nm;
+      query.r[0].w[2].v = this.SearchInfo.purchasingUnit;
+      query.r[0].w[3].v = this.SearchInfo.procurementMethodCd;
+      // 选取列表
+      let data = await this.api.onlineBidList(
+        encodeURIComponent(JSON.stringify(query)),
+        this.SearchInfo.expertNm
+      );
+      this.rowList = data.data.list;
+      this.rowList.forEach((item, index) => {
+        this.$set(item, "isshow", true);
+        this.$set(item, "countDownTime", "");
+        this.countDown(index);
+      });
+      this.total = data.page.total;
+      console.log(1111111, data);
     },
   },
 };
@@ -179,14 +224,14 @@ export default {
     // padding: 20px;
     box-sizing: border-box;
     .right_content {
-      margin-top: 10px;
+      // margin-top: 10px;
       box-sizing: border-box;
-      padding: 20px;
+      padding:0px 20px;
       height: 740px;
       background: #fff;
 
       .son_tablist {
-        margin-top: 20px;
+        margin-top: 3px;
         display: flex;
         align-items: center;
         justify-content: space-between;

@@ -1,8 +1,8 @@
 <template>
   <!-- 解密 -->
   <div style="max-width: 100%">
-    <div class="title">12米玻璃钢新型渔船 （项目编号：BHZC2021-G3-0001）</div>
-    <div class="small_title">标项1 （解密中）</div>
+    <div class="title">{{ detail.nm }} (项目编号:{{ detail.cd }})</div>
+    <!-- <div class="small_title">标项1 （解密中）</div> -->
     <el-table
       :data="tableData"
       style="width: 100%"
@@ -17,11 +17,11 @@
         'text-align': 'center',
       }"
     >
-      <el-table-column type="index" label="序号" min-width="101">
+      <el-table-column type="index" label="序号" min-width="100">
       </el-table-column>
-      <el-table-column label="供应商名称" prop="name" min-width="266">
+      <el-table-column label="供应商名称" prop="orgNm" min-width="200">
       </el-table-column>
-      <el-table-column prop="status" label="标书上传状态" min-width="266">
+      <el-table-column prop="status" label="标书上传状态" min-width="200">
         <template slot-scope="scope">
           <div v-if="scope.row.SCstatus == 0" style="color: #39a520">
             未上传
@@ -29,17 +29,20 @@
           <div v-if="scope.row.SCstatus == 1" style="color: 'pink'">已上传</div>
         </template>
       </el-table-column>
-      <el-table-column prop="status" label="解密状态" min-width="266">
+      <el-table-column prop="status" label="解密状态" min-width="200">
         <template slot-scope="scope">
-          <div v-if="scope.row.JMstatus == 0" style="color: #e4393c">
-            待解密
-          </div>
-          <div v-if="scope.row.JMstatus == 1" style="color: '#2778BE'">
+          <div
+            v-if="scope.row.attachDecodeTm && scope.row.attachDecodeTm > 0"
+            style="color: '#2778BE'"
+          >
             已解密
           </div>
+          <div v-else style="color: #e4393c">待解密</div>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" min-width="101">
+      <el-table-column label="解密文件" prop="attachDecode" min-width="200">
+      </el-table-column>
+      <el-table-column label="操作" fixed="right" min-width="100">
         <template slot-scope="scope">
           <div
             v-if="scope.row.JMstatus == 0"
@@ -86,33 +89,71 @@ export default {
   data() {
     return {
       tableData: [
-        {
-          name: "澳新船厂有限公司",
-          date: "2021-07-15 14:00:00",
-          SCstatus: 0,
-          JMstatus: 0,
-        },
-        {
-          name: "澳新船厂有限公司",
-          date: "2021-07-15 14:00:00",
-          SCstatus: 1,
-          JMstatus: 1,
-        },
+        // {
+        //   name: "澳新船厂有限公司",
+        //   date: "2021-07-15 14:00:00",
+        //   SCstatus: 0,
+        //   JMstatus: 0,
+        // },
+        // {
+        //   name: "澳新船厂有限公司",
+        //   date: "2021-07-15 14:00:00",
+        //   SCstatus: 1,
+        //   JMstatus: 1,
+        // },
       ],
       // 每页显示条数
       pageSize: 10,
+      pageNo: 1,
       total: 0,
       // 当前页
       currentPage: 1,
+      // 项目详情，获取名称和编号
+      detail: {},
     };
+  },
+  props: {
+    id: {
+      type: Number,
+      default: "",
+    },
   },
   methods: {
     handleClick(row) {
       console.log(row);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
+      this.pageNo = val;
     },
+    async getList() {
+      let query = {
+        r: [
+          {
+            n: "a1",
+            t: "and",
+            w: [{ k: "bidId", v: "", m: "EQ" }],
+          },
+        ],
+        p: { n: 1, s: 5 },
+      };
+      query.p.n = this.pageNo;
+      query.p.s = this.pageSize;
+      query.r[0].w[0].v = this.id;
+      // 选取列表
+      let data = await this.api.decryptList(
+        encodeURIComponent(JSON.stringify(query))
+      );
+      this.tableData = data.data.list;
+      this.total = data.page.total;
+      console.log(1111343, this.tableData);
+    },
+  },
+  mounted() {
+    this.api.getBidInfo(this.id).then((res) => {
+      this.detail = res.data;
+    });
+    this.getList();
   },
 };
 </script>

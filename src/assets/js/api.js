@@ -29,10 +29,10 @@ function get(url, data) {
 	}
 	let promise = new Promise((resolve, reject) => {
 		axios.get(url, {
-				params: data,
-				headers: header
-			})
-			.then(function(res) {
+			params: data,
+			headers: header
+		})
+			.then(function (res) {
 				if (res.data.code === 0) {
 					resolve(res.data)
 				} else if (res.data.code === 401) {
@@ -50,7 +50,7 @@ function get(url, data) {
 					});
 				}
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				MessageBox({
 					message: JSON.stringify(error),
 					type: 'warning'
@@ -71,9 +71,9 @@ function post(url, data) {
 
 	let promise = new Promise((resolve, reject) => {
 		axios.post(url, data, {
-				headers: header
-			})
-			.then(function(res) {
+			headers: header
+		})
+			.then(function (res) {
 				if (res.data.code === 0) {
 					resolve(res.data)
 				} else if (res.data.code === 401) {
@@ -91,7 +91,7 @@ function post(url, data) {
 					});
 				}
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				MessageBox({
 					message: JSON.stringify(error),
 					type: 'warning'
@@ -442,94 +442,94 @@ class api {
 			})
 		})
 	}
-    //获取项目评定标准
-    getBidSvsList(data) {
-        return new Promise(resolve => {
-            get('/ship/bidSvs/list?query=' + data).then(res => {
-                resolve(res.data)
-            })
-        })
-    }
-    //获取专家列表
-    getBidExpertPage(data) {
-        return new Promise(resolve => {
-            get('/ship/bidExpert/list?query=' + data).then(res => {
-                resolve(res.data)
-            })
-        })
-    }
-    //数据字典
-    getCatListByPcd(data) {
-        return new Promise(resolve => {
-            get('/sys/cat/listByPcd', data).then(res => {
-                resolve(res.data)
-            })
-        })
-    }
-    //获取招标范围（自选）
-    getOrgEnterList(data) {
-        return new Promise(resolve => {
-            get('/ship/orgEnter/list?query=' + data).then(res => {
-                resolve(res.data)
-            })
-        })
-    }
-    //获取专家-随机三个
-    getBidExpertRamdomList(data) {
-        return new Promise(resolve => {
-            get('/ship/bidExpert/ramdomList', data).then(res => {
-                resolve(res.data)
-            })
-        })
-    }
-    //招标新建
-    postBidAdd(data) {
-        return new Promise(resolve => {
-            post('/ship/bid/add', data).then(res => {
-                resolve(res)
-            })
-        })
-    }
+	//获取项目评定标准
+	getBidSvsList(data) {
+		return new Promise(resolve => {
+			get('/ship/bidSvs/list?query=' + data).then(res => {
+				resolve(res.data)
+			})
+		})
+	}
+	//获取专家列表
+	getBidExpertPage(data) {
+		return new Promise(resolve => {
+			get('/ship/bidExpert/list?query=' + data).then(res => {
+				resolve(res.data)
+			})
+		})
+	}
+	//数据字典
+	getCatListByPcd(data) {
+		return new Promise(resolve => {
+			get('/sys/cat/listByPcd', data).then(res => {
+				resolve(res.data)
+			})
+		})
+	}
+	//获取招标范围（自选）
+	getOrgEnterList(data) {
+		return new Promise(resolve => {
+			get('/ship/orgEnter/list?query=' + data).then(res => {
+				resolve(res.data)
+			})
+		})
+	}
+	//获取专家-随机三个
+	getBidExpertRamdomList(data) {
+		return new Promise(resolve => {
+			get('/ship/bidExpert/ramdomList', data).then(res => {
+				resolve(res.data)
+			})
+		})
+	}
+	//招标新建
+	postBidAdd(data) {
+		return new Promise(resolve => {
+			post('/ship/bid/add', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
 	//招标修改
 	postBidUpd(data) {
-	    return new Promise(resolve => {
-	        post('/ship/bid/upd', data).then(res => {
-	            resolve(res)
-	        })
-	    })
+		return new Promise(resolve => {
+			post('/ship/bid/upd', data).then(res => {
+				resolve(res)
+			})
+		})
 	}
-    //获取招标列表
-    getBidPage(data) {
-        return new Promise(resolve => {
-            get('/ship/bid/page?query=' + data).then(res => {
-                resolve(res)
-            })
-        })
-    }
-    //获取招标详情
-    getBidInfo(data) {
-        return new Promise(resolve => {
-            get('/ship/bid/info/' + data).then(res => {
-                resolve(res)
-            })
-        })
-    }
-    //招标审核
-    postBidExamine(data) {
-        return new Promise(resolve => {
-            post('/ship/bid/examine', data).then(res => {
-                resolve(res)
-            })
-        })
-    }
-    //招标列表删除
-    getBidDel(data) {
-        return new Promise(resolve => {
-            get('/ship/bid/del', data).then(res => {
-                resolve(res)
-            })
-        })
-    }
+	//获取招标列表
+	getBidPage(data) {
+		return new Promise(resolve => {
+			get('/ship/bid/page?query=' + data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	//获取招标详情
+	getBidInfo(data) {
+		return new Promise(resolve => {
+			get('/ship/bid/info/' + data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	//招标审核
+	postBidExamine(data) {
+		return new Promise(resolve => {
+			post('/ship/bid/examine', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	//招标列表删除
+	getBidDel(data) {
+		return new Promise(resolve => {
+			get('/ship/bid/del', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
 
 	// 项目评定标准列表
 	getEvaStandardList(data) {
@@ -691,7 +691,7 @@ class api {
 	//项目公告删除
 	getBidAfficheDel(data) {
 		return new Promise(resolve => {
-			get('/ship/bidAffiche/del', data).then(res => {})
+			get('/ship/bidAffiche/del', data).then(res => { })
 		})
 	}
 	// 项目报名审核分页
@@ -703,9 +703,17 @@ class api {
 		})
 	}
 	// 定标项目
-	getBidTargetList(data,controllerNum) {
+	getBidTargetList(data, controllerNum) {
 		return new Promise(resolve => {
-			get("/ship/bid/pageWithApplicationsNum?query=" + data+'&controllerNum=' + controllerNum).then(res => {
+			get("/ship/bid/pageWithApplicationsNum?query=" + data + '&controllerNum=' + controllerNum).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 项目评定标准列表
+	getEvaStandardList(data) {
+		return new Promise(resolve => {
+			get('/ship/bidSvs/page?query=' + data).then(res => {
 				resolve(res)
 			})
 		})
@@ -719,6 +727,23 @@ class api {
 			})
 		})
 	}
+	// 删除项目评定标准项
+	delEvaStandard(data) {
+		return new Promise(resolve => {
+			get('/ship/bidSvs/del', data)
+				.then(res => {
+					resolve(res)
+				})
+		})
+	}
+	// 新增评定标准项
+	newEvaStandard(data) {
+		return new Promise(resolve => {
+			post('/ship/bidSvs/add', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
 	//项目公告详情根据项目id查询结果公告
 	getBidAfficheByBidId(data) {
 		return new Promise(resolve => {
@@ -727,10 +752,34 @@ class api {
 			})
 		})
 	}
+	// 评定标准项详情
+	EvaStandardDetail(id) {
+		return new Promise(resolve => {
+			get('/ship/bidSvs/info/' + id).then(res => {
+				resolve(res.data)
+			})
+		})
+	}
+	// 修改评定标准项
+	modifyEvaStandard(data) {
+		return new Promise(resolve => {
+			post('/ship/bidSvs/upd', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
 	//招投标报名列表全返
 	getBidApplyList(data) {
 		return new Promise(resolve => {
-			get('/ship/bidApply/list?query='+data).then(res => {
+			get('/ship/bidApply/list?query=' + data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 评定指标子列表
+	getEvaStandardSonList(data) {
+		return new Promise(resolve => {
+			get('/ship/bidSvsItem/page?query=' + data).then(res => {
 				resolve(res)
 			})
 		})
@@ -743,10 +792,43 @@ class api {
 			})
 		})
 	}
+	// 删除评定指标子列表项
+	delEvaStandardSonitem(data) {
+		return new Promise(resolve => {
+			get('/ship/bidSvsItem/del', data)
+				.then(res => {
+					resolve(res)
+				})
+		})
+	}
+	// 新增评定标准子列表项
+	newEvaStandardSonItem(data) {
+		return new Promise(resolve => {
+			post('/ship/bidSvsItem/add', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
 	//项目评定结果（一个投标评分详情列表）
 	getResultAll(data) {
 		return new Promise(resolve => {
-			get('/ship/bidSvsResult/pageResultAOffer?query='+data).then(res => {
+			get('/ship/bidSvsResult/pageResultAOffer?query=' + data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 评定标准子列表项详情
+	EvaStandardSonItemDetail(id) {
+		return new Promise(resolve => {
+			get('/ship/bidSvsItem/info/' + id).then(res => {
+				resolve(res.data)
+			})
+		})
+	}
+	// 修改标准子列表项
+	modifyEvaStandardSonItem(data) {
+		return new Promise(resolve => {
+			post('/ship/bidSvsItem/upd', data).then(res => {
 				resolve(res)
 			})
 		})
@@ -754,7 +836,15 @@ class api {
 	//项目评审结果（多个投标评分列表）
 	getBidOfferAll(data) {
 		return new Promise(resolve => {
-			get('/ship/bidOffer/page?query='+data).then(res => {
+			get('/ship/bidOffer/page?query=' + data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 在线开标-评标》签到列表
+	onlineBidList(query, data) {
+		return new Promise(resolve => {
+			get('/ship/bid/evaluation?query=' + query + '&experts=' + data).then(res => {
 				resolve(res)
 			})
 		})
@@ -762,7 +852,23 @@ class api {
 	// 修改中标
 	postBidOfferUpd(data) {
 		return new Promise(resolve => {
-			post('/ship/bidOffer/upd?',data).then(res => {
+			post('/ship/bidOffer/upd?', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 在线开标列表项详情
+	onlineBidDetail(id) {
+		return new Promise(resolve => {
+			get('/ship/bid/infoWithApply/' + id).then(res => {
+				resolve(res.data)
+			})
+		})
+	}
+	// 评审结果列表
+	reviewResultList(query) {
+		return new Promise(resolve => {
+			get('/ship/bidSvsResult/pageResultAOffer?query=' + query).then(res => {
 				resolve(res)
 			})
 		})
@@ -770,41 +876,106 @@ class api {
 	//招投标投标项目全返
 	getListWithOfferAndDes(data) {
 		return new Promise(resolve => {
-			get('/ship/bidApply/listWithOfferAndDes?query='+data).then(res => {
+			get('/ship/bidApply/listWithOfferAndDes?query=' + data).then(res => {
 				resolve(res)
 			})
-			})
-			}
+		})
+	}
 	//文件批量下载
-	aliDownload(data){
+	aliDownload(data) {
 		return new Promise(resolve => {
-		    get('/general/oss/aliDownload' , data).then(res => {
-		        resolve(res)
-		    })
+			get('/general/oss/aliDownload', data).then(res => {
+				resolve(res)
+			})
 		})
 	}
 	//保证金分页
-	getListAndSum(data){
+	getListAndSum(data) {
 		return new Promise(resolve => {
-		    get('/ship/bidDeposit/listAndSum?page=' + data).Fthen(res => {
-		        resolve(res.data)
-		    })
+			get('/ship/bidDeposit/listAndSum?page=' + data).Fthen(res => {
+				resolve(res.data)
+			})
 		})
 	}
 	//标后文件归档列表
-	getPageWithWinBid(data){
+	getPageWithWinBid(data) {
 		return new Promise(resolve => {
-		    get('/ship/bid/pageWithWinBid?query=' + data+"&applyAudit=2").then(res => {
-		        resolve(res)
-		    })
+			get('/ship/bid/pageWithWinBid?query=' + data + "&applyAudit=2").then(res => {
+				resolve(res)
+			})
 		})
 	}
 	//保证金退还列表
-	getPageWithWinBidOffer(data){
+	getPageWithWinBidOffer(data) {
 		return new Promise(resolve => {
-		    get('/ship/bid/pageWithWinBidOffer?query=' + data+"&applyAudit=2").then(res => {
-		        resolve(res)
-		    })
+			get('/ship/bid/pageWithWinBidOffer?query=' + data + "&applyAudit=2").then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 删除评审结果列表项
+	delreviewResultitem(data) {
+		return new Promise(resolve => {
+			get('/ship/bidSvsResult/del', data)
+				.then(res => {
+					resolve(res)
+				})
+		})
+	}
+	// 获取评审结果平均得分
+	getreviewResult(query) {
+		return new Promise(resolve => {
+			get('/ship/bidSvsResult/getAveScore?query=' + query).then(res => {
+				resolve(res.data.aveScore)
+			})
+		})
+	}
+	// 评审结果详情
+	reviewResultDetail(query) {
+		return new Promise(resolve => {
+			get('/ship/bidSvsResultItem/page?query=' + query).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 评审结果详情(补充)
+	extraReviewResultDetail(id) {
+		return new Promise(resolve => {
+			get('/ship/bidSvsResult/info/' + id).then(res => {
+				resolve(res.data)
+			})
+		})
+	}
+	// 修改评审结果
+	updateReviewResult(data) {
+		return new Promise(resolve => {
+			post('/ship/bidSvsResult/upd', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 报价单/解密列表
+	decryptList(query) {
+		return new Promise(resolve => {
+			get('/ship/bidOffer/page?query=' + query + "&applyAudit=2").then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 评标视频分页
+	bidVideoList(query) {
+		return new Promise(resolve => {
+			get('/ship/bidVedio/page?query=' + query).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 视频上传
+	uploadVideo(data) {
+		return new Promise(resolve => {
+			post('/ship/bidVedio/add', data).then(res => {
+				resolve(res)
+			})
 		})
 	}
 }
