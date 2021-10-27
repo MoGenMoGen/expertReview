@@ -2,33 +2,31 @@
 	<div id="home" :style="{width:bWidth + 'px'}" v-loading="loading">
 		<my-header :width="width" :bWidth="bWidth"></my-header>
 		<div class="container" :style="{width:bWidth + 'px'}">
-			<leftMenu tabIndex='6-2	'></leftMenu>
+			<leftMenu tabIndex='6-2'></leftMenu>
 			<div class="right">
 				<topNav :activeName='activeName' :list="thisNavList"></topNav>
 				<div class="content" v-if="showDetail==false">
 					<div class="topSeachBox">
-						<el-input placeholder="项目编号" v-model="input" clearable>
+						<el-input placeholder="项目编号" v-model="cd" clearable>
 						</el-input>
-						<el-input placeholder="项目名称" v-model="input" clearable>
+						<el-input placeholder="项目名称" v-model="nm" clearable>
 						</el-input>
-						<el-input placeholder="联系人" v-model="input" clearable>
+						<el-input placeholder="联系人" v-model="linkman" clearable>
 						</el-input>
-						<el-select v-model="value" clearable placeholder="采购方式">
-							<el-option v-for="item in options" :key="item.value" :label="item.label"
-								:value="item.value">
+						<el-select v-model="value" clearable placeholder="采购方式" @change="select1">
+							<el-option v-for="item in options" :key="item.nm" :label="item.nm"
+								:value="item.cd">
 							</el-option>
 						</el-select>
-						<el-date-picker v-model="value2" type="datetime" placeholder="创建时间">
+						<el-date-picker v-model="bidDecideTm" type="datetime" placeholder="中标时间">
 						</el-date-picker>
-						<el-date-picker v-model="value3" type="datetime" placeholder="截止时间">
-						</el-date-picker>
-						<el-select v-model="value1" clearable placeholder="文件归档状态">
-							<el-option v-for="item in optionsTwo" :key="item.value" :label="item.label"
-								:value="item.value">
+						<el-select v-model="value1" clearable placeholder="文件归档状态" @change="select2">
+							<el-option v-for="item in optionsTwo" :key="item.nm" :label="item.nm"
+								:value="item.cd">
 							</el-option>
 						</el-select>
-						<el-button plain >查询</el-button>
-						<el-button plain type="primary">归档</el-button>
+						<el-button plain @click='search'>查询</el-button>
+						<el-button plain type="primary" @click='toTotalfile'>归档</el-button>
 					</div>
 					<div class="bodyTable">
 						<el-table  ref="multipleTable":data="tableData" style="width: 100%" tooltip-effect="dark" :cell-style="{
@@ -40,40 +38,40 @@
 							    background: '#f8f8f8',
 							    'text-align': 'center',
 							  }"  @selection-change="handleSelectionChange">
-							  <el-table-column type="selection" min-width="50">
+							 <el-table-column type="selection" min-width="50">
 							  </el-table-column>
-							<el-table-column prop="date" label="序号" min-width="50">
+							<el-table-column type="index" label="序号" min-width="50">
 							</el-table-column>
-							<el-table-column prop="name" label="项目编号" min-width="150">
+							<el-table-column prop="cd" label="项目编号" min-width="150">
 							</el-table-column>
-							<el-table-column prop="address" label="项目名称" min-width="150">
+							<el-table-column prop="nm" label="项目名称" min-width="150">
 							</el-table-column>
-							<el-table-column prop="address" label="联系人" min-width="100">
+							<el-table-column prop="linkman" label="联系人" min-width="100">
 							</el-table-column>
-							<el-table-column prop="address" label="采购方式" min-width="100">
+							<el-table-column prop="procurementMethodNm" label="采购方式" min-width="100">
 							</el-table-column>
-							<el-table-column prop="address" label="中标时间" min-width="100">
+							<el-table-column prop="bidDecideTm" label="中标时间" min-width="100">
 							</el-table-column>
-							<el-table-column prop="address" label="招标文件数量" min-width="150">
+							<el-table-column prop="attachment" label="招标文件数量" min-width="150">
+								
 							</el-table-column>
-							<el-table-column prop="zhuangtai" label="状态" min-width="100">
+							<el-table-column prop="file" label="状态" min-width="100">
 								<template slot-scope="scope">
-									<span v-if="scope.row.zhuangtai=='未归档'" style="color: #E4393C;">
+									<span v-if="scope.row.file=='1'" style="color: #E4393C;">
 										未归档
 									</span>
-									<span v-if="scope.row.zhuangtai=='已归档'" style="color: #2778BE;">
+									<span v-if="scope.row.file=='2'" style="color: #2778BE;">
 										已归档
 									</span>
 					
 								</template>
 							</el-table-column>
-							<el-table-column label="操作" min-width="50">
+							<el-table-column label="操作" min-width="100">
 								<template slot-scope="scope">
 									<!-- <el-button @click="tolook(scope.row)" type="text" size="small" style="color: #2778BE;">查看</el-button> -->
-									<p style="color:#2778BE ; cursor: pointer;" @click="toDetail">查看</p>
-									<p  style="color:#E4393C ;cursor: pointer;">修改</p>
-									<p style="color:#909090;cursor: pointer;">删除</p>
-									<div style="color:#ffffff ; padding: 4px 8px;background-color:#2778BE ;box-sizing: border-box; cursor: pointer;">归档</div>
+									<p style="color:#2778BE ; cursor: pointer;" @click="toDetail(scope.row)">查看</p>
+									<div style="color:#ffffff ; padding: 4px 8px; background-color:#2778BE ;box-sizing: border-box; cursor: pointer;"@click="cancelFile(scope.row)" v-if="scope.row.file==2">取消归档</div>
+									<div style="color:#ffffff ; padding: 4px 8px;background-color:#2778BE ;box-sizing: border-box; cursor: pointer;"@click="toFile(scope.row)" v-if="scope.row.file==1">归档</div>
 								</template>
 							</el-table-column>
 						</el-table>
@@ -260,7 +258,6 @@
 									<span>已通过</span>
 								</div>
 							</div>
-							
 						</div>
 						
 					</div>
@@ -280,33 +277,38 @@
 	export default {
 		data() {
 			return {
+				fileList:[],
+				cd:'',
+				nm:'',
+				linkman:'',
+				bidDecideTm:'',
+				currentPage:1,
+				procurementMethodNm:'',
+				procurementMethodCd:'',
+				file:'',
+				options:[],
+				optionsTwo:[{
+					nm:'未留档',
+					cd:'1'
+				},
+				{
+					nm:'已留档',
+					cd:'2'
+				}
+				],
 				activeName: '',
 				thisNavList: [],
 				loading: false,
 				bWidth: 0,
 				width: 0,
 				pageNo: 1,
-				pageSize: 10,
+				pageSize: 5,
 				total: 0,
-				value2:'',
-				value3:'',
+				value:'',
+				value1:'',
+			
 				showDetail:false,
-				tableData: [{
-					date: '1',
-					name: 'BHZC2021-G3-0001',
-					address: '12米玻璃钢新型渔船',
-					zhuangtai: '未退还'
-				}, {
-					date: '2',
-					name: 'BHZC2021-G3-0001',
-					address: '12米玻璃钢新型渔船',
-					zhuangtai: '未退还'
-				}, {
-					date: '3',
-					name: 'BHZC2021-G3-0001',
-					address: '12米玻璃钢新型渔船',
-					zhuangtai: '已退还'
-				},
+				tableData: [
 				]
 			}
 		},
@@ -334,10 +336,35 @@
 			window.onresize = () => {
 				this.getWidth()
 			}
-
-
+			this.api.getCatListByPcd({
+				cd: 'PROCUREMENT_METHOD'
+			}).then(res => {
+				this.options = res.list
+			})
+		   this.getList()
 		},
 		methods: {
+			getList(){
+				let query=this.query.new()
+				this.query.toP(query, this.pageNo, this.pageSize)
+				this.query.toW(query,'cd',this.cd,'LK')
+				this.query.toW(query,'nm',this.nm,'LK')
+				this.query.toW(query,'linkman',this.linkman,'LK')
+				this.query.toW(query,'procurementMethodCd',this.procurementMethodCd,'LK')
+				this.query.toW(query,'bidDecideTm',this.bidDecideTm,'LK')
+				this.query.toW(query,'file',this.file,'LK')
+				this.api.getPageWithWinBid(this.query.toEncode(query)).then(res=>{
+					console.log(res);
+					this.tableData=res.data.list
+					this.total=res.page.total
+					for(let i=0;i<this.tableData.length;i++){
+						this.tableData[i].attachment=this.tableData[i].attachment.split(',').length
+					}
+				})
+			},
+			handleSelectionChange(val){
+				this.fileList=val
+			},
 			getWidth() {
 				let {
 					bWidth,
@@ -355,7 +382,44 @@
 			},
 			toDetail(){
 				this.showDetail=true
+			},
+			select1(val){
+				this.procurementMethodCd=val
+			},
+			select2(val){
+				this.file=val
+			},
+			search(){
+				this.getList()
+			},
+			toFile(val){
+				this.info=val
+				this.info.file=2
+				this.api.postBidUpd(this.info).then(res=>{
+					this.getList()
+				})
+			},
+			cancelFile(val){
+				this.info=val
+				this.info.file=1
+				this.api.postBidUpd(this.info).then(res=>{
+					this.getList()
+				})
+			},
+			toTotalfile(){
+				for(let i=0;i<this.fileList.length;i++){
+					this.fileList[i].file=2
+					this.api.postBidUpd(this.fileList[i]).then(res=>{
+						this.getList()
+				})
+				}
+				
+			},
+			handleCurrentChange(val){
+				this.pageNo = `${val}`
+				this.getList()
 			}
+			
 		}
 	}
 </script>

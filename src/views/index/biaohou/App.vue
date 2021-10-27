@@ -7,27 +7,26 @@
 				<topNav :activeName='activeName' :list="thisNavList"></topNav>
 				<div class="content">
 					<div class="topSeachBox">
-						<el-input placeholder="项目编号" v-model="input" clearable>
+						<el-input placeholder="项目编号" v-model="cd" clearable>
 						</el-input>
-						<el-input placeholder="项目名称" v-model="input" clearable>
+						<el-input placeholder="项目名称" v-model="nm" clearable>
 						</el-input>
-						<el-input placeholder="联系人" v-model="input" clearable>
+						<el-input placeholder="联系人" v-model="linkman" clearable>
 						</el-input>
-						<el-select v-model="value" clearable placeholder="采购方式">
-							<el-option v-for="item in options" :key="item.value" :label="item.label"
-								:value="item.value">
+						<el-select v-model="value" clearable placeholder="采购方式" @change="select1">
+							<el-option v-for="item in options" :key="item.nm" :label="item.nm"
+								:value="item.cd">
 							</el-option>
 						</el-select>
-						<el-date-picker v-model="value2" type="datetime" placeholder="创建时间">
+						<el-date-picker v-model="date1" type="datetime" placeholder="创建时间">
 						</el-date-picker>
-						<el-date-picker v-model="value3" type="datetime" placeholder="截止时间">
-						</el-date-picker>
-						<el-select v-model="value1" clearable placeholder="项目状态">
-							<el-option v-for="item in optionsTwo" :key="item.value" :label="item.label"
-								:value="item.value">
+						
+						<el-select v-model="value1" clearable placeholder="项目状态"@change="select2">
+							<el-option v-for="item in optionsTwo" :key="item.nm" :label="item.nm"
+								:value="item.cd">
 							</el-option>
 						</el-select>
-						<el-button plain type="primary">查询</el-button>
+						<el-button plain type="primary" @click='searchTo'>查询</el-button>
 					</div>
 					<div class="middleBox">
 						<div class="middleLeft">
@@ -47,27 +46,29 @@
 							    background: '#f8f8f8',
 							    'text-align': 'center',
 							  }">
-							<el-table-column prop="date" label="序号" min-width="50">
+							<el-table-column type="index" label="序号" min-width="50">
 							</el-table-column>
-							<el-table-column prop="name" label="项目编号" min-width="150">
+							<el-table-column prop="cd" label="项目编号" min-width="150">
 							</el-table-column>
-							<el-table-column prop="address" label="项目名称" min-width="150">
+							<el-table-column prop="nm" label="项目名称" min-width="150">
 							</el-table-column>
-							<el-table-column prop="address" label="联系人" min-width="100">
+							<el-table-column prop="linkman" label="联系人" min-width="100">
 							</el-table-column>
-							<el-table-column prop="address" label="采购方式" min-width="100">
+							<el-table-column prop="procurementMethodNm" label="采购方式" min-width="100">
 							</el-table-column>
-							<el-table-column prop="address" label="预算金额(万元)" min-width="100">
+							<el-table-column prop="budget" label="预算金额(万元)" min-width="100">
 							</el-table-column>
-							<el-table-column prop="address" label="创建时间" min-width="150">
+							<el-table-column prop="crtTm" label="创建时间" min-width="150">
 							</el-table-column>
-							<el-table-column prop="zhuangtai" label="状态" min-width="100">
+							<el-table-column label="状态" min-width="100">
 								<template slot-scope="scope">
-									<span v-if="scope.row.zhuangtai=='未退还'" style="color: #E4393C;">
-										未退还
+				
+									<span v-if="scope.row.deposits.length>0" style="color: #E4393C;">
+										<p v-if="scope.row.deposits[0].paymentTm">已退还</p>
+										<p v-if="!scope.row.deposits[0].paymentTm">未退还</p>
 									</span>
-									<span v-if="scope.row.zhuangtai=='已退还'" style="color: #2778BE;">
-										已退还
+									<span v-if="scope.row.deposits.length==0" style="color: #2778BE;">
+										<p >未退还</p>
 									</span>
 					
 								</template>
@@ -101,56 +102,35 @@
 	export default {
 		data() {
 			return {
+				cd:'',
+				nm:'',
+				linkman:'',
+				procurementMethodCd:'',
 				activeName: '',
 				thisNavList: [],
+				options:[],
+				optionsTwo:[{
+					nm:'已退还',
+					cd:'1'
+				},
+				{
+					nm:'未退还'
+				}
+				],
 				loading: false,
 				bWidth: 0,
 				width: 0,
 				pageNo: 1,
-				pageSize: 10,
+				pageSize: 6,
+				currentPage:1,
 				total: 0,
-				value2:'',
-				value3:'',
-				tableData: [{
-					date: '1',
-					name: 'BHZC2021-G3-0001',
-					address: '12米玻璃钢新型渔船',
-					zhuangtai: '未退还'
-				}, {
-					date: '2',
-					name: 'BHZC2021-G3-0001',
-					address: '12米玻璃钢新型渔船',
-					zhuangtai: '未退还'
-				}, {
-					date: '3',
-					name: 'BHZC2021-G3-0001',
-					address: '12米玻璃钢新型渔船',
-					zhuangtai: '已退还'
-				}, {
-					date: '4',
-					name: 'BHZC2021-G3-0001',
-					address: '12米玻璃钢新型渔船',
-					zhuangtai: '未退还'
-				},
-				{
-					date: '5',
-					name: 'BHZC2021-G3-0001',
-					address: '12米玻璃钢新型渔船',
-					zhuangtai: '未退还'
-				},
-				{
-					date: '6',
-					name: 'BHZC2021-G3-0001',
-					address: '12米玻璃钢新型渔船',
-					zhuangtai: '未退还'
-				},
-				{
-					date: '7',
-					name: 'BHZC2021-G3-0001',
-					address: '12米玻璃钢新型渔船',
-					zhuangtai: '未退还'
-				},
-				]
+				value:'',
+				value1:'',
+				tableData: [
+				],
+				date1:'',
+				date2:'',
+				
 			}
 		},
 		computed: {
@@ -177,10 +157,29 @@
 			window.onresize = () => {
 				this.getWidth()
 			}
+			this.api.getCatListByPcd({
+				cd: 'PROCUREMENT_METHOD'
+			}).then(res => {
+				this.options = res.list
+			})
+			this.getList()
 
 
 		},
 		methods: {
+			getList(){
+				let query=this.query.new()
+				this.query.toP(query,this.pageNo,this.pageSize)
+				this.query.toW(query,'cd',this.cd,'LK')
+				this.query.toW(query,'nm',this.nm,'LK')
+				this.query.toW(query,'linkman',this.linkman,'LK')
+				this.query.toW(query,'procurementMethodCd',this.procurementMethodCd,'LK')
+				this.query.toW(query,'date1',this.date1,'LK')
+				this.api.getPageWithWinBidOffer(this.query.toEncode(query)).then(res=>{
+					this.tableData=res.data.list
+					this.total=res.page.total
+				})
+			},
 			getWidth() {
 				let {
 					bWidth,
@@ -196,6 +195,19 @@
 			toPage(url) {
 				this.until.href(url)
 			},
+			currentPage(val){
+				this.pageNo = `${val}`
+				this.getList()
+			},
+			select1(val){
+				this.procurementMethodCd=val
+			},
+			select2(){
+				
+			},
+			searchTo(){
+				this.getList()
+			}
 		}
 	}
 </script>

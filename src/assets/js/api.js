@@ -442,6 +442,94 @@ class api {
 			})
 		})
 	}
+    //获取项目评定标准
+    getBidSvsList(data) {
+        return new Promise(resolve => {
+            get('/ship/bidSvs/list?query=' + data).then(res => {
+                resolve(res.data)
+            })
+        })
+    }
+    //获取专家列表
+    getBidExpertPage(data) {
+        return new Promise(resolve => {
+            get('/ship/bidExpert/list?query=' + data).then(res => {
+                resolve(res.data)
+            })
+        })
+    }
+    //数据字典
+    getCatListByPcd(data) {
+        return new Promise(resolve => {
+            get('/sys/cat/listByPcd', data).then(res => {
+                resolve(res.data)
+            })
+        })
+    }
+    //获取招标范围（自选）
+    getOrgEnterList(data) {
+        return new Promise(resolve => {
+            get('/ship/orgEnter/list?query=' + data).then(res => {
+                resolve(res.data)
+            })
+        })
+    }
+    //获取专家-随机三个
+    getBidExpertRamdomList(data) {
+        return new Promise(resolve => {
+            get('/ship/bidExpert/ramdomList', data).then(res => {
+                resolve(res.data)
+            })
+        })
+    }
+    //招标新建
+    postBidAdd(data) {
+        return new Promise(resolve => {
+            post('/ship/bid/add', data).then(res => {
+                resolve(res)
+            })
+        })
+    }
+	//招标修改
+	postBidUpd(data) {
+	    return new Promise(resolve => {
+	        post('/ship/bid/upd', data).then(res => {
+	            resolve(res)
+	        })
+	    })
+	}
+    //获取招标列表
+    getBidPage(data) {
+        return new Promise(resolve => {
+            get('/ship/bid/page?query=' + data).then(res => {
+                resolve(res)
+            })
+        })
+    }
+    //获取招标详情
+    getBidInfo(data) {
+        return new Promise(resolve => {
+            get('/ship/bid/info/' + data).then(res => {
+                resolve(res)
+            })
+        })
+    }
+    //招标审核
+    postBidExamine(data) {
+        return new Promise(resolve => {
+            post('/ship/bid/examine', data).then(res => {
+                resolve(res)
+            })
+        })
+    }
+    //招标列表删除
+    getBidDel(data) {
+        return new Promise(resolve => {
+            get('/ship/bid/del', data).then(res => {
+                resolve(res)
+            })
+        })
+    }
 
 	// 项目评定标准列表
 	getEvaStandardList(data) {
@@ -685,6 +773,38 @@ class api {
 			get('/ship/bidApply/listWithOfferAndDes?query='+data).then(res => {
 				resolve(res)
 			})
+			})
+			}
+	//文件批量下载
+	aliDownload(data){
+		return new Promise(resolve => {
+		    get('/general/oss/aliDownload' , data).then(res => {
+		        resolve(res)
+		    })
+		})
+	}
+	//保证金分页
+	getListAndSum(data){
+		return new Promise(resolve => {
+		    get('/ship/bidDeposit/listAndSum?page=' + data).Fthen(res => {
+		        resolve(res.data)
+		    })
+		})
+	}
+	//标后文件归档列表
+	getPageWithWinBid(data){
+		return new Promise(resolve => {
+		    get('/ship/bid/pageWithWinBid?query=' + data+"&applyAudit=2").then(res => {
+		        resolve(res)
+		    })
+		})
+	}
+	//保证金退还列表
+	getPageWithWinBidOffer(data){
+		return new Promise(resolve => {
+		    get('/ship/bid/pageWithWinBidOffer?query=' + data+"&applyAudit=2").then(res => {
+		        resolve(res)
+		    })
 		})
 	}
 }

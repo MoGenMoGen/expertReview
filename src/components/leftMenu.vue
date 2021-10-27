@@ -38,9 +38,6 @@
 				</template>
 				<el-menu-item-group>
 					<el-menu-item index="1-1" :class="currentIndex == '1-1' ? 'active' : ''">项目立项</el-menu-item>
-					<el-menu-item index="1-2" :class="currentIndex == '1-2' ? 'active' : ''">项目审批</el-menu-item>
-					<el-menu-item index="1-3" :class="currentIndex == '1-3' ? 'active' : ''">公告变更/澄清</el-menu-item>
-					<el-menu-item index="1-4" :class="currentIndex == '1-4' ? 'active' : ''">全部项目</el-menu-item>
 				</el-menu-item-group>
 			</el-submenu>
 

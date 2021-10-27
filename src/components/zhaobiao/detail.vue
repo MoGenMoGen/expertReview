@@ -20,7 +20,7 @@
 						</div>
 						<div class="leftList">
 							<div class="listName">
-								预算金额（万元）
+								预算金额（万元）:
 							</div>
 							<div class="listContent">
 								{{info.budget}}
@@ -115,7 +115,7 @@
 					<span>招标文件</span>
 					<div class="line">
 					</div>
-					<div class="back">
+					<div class="back" @click="download">
 						全部下载 </div>
 				</div>
 				<div class="detailContent">
@@ -177,15 +177,17 @@
 			}
 		},
 		mounted() {
-
+			console.log('7799',this.detailId);
 			this.api.getBidInfo(this.detailId).then(res => {
-				console.log('11', res);
 				this.info = res.data
 				this.attachment = res.data.attachment.split(',')
 				this.getInfo(this.attachment)
 			})
 		},
 		methods: {
+			download(){
+			   window.open(`https://fb.ship88.cn/general/oss/aliDownload?urls=${this.info.attachment}&zipName=`)
+			},
 			getPast(){
 				this.api.postBidExamine({
 					id:this.detailId,

@@ -127,6 +127,9 @@
 		    </div>
 			<div class="row2">
 			  <div class="title">
+				  <span style="color: red; margin-right: 5px; display: inline-block"
+				    >* </span
+				  >
 			    <span>公告内容</span>
 			  </div>
 			  <div class="right" style="width: 80%;">
@@ -739,6 +742,35 @@
 				this.value=''
 			},
 			addSure(){
+				if(!this.title){
+					this.$message({
+						type: "error",
+						message: "公告标题不能为空",
+					});
+					return false
+				}
+				if(!this.releTm){
+					this.$message({
+						type: "error",
+						message: "公告发布时间不能为空",
+					});
+					return false
+				}
+				if(!this.afficheTypeCd){
+					this.$message({
+						type: "error",
+						message: "公告类型不能为空",
+					});
+					return false
+				}
+				if(!this.$refs.myEditor.msg){
+					this.$message({
+						type: "error",
+						message: "公告内容不能为空",
+					});
+					return false
+				}
+				
 				let obj={
 					bidId:this.detailId,
 					afficheTypeCd:this.afficheTypeCd,
