@@ -89,7 +89,7 @@
 			<div class="detailTitle">
 				<span>招标文件</span>
 				<div class="line"></div>
-				<div class="back" style="display: flex;align-items: center;"><i class="el-icon-download" style="margin-right: 10px;font-size: 20px;"></i>全部下载 </div>
+				<div @click="allDownload" class="back" style="display: flex;align-items: center;"><i class="el-icon-download" style="margin-right: 10px;font-size: 20px;"></i>全部下载 </div>
 			</div>
 			<div class="detailContent">
 				<!-- <div class="leftbox">
@@ -102,7 +102,7 @@
 						</div>
 					</div>
 				</div> -->
-				<div class="fileList" v-for="(item,index) in list" :key='index' >
+				<div class="fileList" v-for="(item,index) in list" :key='index' v-if="list.length>0">
 					<span>
 						{{index+1}}、
 					</span>
@@ -264,12 +264,19 @@
 			},
 			showMore(index) {
 				this.selectIndex = index
+			},
+			allDownload() {
+				console.log('下载全部')
 			}
 		},
 		async mounted() {
 			this.api.getBidInfo(this.id).then(res => {
 				this.info = res.data
-				this.attachment = res.data.attachment.split(',')
+				if(res.data.attachment) {
+					this.attachment = res.data.attachment.split(',')
+				} else {
+					this.attachment = []
+				}
 				this.getInfo(this.attachment)
 			})
 			this.getList()

@@ -205,6 +205,7 @@
 			},
 			handleClick(id) {
 				console.log(id)
+				this.toPage(`./onlineBidEvaDetail.html?id=${id}`)
 			}
         }
     }
