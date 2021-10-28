@@ -1,5 +1,5 @@
 <template>
-  <div class="right_content">
+  <div class="right_content1">
     <!-- 评定标准项管理
     <magEvaluateStandard
       :id="id"
@@ -17,6 +17,7 @@
 
     <div class="table_box">
       <el-table
+      max-height="500"
         @selection-change="handleSelectionChange"
         :data="tableData"
         style="width: 100%"
@@ -351,11 +352,11 @@ export default {
 }
 </style>
 <style lang="less" scoped>
-.right_content {
+.right_content1 {
   margin-top: 10px;
   box-sizing: border-box;
   //   padding: 20px;
-  height: 740px;
+  // height: 740px;
   background: #fff;
   .condition_box {
     height: 40px;
@@ -380,9 +381,9 @@ export default {
   }
   .table_box {
     width: 100%;
-    max-height: 524px;
-    overflow-y: auto;
-    overflow-x: hidden;
+    // max-height: 524px;
+    // overflow-y: auto;
+    // overflow-x: hidden;
     scrollbar-width: none; /* firefox */
     -ms-overflow-style: none; /* IE 10+ */
   }

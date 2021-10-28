@@ -213,9 +213,11 @@ export default {
   background-repeat: no-repeat;
   background-position: bottom center;
   margin: 0 auto;
-  height: calc(~"100vh - 298px");
+  // height: calc(~"100vh - 298px");
   display: flex;
   .rightMenu {
+      background: #fff;
+
     height: 800px;
     margin-left: 10px;
     width: calc(~"100% - 210px");

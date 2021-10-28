@@ -28,8 +28,8 @@
           >
           <el-input-number
             v-model="info.weight"
-            :min="0.0"
-            :max="100.0"
+            :min="1"
+            :max="100"
             label=""
           ></el-input-number
           >%
@@ -47,17 +47,32 @@
       </div>
       <div class="row1">
         <div class="leftpart">
-          <span style="width: 100px; display: inline-block">本项满分分数</span>
+          <span style="width: 100px; display: inline-block"
+            ><span style="color: red">* </span>本项满分分数</span
+          >
           <el-input-number
             v-model="info.fullScore"
-            :min="0"
+            :min="1"
             :max="100"
             label=""
           ></el-input-number>
         </div>
       </div>
+      <div class="row1">
+        <div class="leftpart">
+          <span style="width: 100px; display: inline-block"
+            ><span style="color: red">* </span>排序权重</span
+          >
+          <el-input-number
+            v-model="info.seq"
+            :min="1"
+            :max="50"
+            label=""
+          ></el-input-number>
+        </div>
+      </div>
       <div class="row2">
-        <p style="width: 100px">评分说明</p>
+        <p style="width: 100px"><span style="color: red">* </span>评分说明</p>
         <el-input
           type="textarea"
           :rows="2"
@@ -67,7 +82,7 @@
         </el-input>
       </div>
       <div class="row2">
-        <p style="width: 100px">评分标准</p>
+        <p style="width: 100px"><span style="color: red">* </span>评分标准</p>
         <el-input
           type="textarea"
           :rows="2"
@@ -86,17 +101,7 @@
         >
         </el-input>
       </div>
-      <div class="row1">
-        <div class="leftpart">
-          <span style="width: 100px; display: inline-block">排序权重</span>
-          <el-input-number
-            v-model="info.seq"
-            :min="1"
-            :max="10"
-            label=""
-          ></el-input-number>
-        </div>
-      </div>
+
       <div class="btn">
         <el-button
           style="
@@ -133,8 +138,8 @@
 export default {
   data() {
     return {
-     info:{
-        fullScore: 0,
+      info: {
+        fullScore: 1,
         id: "",
         nm: "",
         norm: "",
@@ -142,9 +147,9 @@ export default {
         score: "",
         svsId: "",
         tips: "",
-        weight: 0,
-        seq:0
-      }
+        weight: 1,
+        seq: 1,
+      },
     };
   },
   props: {
@@ -166,6 +171,26 @@ export default {
     },
     // 提交数据
     async handleConfirm() {
+      if (!this.info.nm) {
+        this.$message.error("请输入评定指标");
+        return false;
+      } else if (!this.info.weight) {
+        this.$message.error("请填写指标权重");
+        return false;
+      } else if (!this.info.fullScore) {
+        this.$message.error("请填写满分分数");
+        return false;
+      } else if (!this.info.seq) {
+        this.$message.error("请填写排序权重");
+        return false;
+      } else if (!this.info.tips) {
+        this.$message.error("请填写评分说明");
+        return false;
+      } else if (!this.info.norm) {
+        this.$message.error("请填写评分标准");
+        return false;
+      }
+
       let data = {};
       // 编辑
       if (this.type == 2) {
@@ -189,7 +214,7 @@ export default {
       this.$parent.showEvaMagRule = false;
     },
   },
- async mounted() {
+  async mounted() {
     let { bWidth, width } = this.until.getWidth();
     //   this.bWidth = bWidth;
     this.width = width;
@@ -198,7 +223,7 @@ export default {
       this.info = await this.api.EvaStandardSonItemDetail(this.editId);
     } else {
       this.info = {
-        fullScore: 0,
+        fullScore: 1,
         id: "",
         nm: "",
         norm: "",
@@ -206,9 +231,8 @@ export default {
         score: "",
         svsId: "",
         tips: "",
-        weight: 0,
-        seq:0
-
+        weight: 1,
+        seq: 1,
       };
     }
   },

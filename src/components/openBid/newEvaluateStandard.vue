@@ -85,7 +85,7 @@ export default {
       info: {
         nm: "",
         rmks: "",
-        score: 0,
+        score: 1,
       },
     };
   },
@@ -99,6 +99,15 @@ export default {
   },
   methods: {
     async handleConfirm() {
+      if (!this.info.nm) {
+        this.$message.error("请输入评估标准名称");
+        return false;
+      }
+      else if(!this.info.score)
+      {
+        this.$message.error("请填写满分分数");
+        return false;
+      }
       let data = {};
       // 编辑
       if (this.type == 2) {

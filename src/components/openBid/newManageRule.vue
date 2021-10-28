@@ -125,6 +125,13 @@ export default {
     },
     // 提交数据
     async handleConfirm() {
+      if (!this.info.nm) {
+        this.$message.error("请选择选取范围");
+        return false;
+      } else if (!this.info.num) {
+        this.$message.error("请填写选取数量");
+        return false;
+      }
       let data = {};
       // 编辑
       if (this.type == 2) {

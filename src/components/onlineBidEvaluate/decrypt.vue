@@ -1,9 +1,16 @@
 <template>
   <!-- 解密 -->
   <div style="max-width: 100%">
+    <decryptDetail
+      :bidId="bidId"
+      :detailId="detailId"
+      v-if="showDetail"
+    ></decryptDetail>
+
     <div class="title">{{ detail.nm }} (项目编号:{{ detail.cd }})</div>
     <!-- <div class="small_title">标项1 （解密中）</div> -->
     <el-table
+    max-height="524"
       :data="tableData"
       style="width: 100%"
       :cell-style="{
@@ -21,14 +28,14 @@
       </el-table-column>
       <el-table-column label="供应商名称" prop="orgNm" min-width="200">
       </el-table-column>
-      <el-table-column prop="status" label="标书上传状态" min-width="200">
+      <!-- <el-table-column prop="status" label="标书上传状态" min-width="200">
         <template slot-scope="scope">
           <div v-if="scope.row.SCstatus == 0" style="color: #39a520">
             未上传
           </div>
           <div v-if="scope.row.SCstatus == 1" style="color: 'pink'">已上传</div>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column prop="status" label="解密状态" min-width="200">
         <template slot-scope="scope">
           <div
@@ -45,7 +52,7 @@
       <el-table-column label="操作" fixed="right" min-width="100">
         <template slot-scope="scope">
           <div
-            v-if="scope.row.JMstatus == 0"
+            v-if="!scope.row.attachDecodeTm"
             style="
               width: 53px;
               height: 27px;
@@ -54,13 +61,15 @@
               text-align: center;
               line-height: 27px;
               margin: 0 auto;
+              cursor: pointer;
             "
+            @click="handleDecrypt(scope.row.id)"
           >
             解密
           </div>
           <el-button
             style="color: #2778be"
-            @click="handleClick(scope.row)"
+            @click="toDetail(scope.row.id)"
             type="text"
             size="small"
             >查看</el-button
@@ -85,23 +94,12 @@
 </template>
 
 <script>
+import decryptDetail from "@/components/onlineBidEvaluate/decryptDetail";
+
 export default {
   data() {
     return {
-      tableData: [
-        // {
-        //   name: "澳新船厂有限公司",
-        //   date: "2021-07-15 14:00:00",
-        //   SCstatus: 0,
-        //   JMstatus: 0,
-        // },
-        // {
-        //   name: "澳新船厂有限公司",
-        //   date: "2021-07-15 14:00:00",
-        //   SCstatus: 1,
-        //   JMstatus: 1,
-        // },
-      ],
+      tableData: [],
       // 每页显示条数
       pageSize: 10,
       pageNo: 1,
@@ -110,17 +108,29 @@ export default {
       currentPage: 1,
       // 项目详情，获取名称和编号
       detail: {},
+      showDetail: false,
+      detailId: "", //详情id
+      bidId: 5042267656164352,
     };
   },
   props: {
+    //项目id
     id: {
       type: Number,
       default: "",
     },
   },
+  components: {
+    decryptDetail,
+  },
   methods: {
-    handleClick(row) {
-      console.log(row);
+    handleDecrypt(id) {
+      let data = this.api.decrypt({ id });
+      console.log(data);
+    },
+    toDetail(id) {
+      this.showDetail = true;
+      this.detailId = id;
     },
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`);

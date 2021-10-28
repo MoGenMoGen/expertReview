@@ -3,7 +3,7 @@
   <div id="mask" @click="closeMask">
     <div class="table_box" @click.stop="">
       <div class="top">
-        <p style="font-size: 20px" v-if="type!=2">新增</p>
+        <p style="font-size: 20px" v-if="type != 2">新增</p>
         <p style="font-size: 20px" v-else>编辑</p>
         <img
           @click="closeMask"
@@ -111,6 +111,13 @@ export default {
   },
   methods: {
     async handleNewRule() {
+      if (!this.info.nm) {
+        this.$message.error("请输入规则名称");
+        return false;
+      } else if (!this.info.seq) {
+        this.$message.error("请填写排序");
+        return false;
+      }
       let data = {};
       // 编辑
       if (this.type == 2) data = await this.api.modifySelectRule(this.info);
@@ -131,11 +138,12 @@ export default {
     closeMask() {
       this.$parent.showNewRule = false;
     },
-    handleChange() {},
+    handleChange() {
+      console.log(this.info.seq);
+    },
   },
   async mounted() {
-
-    console.log("子组件mounted出发",this.id);
+    console.log("子组件mounted出发", this.id);
     let { bWidth, width } = this.until.getWidth();
     //   this.bWidth = bWidth;
     this.width = width;

@@ -319,6 +319,29 @@ export default {
       return isJPG && isLt2M;
     },
     async handleConfirm() {
+      let checkmobInfo = this.reg.checkPhone(this.info.mob);
+      let checkemailInfo = this.reg.checkMail(this.info.email);
+
+      if (!this.info.groupNm) {
+        this.$message.error("请选择选取范围");
+        return false;
+      } else if (!this.info.username) {
+        this.$message.error("请填写用户名");
+        return false;
+      } else if (!this.info.realNm) {
+        this.$message.error("请填写姓名");
+        return false;
+      } else if (checkmobInfo != "ok") {
+        this.$message.error(checkmobInfo);
+        return false;
+      }
+      if (this.info.email) {
+        if (checkemailInfo != "ok") {
+          this.$message.error(checkemailInfo);
+          return false;
+        }
+      }
+
       let data = {};
       // 编辑
       if (this.type == 2) {

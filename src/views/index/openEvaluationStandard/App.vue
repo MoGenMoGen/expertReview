@@ -64,6 +64,7 @@
           </div>
           <div class="table_box">
             <el-table
+            max-height="524"
               @selection-change="handleSelectionChange"
               :data="tableData"
               style="width: 100%"
@@ -345,7 +346,8 @@ export default {
     background-repeat: no-repeat;
     background-position: bottom center;
     margin: 0 auto;
-    height: calc(~"100vh - 298px");
+    // height: calc(~"100vh - 298px");
+    height:800px;
     display: flex;
     .rightMenu {
       height: 800px;
@@ -384,9 +386,9 @@ export default {
         }
         .table_box {
           width: 100%;
-          max-height: 524px;
-          overflow-y: auto;
-          overflow-x: hidden;
+          // max-height: 524px;
+          // overflow-y: auto;
+          // overflow-x: hidden;
           scrollbar-width: none; /* firefox */
           -ms-overflow-style: none; /* IE 10+ */
         }

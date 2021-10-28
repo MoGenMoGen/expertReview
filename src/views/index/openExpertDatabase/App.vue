@@ -102,6 +102,7 @@
 
           <div class="table_box">
             <el-table
+              max-height="524"
               :data="tableData"
               @selection-change="handleSelectionChange"
               border
@@ -214,7 +215,9 @@
                       line-height: 30px;
                     "
                     v-show="scope.row.status == 0"
-                  >禁用</div>
+                  >
+                    禁用
+                  </div>
                 </template>
               </el-table-column>
               <el-table-column label="操作" min-width="90">
@@ -501,9 +504,9 @@ export default {
         }
         .table_box {
           width: 100%;
-          max-height: 524px;
-          overflow-y: auto;
-          overflow-x: hidden;
+          // max-height: 524px;
+          // overflow-y: auto;
+          // overflow-x: hidden;
           scrollbar-width: none; /* firefox */
           -ms-overflow-style: none; /* IE 10+ */
         }

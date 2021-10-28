@@ -1,7 +1,8 @@
 <template>
   <!-- 签到 -->
-  <div style="max-width: 100%;max-height:524px;overflow-y:scroll;">
+  <div style="max-width: 100%;">
     <el-table
+    max-height="524"
       :data="tableData"
       style="width: 100%"
       :cell-style="{

@@ -14,8 +14,36 @@
 
       <div class="container">
         <div style="display: flex; padding: 20px; align-items: center">
-          <div style="width: 70px; text-align: right">视频上传：</div>
+          <div style="width: 90px">
+            <span style="color: red; margin-right: 5px">*</span> 视频上传：
+          </div>
+          <div
+            v-if="videoForm.showVideoPath != '' && !videoFlag"
+            style="position: relative"
+          >
+            <video
+              style="width: 178px; height: 150px; object-fit: fill"
+              :src="videoForm.showVideoPath"
+              class="avatar video-avatar videoItem"
+              controls="controls"
+            >
+              您的浏览器不支持视频播放
+            </video>
+            <img
+              src="~assets/img/icon_del.png"
+              style="
+                position: absolute;
+                top: -8px;
+                color: #fff;
+                right: -6px;
+                cursor: pointer;
+                width: 20px;
+              "
+              @click="handleRemove"
+            />
+          </div>
           <el-upload
+            v-else
             style="border: 1px dashed #d9d9d9"
             class="avatar-uploader"
             action="/general/oss/upload"
@@ -25,16 +53,8 @@
             :before-upload="beforeUploadVideo"
             :show-file-list="false"
           >
-            <video
-              v-if="videoForm.showVideoPath != '' && !videoFlag"
-              :src="videoForm.showVideoPath"
-              class="avatar video-avatar"
-              controls="controls"
-            >
-              您的浏览器不支持视频播放
-            </video>
             <i
-              v-else-if="videoForm.showVideoPath == '' && !videoFlag"
+              v-if="videoForm.showVideoPath == '' && !videoFlag"
               class="el-icon-plus avatar-uploader-icon"
             ></i>
             <el-progress
@@ -46,8 +66,8 @@
           </el-upload>
         </div>
         <div style="display: flex; padding: 20px; align-items: center">
-          <div style="width: 60px; padding-right: 6px; text-align: right">
-            视频名称:
+          <div style="width: 80px; padding-right: 6px">
+            <span style="color: red; margin-right: 5px">*</span>视频名称:
           </div>
           <el-input
             style="width: 250px"
@@ -58,8 +78,8 @@
           </el-input>
         </div>
         <div style="display: flex; padding: 20px; align-items: center">
-          <div style="width: 60px; padding-right: 6px; text-align: right">
-            备注:
+          <div style="width: 80px; padding-right: 6px">
+            <span style="color: red; margin-right: 5px"></span>备注:
           </div>
           <el-input
             style="width: 250px"
@@ -142,7 +162,7 @@ export default {
     },
     //上传前回调
     beforeUploadVideo(file) {
-      var fileSize = file.size / 1024 / 1024 < 50;
+      var fileSize = file.size / 1024 / 1024 < 500;
       if (
         [
           "video/mp4",
@@ -155,11 +175,11 @@ export default {
         ].indexOf(file.type) == -1
       ) {
         this.$message.error("请上传正确的视频格式");
-        console.log('type',file.type);
+        console.log("type", file.type);
         return false;
       }
       if (!fileSize) {
-        this.$message.error("视频大小不能超过50MB");
+        this.$message.error("视频大小不能超过500MB");
         return false;
       }
       this.isShowUploadVideo = false;
@@ -191,7 +211,21 @@ export default {
         this.$message.error(res.errMsg);
       }
     },
+    //文件移除
+    handleRemove() {
+      this.videoForm.showVideoPath = "";
+      this.uploadData.vedioUrl = "";
+    },
     handleConfirm() {
+      if (!this.uploadData.vedioUrl) {
+        this.$message.error("请上传视频");
+        return false;
+      }
+      else if(!this.uploadData.title){
+          this.$message.error("请输入视频名称");
+        return false;
+      }
+
       this.uploadData.vedioTm = moment().format("YYYY-MM-DD HH:mm:ss");
       this.api.uploadVideo(this.uploadData).then((res) => {
         if (res.code == 0) {
@@ -268,11 +302,34 @@ export default {
       justify-content: space-between;
       margin-bottom: 10px;
     }
-    .btn {
-      width: 300px;
-      margin: 40px auto 0;
-      display: flex;
-      justify-content: center;
+    .container {
+      .videoItem {
+        position: relative;
+        .icon_del {
+          // visibility: hidden;
+          visibility: visible;
+          z-index: 9999;
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+      .videoItem:hover .icon_del {
+        visibility: visible;
+        z-index: 9999;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .btn {
+        width: 300px;
+        margin: 40px auto 0;
+        display: flex;
+        justify-content: center;
+      }
     }
   }
 }

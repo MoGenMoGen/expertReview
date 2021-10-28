@@ -168,7 +168,7 @@ export default {
   background-repeat: no-repeat;
   background-position: bottom center;
   margin: 0 auto;
-  height: calc(~"100vh - 298px");
+  // height: calc(~"100vh - 298px");
   display: flex;
   .rightMenu {
     height: 800px;

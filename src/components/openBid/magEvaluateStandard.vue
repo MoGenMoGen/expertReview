@@ -3,7 +3,7 @@
   <div id="mask" @click="closeMask">
     <div
       class="table_box"
-      :style="{ width: bWidth - 200 + 'px' }"
+      :style="{ width: bWidth - 300 + 'px' }"
       @click.stop=""
     >
       <div class="top">
@@ -60,6 +60,7 @@
         </button> -->
       </div>
       <el-table
+      max-height="524"
         @selection-change="handleSelectionChange"
         :data="tableData"
         style="width: 100%; margin-top: 10px"
@@ -75,7 +76,7 @@
         }"
       >
         <el-table-column type="selection" min-width="48"> </el-table-column>
-        <el-table-column label="评定指标" prop="nm" sortable min-width="200">
+        <el-table-column label="评定指标" prop="nm" sortable min-width="183">
         </el-table-column>
         <el-table-column
           prop="weight"
@@ -91,11 +92,11 @@
           min-width="160"
         >
         </el-table-column>
-        <el-table-column prop="tips" label="评分说明" sortable min-width="204">
+        <el-table-column prop="tips" label="评分说明" sortable min-width="187">
         </el-table-column>
-        <el-table-column prop="norm" label="评分标准" sortable min-width="204">
+        <el-table-column prop="norm" label="评分标准" sortable min-width="187">
         </el-table-column>
-        <el-table-column prop="seq" label="排序(正序)" sortable min-width="144">
+        <el-table-column prop="seq" label="排序(正序)" sortable min-width="127">
         </el-table-column>
         <el-table-column label="操作" min-width="96">
           <template slot-scope="scope">

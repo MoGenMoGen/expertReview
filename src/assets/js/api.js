@@ -978,6 +978,22 @@ class api {
 			})
 		})
 	}
+	// 报名详情
+	signUpDetail(detailId, query) {
+		return new Promise(resolve => {
+			get('/ship/bidApply/info/' + detailId + "?query=" + query).then(res => {
+				resolve(res.data)
+			})
+		})
+	}
+	// 解密
+	decrypt(data) {
+		return new Promise(resolve => {
+			post('/ship/bidOffer/translate', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
 }
 
 export {

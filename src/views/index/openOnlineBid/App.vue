@@ -62,7 +62,7 @@
             </button>
           </div>
           <div class="son_tablist">
-            <div class="left">
+            <!-- <div class="left">
               <div
                 class="son_tab_title projectNm"
                 v-for="(item, index) in sonTabList"
@@ -75,7 +75,7 @@
               >
                 {{ item }}
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="tablist">
             <div class="th">
@@ -114,7 +114,7 @@
                   {{ item1.bidOpenTm }}
                 </div>
 
-                <div class="td" @click="toDetail(item1.id)">查看</div>
+                <div class="td" @click="toPage('./onlineBidEvaluate.html')">查看</div>
               </div>
               <div v-show="item1.isshow">
                 <div class="th other_th">
@@ -399,7 +399,7 @@ export default {
       console.log(1111111, data);
     },
     Search() {
-      console.log('查询');
+      console.log("查询");
       this.getList();
     },
     toDetail(id) {
@@ -504,7 +504,7 @@ export default {
   background-repeat: no-repeat;
   background-position: bottom center;
   margin: 0 auto;
-  height: calc(~"100vh - 298px");
+  // height: calc(~"100vh - 298px");
   display: flex;
   .rightMenu {
     height: 800px;
@@ -552,7 +552,7 @@ export default {
           color: #606060;
           text-align: center;
           line-height: 40px;
-          cursor:pointer
+          cursor: pointer;
         }
         .btn_evaluation {
           text-align: center;
