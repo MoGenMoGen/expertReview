@@ -190,10 +190,11 @@
 								<div class="line">
 								</div>
 								<div class="back">
+									<i class="el-icon-download" style="margin-right: 10px;font-size: 20px;"></i>
 									全部下载 </div>
 							</div>
 							<div class="detailContent">
-								<div class="leftbox">
+							<!-- 	<div class="leftbox">
 									<div class="leftList">
 										<div class="listName">
 											1、
@@ -202,41 +203,8 @@
 											<img src="../../../assets/img/houzi.jpg">
 										</div>
 									</div>
-									<div class="leftList">
-										<div class="listName">
-											2、
-										</div>
-										<div class="listContent">
-											<img src="../../../assets/img/houzi.jpg">
-										</div>
-									</div>
-									<div class="leftList">
-										<div class="listName">
-											3、
-										</div>
-										<div class="listContent">
-											<img src="../../../assets/img/houzi.jpg">
-										</div>
-									</div>
-								</div>
-								<div class="leftbox">
-									<div class="leftList">
-										<div class="listName">
-											4、
-										</div>
-										<div class="listContent">
-											<img src="../../../assets/img/houzi.jpg">
-										</div>
-									</div>
-									<div class="leftList">
-										<div class="listName">
-											5、
-										</div>
-										<div class="listContent">
-											<img src="../../../assets/img/houzi.jpg">
-										</div>
-									</div>
-								</div>
+								</div> -->
+							
 							</div>
 						</div>
 						<div class="detailBox">
@@ -259,7 +227,24 @@
 								</div>
 							</div>
 						</div>
-						
+						<div class="detailBox">
+							<div class="detailTitle">
+								<span>投标信息</span>
+								<div class="line"></div>
+							</div>
+							<div class="detailContent">
+								<div class="collapse-item" v-for="(item,index) in tenderList" :key="index">
+									<div class="collapse-top" @click="showMore(index)">
+										<div>招标采购商：<span style="color: #2778BE;">{{item.orgNm}}</span></div>
+										<div>审核状态：<span :style="{color:(item.audit==2?'#2778BE':'#E4393C')}">{{item.audit==2?'通过':'未通过'}}</span><img :class="{'collapse-rotate':selectIndex==index}" src="../../../assets/img/arrowDownG.png"></div>
+									</div>
+									<div class="collapse-bottom" v-show="selectIndex==index">
+										<div :style="{color:(item.deposits?'#606060':'#E4393C')}">保证金：{{item.deposits?'已缴':'未缴'}}</div>
+										<div>申请时间：{{item.crtTm}}</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 			</div>
 		</div>
@@ -642,6 +627,45 @@
 								}
 							}
 						}
+						.fileList {
+							width: 25%;
+							margin-top: 20px;
+							display: flex;
+						}
+						.collapse-item {
+							width: 100%;
+							.collapse-top {
+								width: 100%;
+								height: 52px;
+								display: flex;
+								align-items: center;
+								justify-content: space-between;
+								background-color: #F8F8F8;
+								padding-left: 50px;
+								padding-right: 30px;
+								box-sizing: border-box;
+								font-size: 14px;
+								color: #606060;
+								img {
+									margin-left: 80px;
+								}
+								.collapse-rotate {
+									transform: rotate(180deg);
+								}
+							}
+							.collapse-bottom {
+								width: 100%;
+								padding-left: 50px;
+								padding-right: 30px;
+								box-sizing: border-box;
+								font-size: 14px;
+								color: #606060;
+								div {
+									margin: 15px 0;
+								}
+							}
+						}
+						
 					}
 				}
 			

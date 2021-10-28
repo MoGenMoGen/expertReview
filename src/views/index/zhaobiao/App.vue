@@ -67,7 +67,7 @@
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>项目需求类型</span>
 					</div>
 					<div class="right">
-						<el-select v-model="bidTypesNm" clearable filterable placeholder="项目需求类型"
+						<el-select v-model="bidTypesNm" value-key="nm" clearable filterable placeholder="项目需求类型"
 							style="margin-left: 12px;" @change="select4">
 							<el-option v-for="item in optionsFour" :key="item.nm" :label="item.nm" :value="item">
 							</el-option>
@@ -211,7 +211,7 @@
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>招标范围</span>
 					</div>
 					<div class="right">
-						<el-select v-model="viewRangeNm" clearable filterable placeholder="招标范围(机构类型)"
+						<el-select v-model="viewRangeNm" clearable  value-key="nm" filterable placeholder="招标范围(机构类型)"
 							style="margin-left: 12px;" @change="select8">
 							<el-option v-for="item in optionsFive" :key="item.nm" :label="item.nm" :value="item">
 							</el-option>

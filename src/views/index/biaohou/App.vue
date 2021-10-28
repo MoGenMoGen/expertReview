@@ -207,6 +207,10 @@
 			},
 			searchTo(){
 				this.getList()
+			},
+			handleCurrentChange(val){
+				this.pageNo=`${val}`
+				this.getList()
 			}
 		}
 	}
