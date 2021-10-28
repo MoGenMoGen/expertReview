@@ -89,7 +89,7 @@
 			<div class="detailTitle">
 				<span>招标文件</span>
 				<div class="line"></div>
-				<div class="back">全部下载 </div>
+				<div class="back" style="display: flex;align-items: center;"><i class="el-icon-download" style="margin-right: 10px;font-size: 20px;"></i>全部下载 </div>
 			</div>
 			<div class="detailContent">
 				<!-- <div class="leftbox">
