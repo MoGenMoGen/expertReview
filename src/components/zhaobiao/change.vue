@@ -651,9 +651,6 @@
 			this.api.getCatListByPcd({cd:'ANNOUNCEMENT_TYPE'}).then(res=>{
 				this.options=res.list
 			})
-			this.api.getMemberOrgEnterLink({}).then(res=>{
-			})
-			
 		},
 		methods: {
 			getList(){

@@ -198,8 +198,8 @@
 								<span>招标文件</span>
 								<div class="line">
 								</div>
-								<div class="back">
-									<i class="el-icon-download" style="margin-right: 10px;font-size: 20px;"></i>
+								<div class="back"@click="downLoad">
+									<i class="el-icon-download" style="margin-right: 10px;font-size: 20px;" ></i>
 									全部下载 </div>
 							</div>
 							<div class="detailContent">
@@ -305,6 +305,7 @@
 				fileList:[],
 				cd:'',
 				selectIndex:0,
+				attachment:[],
 				nm:'',
 				linkman:'',
 				bidDecideTm:'',
@@ -372,6 +373,10 @@
 		   this.getList()
 		},
 		methods: {
+			downLoad(){
+				console.log(111, this.attachment);
+			window.open(`https://fb.ship88.cn/general/oss/aliDownload?urls=${this.attachment}&zipName=''`)
+			},
 			showMore(index){
 				this.selectIndex=index
 			},
@@ -480,6 +485,7 @@
 					this.info=res.data
 					if(res.data.attachment){
 						this.getInfo(res.data.attachment.split(','))
+						this.attachment=res.data.attachment
 					}
 					
 				})
@@ -587,7 +593,7 @@
 				this.getList()
 			},
 			back(){
-				
+				this.until.back()
 			}
 		
 			

@@ -345,7 +345,7 @@
 									<span v-if="scope.row.audit==2" style="color: #2778BE;">
 										审核通过
 									</span>
-									<span v-if="scope.row.audit==3" style="color: #2778BE;">
+									<span v-if="scope.row.audit==3" style="color: #E4393C;">
 										审核驳回
 									</span>
 
@@ -643,12 +643,16 @@
 					this.attachment=res.data.attachment
 					let modelList = res.data.attachment.split(',')
 					this.getInfo(modelList)
-					for (let i = 0; i < this.list.length; i++) {
-						this.fileInfo.push({
-							name: this.list[i].fileNm,
-							url: this.list[i].url
-						})
+					console.log('11',this.list);
+					if(this.list[0].fileNm){
+						for (let i = 0; i < this.list.length; i++) {
+							this.fileInfo.push({
+								name: this.list[i].fileNm,
+								url: this.list[i].url
+							})
+						}
 					}
+				
 
 					this.viewRangeNm = res.data.viewRangeNm
 					this.viewRangeCd = res.data.viewRangeCd
@@ -866,10 +870,10 @@
 					procurementMethodCd: this.procurementMethodCd,
 					bidTypesCd: this.bidTypesCd,
 					bidTypesNm: this.bidTypesNm,
-					publishTm: this.publishTm,
-					completeTm: this.completeTm,
-					bidOpenTm: this.bidOpenTm,
-					bidEndTm: this.bidEndTm,
+					publishTm: this.until.formatTime(this.publishTm),
+					completeTm: this.until.formatTime(this.completeTm),
+					bidOpenTm: this.until.formatTime(this.bidOpenTm),
+					bidEndTm: this.until.formatTime(this.bidEndTm),
 					publisher: this.publisher,
 					mob: this.mob,
 					linkman: this.linkman,

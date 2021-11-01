@@ -115,11 +115,11 @@
 					<span>招标文件</span>
 					<div class="line">
 					</div>
-					<div class="back" @click="download">
+					<div class="back" @click="download"><i class="el-icon-download" style="margin-right: 10px;font-size: 20px;"></i>
 						全部下载 </div>
 				</div>
 				<div class="detailContent">
-					<div class="fileList" v-for="(item,index) in list" :key='index' >
+					<div class="fileList" v-for="(item,index) in list" :key='index' v-if="list.length>0" >
 						<span>
 							{{index+1}}、
 						</span>
@@ -131,7 +131,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="detailBox">
+			<div class="detailBox" v-if="info.audit==1">
 				<div class="detailTitle">
 					<span>审核意见</span>
 					<div class="line">
@@ -139,7 +139,7 @@
 				</div>
 				<textarea rows="" cols="" v-model="options"></textarea>
 			</div>
-			<div class="bottomBtn">
+			<div class="bottomBtn" v-if="info.audit==1">
 				<div class="btnLeft" @click="getPast">
 					通过
 				</div>
@@ -180,12 +180,17 @@
 			console.log('7799',this.detailId);
 			this.api.getBidInfo(this.detailId).then(res => {
 				this.info = res.data
-				this.attachment = res.data.attachment.split(',')
-				this.getInfo(this.attachment)
+				if(res.data.attachment)
+				{
+					this.attachment = res.data.attachment.split(',')
+					this.getInfo(this.attachment)
+				}
+			
 			})
 		},
 		methods: {
 			download(){
+				console.log(this.info.attachment);
 			   window.open(`https://fb.ship88.cn/general/oss/aliDownload?urls=${this.info.attachment}&zipName=`)
 			},
 			getPast(){
@@ -193,6 +198,8 @@
 					id:this.detailId,
 					audit:2,
 					options:this.options
+				}).then(res=>{
+					this.until.href('/views/index/zhaobiao.html')
 				})
 			},
 			reject(){
@@ -200,6 +207,8 @@
 					id:this.detailId,
 					audit:3,
 					options:this.options
+				}).then(res=>{
+					this.until.href('/views/index/zhaobiao.html')
 				})
 			},
 			back() {
