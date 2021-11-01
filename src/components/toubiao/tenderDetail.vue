@@ -26,10 +26,10 @@
 					</div>
 					<div class="leftList">
 						<div class="listName">
-							投标开始时间：
+							发布日期：
 						</div>
 						<div class="listContent">
-							{{info.bidOpenTm}}
+							{{info.publishTm}}
 						</div>
 					</div>
 					<div class="leftList">

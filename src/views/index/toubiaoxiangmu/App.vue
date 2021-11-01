@@ -23,9 +23,9 @@
 									:value="item.value">
 								</el-option>
 							</el-select> -->
-							<el-date-picker v-model="bidOpenTm" type="datetimerange" style="flex: 2;margin-right: 10px;margin-bottom: 10px;" range-separator="" start-placeholder="投标开始时间段">
+							<el-date-picker v-model="publishTm" type="daterange" style="flex: 2;margin-right: 10px;margin-bottom: 10px;" range-separator="" start-placeholder="发布日期段">
 							</el-date-picker>
-							<el-date-picker v-model="bidEndTm" type="datetimerange" style="flex: 2;margin-right: 10px;margin-bottom: 10px;" range-separator="" start-placeholder="投标截止时间段">
+							<el-date-picker v-model="bidEndTm" type="datetimerange" style="flex: 2;margin-right: 10px;margin-bottom: 10px;" range-separator="" start-placeholder="截标时间段">
 							</el-date-picker>
 							<!-- <el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间">
 							</el-date-picker> -->
@@ -93,8 +93,16 @@
 								</el-table-column>
 								<el-table-column prop="cd" label="项目编号" min-width="150"></el-table-column>
 								<el-table-column prop="nm" label="项目名称" min-width="150"></el-table-column>
-								<el-table-column prop="bidOpenTm" label="投标开始时间" min-width="150"></el-table-column>
-								<el-table-column prop="bidEndTm" label="投标截止时间" min-width="150"></el-table-column>
+								<el-table-column prop="publishTm" label="发布日期" min-width="150"></el-table-column>
+								<el-table-column prop="completeTm" label="报名截止日期" min-width="150"></el-table-column>
+								<el-table-column prop="bidEndTm" label="截标时间" min-width="150"></el-table-column>
+								<el-table-column prop="bidOpenTm" label="开标时间" min-width="150"></el-table-column>
+								<el-table-column label="保证金" min-width="150">
+									<template slot-scope="scope">
+										<p v-if="scope.row.needDeposit==1">需要缴纳</p>
+										<p v-if="scope.row.needDeposit==0">不需缴纳</p>
+									</template>
+								</el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
 										<el-button @click="handleClick(scope.row.id)" type="text" size="small">查看</el-button>
@@ -140,15 +148,15 @@
 				total: 0,
 				value2: '',
 				value3: '',
-				sonTabList: ["进行中", "已结束"],
+				sonTabList: ["进行中", "已截标"],
 				sonTabIndex: 0,
 				tableData: [],
 				cd: '',
 				nm: '',
 				options: [],
 				procurementMethodCd: '',
-				bidOpenTm: '',
 				bidEndTm: '',
+				publishTm: '',
 				showDetail: false
 			}
 		},
@@ -220,8 +228,8 @@
 				if(this.procurementMethodCd) {
 					this.query.toW(qry,'procurementMethodCd',this.procurementMethodCd,'EQ')
 				}
-				if(this.bidOpenTm) {
-					this.query.toW(qry,'bidOpenTm',this.until.formatTime(this.bidOpenTm[0])+','+this.until.formatTime(this.bidOpenTm[1]),'BT')
+				if(this.publishTm) {
+					this.query.toW(qry,'publishTm',this.until.formatTime(this.publishTm[0])+','+this.until.formatTime(this.publishTm[1]),'BT')
 				}
 				if(this.bidEndTm) {
 					this.query.toW(qry,'bidEndTm',this.until.formatTime(this.bidEndTm[0])+','+this.until.formatTime(this.bidEndTm[1]),'BT')

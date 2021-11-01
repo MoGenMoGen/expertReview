@@ -99,7 +99,7 @@
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>开标时间</span>
 					</div>
 					<div class="right">
-						<el-date-picker v-model="bidOpenTm" type="date" placeholder="开标时间">
+						<el-date-picker v-model="bidOpenTm" type="datetime" placeholder="开标时间">
 						</el-date-picker>
 						</el-input>
 					</div>
@@ -109,7 +109,7 @@
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>截标时间</span>
 					</div>
 					<div class="right">
-						<el-date-picker v-model="bidEndTm" type="date" placeholder="截标时间">
+						<el-date-picker v-model="bidEndTm" type="datetime" placeholder="截标时间">
 						</el-date-picker>
 						</el-input>
 					</div>
@@ -335,7 +335,17 @@
 							</el-table-column>
 							<el-table-column prop="budget" label="预算金额(万元)" min-width="100">
 							</el-table-column>
-							<el-table-column prop="crtTm" label="创建时间" min-width="150">
+							<!-- <el-table-column prop="crtTm" label="创建时间" min-width="150">
+							</el-table-column> -->
+							<el-table-column prop="publishTm" label="发布日期" min-width="150"></el-table-column>
+							<el-table-column prop="completeTm" label="报名截止日期" min-width="150"></el-table-column>
+							<el-table-column prop="bidEndTm" label="截标时间" min-width="150"></el-table-column>
+							<el-table-column prop="bidOpenTm" label="开标时间" min-width="150"></el-table-column>
+							<el-table-column label="保证金" min-width="150">
+								<template slot-scope="scope">
+									<p v-if="scope.row.needDeposit==1">需要缴纳</p>
+									<p v-if="scope.row.needDeposit==0">不需缴纳</p>
+								</template>
 							</el-table-column>
 							<el-table-column prop="audit" label="状态" min-width="100">
 								<template slot-scope="scope">
@@ -870,8 +880,8 @@
 					procurementMethodCd: this.procurementMethodCd,
 					bidTypesCd: this.bidTypesCd,
 					bidTypesNm: this.bidTypesNm,
-					publishTm: this.until.formatTime(this.publishTm),
-					completeTm: this.until.formatTime(this.completeTm),
+					publishTm: this.until.formatTime(this.publishTm).substring(0,10),
+					completeTm: this.until.formatTime(this.completeTm).substring(0,10),
 					bidOpenTm: this.until.formatTime(this.bidOpenTm),
 					bidEndTm: this.until.formatTime(this.bidEndTm),
 					publisher: this.publisher,
