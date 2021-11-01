@@ -266,7 +266,8 @@
 				this.selectIndex = index
 			},
 			allDownload() {
-				console.log('下载全部')
+				let urls = this.attachment.join(',')
+				window.open(`https://fb.ship88.cn/general/oss/aliDownload?urls=${urls}&zipName=''`)
 			}
 		},
 		async mounted() {
