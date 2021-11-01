@@ -304,7 +304,9 @@ export default {
       else this.info.addrNm = "";
     },
     handleAvatarSuccess(res, file) {
-      this.info.imgUrl = URL.createObjectURL(file.raw);
+      // console.log(1111111,res,file);
+      // this.info.imgUrl = URL.createObjectURL(file.raw);
+      this.info.imgUrl = res.data;
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
