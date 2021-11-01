@@ -30,10 +30,10 @@
 					</div>
 					<div class="middleBox">
 						<div class="middleLeft">
-							保证金未退金额：4万元
+							保证金未退金额：{{noRefund}}万元
 						</div>
 						<div class="middleRight">
-							保证金已退金额：2万元
+							保证金已退金额：{{refunded}}万元
 						</div>
 					</div>
 					<div class="bodyTable">
@@ -130,6 +130,8 @@
 				],
 				date1:'',
 				date2:'',
+				noRefund:'',
+				refunded:'',
 				
 			}
 		},
@@ -161,6 +163,12 @@
 				cd: 'PROCUREMENT_METHOD'
 			}).then(res => {
 				this.options = res.list
+			})
+			let query2=this.query.new()
+			this.query.toP(query2,1,20)
+			this.api.getPageWithWinBidOfferSum(this.query.toEncode(query2)).then(res=>{
+			  this.noRefund=res.noRefund
+			  this.refunded=res.refunded
 			})
 			this.getList()
 
@@ -195,10 +203,7 @@
 			toPage(url) {
 				this.until.href(url)
 			},
-			currentPage(val){
-				this.pageNo = `${val}`
-				this.getList()
-			},
+		
 			select1(val){
 				this.procurementMethodCd=val
 			},
@@ -328,6 +333,7 @@
 				.Footer{
 					width: 100%;
 					text-align: center;
+					margin-bottom: 10px;
 				}
 			}
 		

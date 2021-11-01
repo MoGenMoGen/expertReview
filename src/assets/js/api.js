@@ -994,6 +994,22 @@ class api {
 			})
 		})
 	}
+	//已退款未退款详情
+	getPageWithWinBidOfferSum(data){
+		return new Promise(resolve => {
+			get('/ship/bid/pageWithWinBidOfferSum?query=' + data+'&experts=张,王').then(res => {
+				resolve(res.data)
+			})
+		})
+	}
+	//标后归档详情
+	getInfoWithWinBid(data){
+		return new Promise(resolve => {
+			get('/ship/bid/infoWithWinBid/'+data).then(res => {
+				resolve(res.data)
+			})
+		})
+	}
 }
 
 export {

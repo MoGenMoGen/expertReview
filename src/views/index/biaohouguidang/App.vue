@@ -85,7 +85,7 @@
 				<div class="detail"  v-if="showDetail==true" >
 					<div class="detailBox">
 						<div class="detailTitle">
-							<span>12米玻璃钢新型渔船项目</span>
+							<span>{{info.nm}}</span>
 							<div class="line">
 							</div>
 							<div class="back" @click="back">
@@ -98,7 +98,7 @@
 											项目编号：
 										</div>
 										<div class="listContent">
-											BHZC2021-G3-0001
+											{{info.cd}}
 										</div>
 									</div>
 									<div class="leftList">
@@ -106,15 +106,15 @@
 											预算金额（万元）
 										</div>
 										<div class="listContent">
-											52
+											{{info.budget}}
 										</div>
 									</div>
 									<div class="leftList">
 										<div class="listName">
-											投标开始时间：
+											发布时间：
 										</div>
 										<div class="listContent">
-											2021-07-15 14:00:00
+											{{info.publishTm}}
 										</div>
 									</div>
 									<div class="leftList">
@@ -122,7 +122,7 @@
 											创建时间：
 										</div>
 										<div class="listContent">
-											2021-07-15 14:00:00
+											{{info.crtTm}}
 										</div>
 									</div>
 									<div class="leftList">
@@ -131,18 +131,18 @@
 										</div>
 										<div class="listContent">
 											<p>1、标书投放时间：
-												<span style="color: red;">2020年6月8日</span>
+												<span style="color: red;">{{info.bidOpenTm}}</span>
 											</p>
 											<p>2、招标截止时间：
-												<span style="color: red;">2020年6月8日</span>
+												<span style="color: red;">{{info.bidEndTm}}</span>
 											</p>
 											<p>（以我司招标办收到的投标标准时间为准）,逾期按弃权处理</p>
 											<p>3、联系人：
-												<span>马益群</span>
+												<span>{{info.linkman}}</span>
 											</p>
 											<p>4、联系电话：
 												<span>
-													0580-3098000 13957205955
+													{{info.mob}}
 												</span>
 											</p>
 										</div>
@@ -154,15 +154,18 @@
 											项目名称：
 										</div>
 										<div class="listContent">
-											12米
+											{{info.nm}}
 										</div>
 									</div>
 									<div class="rightList">
 										<div class="listName">
 											保证金缴纳：
 										</div>
-										<div class="listContent">
-											是
+										<div class="listContent" v-if="info.needDeposit==0">
+											不需要
+										</div>
+										<div class="listContent" v-else>
+											需要
 										</div>
 									</div>
 									<div class="rightList">
@@ -170,15 +173,21 @@
 											投标截止时间：
 										</div>
 										<div class="listContent">
-											2021-07-15 14:00:00
+											{{info.completeTm}}
 										</div>
 									</div>
 									<div class="rightList">
 										<div class="listName">
 											状态：
 										</div>
-										<div class="listContent" style="color: red;">
-											待审批
+										<div class="listContent" style="color: red;" v-if="info.audit==1">
+											待审核
+										</div>
+										<div class="listContent" style="color: #2778BE ;" v-if="info.audit==2">
+											审核通过
+										</div>
+										<div class="listContent" style="color: red ;" v-if="info.audit==3">
+											审核驳回
 										</div>
 									</div>
 								</div>
@@ -194,16 +203,16 @@
 									全部下载 </div>
 							</div>
 							<div class="detailContent">
-							<!-- 	<div class="leftbox">
-									<div class="leftList">
-										<div class="listName">
-											1、
-										</div>
-										<div class="listContent">
-											<img src="../../../assets/img/houzi.jpg">
-										</div>
-									</div>
-								</div> -->
+							<div class="fileList" v-for="(item,index) in list" :key='index' >
+								<span>
+									{{index+1}}、
+								</span>
+								<div >
+									<img :src="item.img"  style="width: 100px; height: 100px; cursor: pointer;" @click="toLink(item.url)" >
+									<p style="cursor: pointer;" @click="toLink(item.url)">{{item.fileNm}}</p>
+								</div>
+								
+							</div>
 							
 							</div>
 						</div>
@@ -215,15 +224,23 @@
 							<div class="detailContent" style=" display:flex; flex-direction: column;">
 								<div class="list">
 									审核意见：
-									<span>同意</span>
+									<span>{{info.options}}</span>
 								</div>
 								<div class="list">
-									审核时间：2021-07-21 08:10:02 
-									<span>同意</span>
+									审核时间：{{info.auditTm}} 
+									
 								</div>
 								<div class="list">
 									审核状态：
-									<span>已通过</span>
+									<span class="listContent" style="color: red;" v-if="info.audit==1">
+										待审核
+									</span>
+									<span class="listContent" style="color: #2778BE ;" v-if="info.audit==2">
+										审核通过
+									</span>
+									<span class="listContent" style="color: red ;" v-if="info.audit==3">
+										审核驳回
+									</span>
 								</div>
 							</div>
 						</div>
@@ -233,14 +250,29 @@
 								<div class="line"></div>
 							</div>
 							<div class="detailContent">
-								<div class="collapse-item" v-for="(item,index) in tenderList" :key="index">
+								<div class="collapse-item" v-for="(item,index) in infoList" :key="index">
 									<div class="collapse-top" @click="showMore(index)">
-										<div>招标采购商：<span style="color: #2778BE;">{{item.orgNm}}</span></div>
-										<div>审核状态：<span :style="{color:(item.audit==2?'#2778BE':'#E4393C')}">{{item.audit==2?'通过':'未通过'}}</span><img :class="{'collapse-rotate':selectIndex==index}" src="../../../assets/img/arrowDownG.png"></div>
+										<div>招标采购商：<span style="color: #2778BE;">{{item.offer.orgNm}}</span></div>
+										<div>审核状态：<span :style="{color:(item.apply.audit==2?'#2778BE':'#E4393C')}">{{item.apply.audit==2?'通过':'未通过'}}</span><img :class="{'collapse-rotate':selectIndex==index}" src="../../../assets/img/arrowDownG.png"></div>
 									</div>
 									<div class="collapse-bottom" v-show="selectIndex==index">
-										<div :style="{color:(item.deposits?'#606060':'#E4393C')}">保证金：{{item.deposits?'已缴':'未缴'}}</div>
-										<div>申请时间：{{item.crtTm}}</div>
+										<div :style="{color:(item.apply.deposits?'#606060':'#E4393C')}">保证金：{{item.apply.deposits?'已缴':'未缴'}}</div>
+										<div>缴费时间：{{item.crtTm}}</div>
+										<div>退保时间：{{item.crtTm}}</div>
+										<div class="" style="display: flex; flex-wrap: wrap;" >
+											
+										
+										<div class="fileList" v-for="(item1,index1) in item.newList" :key='index1' >
+											<span>
+												{{index1+1}}、
+											</span>
+											<div  >
+												<img :src="item1.img"  style="width: 100px; height: 100px; cursor: pointer;" @click="toLink(item1.url)" >
+												<p style="cursor: pointer;" @click="toLink(item1.url)">{{item1.fileNm}}</p>
+											</div>
+											
+										</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -253,6 +285,10 @@
 </template>
 
 <script>
+	import excel from '@/assets/img/excel.png'
+	import ppt from '@/assets/img/ppt.png'
+	import word from '@/assets/img/word.png'
+	import pdf from '@/assets/img/pdf.jpg'
 	import myFooter from '@/components/footer';
 	import myHeader from '@/components/myHeader';
 	import leftMenu from '@/components/leftMenu';
@@ -262,8 +298,13 @@
 	export default {
 		data() {
 			return {
+				excel,
+				ppt,
+				word,
+				pdf,
 				fileList:[],
 				cd:'',
+				selectIndex:0,
 				nm:'',
 				linkman:'',
 				bidDecideTm:'',
@@ -291,10 +332,12 @@
 				total: 0,
 				value:'',
 				value1:'',
-			
+				info:{},
 				showDetail:false,
 				tableData: [
-				]
+				],
+				list:[],
+				infoList:[],
 			}
 		},
 		computed: {
@@ -329,6 +372,70 @@
 		   this.getList()
 		},
 		methods: {
+			showMore(index){
+				this.selectIndex=index
+			},
+			async getInfo(info) {
+				this.list = []
+				let data = info
+				let data1 = []
+				let fileList2 = []
+				if (data.length > 0) {
+					data.forEach(v => {
+						let type = v.split('.')[v.split('.').length - 1]
+						let nmList = v.split('.com/') //分割出url后的内容
+						let nm = ""
+						nmList.forEach((j, z) => { //防止文件名中有 .com/ 所以循环加入
+							if (z != 0) {
+								nm += j
+							}
+						})
+						nmList = nm.split('_') //分割随机字符后的内容
+						nm = ""
+						nmList.forEach((j, z) => { //防止文件名中有 _ 所以循环
+							if (z != 0) {
+								nm += j
+							}
+						})
+						nm = nm.split('.' + type)[0]
+						if (type == 'pdf') {
+							fileList2.push({
+								url: v,
+								img: this.pdf,
+								'fileNm': nm
+							})
+						} else if (type == 'doc' || type == 'docx') {
+							fileList2.push({
+								url: v,
+								img: this.word,
+								'fileNm': nm
+							})
+						} else if (type == 'ppt' || type == 'pptx') {
+							fileList2.push({
+								url: v,
+								img: this.ppt,
+								'fileNm': nm
+							})
+						} else if (type == 'xls' || type == 'xlsx') {
+							fileList2.push({
+								url: v,
+								img: this.excel,
+								'fileNm': nm
+							})
+						} else {
+							fileList2.push({
+								url: v,
+								img: v,
+								'fileNm': nm
+							})
+						}
+			
+					})
+				}
+				console.log(fileList2)
+				this.list = fileList2
+				
+			},
 			getList(){
 				let query=this.query.new()
 				this.query.toP(query, this.pageNo, this.pageSize)
@@ -343,7 +450,9 @@
 					this.tableData=res.data.list
 					this.total=res.page.total
 					for(let i=0;i<this.tableData.length;i++){
-						this.tableData[i].attachment=this.tableData[i].attachment.split(',').length
+						if(this.tableData[i].attachment){
+							this.tableData[i].attachment=this.tableData[i].attachment.split(',').length
+						}
 					}
 				})
 			},
@@ -365,8 +474,78 @@
 			toPage(url) {
 				this.until.href(url)
 			},
-			toDetail(){
+			toDetail(val){
 				this.showDetail=true
+				this.api.getBidInfo(val.id).then(res=>{
+					this.info=res.data
+					if(res.data.attachment){
+						this.getInfo(res.data.attachment.split(','))
+					}
+					
+				})
+				this.api.getInfoWithWinBid(val.id).then(res=>{
+					this.infoList=res
+					for(let i=0;i<this.infoList.length;i++){
+						this.infoList[i].newList = []
+						let data = this.infoList[i].apply.attachment.split(',')
+						let data1 = []
+						let fileList2 = []
+						if (data.length > 0) {
+							data.forEach(v => {
+								let type = v.split('.')[v.split('.').length - 1]
+								let nmList = v.split('.com/') //分割出url后的内容
+								let nm = ""
+								nmList.forEach((j, z) => { //防止文件名中有 .com/ 所以循环加入
+									if (z != 0) {
+										nm += j
+									}
+								})
+								nmList = nm.split('_') //分割随机字符后的内容
+								nm = ""
+								nmList.forEach((j, z) => { //防止文件名中有 _ 所以循环
+									if (z != 0) {
+										nm += j
+									}
+								})
+								nm = nm.split('.' + type)[0]
+								if (type == 'pdf') {
+									fileList2.push({
+										url: v,
+										img: this.pdf,
+										'fileNm': nm
+									})
+								} else if (type == 'doc' || type == 'docx') {
+									fileList2.push({
+										url: v,
+										img: this.word,
+										'fileNm': nm
+									})
+								} else if (type == 'ppt' || type == 'pptx') {
+									fileList2.push({
+										url: v,
+										img: this.ppt,
+										'fileNm': nm
+									})
+								} else if (type == 'xls' || type == 'xlsx') {
+									fileList2.push({
+										url: v,
+										img: this.excel,
+										'fileNm': nm
+									})
+								} else {
+									fileList2.push({
+										url: v,
+										img: v,
+										'fileNm': nm
+									})
+								}
+									
+							})
+						}
+						console.log(fileList2)
+						this.infoList[i].newList  = fileList2
+					}
+				})
 			},
 			select1(val){
 				this.procurementMethodCd=val
@@ -383,6 +562,9 @@
 				this.api.postBidUpd(this.info).then(res=>{
 					this.getList()
 				})
+			},
+			toLink(url){
+			 window.open(url)	
 			},
 			cancelFile(val){
 				this.info=val
@@ -403,7 +585,11 @@
 			handleCurrentChange(val){
 				this.pageNo = `${val}`
 				this.getList()
+			},
+			back(){
+				
 			}
+		
 			
 		}
 	}
