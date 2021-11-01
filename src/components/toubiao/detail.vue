@@ -308,8 +308,8 @@
 				this.api.postBidApplyAudit(data).then(res => {
 					if(res.code==0) {
 						this.$message.success(res.msg)
-						this.$parent.showPop = false;
-						this.$parent.getList()
+						this.showPop = false;
+						this.getList()
 					}
 				})
 			},
@@ -322,8 +322,8 @@
 				this.api.postBidApplyAudit(data).then(res => {
 					if(res.code==0) {
 						this.$message.success(res.msg)
-						this.$parent.showPop = false;
-						this.$parent.getList()
+						this.showPop = false;
+						this.getList()
 					}
 				})
 			},
