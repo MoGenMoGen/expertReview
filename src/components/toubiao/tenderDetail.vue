@@ -18,7 +18,7 @@
 					</div>
 					<div class="leftList">
 						<div class="listName">
-							预算金额（万元）
+							预算金额（万元）：
 						</div>
 						<div class="listContent">
 							{{info.budget}}
@@ -141,10 +141,11 @@
 				<div class="collapse-item" v-for="(item,index) in tenderList" :key="index">
 					<div class="collapse-top" @click="showMore(index)">
 						<div>招标采购商：<span style="color: #2778BE;">{{item.orgNm}}</span></div>
-						<div>审核状态：<span :style="{color:(item.audit==2?'#2778BE':'#E4393C')}">{{item.audit==2?'通过':'未通过'}}</span><img :class="{'collapse-rotate':selectIndex==index}" src="../../assets/img/arrowDownG.png"></div>
+						<div>审核状态：<span :style="{color:(item.audit==2?'#2778BE':'#E4393C')}">{{auditType[item.audit-1]}}</span><img :class="{'collapse-rotate':selectIndex==index}" src="../../assets/img/arrowDownG.png"></div>
 					</div>
 					<div class="collapse-bottom" v-show="selectIndex==index">
-						<div :style="{color:(item.deposits?'#606060':'#E4393C')}">保证金：{{item.deposits?'已缴':'未缴'}}</div>
+						<div style="color:#E4393C" v-if="info.needDeposit==0">保证金：无需缴纳</div>
+						<div :style="{color:(item.deposits?'#606060':'#E4393C')}" v-if="info.needDeposit==1">保证金：{{item.deposits?'已缴':'未缴'}}</div>
 						<div>申请时间：{{item.crtTm}}</div>
 					</div>
 				</div>
