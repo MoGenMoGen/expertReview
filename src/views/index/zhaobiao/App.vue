@@ -86,7 +86,7 @@
 				</div>
 				<div class="row2">
 					<div class="title">
-						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>完成时间</span>
+						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>报名截止时间</span>
 					</div>
 					<div class="right">
 						<el-date-picker v-model="completeTm" type="date" placeholder="报名截止时间" @change="pick2">
