@@ -89,7 +89,7 @@
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>完成时间</span>
 					</div>
 					<div class="right">
-						<el-date-picker v-model="completeTm" type="date" placeholder="完成时间" @change="pick2">
+						<el-date-picker v-model="completeTm" type="date" placeholder="报名截止时间" @change="pick2">
 						</el-date-picker>
 						</el-input>
 					</div>
@@ -854,7 +854,7 @@
 					});
 					return false
 				}
-				if(!this.orgEnterIds){
+				if(!this.expertIds){
 					this.$message({
 						type: "error",
 						message: "专家不能为空",
@@ -1028,6 +1028,7 @@
 					}).then(res => {
 						console.log('5573', res.list);
 						this.expertIdsList = res.list
+						this.expertIds=res.list.join(',')
 					})
 				}
 			},

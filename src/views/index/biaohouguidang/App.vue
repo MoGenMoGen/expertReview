@@ -438,7 +438,9 @@
 					})
 				}
 				console.log(fileList2)
-				this.list = fileList2
+				if(fileList2[0].url){
+					this.list = fileList2
+				}
 				
 			},
 			getList(){
