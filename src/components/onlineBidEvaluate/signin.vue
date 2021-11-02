@@ -81,7 +81,7 @@
       <el-pagination
         background
         @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
+        :current-page.sync="pageNo"
         :page-size="pageSize"
         layout="prev, pager, next, jumper"
         :total="total"
@@ -96,67 +96,12 @@ import bus from "@/bus.js";
 export default {
   data() {
     return {
-      tableData: [
-        {
-          id: 123124342,
-          no: "BHZC2021-G3-0001",
-          name: "12米玻璃钢新型渔船",
-          units: [
-            {
-              value: "澳新船厂有限公司   (已签到)",
-              status: 0,
-            },
-            {
-              value: "澳新船厂有限公司   (已签到)",
-              status: 0,
-            },
-          ],
-          experts: [
-            {
-              value: "钱森林 ",
-              status: 0,
-            },
-            {
-              value: "张师傅",
-              status: 1,
-            },
-          ],
-          date: "2021-07-15 14:00:00",
-          status: 1,
-        },
-        {
-          id: 123124342,
-          no: "BHZC2021-G3-0001",
-          name: "12米玻璃钢新型渔船",
-          units: [
-            {
-              value: "澳新船厂有限公司   (已签到)",
-              status: 0,
-            },
-            {
-              value: "澳新船厂有限公司   (已签到)",
-              status: 0,
-            },
-          ],
-          experts: [
-            {
-              value: "钱森林 ",
-              status: 0,
-            },
-            {
-              value: "张师傅",
-              status: 1,
-            },
-          ],
-          date: "2021-07-15 14:00:00",
-          status: 2,
-        },
-      ],
+      tableData: [],
       // 每页显示条数
       pageSize: 10,
       total: 0,
       // 当前页
-      currentPage: 1,
+      pageNo: 1,
       SearchInfo: {
         cd: "", //编号
         nm: "", //项目名称
@@ -184,31 +129,27 @@ export default {
     },
     async getList() {
       console.log("子组件", this.SearchInfo);
-      let query = {
-        r: [
-          {
-            n: "a1",
-            t: "and",
-            w: [
-              { k: "cd", v: "", m: "LK" },
-              { k: "nm", v: "", m: "LK" },
-              { k: "purchasingUnit", v: "", m: "LK" },
-              { k: "procurementMethodCd", v: "", m: "LK" },
-            ],
-          },
-        ],
-        o: [{ k: "crtTm", t: "desc" }],
-        p: { n: 1, s: 10 },
-      };
-      query.p.n = this.pageNo;
-      query.p.s = this.pageSize;
-      query.r[0].w[0].v = this.SearchInfo.cd;
-      query.r[0].w[1].v = this.SearchInfo.nm;
-      query.r[0].w[2].v = this.SearchInfo.purchasingUnit;
-      query.r[0].w[3].v = this.SearchInfo.procurementMethodCd;
+	  let qry=this.query.new()
+	  this.query.toO(qry,'crtTm','desc')
+	  this.query.toP(qry,this.pageNo,this.pageSize)
+	  if(this.SearchInfo.cd) {
+		  this.query.toW(qry,'cd',this.SearchInfo.cd,'LK')
+	  }
+	  if(this.SearchInfo.nm) {
+	  	this.query.toW(qry,'nm',this.SearchInfo.nm,'LK')
+	  }
+	  if(this.SearchInfo.purchasingUnit) {
+	  	this.query.toW(qry,'purchasingUnit',this.SearchInfo.purchasingUnit,'LK')
+	  }
+	  if(this.SearchInfo.procurementMethodCd) {
+	  	this.query.toW(qry,'procurementMethodCd',this.SearchInfo.procurementMethodCd,'LK')
+	  }
+	  let date =this.until.formatTime(new Date());
+	  this.query.toW(qry,'bidOpenTm',date,'lt')
+	  this.query.toWNull(qry,'bidColseTm')
       // 选取列表
       let data = await this.api.onlineBidList(
-        encodeURIComponent(JSON.stringify(query)),
+        this.query.toEncode(qry),
         this.SearchInfo.expertNm
       );
       this.tableData = data.data.list;

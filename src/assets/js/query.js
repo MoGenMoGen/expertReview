@@ -41,6 +41,14 @@ query.toWNull = (q, k) => {
     })
     return q
 }
+query.toWNotNull = (q, k) => {
+    q.w.push({
+        'k': k,
+        'v': "",
+        'm': 'NIS'
+    })
+    return q
+}
 
 query.toO = (q, k, t) => {
     if (typeof k === 'undefined' || k === '') {
