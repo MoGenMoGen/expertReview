@@ -111,7 +111,7 @@
 				let qry=this.query.new()
 				this.query.toO(qry,'crtTm','desc')
 				// this.query.toO(qry,'score','desc')
-				this.query.toW(qry,'bidId',this.id,'EQ')
+				this.query.toW(qry,'bidId',this.id+'','EQ')
 				this.api.getBidOfferAll(this.query.toEncode(qry)).then(res => {
 					this.tableData = res.data.list
 				})

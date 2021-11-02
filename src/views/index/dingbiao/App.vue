@@ -178,7 +178,7 @@
 				if(this.bidEndTm) {
 					this.query.toW(qry,'bidEndTm',this.until.formatTime(this.bidEndTm[0])+','+this.until.formatTime(this.bidEndTm[1]),'BT')
 				}
-				this.api.getBidTargetList(this.query.toEncode(qry),1).then(res => {
+				this.api.getBidTargetList(this.query.toEncode(qry)).then(res => {
 					this.tableData = res.data.list
 					this.total = res.page.total
 				})

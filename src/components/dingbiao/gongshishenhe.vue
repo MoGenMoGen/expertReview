@@ -6,22 +6,23 @@
 				<p style="font-size: 20px" v-if="type==0">发布公示</p>
 				<p style="font-size: 20px" v-if="type==1">发布审核</p>
 				<p style="font-size: 20px" v-if="type==2">公示详情</p>
+				<p style="font-size: 20px" v-if="type==3">修改公示</p>
 				<img @click="closeMask" src="~assets/img/close.png"
 					style="width: 25px; height: 25px;cursor: pointer;" />
 			</div>
 			<div class="row2">
 				<div class="row2-item">项目编号：{{row.cd}}</div>
 				<div class="row2-item">项目名称：{{row.nm}}</div>
-				<div class="row2-item">采购单位：{{row.purchasingUnit}}</div>
-				<div class="row2-item" v-if="type==0" style="align-items: center;">公告标题：
+				<div class="row2-item">采购单位：{{row.winner}}</div>
+				<div class="row2-item" v-if="type==0||type==3" style="align-items: center;">公告标题：
 					<el-input placeholder="请输入公告标题" v-model="submitInfo.title"></el-input>
 				</div>
 				<div class="row2-item" v-if="type==1||type==2">公告标题：{{info.title}}</div>
-				<div class="row2-item" v-if="type==0" style="align-items: center;">发布时间：
+				<div class="row2-item" v-if="type==0||type==3" style="align-items: center;">发布时间：
 					<el-date-picker v-model="submitInfo.releTm" type="datetime" placeholder="选择日期时间"></el-date-picker>
 				</div>
 				<div class="row2-item" v-if="type==1||type==2">发布时间：{{info.releTm}}</div>
-				<div class="row2-item" v-if="type==0">公示内容：
+				<div class="row2-item" v-if="type==0||type==3">公示内容：
 					<myEditor ref="myEditor"></myEditor>
 				</div>
 				<div class="row2-item" v-if="type==1||type==2">公示内容：
@@ -54,6 +55,12 @@
 					style="background: #2778be; color: #fff; margin-right: 20px; padding: 10px 25px; border-radius: 4px;"
 					@click="closeMask" type="text" size="small">确定</el-button>
 				<el-button v-if="type==2"
+					style="background: #fff; color: #333; border: 1px solid #dddddd; padding: 10px 25px; border-radius: 4px;"
+					@click="closeMask" type="text" size="small">取消</el-button>
+				<el-button v-if="type==3"
+					style="background: #2778be; color: #fff; margin-right: 20px; padding: 10px 25px; border-radius: 4px;"
+					@click="update" type="text" size="small">确定</el-button>
+				<el-button v-if="type==3"
 					style="background: #fff; color: #333; border: 1px solid #dddddd; padding: 10px 25px; border-radius: 4px;"
 					@click="closeMask" type="text" size="small">取消</el-button>
 			</div>
@@ -109,8 +116,36 @@
 					this.$message.error('请输入公告内容');
 					return
 				}
+				this.submitInfo.releTm = this.until.formatTime(this.submitInfo.releTm)
 				this.submitInfo.cont = this.$refs.myEditor.msg
 				this.api.postBidAffiche(this.submitInfo).then(res => {
+					if(res.code==0) {
+						this.$message.success(res.msg)
+						this.$parent.showShenhe = false;
+						this.$parent.getList()
+					}
+				})
+			},
+			update() {
+				if(this.submitInfo.title=="") {
+					this.$message.error('请输入公告标题');
+					return
+				}
+				if(this.submitInfo.releTm=="") {
+					this.$message.error('请选择发布时间');
+					return
+				}
+				if(this.$refs.myEditor.msg=='') {
+					this.$message.error('请输入公告内容');
+					return
+				}
+				let submitInfo = {
+					id: this.info.id,
+					releTm: this.until.formatTime(this.submitInfo.releTm),
+					cont: this.$refs.myEditor.msg,
+					title: this.submitInfo.title
+				}
+				this.api.postBidAfficheUpd(submitInfo).then(res => {
 					if(res.code==0) {
 						this.$message.success(res.msg)
 						this.$parent.showShenhe = false;
@@ -157,9 +192,11 @@
 					}
 				})
 			})
-			if(this.type==1||this.type==2) {
+			if(this.type==1||this.type==2||this.type==3) {
 				this.api.getBidAfficheByBidId({bidId:this.row.id}).then(res => {
 					this.info = res.data
+					this.submitInfo.releTm = this.info.releTm
+					this.submitInfo.title = this.info.title
 				})
 			}
 		},

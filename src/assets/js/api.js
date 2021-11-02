@@ -654,6 +654,14 @@ class api {
 			})
 		})
 	}
+	//项目公告修改
+	postBidAfficheUpd(data) {
+		return new Promise(resolve => {
+			post('/ship/bidAffiche/upd', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
 	//获取公告单位列表
 	getMemberOrgEnterLink(data) {
 		return new Promise(resolve => {
@@ -703,9 +711,17 @@ class api {
 		})
 	}
 	// 定标项目
-	getBidTargetList(data, controllerNum) {
+	getBidTargetList(data) {
 		return new Promise(resolve => {
-			get("/ship/bid/pageWithApplicationsNum?query=" + data + '&controllerNum=' + controllerNum).then(res => {
+			get("/ship/bid/pageWithApplicationsNum?query=" + data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	// 中标公示
+	getBidTargetList2(data) {
+		return new Promise(resolve => {
+			get("/ship/bid/pageWithBidWinningPublicity?query=" + data).then(res => {
 				resolve(res)
 			})
 		})
@@ -979,9 +995,9 @@ class api {
 		})
 	}
 	// 报名详情
-	signUpDetail(detailId, query) {
+	signUpDetail(detailId) {
 		return new Promise(resolve => {
-			get('/ship/bidApply/info/' + detailId + "?query=" + query).then(res => {
+			get('/ship/bidApply/info/' + detailId).then(res => {
 				resolve(res.data)
 			})
 		})
@@ -989,7 +1005,7 @@ class api {
 	// 解密
 	decrypt(data) {
 		return new Promise(resolve => {
-			post('/ship/bidOffer/translate', data).then(res => {
+			get('/ship/bidOffer/translate', data).then(res => {
 				resolve(res)
 			})
 		})

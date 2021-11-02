@@ -49,22 +49,26 @@
 										<p>项目名称：{{scope.row.nm}}</p>
 									</template>
 								</el-table-column>
-								<el-table-column prop="purchasingUnit" label="采购单位" min-width="150"></el-table-column>
+								<el-table-column prop="winner" label="采购单位" min-width="150"></el-table-column>
 								<el-table-column prop="procurementMethodNm" label="采购方式" min-width="150"></el-table-column>
 								<el-table-column prop="bidOpenTm" label="开标时间" min-width="100"></el-table-column>
 								<el-table-column prop="budget" label="预算金额(万元)" min-width="100"></el-table-column>
 								<el-table-column prop="applyNum" label="投标项" min-width="100"></el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
-										<el-button @click="handleClickShenhe(scope.row,2)" type="text" size="small">查看公示
+										<el-button @click="handleClickShenhe(scope.row,2)" type="text" size="small" 
+										v-if="scope.row.announcementOfResults>0&&scope.row.announcementOfResultsStatus==2">查看公示
 										</el-button>
-										<br>
-										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,0)"
+										<!-- <br> -->
+										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,0)" v-if="scope.row.announcementOfResults==0&&scope.row.announcementOfResultsStatus==2"
 											style="background: #FFF;color: #2778BE; border-radius: 2px;width: 50px;border: 1px solid #2778BE;box-sizing: border-box;margin-bottom: 10px;">
 											发布</el-button>
-										<br>
-										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,1)"
-											style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;">
+										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,3)" v-if="scope.row.announcementOfResults>0&&scope.row.announcementOfResultsStatus==3"
+											style="background: #FFF;color: #2778BE; border-radius: 2px;width: 50px;border: 1px solid #2778BE;box-sizing: border-box;margin-bottom: 10px;">
+											修改</el-button>
+										<!-- <br> -->
+										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,1)" v-if="scope.row.announcementOfResults>0&&scope.row.announcementOfResultsStatus!=2"
+											style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;margin-left: 0;">
 											审核</el-button>
 									</template>
 								</el-table-column>
@@ -187,7 +191,7 @@
 				if(this.bidEndTm) {
 					this.query.toW(qry,'bidEndTm',this.until.formatTime(this.bidEndTm[0])+','+this.until.formatTime(this.bidEndTm[1]),'BT')
 				}
-				this.api.getBidTargetList(this.query.toEncode(qry),2).then(res => {
+				this.api.getBidTargetList2(this.query.toEncode(qry)).then(res => {
 					console.log(res)
 					this.tableData = res.data.list
 					this.total = res.page.total

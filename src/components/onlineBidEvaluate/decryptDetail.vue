@@ -19,12 +19,12 @@
           投标机构: <span style="margin-left: 5px">{{ info.orgNm }}</span>
         </div>
         <div class="infoItem">
-          项目编号: <span style="margin-left: 5px">{{ info.bidCd }}</span>
+          报价金额: <span style="margin-left: 5px">{{ info.offerAmt }}</span>
         </div>
         <div class="infoItem">
           备注: <span style="margin-left: 5px">{{ info.rmks }}</span>
         </div>
-        <div class="infoItem">
+      <!--  <div class="infoItem">
           审核状态:
           <span style="margin-left: 5px" v-if="info.audit == 1">待审核</span>
           <span style="margin-left: 5px" v-else-if="info.audit == 2"
@@ -36,7 +36,7 @@
         </div>
         <div class="infoItem">
           审核意见: <span style="margin-left: 5px">{{ info.options }}</span>
-        </div>
+        </div> -->
         <!-- <div class="infoItem rightItem">
           报价金额:
           <span style="margin-left: 5px">{{ info.offerAmt }}</span>
@@ -72,7 +72,7 @@
           <div class="fileList" v-for="(item, index) in list1" :key="index">
             <span> {{ index + 1 }}、 </span>
             <div>
-              <img
+              <img v-if="item.img"
                 :src="item.img"
                 style="width: 100px; height: 100px; cursor: pointer"
                 @click="toLink(item.url)"
@@ -87,7 +87,7 @@
       <!-- 解密后 -->
       <div
         class="detailBox"
-        v-if="info.attachDecodeTm && info.attachDecodeTm > 0"
+        v-if="info.attachDecodeTm"
       >
         <div class="detailTitle">
           <span>招标文件</span>
@@ -232,15 +232,14 @@ export default {
     let { bWidth, width } = this.until.getWidth();
     //   this.bWidth = bWidth;
     this.width = width;
-    let query = {
-      w: [{ k: "bidId", v: "", m: "EQ" }],
-      o: [{ k: "crtTm", t: "esc" }],
-    };
-    query.w[0].v = this.bidId;
+    // let query = {
+    //   w: [{ k: "bidId", v: "", m: "EQ" }],
+    //   o: [{ k: "crtTm", t: "esc" }],
+    // };
+    // query.w[0].v = this.bidId;
 
-    this.info = await this.api.signUpDetail(
-      this.detailId,
-      encodeURIComponent(JSON.stringify(query))
+    this.info = await this.api.projectDetail2(
+      this.detailId
     );
     console.log("详情", this.info);
     // 加密前
@@ -248,11 +247,18 @@ export default {
       this.attachment = this.info.attachment.split(",");
       this.list1 = this.getInfo(this.attachment);
     }
+	else{
+		this.list1=[]
+	}
     if (this.info.attachDecode) {
         console.log(222,this.attachDecode);
       this.attachDecode = this.info.attachDecode.split(",");
       this.list2 = this.getInfo(this.attachDecode);
     }
+	else{
+		this.list2=[];
+	}
+	console.log(235,this.list1,this.list2);
   },
 };
 </script>
