@@ -397,7 +397,7 @@ export default {
 	  if(this.SearchInfo.procurementMethodCd) {
 	  	this.query.toW(qry,'procurementMethodCd',this.SearchInfo.procurementMethodCd,'LK')
 	  }
-	  let date=new Date();
+	  let date=this.until.formatTime(new Date());
 	  this.query.toW(qry,'bidEndTm',date,'lt')
 	  this.query.toW(qry,'bidOpenTm',date,'gt')
 	  

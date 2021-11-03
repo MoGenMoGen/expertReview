@@ -197,6 +197,7 @@
 					this.info = res.data
 					this.submitInfo.releTm = this.info.releTm
 					this.submitInfo.title = this.info.title
+					this.$refs.myEditor.msg=res.cont
 				})
 			}
 		},

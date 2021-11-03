@@ -797,9 +797,14 @@
 					options:this.opinion
 				}
 				this.api.postBidAfficheExamine(obj)
-				this.checkShow=false
-				this.radio=1
-				this.opinion=''
+				.then(res=>{
+					this.checkShow=false
+					this.radio=1
+					this.opinion=''
+					this.getList()
+				})
+				
+				
 			},
 			updTo(){
 				let obj={
