@@ -60,7 +60,7 @@
 										v-if="scope.row.announcementOfResults>0&&scope.row.announcementOfResultsStatus==2">查看公示
 										</el-button>
 										<!-- <br> -->
-										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,0)" v-if="scope.row.announcementOfResults==0&&scope.row.announcementOfResultsStatus==2"
+										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,0)" v-if="scope.row.announcementOfResults==0&&scope.row.announcementOfResultsStatus==0"
 											style="background: #FFF;color: #2778BE; border-radius: 2px;width: 50px;border: 1px solid #2778BE;box-sizing: border-box;margin-bottom: 10px;">
 											发布</el-button>
 										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,3)" v-if="scope.row.announcementOfResults>0&&scope.row.announcementOfResultsStatus==3"
