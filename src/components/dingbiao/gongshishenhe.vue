@@ -14,15 +14,15 @@
 				<div class="row2-item">项目编号：{{row.cd}}</div>
 				<div class="row2-item">项目名称：{{row.nm}}</div>
 				<div class="row2-item">采购单位：{{row.winner}}</div>
-				<div class="row2-item" v-if="type==0||type==3" style="align-items: center;">公告标题：
+				<div class="row2-item" v-if="type==0||type==3" style="align-items: center;"><span style="color: #E4393C;">*</span>公告标题：
 					<el-input placeholder="请输入公告标题" v-model="submitInfo.title"></el-input>
 				</div>
 				<div class="row2-item" v-if="type==1||type==2">公告标题：{{info.title}}</div>
-				<div class="row2-item" v-if="type==0||type==3" style="align-items: center;">发布时间：
+				<div class="row2-item" v-if="type==0||type==3" style="align-items: center;"><span style="color: #E4393C;">*</span>发布时间：
 					<el-date-picker v-model="submitInfo.releTm" type="datetime" placeholder="选择日期时间"></el-date-picker>
 				</div>
 				<div class="row2-item" v-if="type==1||type==2">发布时间：{{info.releTm}}</div>
-				<div class="row2-item" v-if="type==0||type==3">公示内容：
+				<div class="row2-item" v-if="type==0||type==3"><span style="color: #E4393C;">*</span>公示内容：
 					<myEditor ref="myEditor"></myEditor>
 				</div>
 				<div class="row2-item" v-if="type==1||type==2">公示内容：

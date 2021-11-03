@@ -495,7 +495,12 @@
 					this.infoList=res
 					for(let i=0;i<this.infoList.length;i++){
 						this.infoList[i].newList = []
-						let data = this.infoList[i].apply.attachment.split(',')
+						let data
+						if(this.infoList[i].apply.attachment==''){
+							data = []
+						} else {
+							data = this.infoList[i].apply.attachment.split(',')
+						}
 						let data1 = []
 						let fileList2 = []
 						if (data.length > 0) {
