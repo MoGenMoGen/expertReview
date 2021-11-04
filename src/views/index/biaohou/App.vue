@@ -5,7 +5,7 @@
 			<leftMenu tabIndex='6-1'></leftMenu>
 			<div class="right">
 				<topNav :activeName='activeName' :list="thisNavList"></topNav>
-				<div class="content">
+				<div class="content" v-if="showDetail==false">
 					<div class="topSeachBox">
 						<el-input placeholder="项目编号" v-model="cd" clearable>
 						</el-input>
@@ -86,6 +86,242 @@
 						</el-pagination>
 					</div>
 				</div>
+			<div class="detail"  v-if="showDetail==true" >
+				<div class="detailBox">
+					<div class="detailTitle">
+						<span>{{info.nm}}</span>
+						<div class="line">
+						</div>
+						<div class="back" @click="back">
+							< 返回 </div>
+						</div>
+						<div class="detailContent">
+							<div class="leftbox">
+								<div class="leftList">
+									<div class="listName">	
+										项目编号：
+									</div>
+									<div class="listContent">
+										{{info.cd}}
+									</div>
+								</div>
+								<div class="leftList">
+									<div class="listName">
+										预算金额（万元）
+									</div>
+									<div class="listContent">
+										{{info.budget}}
+									</div>
+								</div>
+								<div class="leftList">
+									<div class="listName">
+										发布时间：
+									</div>
+									<div class="listContent">
+										{{info.publishTm}}
+									</div>
+								</div>
+								<div class="leftList">
+									<div class="listName">
+										创建时间：
+									</div>
+									<div class="listContent">
+										{{info.crtTm}}
+									</div>
+								</div>
+								<div class="leftList">
+									<div class="listName">
+										备注说明：
+									</div>
+									<div class="listContent">
+										<p>1、标书投放时间：
+											<span style="color: red;">{{info.bidOpenTm}}</span>
+										</p>
+										<p>2、招标截止时间：
+											<span style="color: red;">{{info.bidEndTm}}</span>
+										</p>
+										<p>（以我司招标办收到的投标标准时间为准）,逾期按弃权处理</p>
+										<p>3、联系人：
+											<span>{{info.linkman}}</span>
+										</p>
+										<p>4、联系电话：
+											<span>
+												{{info.mob}}
+											</span>
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="rightbox">
+								<div class="rightList">
+									<div class="listName">
+										项目名称：
+									</div>
+									<div class="listContent">
+										{{info.nm}}
+									</div>
+								</div>
+								<div class="rightList">
+									<div class="listName">
+										保证金缴纳：
+									</div>
+									<div class="listContent" v-if="info.needDeposit==0">
+										不需要
+									</div>
+									<div class="listContent" v-else>
+										需要
+									</div>
+								</div>
+								<div class="rightList">
+									<div class="listName">
+										投标截止时间：
+									</div>
+									<div class="listContent">
+										{{info.completeTm}}
+									</div>
+								</div>
+								<div class="rightList">
+									<div class="listName">
+										状态：
+									</div>
+									<div class="listContent" style="color: red;" v-if="info.audit==1">
+										待审核
+									</div>
+									<div class="listContent" style="color: #2778BE ;" v-if="info.audit==2">
+										审核通过
+									</div>
+									<div class="listContent" style="color: red ;" v-if="info.audit==3">
+										审核驳回
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="detailBox">
+						<div class="detailTitle">
+							<span>招标文件</span>
+							<div class="line">
+							</div>
+							<div class="back"@click="downLoad">
+								<i class="el-icon-download" style="margin-right: 10px;font-size: 20px;" ></i>
+								全部下载 </div>
+						</div>
+						<div class="detailContent">
+						<div class="fileList" v-for="(item,index) in list" :key='index' >
+							<span>
+								{{index+1}}、
+							</span>
+							<div >
+								<img :src="item.img"  style="width: 100px; height: 100px; cursor: pointer;" @click="toLink(item.url)" >
+								<p style="cursor: pointer;" @click="toLink(item.url)">{{item.fileNm}}</p>
+							</div>
+							
+						</div>
+						
+						</div>
+					</div>
+					<div class="detailBox">
+						<div class="detailTitle">
+							<div class="line">
+							</div>
+						</div>
+						<div class="detailContent" style=" display:flex; flex-direction: column;">
+							<div class="list">
+								审核意见：
+								<span>{{info.options}}</span>
+							</div>
+							<div class="list">
+								审核时间：{{info.auditTm}} 
+								
+							</div>
+							<div class="list">
+								审核状态：
+								<span class="listContent" style="color: red;" v-if="info.audit==1">
+									待审核
+								</span>
+								<span class="listContent" style="color: #2778BE ;" v-if="info.audit==2">
+									审核通过
+								</span>
+								<span class="listContent" style="color: red ;" v-if="info.audit==3">
+									审核驳回
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="detailBox">
+						<div class="detailTitle">
+							<span>投标信息</span>
+							<div class="line"></div>
+						</div>
+						<div class="detailContent">
+							<div class="collapse-item" v-for="(item,index) in infoList" :key="index">
+								<div class="collapse-top" @click="showMore(index)">
+									<div>招标采购商：<span style="color: #2778BE;">{{item.offer.orgNm}}</span></div>
+									<div>审核状态：<span :style="{color:(item.apply.audit==2?'#2778BE':'#E4393C')}">{{item.apply.audit==2?'通过':'未通过'}}</span><img :class="{'collapse-rotate':selectIndex==index}" src="../../../assets/img/arrowDownG.png"></div>
+								</div>
+								<div class="collapse-bottom" v-show="selectIndex==index">
+									
+									<div :style="{color:(item.apply.deposits?'#606060':'#E4393C')}">保证金：{{item.deposot.refundTm?'已退':'未退'}}</div>
+									<div class="refundBack" @click="toRefundBack(item.id)">
+										保证金退还
+									</div>
+									<div v-if="item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
+									<div v-if="item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
+									<div class="" style="display: flex; flex-wrap: wrap;" >
+										
+									
+									<div class="fileList" v-for="(item1,index1) in item.newList" v-if="item.newList" :key='index1' >
+										<span>
+											{{index1+1}}、
+										</span>
+										<div  >
+											<img :src="item1.img"  style="width: 100px; height: 100px; cursor: pointer;" @click="toLink(item1.url)" >
+											<p style="cursor: pointer;" @click="toLink(item1.url)">{{item1.fileNm}}</p>
+										</div>
+										
+									</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mask" v-if="showRefund==true" @click="closeMask">
+			<div class="table_box" @click.stop="">
+			<div class="top">
+				<p style="font-size: 20px">保证金退还</p>
+				<img @click="closeMask" src="~assets/img/close.png"
+					style="width: 25px; height: 25px;cursor: pointer;" alt="" />
+			</div>
+			<div class="row2">
+				<div class="title">
+					<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>凭证上传</span>
+				</div>
+				<div class="right">
+					<el-upload
+					  action="/general/oss/upload"
+					  :auto-upload="true"
+					  list-type="picture-card"
+					  :on-preview="handlePictureCardPreview"
+					  :on-remove="handleRemove"
+					  :on-success="handSucess">
+					  <i class="el-icon-plus"></i>
+					</el-upload>
+					<el-dialog :visible.sync="dialogVisible">
+					  <img width="100%" :src="dialogImageUrl" alt="">
+					</el-dialog>
+				</div>
+			</div>
+			<div class="row2">
+				<div class="title">
+					<span style="color: red; margin-right: 5px; display: inline-block"></span><span>备注</span>
+				</div>
+				<div class="right">
+				<textarea rows="" cols="" v-model="rmks"></textarea>
+				</div>
+			</div>
 			</div>
 		</div>
 		<my-footer></my-footer>
@@ -99,9 +335,21 @@
 	import detail from '@/components/zhaobiao/detail';
 	import change from '@/components/zhaobiao/change';
 	import topNav from '@/components/topNav';
+	import excel from '@/assets/img/excel.png'
+	import ppt from '@/assets/img/ppt.png'
+	import word from '@/assets/img/word.png'
+	import pdf from '@/assets/img/pdf.jpg'
 	export default {
 		data() {
 			return {
+				form:{},
+				dialogImageUrl:'',
+				dialogVisible:false,
+				excel,
+				ppt,
+				word,
+				pdf,
+				showDetail:false,
 				cd:'',
 				nm:'',
 				linkman:'',
@@ -118,6 +366,7 @@
 				}
 				],
 				loading: false,
+				showRefund:false,
 				bWidth: 0,
 				width: 0,
 				pageNo: 1,
@@ -132,7 +381,12 @@
 				date2:'',
 				noRefund:'',
 				refunded:'',
-				
+				attachment:[],
+				info:{},
+				infoList:[],
+				list:[],
+				selectIndex:0,
+				imgList:[],
 			}
 		},
 		computed: {
@@ -216,7 +470,175 @@
 			handleCurrentChange(val){
 				this.pageNo=`${val}`
 				this.getList()
-			}
+			},
+			tolook(val){
+				this.showDetail=true
+				this.api.getBidInfo(val.id).then(res=>{
+					this.info=res.data
+					if(res.data.attachment){
+						this.getInfo(res.data.attachment.split(','))
+						this.attachment=res.data.attachment
+					}
+					
+				})
+				this.api.getInfoWithWinBid(val.id).then(res=>{
+					this.infoList=res
+					for(let i=0;i<this.infoList.length;i++){
+						this.infoList[i].newList = []
+						let data = this.infoList[i].apply.attachment.split(',')
+						let data1 = []
+						let fileList2 = []
+						if (data.length > 0) {
+							data.forEach(v => {
+								let type = v.split('.')[v.split('.').length - 1]
+								let nmList = v.split('.com/') //分割出url后的内容
+								let nm = ""
+								nmList.forEach((j, z) => { //防止文件名中有 .com/ 所以循环加入
+									if (z != 0) {
+										nm += j
+									}
+								})
+								nmList = nm.split('_') //分割随机字符后的内容
+								nm = ""
+								nmList.forEach((j, z) => { //防止文件名中有 _ 所以循环
+									if (z != 0) {
+										nm += j
+									}
+								})
+								nm = nm.split('.' + type)[0]
+								if (type == 'pdf') {
+									fileList2.push({
+										url: v,
+										img: this.pdf,
+										'fileNm': nm
+									})
+								} else if (type == 'doc' || type == 'docx') {
+									fileList2.push({
+										url: v,
+										img: this.word,
+										'fileNm': nm
+									})
+								} else if (type == 'ppt' || type == 'pptx') {
+									fileList2.push({
+										url: v,
+										img: this.ppt,
+										'fileNm': nm
+									})
+								} else if (type == 'xls' || type == 'xlsx') {
+									fileList2.push({
+										url: v,
+										img: this.excel,
+										'fileNm': nm
+									})
+								} else {
+									fileList2.push({
+										url: v,
+										img: v,
+										'fileNm': nm
+									})
+								}
+									
+							})
+						}
+						this.infoList[i].newList  = fileList2
+					}
+					console.log('78789987',this.infoList);	
+				})
+				
+				
+			},
+			back(){
+				this.showDetail=false
+			},
+			async getInfo(info) {
+				this.list = []
+				let data = info
+				let data1 = []
+				let fileList2 = []
+				if (data.length > 0) {
+					data.forEach(v => {
+						let type = v.split('.')[v.split('.').length - 1]
+						let nmList = v.split('.com/') //分割出url后的内容
+						let nm = ""
+						nmList.forEach((j, z) => { //防止文件名中有 .com/ 所以循环加入
+							if (z != 0) {
+								nm += j
+							}
+						})
+						nmList = nm.split('_') //分割随机字符后的内容
+						nm = ""
+						nmList.forEach((j, z) => { //防止文件名中有 _ 所以循环
+							if (z != 0) {
+								nm += j
+							}
+						})
+						nm = nm.split('.' + type)[0]
+						if (type == 'pdf') {
+							fileList2.push({
+								url: v,
+								img: this.pdf,
+								'fileNm': nm
+							})
+						} else if (type == 'doc' || type == 'docx') {
+							fileList2.push({
+								url: v,
+								img: this.word,
+								'fileNm': nm
+							})
+						} else if (type == 'ppt' || type == 'pptx') {
+							fileList2.push({
+								url: v,
+								img: this.ppt,
+								'fileNm': nm
+							})
+						} else if (type == 'xls' || type == 'xlsx') {
+							fileList2.push({
+								url: v,
+								img: this.excel,
+								'fileNm': nm
+							})
+						} else {
+							fileList2.push({
+								url: v,
+								img: v,
+								'fileNm': nm
+							})
+						}
+			
+					})
+				}
+				if(fileList2[0].url){
+					this.list = fileList2
+				}
+				console.log('1111',this.list);
+				
+			},
+			downLoad(){
+				window.open(`https://fb.ship88.cn/general/oss/aliDownload?urls=${this.attachment}&zipName=''`)
+			},
+			toLink(url){
+				window.open(url)
+			},
+			showMore(index){
+				this.selectIndex=index
+			},
+			toRefundBack(id){
+				this.showRefund=true
+			},
+			closeMask(){
+				this.showRefund=false
+			},
+			   handleRemove(file, fileList) {
+			        console.log(file, fileList);
+			      },
+			      handlePictureCardPreview(file) {
+			        this.dialogImageUrl = file.url;
+			        this.dialogVisible = true;
+			      },
+				  handSucess(response, file, fileList){
+					  console.log('1',response,file, fileList);
+				  }
+			
 		}
 	}
 </script>
@@ -336,10 +758,264 @@
 					margin-bottom: 10px;
 				}
 			}
-		
+			.detail {
+				height: 690px;
+				box-sizing: border-box;
+				overflow-y: scroll;
+				background-color: white;
+				// margin-left: 10px;
+				padding: 29px 41px;
+			
+				.detailBox {
+					.detailTitle {
+						display: flex;
+						align-items: center;
+			
+						span {
+							font-size: 16px;
+							font-weight: 400;
+							color: #333333;
+						}
+			
+						.line {
+							display: flex;
+							flex: 1;
+							height: 1px;
+							background: #000000;
+							opacity: 0.1;
+							margin-left: 22px;
+						}
+			
+						.back {
+							font-size: 14px;
+							font-weight: 400;
+							color: #909090;
+							margin-left: 16px;
+							cursor: pointer;
+						}
+					}
+			
+					.detailContent {
+						padding: 30px;
+						box-sizing: border-box;
+						display: flex;
+						.list{
+							margin-top: 30px;
+							font-size: 14px;
+							font-weight: 400;
+							color: #606060;
+						}
+						.leftbox {
+							width: 50%;
+			
+							.leftList {
+								display: flex;
+								margin-bottom: 30px;
+								align-items: center;
+			
+								.listName {
+									font-size: 14px;
+									font-weight: 400;
+									color: #606060;
+								}
+			
+								.listContent {
+									font-size: 14px;
+									font-weight: 400;
+									color: #606060;
+			
+									img {
+										width: 50px;
+										height: 50px;
+										margin-left: 25px;
+									}
+			
+									p {
+										font-size: 14px;
+										font-weight: 400;
+										color: #606060;
+										margin-bottom: 20px;
+			
+									}
+								}
+							}
+						}
+			
+						.rightbox {
+							width: 50%;
+			
+							.rightList {
+								display: flex;
+								margin-bottom: 30px;
+			
+								.listName {
+									font-size: 14px;
+									font-weight: 400;
+									color: #606060;
+								}
+			
+								.listContent {
+									font-size: 14px;
+									font-weight: 400;
+									color: #606060;
+			
+								}
+							}
+						}
+						
+						.collapse-item {
+							width: 100%;
+							.collapse-top {
+								width: 100%;
+								height: 52px;
+								display: flex;
+								align-items: center;
+								justify-content: space-between;
+								background-color: #F8F8F8;
+								padding-left: 50px;
+								padding-right: 30px;
+								box-sizing: border-box;
+								font-size: 14px;
+								color: #606060;
+								img {
+									margin-left: 80px;
+								}
+								.collapse-rotate {
+									transform: rotate(180deg);
+								}
+							}
+							.collapse-bottom {
+								position: relative;
+								width: 100%;
+								padding-left: 50px;
+								padding-right: 30px;
+								box-sizing: border-box;
+								font-size: 14px;
+								color: #606060;
+								.refundBack{
+									position: absolute;
+									top: 0;
+									right: 50px;
+									padding: 10px;
+									background-color: #2778BE;
+									color: #ffffff;
+									font-size: 14px;
+									box-sizing: border-box;
+									border-radius: 10px;
+									cursor: pointer;
+								}
+								.fileList {
+									width: 25%;
+									margin-top: 20px;
+									display: flex;
+								}
+								div {
+									margin: 15px 0;
+								}
+							}
+						}
+						
+					}
+				}
+			
+				.bottomBtn {
+					display: flex;
+					margin-top:50px ;
+					padding-left: 30px;
+					.btnLeft{
+						width: 86px;
+						height: 35px;
+						background: #2778BE;
+						border-radius: 4px;
+						font-size: 16px;
+						font-weight: 400;
+						color: #FFFFFF;
+						text-align: center;
+						line-height: 35px;
+						cursor: pointer;
+					}
+					.btnLeft:hover{
+						opacity: 0.5;
+					}
+					.btnRight{
+						width: 86px;
+						height: 35px;
+						background: #FFFFFF;
+						border: 1px solid #DDDDDD;
+						border-radius: 4px;
+						font-size: 16px;
+						font-weight: 400;
+						color: #999999;
+						line-height: 35px;
+						text-align: center;
+						margin-left: 30px;
+						cursor: pointer;
+					}
+					.btnRight:hover{
+						opacity: 0.5;
+					}
+				}
+			}
+			.detail::-webkit-scrollbar {
+				display: none;
+			}
 		}
 	}
-
+	.mask{
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background: rgba(0, 0, 0, 0.5);
+		z-index: 1;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		.table_box{
+			background: #fff;
+			padding: 20px;
+			width: 850px;
+			max-height: 80%;
+			overflow-y: scroll;
+			.top {
+				display: flex;
+				width: 100%;
+				justify-content: space-between;
+			}
+			.row2 {
+				width: 700px;
+				margin: 30px auto 20px;
+				display: flex;
+				align-items: center;
+			
+				// justify-content: space-between;
+				.title {
+					width: 100px;
+					display: flex;
+					align-items: center;
+					justify-content: end;
+					margin-right: 10px;
+				}
+			
+				.right {
+			
+					.el-input,
+					.el-textarea {
+						height: 32px;
+						width: 370px;
+						margin-left: 12px;
+					}
+			
+					.el-input-number {
+						height: 32px;
+						width: 160px;
+						margin-left: 12px;
+					}
+				}
+			}
+		}
+	}
 	.gray {
 		color: #999999;
 	}

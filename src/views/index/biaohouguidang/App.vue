@@ -256,13 +256,13 @@
 										<div>审核状态：<span :style="{color:(item.apply.audit==2?'#2778BE':'#E4393C')}">{{item.apply.audit==2?'通过':'未通过'}}</span><img :class="{'collapse-rotate':selectIndex==index}" src="../../../assets/img/arrowDownG.png"></div>
 									</div>
 									<div class="collapse-bottom" v-show="selectIndex==index">
-										<div :style="{color:(item.apply.deposits?'#606060':'#E4393C')}">保证金：{{item.apply.deposits?'已缴':'未缴'}}</div>
-										<div>缴费时间：{{item.crtTm}}</div>
-										<div>退保时间：{{item.crtTm}}</div>
+										<div :style="{color:(item.apply.deposits?'#606060':'#E4393C')}">保证金：{{item.apply.deposits?'已缴':'未缴'}}、{{item.deposot.refundTm?'已退':'未退'}}</div>
+										<div v-if="item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
+										<div v-if="item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
 										<div class="" style="display: flex; flex-wrap: wrap;" >
 											
 										
-										<div class="fileList" v-for="(item1,index1) in item.newList" :key='index1' >
+										<div class="fileList" v-for="(item1,index1) in item.newList" v-if="newList" :key='index1' >
 											<span>
 												{{index1+1}}、
 											</span>
@@ -460,6 +460,9 @@
 						if(this.tableData[i].attachment){
 							this.tableData[i].attachment=this.tableData[i].attachment.split(',').length
 						}
+						else{
+							this.tableData[i].attachment=0
+						}
 					}
 				})
 			},
@@ -600,7 +603,8 @@
 				this.getList()
 			},
 			back(){
-				this.until.back()
+				this.showDetail=false
+				this.getList()
 			}
 		
 			

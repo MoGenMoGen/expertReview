@@ -216,6 +216,7 @@
 							<el-option v-for="item in optionsFive" :key="item.nm" :label="item.nm" :value="item">
 							</el-option>
 						</el-select>
+						<span style="color: red;">允许指定类型的所有机构参与报名投标</span>
 					</div>
 				</div>
 				<div class="row2">
@@ -229,6 +230,7 @@
 							<el-option v-for="item in optionsSix" :key="item.id" :label="item.company" :value="item.id">
 							</el-option>
 						</el-select>
+						<span style="color: red;">允许指定的机构参与报名投标(可多选)</span>
 					</div>
 				</div>
 				<div class="row2">

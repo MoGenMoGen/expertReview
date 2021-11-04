@@ -908,7 +908,15 @@ class api {
 	//保证金分页
 	getListAndSum(data) {
 		return new Promise(resolve => {
-			get('/ship/bidDeposit/listAndSum?page=' + data).Fthen(res => {
+			get('/ship/bidDeposit/listAndSum?page=' + data).then(res => {
+				resolve(res.data)
+			})
+		})
+	}
+	//保证金详情
+	getBidDepositDetail(data) {
+		return new Promise(resolve => {
+			get('/ship/bidDeposit/page?page=' + data).then(res => {
 				resolve(res.data)
 			})
 		})
