@@ -77,64 +77,68 @@
               </div>
             </div> -->
           </div>
-		  <el-table
-		  max-height="524"
-		    :data="tableData"
-		    style="width: 100%"
-		    :cell-style="{
-		      'text-align': 'center',
-		      color: '#333',
-		      'font-weight': '500',
-		    }"
-		    :header-cell-style="{
-		      color: '#606060',
-		      background: '#f8f8f8',
-		      'text-align': 'center',
-		    }"
-		  >
-		    <el-table-column type="index" label="序号" min-width="62">
-		    </el-table-column>
-		    <el-table-column prop="cd" label="项目编号" min-width="146">
-		    </el-table-column>
-		    <el-table-column prop="nm" label="项目名称" min-width="146">
-		    </el-table-column>
-		    <el-table-column label="开标时间" prop="bidOpenTm" min-width="146">
-		    </el-table-column>
-		    <el-table-column label="采购方式" prop="procurementMethodNm" min-width="146">
-		    </el-table-column>
-			<el-table-column label="预算金额" prop="budget" min-width="146">
-			</el-table-column>
-			
-		    <el-table-column prop="status" label="状态" min-width="146">
-				<template slot-scope="scope">
-				    <p
-		       style="
-		         width: 100px;
-		         height: 27px;
-		         border: 1px solid #2778be;
-		         line-height: 27px;
-		         text-align: center;
-		         color: #2778be;
-		       "
-		     >
-		       {{ scope.row.countDownTime }}
-		     </p>	
-				</template>
-		 
-		      
-		    </el-table-column>
-		    <el-table-column fixed="right" label="操作" min-width="62">
-		      <template slot-scope="scope">
-		        <el-button
-		          style="color: #2778be"
-		          @click="toDetail(scope.row.id)"
-		          type="text"
-		          size="small"
-		          >查看</el-button
-		        >
-		        <!-- <el-button type="text" size="small">编辑</el-button> -->
-		      </template></el-table-column
-		    ></el-table>
+          <el-table
+            max-height="524"
+            :data="tableData"
+            style="width: 100%"
+            :cell-style="{
+              'text-align': 'center',
+              color: '#333',
+              'font-weight': '500',
+            }"
+            :header-cell-style="{
+              color: '#606060',
+              background: '#f8f8f8',
+              'text-align': 'center',
+            }"
+          >
+            <el-table-column type="index" label="序号" min-width="62">
+            </el-table-column>
+            <el-table-column prop="cd" label="项目编号" min-width="146">
+            </el-table-column>
+            <el-table-column prop="nm" label="项目名称" min-width="146">
+            </el-table-column>
+            <el-table-column label="开标时间" prop="bidOpenTm" min-width="146">
+            </el-table-column>
+            <el-table-column
+              label="采购方式"
+              prop="procurementMethodNm"
+              min-width="146"
+            >
+            </el-table-column>
+            <el-table-column label="预算金额" prop="budget" min-width="146">
+            </el-table-column>
+
+            <el-table-column prop="status" label="状态" min-width="146">
+              <template slot-scope="scope">
+                <p
+                  style="
+                    width: 100px;
+                    height: 27px;
+                    border: 1px solid #2778be;
+                    line-height: 27px;
+                    text-align: center;
+                    color: #2778be;
+                    margin: 0 auto;
+                  "
+                >
+                  {{ scope.row.countDownTime }}
+                </p>
+              </template>
+            </el-table-column>
+            <el-table-column fixed="right" label="操作" min-width="62">
+              <template>
+                <el-button
+                  style="color: #2778be"
+                  @click="toPage('./onlineBidEvaluate.html')"
+                  type="text"
+                  size="small"
+                  >查看</el-button
+                >
+                <!-- <el-button type="text" size="small">编辑</el-button> -->
+              </template></el-table-column
+            ></el-table
+          >
           <!-- <div class="tablist">
             <div class="th">
               <div
@@ -295,7 +299,7 @@ export default {
       // 采购方式列表
       procurementMethodList: [],
       rowList: [],
-	  tableData:[]
+      tableData: [],
     };
   },
   computed: {
@@ -382,32 +386,42 @@ export default {
       this.getList();
     },
     async getList() {
-	  let qry=this.query.new()
-	  this.query.toO(qry,'crtTm','desc')
-	  this.query.toP(qry,this.pageNo,this.pageSize)
-	  if(this.SearchInfo.cd) {
-	  		  this.query.toW(qry,'cd',this.SearchInfo.cd,'LK')
-	  }
-	  if(this.SearchInfo.nm) {
-	  	this.query.toW(qry,'nm',this.SearchInfo.nm,'LK')
-	  }
-	  if(this.SearchInfo.purchasingUnit) {
-	  	this.query.toW(qry,'purchasingUnit',this.SearchInfo.purchasingUnit,'LK')
-	  }
-	  if(this.SearchInfo.procurementMethodCd) {
-	  	this.query.toW(qry,'procurementMethodCd',this.SearchInfo.procurementMethodCd,'LK')
-	  }
-	  let date=this.until.formatTime(new Date());
-	  this.query.toW(qry,'bidEndTm',date,'lt')
-	  this.query.toW(qry,'bidOpenTm',date,'gt')
-	  
-	  // if (this.statusValue == 1){
-		 //  this.query.toW(qry,'bidOpenTm',date,'gt')
-	  // } else if (this.statusValue == 2) {
-		 //  this.query.toW(qry,'bidOpenTm',date,'lt')
-	  // } else if (this.statusValue == 3){
-		 //  this.query.toW(qry,'bidColseTm',date,'lt')
-	  // }
+      let qry = this.query.new();
+      this.query.toO(qry, "crtTm", "desc");
+      this.query.toP(qry, this.pageNo, this.pageSize);
+      if (this.SearchInfo.cd) {
+        this.query.toW(qry, "cd", this.SearchInfo.cd, "LK");
+      }
+      if (this.SearchInfo.nm) {
+        this.query.toW(qry, "nm", this.SearchInfo.nm, "LK");
+      }
+      if (this.SearchInfo.purchasingUnit) {
+        this.query.toW(
+          qry,
+          "purchasingUnit",
+          this.SearchInfo.purchasingUnit,
+          "LK"
+        );
+      }
+      if (this.SearchInfo.procurementMethodCd) {
+        this.query.toW(
+          qry,
+          "procurementMethodCd",
+          this.SearchInfo.procurementMethodCd,
+          "LK"
+        );
+      }
+      let date = this.until.formatTime(new Date());
+      this.query.toW(qry, "bidEndTm", date, "lt");
+      this.query.toW(qry, "bidOpenTm", date, "gt");
+
+      // if (this.statusValue == 1){
+      //  this.query.toW(qry,'bidOpenTm',date,'gt')
+      // } else if (this.statusValue == 2) {
+      //  this.query.toW(qry,'bidOpenTm',date,'lt')
+      // } else if (this.statusValue == 3){
+      //  this.query.toW(qry,'bidColseTm',date,'lt')
+      // }
       // 选取列表
       let data = await this.api.onlineBidList(
         this.query.toEncode(qry),
@@ -481,12 +495,12 @@ export default {
         // if (that.countDownFun(item.countDownTime) == "评标中") {
         //   clearInterval(that.tableDatatableData[i].countDownFn); //清除定时器
         // } else {
-          item.countDownTime = that.countDownFun(item.bidOpenTm);
-          that.$set(
-            that.tableData,
-            item.countDownTime,
-            that.countDownFun(item.bidOpenTm)
-          );
+        item.countDownTime = that.countDownFun(item.bidOpenTm);
+        that.$set(
+          that.tableData,
+          item.countDownTime,
+          that.countDownFun(item.bidOpenTm)
+        );
         // }
       }, 1000);
     },
