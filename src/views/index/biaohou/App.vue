@@ -302,6 +302,7 @@
 				<div class="right">
 					<el-upload
 					  action="/general/oss/upload"
+					  :modal-append-to-body="false"
 					  :auto-upload="true"
 					  list-type="picture-card"
 					  :on-preview="handlePictureCardPreview"
