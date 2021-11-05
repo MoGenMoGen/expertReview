@@ -14,16 +14,14 @@
 						<el-input placeholder="联系人" v-model="linkman" clearable>
 						</el-input>
 						<el-select v-model="value" clearable placeholder="采购方式" @change="select1">
-							<el-option v-for="item in options" :key="item.nm" :label="item.nm"
-								:value="item.cd">
+							<el-option v-for="item in options" :key="item.nm" :label="item.nm" :value="item.cd">
 							</el-option>
 						</el-select>
 						<el-date-picker v-model="date1" type="datetime" placeholder="创建时间">
 						</el-date-picker>
-						
-						<el-select v-model="value1" clearable placeholder="项目状态"@change="select2">
-							<el-option v-for="item in optionsTwo" :key="item.nm" :label="item.nm"
-								:value="item.cd">
+
+						<el-select v-model="value1" clearable placeholder="项目状态" @change="select2">
+							<el-option v-for="item in optionsTwo" :key="item.nm" :label="item.nm" :value="item.cd">
 							</el-option>
 						</el-select>
 						<el-button plain type="primary" @click='searchTo'>查询</el-button>
@@ -62,20 +60,21 @@
 							</el-table-column>
 							<el-table-column label="状态" min-width="100">
 								<template slot-scope="scope">
-				
+
 									<span v-if="scope.row.deposits.length>0" style="color: #E4393C;">
 										<p v-if="scope.row.deposits[0].paymentTm">已退还</p>
 										<p v-if="!scope.row.deposits[0].paymentTm">未退还</p>
 									</span>
 									<span v-if="scope.row.deposits.length==0" style="color: #2778BE;">
-										<p >未退还</p>
+										<p>未退还</p>
 									</span>
-					
+
 								</template>
 							</el-table-column>
 							<el-table-column label="操作" min-width="50">
 								<template slot-scope="scope">
-									<el-button @click="tolook(scope.row)" type="text" size="small" style="color: #2778BE;">查看</el-button>
+									<el-button @click="tolook(scope.row)" type="text" size="small"
+										style="color: #2778BE;">查看</el-button>
 								</template>
 							</el-table-column>
 						</el-table>
@@ -86,200 +85,211 @@
 						</el-pagination>
 					</div>
 				</div>
-			<div class="detail"  v-if="showDetail==true" >
-				<div class="detailBox">
-					<div class="detailTitle">
-						<span>{{info.nm}}</span>
-						<div class="line">
-						</div>
-						<div class="back" @click="back">
-							< 返回 </div>
-						</div>
-						<div class="detailContent">
-							<div class="leftbox">
-								<div class="leftList">
-									<div class="listName">	
-										项目编号：
-									</div>
-									<div class="listContent">
-										{{info.cd}}
-									</div>
-								</div>
-								<div class="leftList">
-									<div class="listName">
-										预算金额（万元）
-									</div>
-									<div class="listContent">
-										{{info.budget}}
-									</div>
-								</div>
-								<div class="leftList">
-									<div class="listName">
-										发布时间：
-									</div>
-									<div class="listContent">
-										{{info.publishTm}}
-									</div>
-								</div>
-								<div class="leftList">
-									<div class="listName">
-										创建时间：
-									</div>
-									<div class="listContent">
-										{{info.crtTm}}
-									</div>
-								</div>
-								<div class="leftList">
-									<div class="listName">
-										备注说明：
-									</div>
-									<div class="listContent">
-										<p>1、标书投放时间：
-											<span style="color: red;">{{info.bidOpenTm}}</span>
-										</p>
-										<p>2、招标截止时间：
-											<span style="color: red;">{{info.bidEndTm}}</span>
-										</p>
-										<p>（以我司招标办收到的投标标准时间为准）,逾期按弃权处理</p>
-										<p>3、联系人：
-											<span>{{info.linkman}}</span>
-										</p>
-										<p>4、联系电话：
-											<span>
-												{{info.mob}}
-											</span>
-										</p>
-									</div>
-								</div>
-							</div>
-							<div class="rightbox">
-								<div class="rightList">
-									<div class="listName">
-										项目名称：
-									</div>
-									<div class="listContent">
-										{{info.nm}}
-									</div>
-								</div>
-								<div class="rightList">
-									<div class="listName">
-										保证金缴纳：
-									</div>
-									<div class="listContent" v-if="info.needDeposit==0">
-										不需要
-									</div>
-									<div class="listContent" v-else>
-										需要
-									</div>
-								</div>
-								<div class="rightList">
-									<div class="listName">
-										投标截止时间：
-									</div>
-									<div class="listContent">
-										{{info.completeTm}}
-									</div>
-								</div>
-								<div class="rightList">
-									<div class="listName">
-										状态：
-									</div>
-									<div class="listContent" style="color: red;" v-if="info.audit==1">
-										待审核
-									</div>
-									<div class="listContent" style="color: #2778BE ;" v-if="info.audit==2">
-										审核通过
-									</div>
-									<div class="listContent" style="color: red ;" v-if="info.audit==3">
-										审核驳回
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+				<div class="detail" v-if="showDetail==true">
 					<div class="detailBox">
 						<div class="detailTitle">
-							<span>招标文件</span>
+							<span>{{info.nm}}</span>
 							<div class="line">
 							</div>
-							<div class="back"@click="downLoad">
-								<i class="el-icon-download" style="margin-right: 10px;font-size: 20px;" ></i>
-								全部下载 </div>
-						</div>
-						<div class="detailContent">
-						<div class="fileList" v-for="(item,index) in list" :key='index' >
-							<span>
-								{{index+1}}、
-							</span>
-							<div >
-								<img :src="item.img"  style="width: 100px; height: 100px; cursor: pointer;" @click="toLink(item.url)" >
-								<p style="cursor: pointer;" @click="toLink(item.url)">{{item.fileNm}}</p>
+							<div class="back" @click="back">
+								< 返回 </div>
 							</div>
-							
-						</div>
-						
-						</div>
-					</div>
-					<div class="detailBox">
-						<div class="detailTitle">
-							<div class="line">
-							</div>
-						</div>
-						<div class="detailContent" style=" display:flex; flex-direction: column;">
-							<div class="list">
-								审核意见：
-								<span>{{info.options}}</span>
-							</div>
-							<div class="list">
-								审核时间：{{info.auditTm}} 
-								
-							</div>
-							<div class="list">
-								审核状态：
-								<span class="listContent" style="color: red;" v-if="info.audit==1">
-									待审核
-								</span>
-								<span class="listContent" style="color: #2778BE ;" v-if="info.audit==2">
-									审核通过
-								</span>
-								<span class="listContent" style="color: red ;" v-if="info.audit==3">
-									审核驳回
-								</span>
-							</div>
-						</div>
-					</div>
-					<div class="detailBox">
-						<div class="detailTitle">
-							<span>投标信息</span>
-							<div class="line"></div>
-						</div>
-						<div class="detailContent">
-							<div class="collapse-item" v-for="(item,index) in infoList" :key="index">
-								<div class="collapse-top" @click="showMore(index)">
-									<div>招标采购商：<span style="color: #2778BE;">{{item.offer.orgNm}}</span></div>
-									<div>审核状态：<span :style="{color:(item.apply.audit==2?'#2778BE':'#E4393C')}">{{item.apply.audit==2?'通过':'未通过'}}</span><img :class="{'collapse-rotate':selectIndex==index}" src="../../../assets/img/arrowDownG.png"></div>
-								</div>
-								<div class="collapse-bottom" v-show="selectIndex==index">
-									
-									<div :style="{color:(item.apply.deposits?'#606060':'#E4393C')}">保证金：{{item.deposot.refundTm?'已退':'未退'}}</div>
-									<div class="refundBack" @click="toRefundBack(item.id)">
-										保证金退还
-									</div>
-									<div v-if="item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
-									<div v-if="item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
-									<div class="" style="display: flex; flex-wrap: wrap;" >
-										
-									
-									<div class="fileList" v-for="(item1,index1) in item.newList" v-if="item.newList" :key='index1' >
-										<span>
-											{{index1+1}}、
-										</span>
-										<div  >
-											<img :src="item1.img"  style="width: 100px; height: 100px; cursor: pointer;" @click="toLink(item1.url)" >
-											<p style="cursor: pointer;" @click="toLink(item1.url)">{{item1.fileNm}}</p>
+							<div class="detailContent">
+								<div class="leftbox">
+									<div class="leftList">
+										<div class="listName">
+											项目编号：
 										</div>
-										
+										<div class="listContent">
+											{{info.cd}}
+										</div>
 									</div>
+									<div class="leftList">
+										<div class="listName">
+											预算金额（万元）
+										</div>
+										<div class="listContent">
+											{{info.budget}}
+										</div>
+									</div>
+									<div class="leftList">
+										<div class="listName">
+											发布时间：
+										</div>
+										<div class="listContent">
+											{{info.publishTm}}
+										</div>
+									</div>
+									<div class="leftList">
+										<div class="listName">
+											创建时间：
+										</div>
+										<div class="listContent">
+											{{info.crtTm}}
+										</div>
+									</div>
+									<div class="leftList">
+										<div class="listName">
+											备注说明：
+										</div>
+										<div class="listContent">
+											<p>1、标书投放时间：
+												<span style="color: red;">{{info.bidOpenTm}}</span>
+											</p>
+											<p>2、招标截止时间：
+												<span style="color: red;">{{info.bidEndTm}}</span>
+											</p>
+											<p>（以我司招标办收到的投标标准时间为准）,逾期按弃权处理</p>
+											<p>3、联系人：
+												<span>{{info.linkman}}</span>
+											</p>
+											<p>4、联系电话：
+												<span>
+													{{info.mob}}
+												</span>
+											</p>
+										</div>
+									</div>
+								</div>
+								<div class="rightbox">
+									<div class="rightList">
+										<div class="listName">
+											项目名称：
+										</div>
+										<div class="listContent">
+											{{info.nm}}
+										</div>
+									</div>
+									<div class="rightList">
+										<div class="listName">
+											保证金缴纳：
+										</div>
+										<div class="listContent" v-if="info.needDeposit==0">
+											不需要
+										</div>
+										<div class="listContent" v-else>
+											需要
+										</div>
+									</div>
+									<div class="rightList">
+										<div class="listName">
+											投标截止时间：
+										</div>
+										<div class="listContent">
+											{{info.completeTm}}
+										</div>
+									</div>
+									<div class="rightList">
+										<div class="listName">
+											状态：
+										</div>
+										<div class="listContent" style="color: red;" v-if="info.audit==1">
+											待审核
+										</div>
+										<div class="listContent" style="color: #2778BE ;" v-if="info.audit==2">
+											审核通过
+										</div>
+										<div class="listContent" style="color: red ;" v-if="info.audit==3">
+											审核驳回
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="detailBox">
+							<div class="detailTitle">
+								<span>招标文件</span>
+								<div class="line">
+								</div>
+								<div class="back" @click="downLoad">
+									<i class="el-icon-download" style="margin-right: 10px;font-size: 20px;"></i>
+									全部下载
+								</div>
+							</div>
+							<div class="detailContent">
+								<div class="fileList" v-for="(item,index) in list" :key='index'>
+									<span>
+										{{index+1}}、
+									</span>
+									<div>
+										<img :src="item.img" style="width: 100px; height: 100px; cursor: pointer;"
+											@click="toLink(item.url)">
+										<p style="cursor: pointer;" @click="toLink(item.url)">{{item.fileNm}}</p>
+									</div>
+
+								</div>
+
+							</div>
+						</div>
+						<div class="detailBox">
+							<div class="detailTitle">
+								<div class="line">
+								</div>
+							</div>
+							<div class="detailContent" style=" display:flex; flex-direction: column;">
+								<div class="list">
+									审核意见：
+									<span>{{info.options}}</span>
+								</div>
+								<div class="list">
+									审核时间：{{info.auditTm}}
+
+								</div>
+								<div class="list">
+									审核状态：
+									<span class="listContent" style="color: red;" v-if="info.audit==1">
+										待审核
+									</span>
+									<span class="listContent" style="color: #2778BE ;" v-if="info.audit==2">
+										审核通过
+									</span>
+									<span class="listContent" style="color: red ;" v-if="info.audit==3">
+										审核驳回
+									</span>
+								</div>
+							</div>
+						</div>
+						<div class="detailBox">
+							<div class="detailTitle">
+								<span>投标信息</span>
+								<div class="line"></div>
+							</div>
+							<div class="detailContent">
+								<div class="collapse-item" v-for="(item,index) in infoList" :key="index">
+									<div class="collapse-top" @click="showMore(index)">
+										<div>招标采购商：<span style="color: #2778BE;">{{item.offer.orgNm}}</span></div>
+										<div>审核状态：<span
+												:style="{color:(item.apply.audit==2?'#2778BE':'#E4393C')}">{{item.apply.audit==2?'通过':'未通过'}}</span><img
+												:class="{'collapse-rotate':selectIndex==index}"
+												src="../../../assets/img/arrowDownG.png"></div>
+									</div>
+									<div class="collapse-bottom" v-show="selectIndex==index">
+
+										<div :style="{color:(item.apply.deposits?'#606060':'#E4393C')}">
+											保证金：{{item.deposot.refundTm?'已退':'未退'}}</div>
+										<div class="refundBack" @click="toRefundBack(item.deposot.id)">
+											保证金退还
+										</div>
+										<div v-if="item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
+										<div v-if="item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
+										<div class="" style="display: flex; flex-wrap: wrap;">
+
+
+											<div class="fileList" v-for="(item1,index1) in item.newList"
+												v-if="item.newList" :key='index1'>
+												<span>
+													{{index1+1}}、
+												</span>
+												<div>
+													<img :src="item1.img"
+														style="width: 100px; height: 100px; cursor: pointer;"
+														@click="toLink(item1.url)">
+													<p style="cursor: pointer;" @click="toLink(item1.url)">
+														{{item1.fileNm}}</p>
+												</div>
+
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -287,46 +297,49 @@
 					</div>
 				</div>
 			</div>
+			<div class="mask" v-if="showRefund==true" @click="closeMask">
+				<div class="table_box" @click.stop="">
+					<div class="top">
+						<p style="font-size: 20px">保证金退还</p>
+						<img @click="closeMask" src="~assets/img/close.png"
+							style="width: 25px; height: 25px;cursor: pointer;" alt="" />
+					</div>
+					<div class="row2">
+						<div class="title">
+							<span style="color: red; margin-right: 5px; display: inline-block">*
+							</span><span>凭证上传</span>
+						</div>
+						<div class="right">
+							<el-upload action="/general/oss/upload" :auto-upload="true" list-type="picture-card"
+								:on-preview="handlePictureCardPreview" :on-remove="handleRemove"
+								:on-success="handSucess">
+								<i class="el-icon-plus"></i>
+							</el-upload>
+							<el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false">
+								<img width="100%" :src="dialogImageUrl" alt="">
+							</el-dialog>
+						</div>
+					</div>
+					<div class="row2">
+						<div class="title">
+							<span style="color: red; margin-right: 5px; display: inline-block"></span><span>备注</span>
+						</div>
+						<div class="right">
+							<textarea rows="" cols="" v-model="rmks"></textarea>
+						</div>
+					</div>
+					<div class="twoBtn">
+						<div class="leftBtn" @click="cancel">
+							取消
+						</div>
+						<div class="rightBtn" @click="submit">
+							确定
+						</div>
+					</div>
+				</div>
+			</div>
+			<my-footer></my-footer>
 		</div>
-		<div class="mask" v-if="showRefund==true" @click="closeMask">
-			<div class="table_box" @click.stop="">
-			<div class="top">
-				<p style="font-size: 20px">保证金退还</p>
-				<img @click="closeMask" src="~assets/img/close.png"
-					style="width: 25px; height: 25px;cursor: pointer;" alt="" />
-			</div>
-			<div class="row2">
-				<div class="title">
-					<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>凭证上传</span>
-				</div>
-				<div class="right">
-					<el-upload
-					  action="/general/oss/upload"
-					  :modal-append-to-body="false"
-					  :auto-upload="true"
-					  list-type="picture-card"
-					  :on-preview="handlePictureCardPreview"
-					  :on-remove="handleRemove"
-					  :on-success="handSucess">
-					  <i class="el-icon-plus"></i>
-					</el-upload>
-					<el-dialog :visible.sync="dialogVisible">
-					  <img width="100%" :src="dialogImageUrl" alt="">
-					</el-dialog>
-				</div>
-			</div>
-			<div class="row2">
-				<div class="title">
-					<span style="color: red; margin-right: 5px; display: inline-block"></span><span>备注</span>
-				</div>
-				<div class="right">
-				<textarea rows="" cols="" v-model="rmks"></textarea>
-				</div>
-			</div>
-			</div>
-		</div>
-		<my-footer></my-footer>
-	</div>
 </template>
 
 <script>
@@ -343,51 +356,52 @@
 	export default {
 		data() {
 			return {
-				form:{},
-				dialogImageUrl:'',
-				dialogVisible:false,
+				rmks: '',
+				form: {},
+				dialogImageUrl: '',
+				dialogVisible: false,
 				excel,
 				ppt,
 				word,
 				pdf,
-				showDetail:false,
-				cd:'',
-				nm:'',
-				linkman:'',
-				procurementMethodCd:'',
+				showDetail: false,
+				cd: '',
+				nm: '',
+				linkman: '',
+				procurementMethodCd: '',
 				activeName: '',
 				thisNavList: [],
-				options:[],
-				optionsTwo:[{
-					nm:'已退还',
-					cd:'1'
-				},
-				{
-					nm:'未退还'
-				}
+				options: [],
+				optionsTwo: [{
+						nm: '已退还',
+						cd: '1'
+					},
+					{
+						nm: '未退还'
+					}
 				],
 				loading: false,
-				showRefund:false,
+				showRefund: false,
 				bWidth: 0,
 				width: 0,
 				pageNo: 1,
 				pageSize: 6,
-				currentPage:1,
+				currentPage: 1,
 				total: 0,
-				value:'',
-				value1:'',
-				tableData: [
-				],
-				date1:'',
-				date2:'',
-				noRefund:'',
-				refunded:'',
-				attachment:[],
-				info:{},
-				infoList:[],
-				list:[],
-				selectIndex:0,
-				imgList:[],
+				value: '',
+				value1: '',
+				tableData: [],
+				date1: '',
+				date2: '',
+				noRefund: '',
+				refunded: '',
+				attachment: [],
+				info: {},
+				infoList: [],
+				list: [],
+				selectIndex: 0,
+				imgList: [],
+				detailId:'',
 			}
 		},
 		computed: {
@@ -419,28 +433,28 @@
 			}).then(res => {
 				this.options = res.list
 			})
-			let query2=this.query.new()
-			this.query.toP(query2,1,20)
-			this.api.getPageWithWinBidOfferSum(this.query.toEncode(query2)).then(res=>{
-			  this.noRefund=res.noRefund
-			  this.refunded=res.refunded
+			let query2 = this.query.new()
+			this.query.toP(query2, 1, 20)
+			this.api.getPageWithWinBidOfferSum(this.query.toEncode(query2)).then(res => {
+				this.noRefund = res.noRefund
+				this.refunded = res.refunded
 			})
 			this.getList()
 
 
 		},
 		methods: {
-			getList(){
-				let query=this.query.new()
-				this.query.toP(query,this.pageNo,this.pageSize)
-				this.query.toW(query,'cd',this.cd,'LK')
-				this.query.toW(query,'nm',this.nm,'LK')
-				this.query.toW(query,'linkman',this.linkman,'LK')
-				this.query.toW(query,'procurementMethodCd',this.procurementMethodCd,'LK')
-				this.query.toW(query,'date1',this.date1,'LK')
-				this.api.getPageWithWinBidOffer(this.query.toEncode(query)).then(res=>{
-					this.tableData=res.data.list
-					this.total=res.page.total
+			getList() {
+				let query = this.query.new()
+				this.query.toP(query, this.pageNo, this.pageSize)
+				this.query.toW(query, 'cd', this.cd, 'LK')
+				this.query.toW(query, 'nm', this.nm, 'LK')
+				this.query.toW(query, 'linkman', this.linkman, 'LK')
+				this.query.toW(query, 'procurementMethodCd', this.procurementMethodCd, 'LK')
+				this.query.toW(query, 'date1', this.date1, 'LK')
+				this.api.getPageWithWinBidOffer(this.query.toEncode(query)).then(res => {
+					this.tableData = res.data.list
+					this.total = res.page.total
 				})
 			},
 			getWidth() {
@@ -458,33 +472,33 @@
 			toPage(url) {
 				this.until.href(url)
 			},
-		
-			select1(val){
-				this.procurementMethodCd=val
+
+			select1(val) {
+				this.procurementMethodCd = val
 			},
-			select2(){
-				
+			select2() {
+
 			},
-			searchTo(){
+			searchTo() {
 				this.getList()
 			},
-			handleCurrentChange(val){
-				this.pageNo=`${val}`
+			handleCurrentChange(val) {
+				this.pageNo = `${val}`
 				this.getList()
 			},
-			tolook(val){
-				this.showDetail=true
-				this.api.getBidInfo(val.id).then(res=>{
-					this.info=res.data
-					if(res.data.attachment){
+			tolook(val) {
+				this.showDetail = true
+				this.api.getBidInfo(val.id).then(res => {
+					this.info = res.data
+					if (res.data.attachment) {
 						this.getInfo(res.data.attachment.split(','))
-						this.attachment=res.data.attachment
+						this.attachment = res.data.attachment
 					}
-					
+
 				})
-				this.api.getInfoWithWinBid(val.id).then(res=>{
-					this.infoList=res
-					for(let i=0;i<this.infoList.length;i++){
+				this.api.getInfoWithWinBid(val.id).then(res => {
+					this.infoList = res
+					for (let i = 0; i < this.infoList.length; i++) {
 						this.infoList[i].newList = []
 						let data = this.infoList[i].apply.attachment.split(',')
 						let data1 = []
@@ -538,18 +552,18 @@
 										'fileNm': nm
 									})
 								}
-									
+
 							})
 						}
-						this.infoList[i].newList  = fileList2
+						this.infoList[i].newList = fileList2
 					}
-					console.log('78789987',this.infoList);	
+					console.log('78789987', this.infoList);
 				})
-				
-				
+
+
 			},
-			back(){
-				this.showDetail=false
+			back() {
+				this.showDetail = false
 			},
 			async getInfo(info) {
 				this.list = []
@@ -605,41 +619,69 @@
 								'fileNm': nm
 							})
 						}
-			
+
 					})
 				}
-				if(fileList2[0].url){
+				if (fileList2[0].url) {
 					this.list = fileList2
 				}
-				console.log('1111',this.list);
-				
+				console.log('1111', this.list);
+
 			},
-			downLoad(){
+			downLoad() {
 				window.open(`https://fb.ship88.cn/general/oss/aliDownload?urls=${this.attachment}&zipName=''`)
 			},
-			toLink(url){
+			toLink(url) {
 				window.open(url)
 			},
-			showMore(index){
-				this.selectIndex=index
+			showMore(index) {
+				this.selectIndex = index
 			},
-			toRefundBack(id){
-				this.showRefund=true
+			toRefundBack(id) {
+				this.showRefund = true
+				this.detailId=id
 			},
-			closeMask(){
-				this.showRefund=false
+			closeMask() {
+				this.showRefund = false
+				this.rmks=""
+				this.imgList=""
 			},
-			   handleRemove(file, fileList) {
-			        console.log(file, fileList);
-			      },
-			      handlePictureCardPreview(file) {
-			        this.dialogImageUrl = file.url;
-			        this.dialogVisible = true;
-			      },
-				  handSucess(response, file, fileList){
-					  console.log('1',response,file, fileList);
-				  }
-			
+			handleRemove(file, fileList) {
+				console.log('44', this.imgList);
+			},
+			handlePictureCardPreview(file) {
+				this.dialogImageUrl = file.url;
+				this.dialogVisible = true;
+			},
+			handSucess(response, file, fileList) {
+				if (fileList.length > 0) {
+					this.imgList = fileList
+				}
+				console.log('44', this.imgList);
+			},
+			cancel(){
+				this.closeMask()
+			},
+			submit(){
+				let img=[]
+				if(this.imgList){
+					for(let i=0;i<this.imgList.length;i++){
+						img.push(this.imgList[i].response.data)
+					}
+				}
+				img=img.join(",")
+				console.log(img);
+				let obj={
+					id:this.detailId,
+					refundImgUrl:img,
+					rmks:this.rmks,
+				}
+				this.api.postReturnOfDownPayment(obj).then(res=>{
+					this.closeMask()
+				})
+				
+			}
+
 		}
 	}
 </script>
@@ -682,6 +724,7 @@
 			cursor: pointer;
 		}
 	}
+
 	.container {
 		padding-top: 20px;
 		padding-bottom: 100px;
@@ -698,67 +741,77 @@
 			width: calc(~"100% - 210px");
 
 			// width: 100%;
-			.content{
+			.content {
 				margin-top: 10px;
 				background-color: #ffffff;
 				width: 100%;
 				height: 740px;
-				.topSeachBox{
+
+				.topSeachBox {
 					padding: 20px;
 					box-sizing: border-box;
 					display: flex;
 					flex-wrap: wrap;
+
 					.el-input {
 						width: 20%;
 						margin-left: 30px;
 						margin-bottom: 20px;
 					}
+
 					.el-select {
 						width: 20%;
 						margin-left: 30px;
 						margin-bottom: 20px;
 					}
+
 					.el-button {
-						width:20%;
+						width: 20%;
 						margin-left: 30px;
 						margin-bottom: 20px;
 					}
-					
+
 				}
-				.middleBox{
+
+				.middleBox {
 					display: flex;
 					background-color: #ffffff;
-					width:30%;
+					width: 30%;
 					justify-content: space-between;
 					margin-left: 20px;
-					.middleLeft{
+
+					.middleLeft {
 						font-size: 14px;
 						font-weight: 400;
 						color: #E4393C;
 					}
-					.middleRight{
+
+					.middleRight {
 						font-size: 14px;
 						font-weight: 400;
 						color: #2778BE;
 					}
 				}
+
 				.bodyTable {
 					padding: 20px;
 					box-sizing: border-box;
-				
+
 					.el-table {
 						width: 100%;
 						background-color: #F8F8F8;
 						text-align: center;
-				
+
 					}
 				}
-				.Footer{
+
+				.Footer {
 					width: 100%;
 					text-align: center;
 					margin-bottom: 10px;
 				}
 			}
+
 			.detail {
 				height: 690px;
 				box-sizing: border-box;
@@ -766,18 +819,18 @@
 				background-color: white;
 				// margin-left: 10px;
 				padding: 29px 41px;
-			
+
 				.detailBox {
 					.detailTitle {
 						display: flex;
 						align-items: center;
-			
+
 						span {
 							font-size: 16px;
 							font-weight: 400;
 							color: #333333;
 						}
-			
+
 						.line {
 							display: flex;
 							flex: 1;
@@ -786,7 +839,7 @@
 							opacity: 0.1;
 							margin-left: 22px;
 						}
-			
+
 						.back {
 							font-size: 14px;
 							font-weight: 400;
@@ -795,77 +848,80 @@
 							cursor: pointer;
 						}
 					}
-			
+
 					.detailContent {
 						padding: 30px;
 						box-sizing: border-box;
 						display: flex;
-						.list{
+
+						.list {
 							margin-top: 30px;
 							font-size: 14px;
 							font-weight: 400;
 							color: #606060;
 						}
+
 						.leftbox {
 							width: 50%;
-			
+
 							.leftList {
 								display: flex;
 								margin-bottom: 30px;
 								align-items: center;
-			
+
 								.listName {
 									font-size: 14px;
 									font-weight: 400;
 									color: #606060;
 								}
-			
+
 								.listContent {
 									font-size: 14px;
 									font-weight: 400;
 									color: #606060;
-			
+
 									img {
 										width: 50px;
 										height: 50px;
 										margin-left: 25px;
 									}
-			
+
 									p {
 										font-size: 14px;
 										font-weight: 400;
 										color: #606060;
 										margin-bottom: 20px;
-			
+
 									}
 								}
 							}
 						}
-			
+
 						.rightbox {
 							width: 50%;
-			
+
 							.rightList {
 								display: flex;
 								margin-bottom: 30px;
-			
+
 								.listName {
 									font-size: 14px;
 									font-weight: 400;
 									color: #606060;
 								}
-			
+
 								.listContent {
 									font-size: 14px;
 									font-weight: 400;
 									color: #606060;
-			
+
 								}
 							}
 						}
-						
+
 						.collapse-item {
 							width: 100%;
+
 							.collapse-top {
 								width: 100%;
 								height: 52px;
@@ -878,13 +934,16 @@
 								box-sizing: border-box;
 								font-size: 14px;
 								color: #606060;
+
 								img {
 									margin-left: 80px;
 								}
+
 								.collapse-rotate {
 									transform: rotate(180deg);
 								}
 							}
+
 							.collapse-bottom {
 								position: relative;
 								width: 100%;
@@ -893,7 +952,8 @@
 								box-sizing: border-box;
 								font-size: 14px;
 								color: #606060;
-								.refundBack{
+
+								.refundBack {
 									position: absolute;
 									top: 0;
 									right: 50px;
@@ -905,25 +965,28 @@
 									border-radius: 10px;
 									cursor: pointer;
 								}
+
 								.fileList {
 									width: 25%;
 									margin-top: 20px;
 									display: flex;
 								}
+
 								div {
 									margin: 15px 0;
 								}
 							}
 						}
-						
+
 					}
 				}
-			
+
 				.bottomBtn {
 					display: flex;
-					margin-top:50px ;
+					margin-top: 50px;
 					padding-left: 30px;
-					.btnLeft{
+
+					.btnLeft {
 						width: 86px;
 						height: 35px;
 						background: #2778BE;
@@ -935,10 +998,12 @@
 						line-height: 35px;
 						cursor: pointer;
 					}
-					.btnLeft:hover{
+
+					.btnLeft:hover {
 						opacity: 0.5;
 					}
-					.btnRight{
+
+					.btnRight {
 						width: 86px;
 						height: 35px;
 						background: #FFFFFF;
@@ -952,44 +1017,82 @@
 						margin-left: 30px;
 						cursor: pointer;
 					}
-					.btnRight:hover{
+
+					.btnRight:hover {
 						opacity: 0.5;
 					}
 				}
 			}
+
 			.detail::-webkit-scrollbar {
 				display: none;
 			}
 		}
 	}
-	.mask{
+
+	.mask {
 		position: fixed;
 		top: 0;
 		left: 0;
 		width: 100vw;
 		height: 100vh;
 		background: rgba(0, 0, 0, 0.5);
-		z-index: 1;
+		z-index: 50;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		.table_box{
+
+		.table_box {
+			.twoBtn {
+				display: flex;
+				margin: 50px auto;
+				justify-content: center;
+
+				.leftBtn {
+					width: 70px;
+					height: 35px;
+					border-radius: 5px;
+					color: #000000;
+					background-color: #ffffff;
+					text-align: center;
+					line-height: 35px;
+					border: 1px solid #cccccc;
+					font-size: 14px;
+					cursor: pointer;
+				}
+
+				.rightBtn {
+					width: 70px;
+					height: 35px;
+					border-radius: 5px;
+					text-align: center;
+					line-height: 35px;
+					background-color: #2778BE;
+					font-size: 14px;
+					color: #ffffff;
+					margin-left: 50px;
+					cursor: pointer;
+				}
+			}
+
 			background: #fff;
 			padding: 20px;
 			width: 850px;
 			max-height: 80%;
 			overflow-y: scroll;
+
 			.top {
 				display: flex;
 				width: 100%;
 				justify-content: space-between;
 			}
+
 			.row2 {
 				width: 700px;
 				margin: 30px auto 20px;
 				display: flex;
 				align-items: center;
-			
+
 				// justify-content: space-between;
 				.title {
 					width: 100px;
@@ -998,16 +1101,23 @@
 					justify-content: end;
 					margin-right: 10px;
 				}
-			
+
 				.right {
-			
+					textarea {
+						width: 517px;
+						height: 255px;
+						resize: none;
+						padding: 5px;
+						box-sizing: border-box;
+					}
+
 					.el-input,
 					.el-textarea {
 						height: 32px;
 						width: 370px;
 						margin-left: 12px;
 					}
-			
+
 					.el-input-number {
 						height: 32px;
 						width: 160px;
@@ -1017,6 +1127,7 @@
 			}
 		}
 	}
+
 	.gray {
 		color: #999999;
 	}

@@ -1034,6 +1034,14 @@ class api {
 			})
 		})
 	}
+	//保证金退还
+	postReturnOfDownPayment(data){
+		return new Promise(resolve => {
+			post('/ship/bidDeposit/returnOfDownPayment', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
 }
 
 export {
