@@ -1042,6 +1042,14 @@ class api {
 			})
 		})
 	}
+	//签到
+	sign(data){
+		return new Promise(resolve => {
+			get('/ship/bidSignin/bidSignin/'+data).then(res => {
+				resolve(res.data)
+			})
+		})
+	}
 }
 
 export {
