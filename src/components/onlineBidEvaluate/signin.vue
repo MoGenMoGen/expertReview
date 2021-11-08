@@ -1,8 +1,9 @@
 <template>
   <!-- 签到 -->
-  <div style="max-width: 100%;">
+  <!-- max-height: 524px; overflow-y: scroll -->
+  <div style="max-width: 100%" class="abc">
     <el-table
-    max-height="524"
+      max-height="524"
       :data="tableData"
       style="width: 100%"
       :cell-style="{
@@ -26,6 +27,8 @@
         <template slot-scope="scope">
           <div v-for="(item, index) in scope.row.orgItems" :key="index">
             {{ item.orgNm }}
+            <span style="color: red">(未签到)</span>
+            <span v-show="item.signinStatus == 1">(已签到)</span>
           </div>
         </template>
       </el-table-column>
@@ -35,7 +38,8 @@
             style="margin-top: 0px"
             v-for="(item, index) in scope.row.subItems"
             :key="index"
-          >{{item.realNm}}
+          >
+            {{ item.realNm }}
             <span
               v-if="item.signinStatus == 0"
               style="
@@ -59,8 +63,8 @@
       </el-table-column>
       <el-table-column label="状态" min-width="146">
         <template slot-scope="scope">
-        <div style="color: #39a520">· 评标中</div>
-        <!-- <div v-if="scope.row.status == 2" style="color: 'pink'">已完成</div> -->
+          <div style="color: #39a520">· 评标中</div>
+          <!-- <div v-if="scope.row.status == 2" style="color: 'pink'">已完成</div> -->
         </template>
       </el-table-column>
       <el-table-column fixed="right" label="操作" min-width="62">
@@ -129,24 +133,34 @@ export default {
     },
     async getList() {
       console.log("子组件", this.SearchInfo);
-	  let qry=this.query.new()
-	  this.query.toO(qry,'crtTm','desc')
-	  this.query.toP(qry,this.pageNo,this.pageSize)
-	  if(this.SearchInfo.cd) {
-		  this.query.toW(qry,'cd',this.SearchInfo.cd,'LK')
-	  }
-	  if(this.SearchInfo.nm) {
-	  	this.query.toW(qry,'nm',this.SearchInfo.nm,'LK')
-	  }
-	  if(this.SearchInfo.purchasingUnit) {
-	  	this.query.toW(qry,'purchasingUnit',this.SearchInfo.purchasingUnit,'LK')
-	  }
-	  if(this.SearchInfo.procurementMethodCd) {
-	  	this.query.toW(qry,'procurementMethodCd',this.SearchInfo.procurementMethodCd,'LK')
-	  }
-	  let date =this.until.formatTime(new Date());
-	  this.query.toW(qry,'bidOpenTm',date,'lt')
-	  this.query.toWNull(qry,'bidColseTm')
+      let qry = this.query.new();
+      this.query.toO(qry, "crtTm", "desc");
+      this.query.toP(qry, this.pageNo, this.pageSize);
+      if (this.SearchInfo.cd) {
+        this.query.toW(qry, "cd", this.SearchInfo.cd, "LK");
+      }
+      if (this.SearchInfo.nm) {
+        this.query.toW(qry, "nm", this.SearchInfo.nm, "LK");
+      }
+      if (this.SearchInfo.purchasingUnit) {
+        this.query.toW(
+          qry,
+          "purchasingUnit",
+          this.SearchInfo.purchasingUnit,
+          "LK"
+        );
+      }
+      if (this.SearchInfo.procurementMethodCd) {
+        this.query.toW(
+          qry,
+          "procurementMethodCd",
+          this.SearchInfo.procurementMethodCd,
+          "LK"
+        );
+      }
+      let date = this.until.formatTime(new Date());
+      this.query.toW(qry, "bidOpenTm", date, "lt");
+      this.query.toWNull(qry, "bidColseTm");
       // 选取列表
       let data = await this.api.onlineBidList(
         this.query.toEncode(qry),
@@ -173,6 +187,6 @@ export default {
 .Footer {
   display: flex;
   justify-content: center;
-  margin: 44px 0 20px;
+  margin: 10px 0 10px;
 }
 </style>
