@@ -699,7 +699,9 @@ class api {
 	//项目公告删除
 	getBidAfficheDel(data) {
 		return new Promise(resolve => {
-			get('/ship/bidAffiche/del', data).then(res => { })
+			get('/ship/bidAffiche/del', data).then(res => { 
+				resolve(res)
+			})
 		})
 	}
 	// 项目报名审核分页

@@ -55,7 +55,7 @@
 			      class="margin_right"
 			      clearable
 			      placeholder="项目名称"
-				  disabled="true"
+				  disabled
 			    >
 			    </el-input>
 			  </div>
@@ -72,7 +72,7 @@
 			      class="margin_right"
 			      clearable
 			      placeholder="项目id"
-				   disabled="true"
+				   disabled
 			    >
 			    </el-input>
 			  </div>
@@ -696,31 +696,28 @@
 				  confirmButtonText: "确定",
 				  cancelButtonText: "取消",
 				  type: "warning",
-				})
-				  .then(() => {
-				    return this.api.getBidAfficheDel({ids:val.id})
-				  })
-				  .catch(() => {
+				}).then(() => {
+				    this.api.getBidAfficheDel({ids:val.id}).then(res => {
+						console.log('11',res);
+						if (res.code == 0) {
+						  this.$message({
+						    type: "success",
+						    message: "删除成功!",
+						  });
+						  this.getList();
+						} else {
+						  this.$message({
+						    type: "error",
+						    message: "删除失败!",
+						  });
+						}
+					})
+				  }).catch(() => {
 				    this.$message({
 				      type: "info",
 				      message: "已取消删除",
 				    });
 				  })
-				  .then((res) => {
-					  console.log('11',res);
-				    if (res.code == 0) {
-				      this.$message({
-				        type: "success",
-				        message: "删除成功!",
-				      });
-				      this.getList();
-				    } else {
-				      this.$message({
-				        type: "error",
-				        message: "删除失败!",
-				      });
-				    }
-				  });
 				
 			},
 			add() {
