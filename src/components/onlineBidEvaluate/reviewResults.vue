@@ -201,6 +201,7 @@ import editReviewDetail from "./editReviewDetail.vue";
 export default {
   data() {
     return {
+		bidId: '',
       isDel: false,
       pageNo: 1,
       pageSize: 10,
@@ -236,6 +237,7 @@ export default {
   },
 
   async mounted() {
+	  this.bidId = this.until.getQueryString('id')
     this.getList();
   },
   methods: {
@@ -249,34 +251,28 @@ export default {
       this.getList();
     },
     async getList() {
-      let query = {
-        r: [
-          {
-            n: "a1",
-            t: "and",
-            w: [
-              { k: "bidNm", v: "", m: "LK" },
-              { k: "orgNm", v: "", m: "LK" },
-              { k: "username", v: "", m: "LK" },
-              { k: "realNm", v: "", m: "LK" },
-              { k: "status", v: "", m: "LK" },
-            ],
-          },
-        ],
-        o: [{ k: "crtTm", t: "desc" }],
-        p: { n: 1, s: 20 },
-      };
-      query.p.n = this.pageNo;
-      query.p.s = this.pageSize;
-      query.r[0].w[0].v = this.SearchInfo.bidNm;
-      query.r[0].w[1].v = this.SearchInfo.orgNm;
-      query.r[0].w[2].v = this.SearchInfo.username;
-      query.r[0].w[3].v = this.SearchInfo.realNm;
-      query.r[0].w[4].v = this.SearchInfo.status;
-
+	  let qry = this.query.new();
+	  this.query.toP(qry, this.pageNo, this.pageSize);
+	  this.query.toO(qry, "crtTm", "desc");
+	  this.query.toW(qry, 'bidId',this.bidId,'EQ')
+	  // if(this.SearchInfo.bidNm) {
+		 //  this.query.toW(qry, "bidNm", this.SearchInfo.bidNm, "LK");
+	  // }
+	  if(this.SearchInfo.orgNm) {
+	  		  this.query.toW(qry, "orgNm", this.SearchInfo.orgNm, "LK");
+	  }
+	  if(this.SearchInfo.username) {
+	  		  this.query.toW(qry, "username", this.SearchInfo.username, "LK");
+	  }
+	  if(this.SearchInfo.realNm) {
+	  		  this.query.toW(qry, "realNm", this.SearchInfo.realNm, "LK");
+	  }
+	  if(this.SearchInfo.status) {
+	  		  this.query.toW(qry, "status", this.SearchInfo.status, "EQ");
+	  }
       // 选取列表
       let data = await this.api.reviewResultList(
-        encodeURIComponent(JSON.stringify(query))
+        this.query.toEncode(qry)
       );
       this.tableData = data.data.list;
       this.total = data.page.total;

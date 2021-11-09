@@ -96,20 +96,20 @@
 				</div>
 				<div class="row2">
 					<div class="title">
-						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>开标时间</span>
+						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>截标时间</span>
 					</div>
 					<div class="right">
-						<el-date-picker v-model="bidOpenTm" type="datetime" placeholder="开标时间">
+						<el-date-picker v-model="bidEndTm" type="datetime" placeholder="截标时间">
 						</el-date-picker>
 						</el-input>
 					</div>
 				</div>
 				<div class="row2">
 					<div class="title">
-						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>截标时间</span>
+						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>开标时间</span>
 					</div>
 					<div class="right">
-						<el-date-picker v-model="bidEndTm" type="datetime" placeholder="截标时间">
+						<el-date-picker v-model="bidOpenTm" type="datetime" placeholder="开标时间">
 						</el-date-picker>
 						</el-input>
 					</div>

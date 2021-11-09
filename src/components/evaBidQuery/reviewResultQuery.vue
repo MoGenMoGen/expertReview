@@ -2,8 +2,8 @@
   <div class="search_box">
     <!-- <div> -->
     <!-- <div class="search_item"> -->
-    <el-input placeholder="招标项目" v-model="SearchInfo.bidNm" clearable>
-    </el-input>
+    <!-- <el-input placeholder="招标项目" v-model="SearchInfo.bidNm" clearable>
+    </el-input> -->
     <el-input placeholder="投标机构" v-model="SearchInfo.orgNm" clearable>
     </el-input>
     <el-input placeholder="专家账号" v-model="SearchInfo.username" clearable>
@@ -52,6 +52,7 @@ import bus from "@/bus.js";
 export default {
   data() {
     return {
+		bidId: '',
       isDel: false,
       options: [
         {
@@ -83,33 +84,26 @@ export default {
       bus.$emit("DelItem");
     },
    async getScore() {
-      let query = {
-        r: [
-          {
-            n: "a1",
-            t: "and",
-            w: [
-              { k: "bidNm", v: "", m: "LK" },
-              { k: "orgNm", v: "", m: "LK" },
-              { k: "username", v: "", m: "LK" },
-              { k: "realNm", v: "", m: "LK" },
-              { k: "status", v: "", m: "LK" },
-            ],
-          },
-        ],
-        o: [{ k: "crtTm", t: "desc" }],
-        p: { n: 1, s: 20 },
-      };
-      query.p.n = this.pageNo;
-      query.p.s = this.pageSize;
-      query.r[0].w[0].v = this.SearchInfo.bidNm;
-      query.r[0].w[1].v = this.SearchInfo.orgNm;
-      query.r[0].w[2].v = this.SearchInfo.username;
-      query.r[0].w[3].v = this.SearchInfo.realNm;
-      query.r[0].w[4].v = this.SearchInfo.status;
+      let qry = this.query.new();
+      this.query.toP(qry, this.pageNo, this.pageSize);
+      this.query.toO(qry, "crtTm", "desc");
+      this.query.toW(qry, 'bidId',this.bidId,'EQ')
+      if(this.SearchInfo.orgNm) {
+      	this.query.toW(qry, "orgNm", this.SearchInfo.orgNm, "LK");
+      }
+      if(this.SearchInfo.username) {
+      	this.query.toW(qry, "username", this.SearchInfo.username, "LK");
+      }
+      if(this.SearchInfo.realNm) {
+      	this.query.toW(qry, "realNm", this.SearchInfo.realNm, "LK");
+      }
+      if(this.SearchInfo.status) {
+      	this.query.toW(qry, "status", this.SearchInfo.status, "EQ");
+      }
       this.score = await this.api.getreviewResult(
-        encodeURIComponent(JSON.stringify(query))
+        this.query.toEncode(qry)
       );
+	  console.log(this.score)
     },
   },
   async created() {
@@ -118,6 +112,7 @@ export default {
       this.isDel = data;
       console.log(222, data);
     });
+	this.bidId = this.until.getQueryString('id')
     this.getScore();
   },
 };
