@@ -196,9 +196,9 @@
 				let nowTime = this.until.formatTime(new Date())
 				let qry=this.query.new()
 				this.query.toO(qry,'crtTm','desc')
-				this.query.toP(qry,1,5)
+				this.query.toP(qry,1,4)
 				this.query.toW(qry,'bidOpenTm',nowTime,'LT')
-				this.query.toW(qry,'bidColseTm',nowTime,'GT')
+				this.query.toWNull(qry,'bidColseTm')
 				this.api.getBidPage(this.query.toEncode(qry)).then(res=>{
 					this.tableData=res.data.list
 				})
