@@ -161,6 +161,9 @@
 				this.activeName = obj.name
 				this.thisNavList = list
 			}
+			let auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:homePageNum')>-1) 
+			let auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:page')>-1)
+			console.log(auth1,auth2)
             this.getWidth()
             window.onresize = () => {
                 this.getWidth()

@@ -221,8 +221,9 @@
 				</div>
 				<div class="row2">
 					<div class="title">
-						<span style="color: red; margin-right: 5px; display: inline-block">*
-						</span><span>招标范围(可多选)</span>
+						<!-- <span style="color: red; margin-right: 5px; display: inline-block">
+						</span> -->
+						<span>招标范围(可多选)</span>
 					</div>
 					<div class="right">
 						<el-select v-model="orgEnterIdsList" multiple filterable placeholder="招标范围(机构)"
@@ -852,13 +853,13 @@
 					});
 					return false
 				}
-				if(!this.orgEnterIds){
-					this.$message({
-						type: "error",
-						message: "招标范围（机构）不能为空",
-					});
-					return false
-				}
+				// if(!this.orgEnterIds){
+				// 	this.$message({
+				// 		type: "error",
+				// 		message: "招标范围（机构）不能为空",
+				// 	});
+				// 	return false
+				// }
 				if(!this.ruleId){
 					this.$message({
 						type: "error",

@@ -1052,6 +1052,14 @@ class api {
 			})
 		})
 	}
+	//权限
+	getAuth(){
+		return new Promise(resolve => {
+			get('/general/auth/getAuthz').then(res => {
+				resolve(res.data)
+			})
+		})
+	}
 }
 
 export {

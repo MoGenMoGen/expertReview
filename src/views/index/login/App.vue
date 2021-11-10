@@ -89,6 +89,9 @@
 					this.$refs[formName].validate((valid) => {
 					    if (valid) {
 					        this.api.admLogin(this.ruleForm).then(res=>{
+								this.api.getAuth().then(resp => {
+									this.until.seSave('authZ',JSON.stringify(resp.stringPermissions))
+								})
 					            this.until.seSave('token',res.token)
 					            this.until.seSave('userInfo',JSON.stringify(res.userInfo))
 					            this.$message({
