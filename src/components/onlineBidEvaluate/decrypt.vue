@@ -28,7 +28,7 @@
       </el-table-column> -->
 			<el-table-column prop="status" label="解密状态" min-width="200">
 				<template slot-scope="scope">
-					<div v-if="scope.row.attachDecodeTm" style="color: '#2778BE'">
+					<div v-if="scope.row.attachDecodeTm" style="color: #2778BE">
 						已解密
 					</div>
 					<div v-else style="color: #e4393c">待解密</div>
@@ -118,8 +118,8 @@
 			toLink(url) {
 				window.open(url)
 			},
-			handleDecrypt(id) {
-				let data = this.api.decrypt({
+			async handleDecrypt(id) {
+				let data = await this.api.decrypt({
 					id
 				});
 				console.log(data);
