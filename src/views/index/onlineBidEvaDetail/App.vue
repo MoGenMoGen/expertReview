@@ -41,7 +41,7 @@
           <div style="margin-top: 20px">
             <!-- <signin v-if="sonTabIndex == 0"></signin> -->
             <decrypt :id="id" v-if="sonTabIndex == 0"></decrypt>
-            <reviewResults v-else-if="sonTabIndex == 1"></reviewResults>
+            <reviewResults v-else-if="sonTabIndex == 1&&auth1"></reviewResults>
             <uploadVideo :id="id" v-else-if="sonTabIndex == 2"></uploadVideo>
           </div>
         </div>
@@ -66,6 +66,7 @@ import reviewResultQuery from "@/components/evaBidQuery/reviewResultQuery";
 export default {
   data() {
     return {
+		auth1:'',//	评审结果权限
       loading: false,
       bWidth: 0,
       width: 0,
@@ -94,6 +95,7 @@ export default {
     reviewResultQuery,
   },
   created() {
+	this.auth1= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidSvsResult:page')>-1)
     this.id = this.until.getQueryString("id");
     this.id=Number(this.id)
   },

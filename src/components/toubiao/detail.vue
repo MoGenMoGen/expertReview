@@ -18,7 +18,7 @@
 					</div>
 					<div class="leftList">
 						<div class="listName">
-							预算金额（万元）：
+							预算金额（万元）
 						</div>
 						<div class="listContent">
 							{{info.budget}}
@@ -89,7 +89,7 @@
 			<div class="detailTitle">
 				<span>招标文件</span>
 				<div class="line"></div>
-				<div @click="allDownload" class="back" style="display: flex;align-items: center;"><i class="el-icon-download" style="margin-right: 10px;font-size: 20px;"></i>全部下载 </div>
+				<div class="back">全部下载 </div>
 			</div>
 			<div class="detailContent">
 				<!-- <div class="leftbox">
@@ -102,7 +102,7 @@
 						</div>
 					</div>
 				</div> -->
-				<div class="fileList" v-for="(item,index) in list" :key='index' v-if="list.length>0">
+				<div class="fileList" v-for="(item,index) in list" :key='index' >
 					<span>
 						{{index+1}}、
 					</span>
@@ -164,7 +164,7 @@
 					<el-table-column label="操作" min-width="100" v-if="sonTabIndex==0">
 						<template slot-scope="scope">
 							<el-button type="text" size="small" @click="handleClickShenhe(scope.row)"
-								style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;">审核</el-button>
+								style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;" v-if="auth1">审核</el-button>
 						</template>
 					</el-table-column>
 				</el-table>
@@ -203,6 +203,7 @@
 	export default {
 		data() {
 			return {
+				auth1:'',//审核权限
 				companyId: '',
 				info: {},
 				list: [],
@@ -308,8 +309,8 @@
 				this.api.postBidApplyAudit(data).then(res => {
 					if(res.code==0) {
 						this.$message.success(res.msg)
-						this.showPop = false;
-						this.getList()
+						this.$parent.showPop = false;
+						this.$parent.getList()
 					}
 				})
 			},
@@ -322,8 +323,8 @@
 				this.api.postBidApplyAudit(data).then(res => {
 					if(res.code==0) {
 						this.$message.success(res.msg)
-						this.showPop = false;
-						this.getList()
+						this.$parent.showPop = false;
+						this.$parent.getList()
 					}
 				})
 			},
@@ -343,20 +344,13 @@
 			},
 			toLink(url) {
 				window.open(url)
-			},
-			allDownload() {
-				let urls = this.attachment.join(',')
-				window.open(`https://fb.ship88.cn/general/oss/aliDownload?urls=${urls}&zipName=''`)
 			}
 		},
 		async mounted() {
+			this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bidApply:audit')>-1)
 			this.api.getBidInfo(this.id).then(res => {
 				this.info = res.data
-				if(res.data.attachment) {
-					this.attachment = res.data.attachment.split(',')
-				} else {
-					this.attachment = []
-				}
+				this.attachment = res.data.attachment.split(',')
 				this.getInfo(this.attachment)
 			})
 			this.getList()

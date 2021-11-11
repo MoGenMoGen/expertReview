@@ -29,7 +29,7 @@
 							</el-date-picker>
 							<!-- <el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间">
 							</el-date-picker> -->
-							<el-button plain type="primary" @click="searchList">查询</el-button>
+							<el-button plain type="primary" @click="searchList" v-if="auth1">查询</el-button>
 						</div>
 					</div>
 					<div class="son_tablist">
@@ -105,7 +105,7 @@
 								</el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
-										<el-button @click="handleClick(scope.row.id)" type="text" size="small">查看</el-button>
+										<el-button @click="handleClick(scope.row.id)" type="text" size="small" v-if="auth2">查看</el-button>
 									</template>
 								</el-table-column>
 							</el-table>
@@ -137,6 +137,9 @@
 	export default {
 		data() {
 			return {
+				auth1:'',//查询权限
+				auth2:'',//详情权限
+				auth3:'',//投标文件投标信息列表权限
 				id: '',
 				activeName: '',
 				thisNavList: [],
@@ -173,6 +176,8 @@
 			tenderDetail
 		},
 		mounted() {
+			this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:pageWithApplyOdder')>-1)
+			this.auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:info')>-1)
 			let obj = {
 				name: '投标项目',
 				url: './toubiaoxiangmu.html',

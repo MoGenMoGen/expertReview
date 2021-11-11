@@ -6,7 +6,7 @@
       <leftMenu tabIndex="3-2"></leftMenu>
       <div class="rightMenu" :style="{ width: bWidth - 200 + 'px' }">
         <topNav :activeName="activeName" :list="thisNavList"></topNav>
-        <div class="right_content">
+        <div class="right_content" v-if="auth1">
           <new-expert-database
             @saveAndUpdate="getList"
             :type="type"
@@ -64,7 +64,7 @@
                 border: none;
                 cursor: pointer;
               "
-              @click="newExpertBase"
+              @click="newExpertBase" v-if="auth2"
             >
               新增
             </el-button>
@@ -76,7 +76,7 @@
                 color: '#fff',
                 border: 'none',
               }"
-              @click="DelSelectRule(ids)"
+              @click="DelSelectRule(ids)" v-if="auth4"
             >
               删除
             </el-button>
@@ -226,11 +226,13 @@
                     class="el-icon-edit"
                     style="color: #409eff; margin-right: 10px; cursor: pointer"
                     @click="EditExpertBase(scope.row.id)"
+					v-if="auth3"
                   ></i>
                   <i
                     @click="DelSelectRule(scope.row.id)"
                     class="el-icon-delete"
                     style="color: #409eff; cursor: pointer"
+					v-if="auth4"
                   ></i>
                 </template>
               </el-table-column>
@@ -269,6 +271,10 @@ import topNav from "@/components/topNav";
 export default {
   data() {
     return {
+		auth1:'',//查看权限
+		auth2:'',//新增权限
+		auth3:'',//修改权限
+		auth4:'',//删除权限
       loading: false,
       bWidth: 0,
       width: 0,
@@ -305,6 +311,10 @@ export default {
     topNav,
   },
   async mounted() {
+	  this.auth1= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidExpert:page')>-1)
+	  this.auth2= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidExpert:add')>-1)
+	  this.auth3= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidExpert:upd')>-1)
+	  this.auth4= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidExpert:del')>-1)
     this.getWidth();
     // this.userInfo = JSON.parse(this.until.seGet('userInfo'))
     window.onresize = () => {

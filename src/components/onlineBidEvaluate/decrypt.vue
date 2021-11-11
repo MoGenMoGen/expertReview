@@ -50,7 +50,7 @@
 			</el-table-column>
 			<el-table-column label="操作" fixed="right" min-width="100">
 				<template slot-scope="scope">
-					<div v-if="!scope.row.attachDecodeTm" style="
+					<div v-if="!scope.row.attachDecodeTm&&auth1" style="
               width: 53px;
               height: 27px;
               background: #2778be;
@@ -86,6 +86,7 @@
 	export default {
 		data() {
 			return {
+				auth1:'',//解密权限
 				excel,
 				ppt,
 				word,
@@ -222,6 +223,7 @@
 			},
 		},
 		mounted() {
+			this.auth1= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidOffer:translate')>-1)
 			this.api.getBidInfo(this.id).then((res) => {
 				this.detail = res.data;
 			});

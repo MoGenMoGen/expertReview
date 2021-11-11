@@ -6,7 +6,7 @@
 			<div class="right">
 				<topNav :activeName='activeName' :list="thisNavList"></topNav>
 				<div class="content">
-					<div class="content-top">
+					<div class="content-top" v-if="auth1">
 						<div v-for="(item,index) in menuList" :key="index" class="content-top-item">
 							<img :src="item.imgUrl">
 							<div style="width: 56px;">
@@ -15,7 +15,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="content-list">
+					<div class="content-list" v-if="auth2">
 						<div class="content-list-top">
 							<div><img :src="ing">进行中项目</div>
 							<p @click="toMore">更多 ></p>
@@ -79,6 +79,8 @@
     export default {
         data(){
             return{
+				auth1:'',
+				auth2:'',
 				ing,
                 loading:false,
                 bWidth:0,
@@ -161,9 +163,8 @@
 				this.activeName = obj.name
 				this.thisNavList = list
 			}
-			let auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:homePageNum')>-1) 
-			let auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:page')>-1)
-			console.log(auth1,auth2)
+			this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:homePageNum')>-1) 
+			this.auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:page')>-1)
             this.getWidth()
             window.onresize = () => {
                 this.getWidth()
