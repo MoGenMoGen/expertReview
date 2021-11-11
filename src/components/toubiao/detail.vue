@@ -19,7 +19,7 @@
 						</div>
 						<div class="leftList">
 							<div class="listName">
-								预算金额（万元）
+								预算金额（万元）：
 							</div>
 							<div class="listContent">
 								{{info.budget}}
@@ -50,81 +50,37 @@
 							</div>
 						</div>
 					</div>
-					<div class="detailContent">
-						<div class="leftbox">
-							<div class="leftList">
-								<div class="listName">
-									项目编号：
-								</div>
-								<div class="listContent">
-									{{info.cd}}
-								</div>
+					<div class="rightbox">
+						<div class="rightList">
+							<div class="listName">
+								项目名称：
 							</div>
-							<div class="leftList">
-								<div class="listName">
-									预算金额（万元）：
-								</div>
-								<div class="listContent">
-									{{info.budget}}
-								</div>
-							</div>
-							<div class="leftList">
-								<div class="listName">
-									投标开始时间：
-								</div>
-								<div class="listContent">
-									{{info.bidOpenTm}}
-								</div>
-							</div>
-							<div class="leftList">
-								<div class="listName">
-									创建时间：
-								</div>
-								<div class="listContent">
-									{{info.crtTm}}
-								</div>
-							</div>
-							<div class="leftList">
-								<div class="listName">
-									备注说明：
-								</div>
-								<div class="listContent">
-									{{info.rmks}}
-								</div>
+							<div class="listContent">
+								{{info.nm}}
 							</div>
 						</div>
-						<div class="rightbox">
-							<div class="rightList">
-								<div class="listName">
-									项目名称：
-								</div>
-								<div class="listContent">
-									{{info.nm}}
-								</div>
+						<div class="rightList">
+							<div class="listName">
+								保证金缴纳：
 							</div>
-							<div class="rightList">
-								<div class="listName">
-									保证金缴纳：
-								</div>
-								<div class="listContent">
-									{{info.needDeposit==0?'是':'否'}}
-								</div>
+							<div class="listContent">
+								{{info.needDeposit==0?'是':'否'}}
 							</div>
-							<div class="rightList">
-								<div class="listName">
-									投标截止时间：
-								</div>
-								<div class="listContent">
-									{{info.bidEndTm}}
-								</div>
+						</div>
+						<div class="rightList">
+							<div class="listName">
+								投标截止时间：
 							</div>
-							<div class="rightList">
-								<div class="listName">
-									状态：
-								</div>
-								<div class="listContent" style="color: red;">
-									{{auditType[info.audit - 1]}}
-								</div>
+							<div class="listContent">
+								{{info.bidEndTm}}
+							</div>
+						</div>
+						<div class="rightList">
+							<div class="listName">
+								状态：
+							</div>
+							<div class="listContent" style="color: red;">
+								{{auditType[info.audit - 1]}}
 							</div>
 						</div>
 					</div>
