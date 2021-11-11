@@ -313,8 +313,8 @@
 							<el-option v-for="item in searchListTwo" :key="item.nm" :label="item.nm" :value="item.id">
 							</el-option>
 						</el-select>
-						<el-button plain @click='toSearch'>查询</el-button>
-						<el-button type="primary" style="background-color:  #2778BE;" @click='addNew'>新增</el-button>
+						<el-button plain @click='toSearch' v-if="auth1">查询</el-button>
+						<el-button type="primary" style="background-color:  #2778BE;" @click='addNew' v-if="auth2">新增</el-button>
 					</div>
 					<div class="bodyTable">
 						<el-table :data="tableData" style="width: 100%" :cell-style="{
@@ -326,24 +326,24 @@
 							    background: '#f8f8f8',
 							    'text-align': 'center',
 							  }">
-							<el-table-column type="index" label="序号" min-width="50">
+							<el-table-column type="index" label="序号" min-width="40">
 							</el-table-column>
-							<el-table-column prop="cd" label="项目编号" min-width="150">
+							<el-table-column prop="cd" label="项目编号" min-width="130">
 							</el-table-column>
-							<el-table-column prop="nm" label="项目名称" min-width="150">
+							<el-table-column prop="nm" label="项目名称" min-width="130">
 							</el-table-column>
-							<el-table-column prop="linkman" label="联系人" min-width="100">
+							<el-table-column prop="linkman" label="联系人" min-width="80">
 							</el-table-column>
-							<el-table-column prop="procurementMethodNm" label="采购方式" min-width="100">
+							<el-table-column prop="procurementMethodNm" label="采购方式" min-width="80">
 							</el-table-column>
-							<el-table-column prop="budget" label="预算金额(万元)" min-width="100">
+							<el-table-column prop="budget" label="预算金额(万元)" min-width="80">
 							</el-table-column>
 							<!-- <el-table-column prop="crtTm" label="创建时间" min-width="150">
 							</el-table-column> -->
-							<el-table-column prop="publishTm" label="发布日期" min-width="150"></el-table-column>
-							<el-table-column prop="completeTm" label="报名截止日期" min-width="150"></el-table-column>
-							<el-table-column prop="bidEndTm" label="截标时间" min-width="150"></el-table-column>
-							<el-table-column prop="bidOpenTm" label="开标时间" min-width="150"></el-table-column>
+							<el-table-column prop="publishTm" label="发布日期" min-width="100"></el-table-column>
+							<el-table-column prop="completeTm" label="报名截止日期" min-width="100"></el-table-column>
+							<el-table-column prop="bidEndTm" label="截标时间" min-width="100"></el-table-column>
+							<el-table-column prop="bidOpenTm" label="开标时间" min-width="100"></el-table-column>
 							<el-table-column label="保证金" min-width="150">
 								<template slot-scope="scope">
 									<p v-if="scope.row.needDeposit==1">需要缴纳</p>
@@ -366,13 +366,13 @@
 							</el-table-column>
 							<el-table-column label="操作" min-width="50">
 								<template slot-scope="scope">
-									<el-button @click="tolook(scope.row)" type="text" size="small">查看</el-button>
+									<el-button @click="tolook(scope.row)" type="text" size="small" v-if="auth5">查看</el-button>
 									<br>
 									<el-button type="text" size="small" style="color: #E4393C;"
-										@click='toModify(scope.row)'>修改</el-button>
+										@click='toModify(scope.row)' v-if="auth4">修改</el-button>
 									<br>
 									<el-button type="text" size="small" style="color: #909090;"
-										@click='toDelite(scope.row)'>删除</el-button>
+										@click='toDelite(scope.row)' v-if="auth3">删除</el-button>
 								</template>
 							</el-table-column>
 						</el-table>
@@ -409,6 +409,12 @@
 	export default {
 		data() {
 			return {
+				auth1:'',//查询权限
+				auth2:'',//新增权限
+				auth3:'',//删除权限
+				auth4:'',//修改权限
+				auth5:'',//查看权限
+				auth6:'',//审核权限
 				searchInput1: '',
 				searchInput2: '',
 				searchInput3: '',
@@ -572,8 +578,14 @@
 				this.searchListOne = res.list
 				this.optionsThree = res.list
 			})
-			//获取项目状态
-
+			//获取权限
+			 this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:page')>-1)
+			 this.auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:add')>-1)
+			 this.auth3 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:del')>-1)
+			 this.auth4 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:upd')>-1)
+			 this.auth5 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:info')>-1)
+			 this.auth6 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:examine')>-1)
+			 console.log(this.auth1,this.auth2,this.auth3,this.auth4,this.auth5,this.auth6,);
 			this.getList()
 
 		},

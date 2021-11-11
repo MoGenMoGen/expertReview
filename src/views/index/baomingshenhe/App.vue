@@ -97,7 +97,7 @@
 								</el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
-										<el-button @click="handleClick(scope.row.id)" type="text" size="small">查看</el-button>
+										<el-button @click="handleClick(scope.row.id)" type="text" size="small" v-if="auth1">查看</el-button>
 									</template>
 								</el-table-column>
 							</el-table>
@@ -127,6 +127,7 @@
 	export default {
 		data() {
 			return {
+				auth1:'',//详情权限
 				id: '',
 				activeName: '',
 				thisNavList: [],
@@ -161,6 +162,7 @@
 			topNav
 		},
 		mounted() {
+			this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:info')>-1)
 			let obj = {
 				name: '报名审核',
 				url: './baomingshenhe.html',

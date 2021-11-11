@@ -131,7 +131,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="detailBox" v-if="info.audit==1">
+			<div class="detailBox" v-if="info.audit==1&&auth">
 				<div class="detailTitle">
 					<span>审核意见</span>
 					<div class="line">
@@ -158,6 +158,7 @@
 	export default {
 		data() {
 			return {
+				auth:'',
 				options:'',
 				info: {
 
@@ -177,6 +178,7 @@
 			}
 		},
 		mounted() {
+			this.auth = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:examine')>-1)
 			console.log('7799',this.detailId);
 			this.api.getBidInfo(this.detailId).then(res => {
 				this.info = res.data

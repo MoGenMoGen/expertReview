@@ -57,7 +57,7 @@
 							</el-table-column>
 							<el-table-column prop="file" label="状态" min-width="100">
 								<template slot-scope="scope">
-									<span v-if="scope.row.file=='1'" style="color: #E4393C;">
+									<span v-if="scope.row.file=='1'||!scope.row.file" style="color: #E4393C;">
 										未归档
 									</span>
 									<span v-if="scope.row.file=='2'" style="color: #2778BE;">
@@ -71,7 +71,7 @@
 									<!-- <el-button @click="tolook(scope.row)" type="text" size="small" style="color: #2778BE;">查看</el-button> -->
 									<p style="color:#2778BE ; cursor: pointer;" @click="toDetail(scope.row)">查看</p>
 									<div style="color:#ffffff ; padding: 4px 8px; background-color:#2778BE ;box-sizing: border-box; cursor: pointer;"@click="cancelFile(scope.row)" v-if="scope.row.file==2">取消归档</div>
-									<div style="color:#ffffff ; padding: 4px 8px;background-color:#2778BE ;box-sizing: border-box; cursor: pointer;"@click="toFile(scope.row)" v-if="scope.row.file==1">归档</div>
+									<div style="color:#ffffff ; padding: 4px 8px;background-color:#2778BE ;box-sizing: border-box; cursor: pointer;"@click="toFile(scope.row)" v-if="scope.row.file==1||!scope.row.file">归档</div>
 								</template>
 							</el-table-column>
 						</el-table>
@@ -252,16 +252,14 @@
 							<div class="detailContent">
 								<div class="collapse-item" v-for="(item,index) in infoList" :key="index">
 									<div class="collapse-top" @click="showMore(index)">
-										<div>招标采购商：<span style="color: #2778BE;">{{item.offer.orgNm}}</span></div>
+										<div>招标采购商：<span style="color: #2778BE;" v-if="item.offer">{{item.offer.orgNm}}</span></div>
 										<div>审核状态：<span :style="{color:(item.apply.audit==2?'#2778BE':'#E4393C')}">{{item.apply.audit==2?'通过':'未通过'}}</span><img :class="{'collapse-rotate':selectIndex==index}" src="../../../assets/img/arrowDownG.png"></div>
 									</div>
 									<div class="collapse-bottom" v-show="selectIndex==index">
-										<div :style="{color:(item.apply.deposits?'#606060':'#E4393C')}">保证金：{{item.apply.deposits?'已缴':'未缴'}}、{{item.deposot.refundTm?'已退':'未退'}}</div>
-										<div v-if="item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
-										<div v-if="item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
+										<div v-if="item.deposot" :style="{color:(item.apply.deposits?'#606060':'#E4393C')}">保证金：{{item.apply.deposits?'已缴':'未缴'}}、{{item.deposot.refundTm?'已退':'未退'}}</div>
+										<div v-if="item.deposot&&item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
+										<div v-if="item.deposot&&item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
 										<div class="" style="display: flex; flex-wrap: wrap;" >
-											
-										
 										<div class="fileList" v-for="(item1,index1) in item.newList" v-if="newList" :key='index1' >
 											<span>
 												{{index1+1}}、
