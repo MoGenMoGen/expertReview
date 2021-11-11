@@ -90,9 +90,19 @@
 								<el-table-column prop="nm" label="项目名称" min-width="150"></el-table-column>
 								<el-table-column prop="procurementMethodNm" label="采购方式" min-width="150"></el-table-column>
 								<el-table-column prop="publishTm" label="投标开始时间" min-width="150"></el-table-column>
-								<el-table-column label="投标项" min-width="100">
+								<el-table-column label="待审核数" min-width="100" v-if="sonTabIndex==0">
 									<template slot-scope='scope'>
 										{{scope.row.applyItems.length}}
+									</template>
+								</el-table-column>
+								<el-table-column label="报名数" min-width="100" v-if="sonTabIndex==1">
+									<template slot-scope='scope'>
+										{{scope.row.applyItems.length}}
+									</template>
+								</el-table-column>
+								<el-table-column label="待审核数" min-width="100" v-if="sonTabIndex==1">
+									<template slot-scope='scope'>
+										{{scope.row.notAuditNum}}
 									</template>
 								</el-table-column>
 								<el-table-column label="操作" min-width="100">
@@ -139,7 +149,7 @@
 				total: 0,
 				value2: '',
 				value3: '',
-				sonTabList: ["待审核", "已审核"],
+				sonTabList: ["待审核", "全部"],
 				sonTabIndex: 0,
 				tableData: [],
 				cd: '',

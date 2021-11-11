@@ -223,7 +223,7 @@
 		.table_box {
 			background: #fff;
 			padding: 20px;
-			width: 850px;
+			width: 75%;
 			max-height: 80%;
 			overflow-y: auto;
 
@@ -234,7 +234,7 @@
 			}
 
 			.row2 {
-				width: 700px;
+				width: 90%;
 				margin: 30px auto 20px;
 				display: flex;
 				flex-direction: column;
