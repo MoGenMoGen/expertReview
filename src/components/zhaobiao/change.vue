@@ -83,7 +83,7 @@
 			      >* </span
 			    ><span>公告类型</span>
 			  </div>
-			  <div class="right" style="margin-left: 12px;">
+			  <div class="right">
 			     <el-select v-model="value"  value-key="nm" placeholder="请选择公告类型"  @change="select1">
 			       <el-option
 			         v-for="item in options"
@@ -469,7 +469,7 @@
 			      >* </span
 			    ><span>公告类型</span>
 			  </div>
-			  <div class="right" style="margin-left: 12px;">
+			  <div class="right">
 			     <el-select v-model="value"  value-key="nm" placeholder="请选择公告类型"  @change="select1">
 			       <el-option
 			         v-for="item in options"
@@ -845,7 +845,7 @@
 		  .table_box {
 		    background: #fff;
 		    padding: 20px;
-		    width: 850px;
+		    width: 950px;
 			max-height: 80%;
 			 overflow-y: scroll;
 			
@@ -856,7 +856,7 @@
 		    }
 		
 		    .row2 {
-		      width: 700px;
+		      width: 850px;
 		      margin: 30px auto 20px;
 		      display: flex;
 		      align-items: center;
@@ -870,16 +870,16 @@
 		      }
 		      .right {
 		        .el-input,
-		        .el-textarea {
+		        .el-textarea,
+				.el-select
+				 {
 		          height: 32px;
-		          width: 370px;
+		          width: 670px;
 		          margin-left: 12px;
-				 
-				  
 		        }
 		        .el-input-number {
 		          height: 32px;
-		          width: 160px;
+		          width: 260px;
 		          margin-left: 12px;
 		        }
 		      }
