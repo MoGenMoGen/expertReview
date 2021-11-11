@@ -5,7 +5,7 @@
 			<leftMenu tabIndex='6-1'></leftMenu>
 			<div class="right">
 				<topNav :activeName='activeName' :list="thisNavList"></topNav>
-				<div class="content" v-if="showDetail==false">
+				<div class="content" v-if="showDetail==false&&auth1">
 					<div class="topSeachBox">
 						<el-input placeholder="项目编号" v-model="cd" clearable>
 						</el-input>
@@ -74,7 +74,7 @@
 							<el-table-column label="操作" min-width="50">
 								<template slot-scope="scope">
 									<el-button @click="tolook(scope.row)" type="text" size="small"
-										style="color: #2778BE;">查看</el-button>
+										style="color: #2778BE;" v-if="auth2">查看</el-button>
 								</template>
 							</el-table-column>
 						</el-table>
@@ -249,7 +249,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="detailBox">
+						<div class="detailBox" v-if="auth3">
 							<div class="detailTitle">
 								<span>投标信息</span>
 								<div class="line"></div>
@@ -356,6 +356,9 @@
 	export default {
 		data() {
 			return {
+				auth1:'',//分页权限
+				auth2:'',//详情分页
+				auth3:'',//详情下方列表
 				rmks: '',
 				form: {},
 				dialogImageUrl: '',
@@ -416,6 +419,9 @@
 			topNav
 		},
 		mounted() {
+			this.auth1= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:pageWithWinBidOffer')>-1)
+			this.auth2= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:info')>-1)
+			this.auth3= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:infoWithWinBid')>-1)
 			let obj = {
 				name: '标后',
 				url: './biaohou.html',

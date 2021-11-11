@@ -7,7 +7,7 @@
       <div class="rightMenu" :style="{ width: bWidth - 200 + 'px' }">
         <topNav :activeName="activeName" :list="thisNavList"></topNav>
         <div class="right_content">
-          <signInQuery  v-if="sonTabIndex == 0"></signInQuery>
+          <signInQuery  v-if="sonTabIndex == 0&&auth1"></signInQuery>
           <!-- <reviewResultQuery v-else-if="sonTabIndex==2"></reviewResultQuery> -->
           <div class="son_tablist">
             <div class="left">
@@ -55,6 +55,7 @@ import reviewResultQuery from "@/components/evaBidQuery/reviewResultQuery";
 export default {
   data() {
     return {
+	  auth1:'',//查询权限
       loading: false,
       bWidth: 0,
       width: 0,
@@ -95,6 +96,7 @@ export default {
     // if(!this.until.seGet('userInfo')){
     //     this.until.href('./login.html')
     // }
+	this.auth1= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:evaluation')>-1)
     this.getWidth();
     // this.userInfo = JSON.parse(this.until.seGet('userInfo'))
     window.onresize = () => {

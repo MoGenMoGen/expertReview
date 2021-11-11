@@ -23,7 +23,7 @@
 							<el-date-picker v-model="bidEndTm" type="datetimerange" style="flex: 2;margin-right: 10px;margin-bottom: 10px;" range-separator="" start-placeholder="投标截止时间段">
 							</el-date-picker>
 							<!-- <el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间"></el-date-picker> -->
-							<el-button plain type="primary" @click="searchList">查询</el-button>
+							<el-button plain type="primary" @click="searchList" v-if="auth1">查询</el-button>
 						</div>
 					</div>
 					<div class="content-list">
@@ -55,7 +55,7 @@
 								<el-table-column prop="applyNum" label="投标项" min-width="100"></el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
-										<el-button @click="handleClick(scope.row)" type="text" size="small">查看结果</el-button>
+										<el-button @click="handleClick(scope.row)" type="text" size="small" v-if="auth2">查看结果</el-button>
 										<!-- <br>
 										<el-button type="text" size="small" style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;" >确认</el-button> -->
 									</template>
@@ -87,6 +87,8 @@
 	export default {
 		data() {
 			return {
+				auth1:'',//查询权限
+				auth2:'',//结果查看权限
 				id: '',
 				row: {},
 				showResult: false,
@@ -122,6 +124,8 @@
 			result
 		},
 		mounted() {
+			this.auth1= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:pageWithApplicationsNum')>-1)
+			this.auth2= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidOffer:page')>-1)
 			let obj = {
 				name: '定标项目',
 				url: './dingbiao.html',

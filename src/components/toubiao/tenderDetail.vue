@@ -113,7 +113,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="detailBox">
+		<div class="detailBox" v-if="auth1">
 			<div class="detailTitle">
 				<div class="line"></div>
 			</div>
@@ -132,7 +132,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="detailBox">
+		<div class="detailBox" v-if="auth1">
 			<div class="detailTitle">
 				<span>投标信息</span>
 				<div class="line"></div>
@@ -178,6 +178,7 @@
 	export default {
 		data() {
 			return {
+				auth1:'',// 投标文件投标信息列表权限
 				companyId: '',
 				info: {},
 				list: [],
@@ -350,6 +351,7 @@
 			}
 		},
 		async mounted() {
+			this.auth1= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidApply:listWithOfferAndDes')>-1)
 			this.api.getBidInfo(this.id).then(res => {
 				this.info = res.data
 				if(res.data.attachment) {

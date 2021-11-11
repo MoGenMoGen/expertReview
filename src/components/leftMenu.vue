@@ -3,14 +3,14 @@
 		<el-menu :default-active="tabIndex" unique-opened class="el-menu-vertical-demo" @select="handleSelect"
 			@open="handleOpen" @close="handleClose" background-color="#2778BE" text-color="#F8F8F8"
 			active-text-color="#fff">
-			<el-menu-item index="0" :class="currentIndex == '0' ? 'activeTwo' : ''">
+			<el-menu-item index="0" :class="currentIndex == '0' ? 'activeTwo' : ''" v-if="auth1">
 				<img src="../assets/img/总览-未选.png" style="width: 18px; height: 18px; margin-left: 5px"
 					v-if="currentIndex != '0'" />
 				<img src="../assets/img/总览-选中.png" style="width: 18px; height: 18px; margin-left: 5px"
 					v-if="currentIndex == '0'" />
 				<span slot="title">总览</span>
 			</el-menu-item>
-			<el-submenu index="1">
+			<el-submenu index="1" v-if="auth2" >
 				<template slot="title">
 					<img src="../assets/img/招标-未选.png" style="width: 18px; height: 18px; margin-left: 5px" v-if="
               currentIndex != '1' &&
@@ -41,7 +41,7 @@
 				</el-menu-item-group>
 			</el-submenu>
 
-			<el-submenu index="2">
+			<el-submenu index="2" v-if="auth3">
 				<template slot="title">
 					<img src="../assets/img/投标-未选.png" style="width: 18px; height: 18px; margin-left: 5px" v-if="
               currentIndex != '2' &&
@@ -62,11 +62,11 @@
             ">投标</span>
 				</template>
 				<el-menu-item-group>
-					<el-menu-item index="2-1" :class="currentIndex == '2-1' ? 'active' : ''">报名审核</el-menu-item>
-					<el-menu-item index="2-2" :class="currentIndex == '2-2' ? 'active' : ''">投标项目</el-menu-item>
+					<el-menu-item index="2-1" :class="currentIndex == '2-1' ? 'active' : ''" v-if="auth4">报名审核</el-menu-item>
+					<el-menu-item index="2-2" :class="currentIndex == '2-2' ? 'active' : ''" v-if="auth5">投标项目</el-menu-item>
 				</el-menu-item-group>
 			</el-submenu>
-			<el-submenu index="3">
+			<el-submenu index="3" v-if="auth6">
 				<template slot="title">
 					<img src="../assets/img/开标-未选.png" style="width: 18px; height: 18px; margin-left: 5px" v-if="
               currentIndex != '3' &&
@@ -93,24 +93,24 @@
             ">开标</span>
 				</template>
 				<el-menu-item-group>
-					<el-menu-item index="3-1" :class="currentIndex == '3-1' ? 'active' : ''">专家选取规则
+					<el-menu-item index="3-1" :class="currentIndex == '3-1' ? 'active' : ''" v-if="auth10">专家选取规则
 					</el-menu-item>
-					<el-menu-item index="3-2" :class="currentIndex == '3-2' ? 'active' : ''">专家库
+					<el-menu-item index="3-2" :class="currentIndex == '3-2' ? 'active' : ''"  v-if="auth8">专家库
 					</el-menu-item>
-					<el-menu-item index="3-3" :class="currentIndex == '3-3' ? 'active' : ''">项目评定标准
+					<el-menu-item index="3-3" :class="currentIndex == '3-3' ? 'active' : ''" v-if="auth9">项目评定标准
 					</el-menu-item>
-					<el-menu-item index="3-4" :class="currentIndex == '3-4' ? 'active' : ''">
+					<el-menu-item index="3-4" :class="currentIndex == '3-4' ? 'active' : ''" v-if="auth7">
 						在线开标</el-menu-item>
 				</el-menu-item-group>
 			</el-submenu>
-			<el-menu-item index="4" :class="currentIndex == '4' ? 'activeTwo' : ''">
+			<el-menu-item index="4" :class="currentIndex == '4' ? 'activeTwo' : ''" v-if="auth11">
 				<img src="../assets/img/在线评标-未选.png" style="width: 18px; height: 18px; margin-left: 5px"
 					v-if="currentIndex != '4'" />
 				<img src="../assets/img/在线评标-选中.png" style="width: 18px; height: 18px; margin-left: 5px"
 					v-if="currentIndex == '4'" />
 				<span slot="title">在线评标</span>
 			</el-menu-item>
-			<el-submenu index="5">
+			<el-submenu index="5" v-if="auth12">
 				<template slot="title">
 					<img src="../assets/img/定标-未选.png" style="width: 18px; height: 18px; margin-left: 5px" v-if="
 	          currentIndex != '5' &&
@@ -131,11 +131,11 @@
 	        ">定标</span>
 				</template>
 				<el-menu-item-group>
-					<el-menu-item index="5-1" :class="currentIndex == '5-1' ? 'active' : ''">定标项目</el-menu-item>
-					<el-menu-item index="5-2" :class="currentIndex == '5-2' ? 'active' : ''">中标公示</el-menu-item>
+					<el-menu-item index="5-1" :class="currentIndex == '5-1' ? 'active' : ''" v-if="auth13">定标项目</el-menu-item>
+					<el-menu-item index="5-2" :class="currentIndex == '5-2' ? 'active' : ''" v-if="auth14">中标公示</el-menu-item>
 				</el-menu-item-group>
 			</el-submenu>
-			<el-submenu index="6">
+			<el-submenu index="6" v-if="auth15">
 				<template slot="title">
 					<img src="../assets/img/标后-未选.png" style="width: 18px; height: 18px; margin-left: 5px" v-if="
           currentIndex != '6' &&
@@ -156,8 +156,8 @@
         ">标后</span>
 				</template>
 				<el-menu-item-group>
-					<el-menu-item index="6-1" :class="currentIndex == '6-1' ? 'active' : ''">保证金退还</el-menu-item>
-					<el-menu-item index="6-2" :class="currentIndex == '6-2' ? 'active' : ''">招标文件归档</el-menu-item>
+					<el-menu-item index="6-1" :class="currentIndex == '6-1' ? 'active' : ''" v-if="auth16">保证金退还</el-menu-item>
+					<el-menu-item index="6-2" :class="currentIndex == '6-2' ? 'active' : ''" v-if="auth17">招标文件归档</el-menu-item>
 				</el-menu-item-group>
 			</el-submenu>
 		</el-menu>
@@ -168,6 +168,23 @@
 export default {
   data() {
     return {
+		auth1:'',//总览
+		auth2:'',//招标
+		auth3:'',//投标
+		auth4:'',//投标-报名审核
+		auth5:'',//投标-投标项目
+		auth6:'',//开标
+		auth7:'',//开标-在线开标
+		auth8:'',//开标-专家库
+		auth9:'',//开标-项目评定标准
+		auth10:'',//开标-专家选取规则
+		auth11:'',//在线评标
+		auth12:'',//定标
+		auth13:'',//定标-定标项目
+		auth14:'',//定标-中标公示
+		auth15:'',//标后
+		auth16:'',//标后-保证金退还
+		auth17:'',//标后-招标文件归档
       zhaobiao: [],
       currentIndex: "0",
     };
@@ -179,7 +196,24 @@ export default {
     },
   },
   mounted() {
-    this.currentIndex = this.tabIndex;
+	this.auth1= JSON.parse(this.until.seGet('authZ').indexOf('ship:Overview:Overview')>-1)
+	this.auth2= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidding:bidding')>-1)
+	this.auth3= JSON.parse(this.until.seGet('authZ').indexOf('shi:bid:bid')>-1)
+	this.auth4= JSON.parse(this.until.seGet('authZ').indexOf('ship:registrationReview:registrationReview')>-1)
+    this.auth5= JSON.parse(this.until.seGet('authZ').indexOf('ship:biddingProject:biddingProject')>-1)
+	this.auth6= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidOpening:bidOpening')>-1)
+	this.auth7= JSON.parse(this.until.seGet('authZ').indexOf('ship:onlineBidOpening:onlineBidOpening')>-1)
+	this.auth8= JSON.parse(this.until.seGet('authZ').indexOf('ship:expertDatabase:expertDatabase')>-1)
+	this.auth9= JSON.parse(this.until.seGet('authZ').indexOf('ship:ProjectEvaluationCriteria:ProjectEvaluationCriteria')>-1)
+	this.auth10= JSON.parse(this.until.seGet('authZ').indexOf('ship:expertSelectionRules:expertSelectionRules')>-1)
+	this.auth11= JSON.parse(this.until.seGet('authZ').indexOf('ship:onlineBidEvaluation:onlineBidEvaluation')>-1)
+	this.auth12= JSON.parse(this.until.seGet('authZ').indexOf('ship:calibration:Calibration')>-1)
+	this.auth13= JSON.parse(this.until.seGet('authZ').indexOf('ship:calibrationItems:calibrationItems')>-1)
+	this.auth14= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidWinningPublicity:bidWinningPublicity')>-1)
+	this.auth15= JSON.parse(this.until.seGet('authZ').indexOf('ship:postBid:postBid')>-1)
+	this.auth16= JSON.parse(this.until.seGet('authZ').indexOf('ship:refundOfDeposit:refundOfDeposit')>-1)
+	this.auth17= JSON.parse(this.until.seGet('authZ').indexOf('ship:filingOfBiddingDocuments:filingOfBiddingDocuments')>-1)
+	this.currentIndex = this.tabIndex;
   },
   methods: {
     handleSelect(key, keyPath) {

@@ -24,7 +24,7 @@
 							</el-date-picker>
 							<!-- <el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间">
 							</el-date-picker> -->
-							<el-button plain type="primary" @click="searchList">查询</el-button>
+							<el-button plain type="primary" @click="searchList" v-if="auth1">查询</el-button>
 						</div>
 					</div>
 					<div class="content-list">
@@ -57,17 +57,17 @@
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
 										<el-button @click="handleClickShenhe(scope.row,2)" type="text" size="small" 
-										v-if="scope.row.announcementOfResults>0&&scope.row.announcementOfResultsStatus==2">查看公示
+										v-if="scope.row.announcementOfResults>0&&scope.row.announcementOfResultsStatus==2&&auth2" >查看公示
 										</el-button>
 										<!-- <br> -->
-										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,0)" v-if="scope.row.announcementOfResults==0&&scope.row.announcementOfResultsStatus==0"
+										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,0)" v-if="scope.row.announcementOfResults==0&&scope.row.announcementOfResultsStatus==0&&auth3"
 											style="background: #FFF;color: #2778BE; border-radius: 2px;width: 50px;border: 1px solid #2778BE;box-sizing: border-box;margin-bottom: 10px;">
 											发布</el-button>
-										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,3)" v-if="scope.row.announcementOfResults>0&&scope.row.announcementOfResultsStatus==3"
+										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,3)" v-if="scope.row.announcementOfResults>0&&scope.row.announcementOfResultsStatus==3&&auth5"
 											style="background: #FFF;color: #2778BE; border-radius: 2px;width: 50px;border: 1px solid #2778BE;box-sizing: border-box;margin-bottom: 10px;">
 											修改</el-button>
 										<!-- <br> -->
-										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,1)" v-if="scope.row.announcementOfResults>0&&scope.row.announcementOfResultsStatus!=2"
+										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,1)" v-if="scope.row.announcementOfResults>0&&scope.row.announcementOfResultsStatus!=2&&auth3"
 											style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;margin-left: 0;">
 											审核</el-button>
 									</template>
@@ -97,6 +97,11 @@
 	export default {
 		data() {
 			return {
+				auth1:'',//查询权限
+				auth2:'',//详情权限
+				auth3:'',//审核权限
+				auth4:'',//新增权限
+				auth5:'',//修改权限
 				row: {},
 				type: 0,
 				activeName: '',
@@ -130,6 +135,12 @@
 			gongshishenhe
 		},
 		mounted() {
+			this.auth1= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:pageWithBidWinningPublicity')>-1)
+			this.auth2= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidAffiche:info')>-1)
+			this.auth3= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidAffiche:examine')>-1)
+			this.auth4= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidAffiche:add')>-1)
+			this.auth5= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidAffiche:upd')>-1)
+			
 			let obj = {
 				name: '中标公示',
 				url: './zhongbiaogongshi.html',
