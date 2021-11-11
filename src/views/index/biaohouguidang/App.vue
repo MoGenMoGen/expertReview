@@ -5,7 +5,7 @@
 			<leftMenu tabIndex='6-2'></leftMenu>
 			<div class="right">
 				<topNav :activeName='activeName' :list="thisNavList"></topNav>
-				<div class="content" v-if="showDetail==false">
+				<div class="content" v-if="showDetail==false&&auth1">
 					<div class="topSeachBox">
 						<el-input placeholder="项目编号" v-model="cd" clearable>
 						</el-input>
@@ -69,9 +69,9 @@
 							<el-table-column label="操作" min-width="100">
 								<template slot-scope="scope">
 									<!-- <el-button @click="tolook(scope.row)" type="text" size="small" style="color: #2778BE;">查看</el-button> -->
-									<p style="color:#2778BE ; cursor: pointer;" @click="toDetail(scope.row)">查看</p>
-									<div style="color:#ffffff ; padding: 4px 8px; background-color:#2778BE ;box-sizing: border-box; cursor: pointer;"@click="cancelFile(scope.row)" v-if="scope.row.file==2">取消归档</div>
-									<div style="color:#ffffff ; padding: 4px 8px;background-color:#2778BE ;box-sizing: border-box; cursor: pointer;"@click="toFile(scope.row)" v-if="scope.row.file==1||!scope.row.file">归档</div>
+									<p style="color:#2778BE ; cursor: pointer;" @click="toDetail(scope.row)" v-if="auth2">查看</p>
+									<div style="color:#ffffff ; padding: 4px 8px; background-color:#2778BE ;box-sizing: border-box; cursor: pointer;"@click="cancelFile(scope.row)" v-if="scope.row.file==2&&auth4">取消归档</div>
+									<div style="color:#ffffff ; padding: 4px 8px;background-color:#2778BE ;box-sizing: border-box; cursor: pointer;"@click="toFile(scope.row)" v-if="(scope.row.file==1||!scope.row.file)&&auth4">归档</div>
 								</template>
 							</el-table-column>
 						</el-table>
@@ -244,7 +244,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="detailBox">
+						<div class="detailBox" v-if="auth3">
 							<div class="detailTitle">
 								<span>投标信息</span>
 								<div class="line"></div>
@@ -296,6 +296,10 @@
 	export default {
 		data() {
 			return {
+				auth1:'',//分页权限
+				auth2:'',//详情权限
+				auth3:'',//详情下方信息权限
+				auth4:'',//归档权限
 				excel,
 				ppt,
 				word,
@@ -351,6 +355,10 @@
 			topNav
 		},
 		mounted() {
+			this.auth1= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:pageWithWinBid')>-1)
+			this.auth2= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:info')>-1)
+			this.auth3= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:infoWithWinBid')>-1)
+			this.auth4= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:file')>-1)
 			let obj = {
 				name: '标后',
 				url: './biaohou.html',
