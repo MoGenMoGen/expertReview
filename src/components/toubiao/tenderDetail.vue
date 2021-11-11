@@ -145,7 +145,7 @@
 					</div>
 					<div class="collapse-bottom" v-show="selectIndex==index">
 						<div style="color:#E4393C" v-if="info.needDeposit==0">保证金：无需缴纳</div>
-						<div :style="{color:(item.deposits?'#606060':'#E4393C')}" v-if="info.needDeposit==1">保证金：{{item.deposits?'已缴':'未缴'}}</div>
+						<div :style="{color:(item.deposits?'#606060':'#E4393C')}" v-if="info.needDeposit==1">保证金：{{item.deposits?`已缴(${item.deposits.shipBidDepositVo.depositAmt}元)`:'未缴'}}</div>
 						<div>申请时间：{{item.crtTm}}</div>
 					</div>
 				</div>
