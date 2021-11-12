@@ -10,7 +10,7 @@
     <div class="title">{{ detail.nm }} (项目编号:{{ detail.cd }})</div>
     <!-- <div class="small_title">标项1 （解密中）</div> -->
     <el-table
-      max-height="524"
+      max-height="504"
       :data="tableData"
       style="width: 100%"
       :cell-style="{
@@ -176,31 +176,12 @@ export default {
       this.pageNo = val;
     },
     async getList() {
-      let query = {
-        r: [
-          {
-            n: "a1",
-            t: "and",
-            w: [
-              {
-                k: "bidId",
-                v: "",
-                m: "EQ",
-              },
-            ],
-          },
-        ],
-        p: {
-          n: 1,
-          s: 5,
-        },
-      };
-      query.p.n = this.pageNo;
-      query.p.s = this.pageSize;
-      query.r[0].w[0].v = this.id;
+	  let qry=this.query.new()
+	  this.query.toW(qry,'bidId',this.id,'EQ')
+	  this.query.toP(qry,this.pageNo,this.pageSize)
       // 选取列表
       let data = await this.api.decryptList(
-        encodeURIComponent(JSON.stringify(query))
+        this.query.toEncode(qry)
       );
       this.tableData = data.data.list;
       for (let i = 0; i < this.tableData.length; i++) {

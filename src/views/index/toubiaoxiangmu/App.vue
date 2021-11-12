@@ -112,7 +112,7 @@
 						</div>
 					</div>
 					<div class="Footer">
-						<el-pagination background @current-change="handleCurrentChange" :current-page.sync="currentPage"
+						<el-pagination background @current-change="handleCurrentChange" :current-page.sync="pageNo"
 							:page-size="pageSize" layout="prev, pager, next, jumper" :total="total">
 						</el-pagination>
 					</div>

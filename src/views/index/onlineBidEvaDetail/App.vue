@@ -218,8 +218,6 @@ export default {
   // height: calc(~"100vh - 298px");
   display: flex;
   .rightMenu {
-      background: #fff;
-
     height: 800px;
     margin-left: 10px;
     width: calc(~"100% - 210px");
@@ -228,9 +226,9 @@ export default {
     // padding: 20px;
     box-sizing: border-box;
     .right_content {
-      // margin-top: 10px;
+      margin-top: 10px;
       box-sizing: border-box;
-      padding:0px 20px;
+      padding:10px 20px;
       height: 740px;
       background: #fff;
 

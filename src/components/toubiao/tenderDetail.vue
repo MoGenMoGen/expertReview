@@ -92,16 +92,6 @@
 				<div @click="allDownload" class="back" style="display: flex;align-items: center;"><i class="el-icon-download" style="margin-right: 10px;font-size: 20px;"></i>全部下载 </div>
 			</div>
 			<div class="detailContent">
-				<!-- <div class="leftbox">
-					<div class="leftList">
-						<div class="listName">
-							1、
-						</div>
-						<div class="listContent">
-							<img src="../../assets/img/houzi.jpg">
-						</div>
-					</div>
-				</div> -->
 				<div class="fileList" v-for="(item,index) in list" :key='index' v-if="list.length>0">
 					<span>
 						{{index+1}}、
@@ -145,25 +135,30 @@
 					</div>
 					<div class="collapse-bottom" v-show="selectIndex==index">
 						<div style="color:#E4393C" v-if="info.needDeposit==0">保证金：无需缴纳</div>
-						<div :style="{color:(item.deposits&&item.deposits.shipBidDepositVo.audit==2?'#606060':'#E4393C')}" v-if="info.needDeposit==1">保证金：{{item.deposits&&item.deposits.shipBidDepositVo.audit==2?`已缴(${item.deposits.shipBidDepositVo.depositAmt}元)`:'未缴'}}</div>
-						<div>申请时间：{{item.crtTm}}</div>
-					</div>
-					<!-- <div class="" style="display: flex; flex-wrap: wrap;">
-						<div class="fileList" v-for="(item1,index1) in item.newList"
-							v-if="item.newList" :key='index1'>
-							<span>
-								{{index1+1}}、
-							</span>
-							<div>
-								<img :src="item1.img"
-									style="width: 100px; height: 100px; cursor: pointer;"
-									@click="toLink(item1.url)">
-								<p style="cursor: pointer;" @click="toLink(item1.url)">
-									{{item1.fileNm}}</p>
-							</div>
-					
+						<div v-if="info.needDeposit==1" :style="{color:(item.deposits&&item.deposits.shipBidDepositVo.audit==2?'#606060':'#E4393C')}">保证金：{{item.deposits&&item.deposits.shipBidDepositVo.audit==2?`已缴(${item.deposits.shipBidDepositVo.depositAmt}元)`:'未缴'}}</div>
+						<div class="deposits-img" v-if="item.deposits">
+							保证金凭证：<el-image v-for="(newItem,newIndex) in item.deposits.shipBidDepositVo.depositImgUrl" :key="newIndex" 
+							:src="newItem" :preview-src-list="item.deposits.shipBidDepositVo.depositImgUrl"></el-image>
 						</div>
-					</div> -->
+						<div>申请时间：{{item.crtTm}}</div>
+						<div>
+							投标文件：
+							<div style="display: flex; flex-wrap: wrap;">
+								<div class="fileList" v-for="(item1,index1) in item.newList"
+									v-if="item.newList" :key='index1'>
+									<span>
+										{{index1+1}}、
+									</span>
+									<div>
+										<img :src="item1.img"
+											style="width: 100px; height: 100px;">
+										<p>
+											{{item1.fileNm}}</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -175,6 +170,7 @@
 	import ppt from '@/assets/img/ppt.png'
 	import word from '@/assets/img/word.png'
 	import pdf from '@/assets/img/pdf.jpg'
+	import defaultImg from '@/assets/img/defaultImg.png'
 	export default {
 		data() {
 			return {
@@ -188,6 +184,7 @@
 				ppt,
 				word,
 				pdf,
+				defaultImg,
 				tableData: [],
 				options: '',
 				companyNm: '',
@@ -275,68 +272,70 @@
 				this.query.toW(qry,'bidId',this.id,'EQ')
 				this.api.getListWithOfferAndDes(this.query.toEncode(qry)).then(res => {
 					this.tenderList = res.data.list
-					// for (let i = 0; i < this.infoList.length; i++) {
-					// 	this.tenderList[i].newList = []
-					// 	let data = []
-					// 	if(this.tenderList[i].offerDtos) {
-					// 		data = this.tenderList[i].offerDtos.shipBidOfferVo.attachment.split(',')
-					// 	}
-					// 	let data1 = []
-					// 	let fileList2 = []
-					// 	if (data.length > 0) {
-					// 		data.forEach(v => {
-					// 			let type = v.split('.')[v.split('.').length - 1]
-					// 			let nmList = v.split('.com/') //分割出url后的内容
-					// 			let nm = ""
-					// 			nmList.forEach((j, z) => { //防止文件名中有 .com/ 所以循环加入
-					// 				if (z != 0) {
-					// 					nm += j
-					// 				}
-					// 			})
-					// 			nmList = nm.split('_') //分割随机字符后的内容
-					// 			nm = ""
-					// 			nmList.forEach((j, z) => { //防止文件名中有 _ 所以循环
-					// 				if (z != 0) {
-					// 					nm += j
-					// 				}
-					// 			})
-					// 			nm = nm.split('.' + type)[0]
-					// 			if (type == 'pdf') {
-					// 				fileList2.push({
-					// 					url: v,
-					// 					img: this.pdf,
-					// 					'fileNm': nm
-					// 				})
-					// 			} else if (type == 'doc' || type == 'docx') {
-					// 				fileList2.push({
-					// 					url: v,
-					// 					img: this.word,
-					// 					'fileNm': nm
-					// 				})
-					// 			} else if (type == 'ppt' || type == 'pptx') {
-					// 				fileList2.push({
-					// 					url: v,
-					// 					img: this.ppt,
-					// 					'fileNm': nm
-					// 				})
-					// 			} else if (type == 'xls' || type == 'xlsx') {
-					// 				fileList2.push({
-					// 					url: v,
-					// 					img: this.excel,
-					// 					'fileNm': nm
-					// 				})
-					// 			} else {
-					// 				fileList2.push({
-					// 					url: v,
-					// 					img: v,
-					// 					'fileNm': nm
-					// 				})
-					// 			}
-					
-					// 		})
-					// 	}
-					// 	this.tenderList[i].newList = fileList2
-					// }
+					this.tenderList.forEach(item => {
+						if(item.deposits) {
+							item.deposits.shipBidDepositVo.depositImgUrl = item.deposits.shipBidDepositVo.depositImgUrl.split(",")
+						}
+						item.newList = []
+						let data = []
+						if(item.offerDtos) {
+							data = item.offerDtos.shipBidOfferVo.attachment.split(',')
+						}
+						let data1 = []
+						let fileList2 = []
+						if (data.length > 0) {
+							data.forEach(v => {
+								let type = v.split('.')[v.split('.').length - 1]
+								let nmList = v.split('.com/') //分割出url后的内容
+								let nm = ""
+								nmList.forEach((j, z) => { //防止文件名中有 .com/ 所以循环加入
+									if (z != 0) {
+										nm += j
+									}
+								})
+								nmList = nm.split('_') //分割随机字符后的内容
+								nm = ""
+								nmList.forEach((j, z) => { //防止文件名中有 _ 所以循环
+									if (z != 0) {
+										nm += j
+									}
+								})
+								nm = nm.split('.' + type)[0]
+								if (type == 'pdf') {
+									fileList2.push({
+										url: v,
+										img: this.pdf,
+										'fileNm': nm
+									})
+								} else if (type == 'doc' || type == 'docx') {
+									fileList2.push({
+										url: v,
+										img: this.word,
+										'fileNm': nm
+									})
+								} else if (type == 'ppt' || type == 'pptx') {
+									fileList2.push({
+										url: v,
+										img: this.ppt,
+										'fileNm': nm
+									})
+								} else if (type == 'xls' || type == 'xlsx') {
+									fileList2.push({
+										url: v,
+										img: this.excel,
+										'fileNm': nm
+									})
+								} else {
+									fileList2.push({
+										url: v,
+										img: this.defaultImg,
+										'fileNm': nm
+									})
+								}
+							})
+						}
+						item.newList = fileList2
+					})
 				})
 			},
 			toLink(url) {
@@ -502,6 +501,16 @@
 					color: #606060;
 					div {
 						margin: 15px 0;
+					}
+					.deposits-img {
+						display: flex;
+						align-items: center;
+						flex-wrap: wrap;
+						.el-image {
+							width: 100px;
+							height: 100px;
+							margin-right: 10px;
+						}
 					}
 				}
 				.fileList {

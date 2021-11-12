@@ -4,218 +4,216 @@
 			<div class="detailTitle">
 				<span>{{info.nm}}项目</span>
 				<div class="line"></div>
-				<div class="back" @click="back">
-					< 返回 </div>
+				<div class="back" @click="back">< 返回 </div>
+			</div>
+			<div class="detailContent">
+				<div class="leftbox">
+					<div class="leftList">
+						<div class="listName">
+							项目编号：
+						</div>
+						<div class="listContent">
+							{{info.cd}}
+						</div>
+					</div>
+					<div class="leftList">
+						<div class="listName">
+							预算金额（万元）：
+						</div>
+						<div class="listContent">
+							{{info.budget}}
+						</div>
+					</div>
+					<div class="leftList">
+						<div class="listName">
+							投标开始时间：
+						</div>
+						<div class="listContent">
+							{{info.bidOpenTm}}
+						</div>
+					</div>
+					<div class="leftList">
+						<div class="listName">
+							创建时间：
+						</div>
+						<div class="listContent">
+							{{info.crtTm}}
+						</div>
+					</div>
+					<div class="leftList">
+						<div class="listName">
+							备注说明：
+						</div>
+						<div class="listContent">
+							{{info.rmks}}
+						</div>
+					</div>
+				</div>
+				<div class="rightbox">
+					<div class="rightList">
+						<div class="listName">
+							项目名称：
+						</div>
+						<div class="listContent">
+							{{info.nm}}
+						</div>
+					</div>
+					<div class="rightList">
+						<div class="listName">
+							保证金缴纳：
+						</div>
+						<div class="listContent">
+							{{info.needDeposit==0?'是':'否'}}
+						</div>
+					</div>
+					<div class="rightList">
+						<div class="listName">
+							投标截止时间：
+						</div>
+						<div class="listContent">
+							{{info.bidEndTm}}
+						</div>
+					</div>
+					<div class="rightList">
+						<div class="listName">
+							状态：
+						</div>
+						<div class="listContent" style="color: red;">
+							{{auditType[info.audit - 1]}}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="detailBox">
+				<div class="detailTitle">
+					<span>招标文件</span>
+					<div class="line"></div>
+					<div @click="allDownload" class="back" style="display: flex;align-items: center;"><i
+							class="el-icon-download" style="margin-right: 10px;font-size: 20px;"></i>全部下载 </div>
 				</div>
 				<div class="detailContent">
-					<div class="leftbox">
-						<div class="leftList">
-							<div class="listName">
-								项目编号：
-							</div>
-							<div class="listContent">
-								{{info.cd}}
-							</div>
-						</div>
-						<div class="leftList">
-							<div class="listName">
-								预算金额（万元）：
-							</div>
-							<div class="listContent">
-								{{info.budget}}
-							</div>
-						</div>
-						<div class="leftList">
-							<div class="listName">
-								投标开始时间：
-							</div>
-							<div class="listContent">
-								{{info.bidOpenTm}}
-							</div>
-						</div>
-						<div class="leftList">
-							<div class="listName">
-								创建时间：
-							</div>
-							<div class="listContent">
-								{{info.crtTm}}
-							</div>
-						</div>
-						<div class="leftList">
-							<div class="listName">
-								备注说明：
-							</div>
-							<div class="listContent">
-								{{info.rmks}}
-							</div>
-						</div>
-					</div>
-					<div class="rightbox">
-						<div class="rightList">
-							<div class="listName">
-								项目名称：
-							</div>
-							<div class="listContent">
-								{{info.nm}}
-							</div>
-						</div>
-						<div class="rightList">
-							<div class="listName">
-								保证金缴纳：
-							</div>
-							<div class="listContent">
-								{{info.needDeposit==0?'是':'否'}}
-							</div>
-						</div>
-						<div class="rightList">
-							<div class="listName">
-								投标截止时间：
-							</div>
-							<div class="listContent">
-								{{info.bidEndTm}}
-							</div>
-						</div>
-						<div class="rightList">
-							<div class="listName">
-								状态：
-							</div>
-							<div class="listContent" style="color: red;">
-								{{auditType[info.audit - 1]}}
-							</div>
+					<div class="fileList" v-for="(item,index) in list" :key='index' v-if="list.length>0">
+						<span>
+							{{index+1}}、
+						</span>
+						<div>
+							<img :src="item.img" style="width: 100px; height: 100px; cursor: pointer;"
+								@click="toLink(item.url)">
+							<p style="cursor: pointer;" @click="toLink(item.url)">{{item.fileNm}}</p>
 						</div>
 					</div>
 				</div>
-				<div class="detailBox">
-					<div class="detailTitle">
-						<span>招标文件</span>
-						<div class="line"></div>
-						<div @click="allDownload" class="back" style="display: flex;align-items: center;"><i
-								class="el-icon-download" style="margin-right: 10px;font-size: 20px;"></i>全部下载 </div>
+			</div>
+			<div class="detailBox">
+				<div class="detailTitle">
+					<div class="line"></div>
+				</div>
+				<div class="detailContent" style=" display:flex; flex-direction: column;">
+					<div class="list" v-if="info.options">
+						审核意见：
+						<span>{{info.options}}</span>
 					</div>
-					<div class="detailContent">
-						<div class="fileList" v-for="(item,index) in list" :key='index' v-if="list.length>0">
-							<span>
-								{{index+1}}、
-							</span>
-							<div>
-								<img :src="item.img" style="width: 100px; height: 100px; cursor: pointer;"
-									@click="toLink(item.url)">
-								<p style="cursor: pointer;" @click="toLink(item.url)">{{item.fileNm}}</p>
-							</div>
-						</div>
+					<div class="list" v-if="info.auditTm">
+						审核时间：
+						<span>{{info.auditTm}}</span>
+					</div>
+					<div class="list">
+						审核状态：
+						<span>{{auditType[info.audit - 1]}}</span>
 					</div>
 				</div>
-				<div class="detailBox">
-					<div class="detailTitle">
-						<div class="line"></div>
-					</div>
-					<div class="detailContent" style=" display:flex; flex-direction: column;">
-						<div class="list" v-if="info.options">
-							审核意见：
-							<span>{{info.options}}</span>
-						</div>
-						<div class="list" v-if="info.auditTm">
-							审核时间：
-							<span>{{info.auditTm}}</span>
-						</div>
-						<div class="list">
-							审核状态：
-							<span>{{auditType[info.audit - 1]}}</span>
-						</div>
-					</div>
+			</div>
+			<div class="detailBox">
+				<div class="detailTitle">
+					<span>报名审核</span>
+					<div class="line"></div>
 				</div>
-				<div class="detailBox">
-					<div class="detailTitle">
-						<span>报名审核</span>
-						<div class="line"></div>
-					</div>
-					<div class="detailContent">
-						<el-table :data="tableData" style="width: 100%" :cell-style="{
-					'text-align': 'center',
-					color: '#333',
-					'font-weight': '500',
-				  }" :header-cell-style="{
-					color: '#606060',
-					background: '#f8f8f8',
-					'text-align': 'center',
-				  }">
-							<el-table-column label="招标采购商" min-width="200">
-								<template slot-scope="scope">
-									<p style="color: #2778BE;cursor: pointer;" @click="showImg(scope.row.orgId)">
-										{{scope.row.orgNm}}
-									</p>
-								</template>
-							</el-table-column>
-							<el-table-column prop="crtTm" label="申请时间" min-width="200"></el-table-column>
-							<el-table-column label="审核状态" min-width="200">
-								<template slot-scope="scope">
-									<p v-if="scope.row.audit==1" style="color: #2778BE;">待审核</p>
-									<p v-if="scope.row.audit==2" style="color: #2778BE;">审核通过</p>
-									<p v-if="scope.row.audit==3" style="color: #E4393C;">审核不通过</p>
-								</template>
-							</el-table-column>
-							<el-table-column prop="options" label="审核意见" min-width="200" v-if="sonTabIndex==1">
-							</el-table-column>
-							<el-table-column label="操作" min-width="100">
-								<template slot-scope="scope">
-									<el-button type="text" size="small" @click="handleClickShenhe(scope.row)"
-										v-if="scope.row.audit==1"
-										style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;">审核
-									</el-button>
-								</template>
-							</el-table-column>
-						</el-table>
-					</div>
-				</div>
-				<div class="mask" @click="closeMask" v-if="showPop">
-					<div class="table_box" @click.stop="">
-						<div class="top">
-							<p style="font-size: 20px">企业审核</p>
-							<img @click="closeMask" src="~assets/img/close.png"
-								style="width: 25px; height: 25px;cursor: pointer;" />
-						</div>
-						<div class="row2">
-							<span>{{companyNm}}</span>
-							<el-input v-model="options" type="textarea" :rows="5" resize='none' placeholder="企业审核意见">
-							</el-input>
-						</div>
-						<div class="btn">
-							<el-button
-								style="background: #2778be; color: #fff; margin-right: 20px; padding: 10px 25px; border-radius: 4px;"
-								@click="pass" type="text" size="small">通过</el-button>
-							<el-button
-								style="background: #fff; color: #333; border: 1px solid #dddddd; padding: 10px 25px; border-radius: 4px;"
-								@click="reject" type="text" size="small">驳回</el-button>
-						</div>
-					</div>
-				</div>
-				<div class="mask" @click="closeImg" v-if="orgEnterImg">
-					<img class="org-img" :src="orgEnterImg">
-					<img src="../../assets/img/close-w.png" class="close-img">
-					<el-table-column label="招标采购商" min-width="200">
-						<template slot-scope="scope">
-							<p style="color: #2778BE;">{{scope.row.orgNm}}</p>
-						</template>
-					</el-table-column>
-					<el-table-column prop="crtTm" label="申请时间" min-width="200"></el-table-column>
-					<el-table-column label="审核状态" min-width="200">
-						<template slot-scope="scope">
-							<p v-if="scope.row.audit==1" style="color: #2778BE;">待审核</p>
-							<p v-if="scope.row.audit==2" style="color: #2778BE;">审核通过</p>
-							<p v-if="scope.row.audit==3" style="color: #E4393C;">审核不通过</p>
-						</template>
-					</el-table-column>
-					<el-table-column prop="options" label="审核意见" min-width="200" v-if="sonTabIndex==1">
-					</el-table-column>
-					<el-table-column label="操作" min-width="100" v-if="sonTabIndex==0">
-						<template slot-scope="scope">
-							<el-button type="text" size="small" @click="handleClickShenhe(scope.row)"
-								style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;"
-								v-if="auth1">审核</el-button>
-						</template>
-					</el-table-column>
+				<div class="detailContent">
+					<el-table :data="tableData" style="width: 100%" :cell-style="{
+				'text-align': 'center',
+				color: '#333',
+				'font-weight': '500',
+			  }" :header-cell-style="{
+				color: '#606060',
+				background: '#f8f8f8',
+				'text-align': 'center',
+			  }">
+						<el-table-column label="招标采购商" min-width="200">
+							<template slot-scope="scope">
+								<p style="color: #2778BE;cursor: pointer;" @click="showImg(scope.row.orgId)">
+									{{scope.row.orgNm}}
+								</p>
+							</template>
+						</el-table-column>
+						<el-table-column prop="crtTm" label="申请时间" min-width="200"></el-table-column>
+						<el-table-column label="审核状态" min-width="200">
+							<template slot-scope="scope">
+								<p v-if="scope.row.audit==1" style="color: #2778BE;">待审核</p>
+								<p v-if="scope.row.audit==2" style="color: #2778BE;">审核通过</p>
+								<p v-if="scope.row.audit==3" style="color: #E4393C;">审核不通过</p>
+							</template>
+						</el-table-column>
+						<el-table-column prop="options" label="审核意见" min-width="200" v-if="sonTabIndex==1">
+						</el-table-column>
+						<el-table-column label="操作" min-width="100">
+							<template slot-scope="scope">
+								<el-button type="text" size="small" @click="handleClickShenhe(scope.row)"
+									v-if="scope.row.audit==1"
+									style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;">审核
+								</el-button>
+							</template>
+						</el-table-column>
 					</el-table>
 				</div>
+			</div>
+			<div class="mask" @click="closeMask" v-if="showPop">
+				<div class="table_box" @click.stop="">
+					<div class="top">
+						<p style="font-size: 20px">企业审核</p>
+						<img @click="closeMask" src="~assets/img/close.png"
+							style="width: 25px; height: 25px;cursor: pointer;" />
+					</div>
+					<div class="row2">
+						<span>{{companyNm}}</span>
+						<el-input v-model="options" type="textarea" :rows="5" resize='none' placeholder="企业审核意见">
+						</el-input>
+					</div>
+					<div class="btn">
+						<el-button
+							style="background: #2778be; color: #fff; margin-right: 20px; padding: 10px 25px; border-radius: 4px;"
+							@click="pass" type="text" size="small">通过</el-button>
+						<el-button
+							style="background: #fff; color: #333; border: 1px solid #dddddd; padding: 10px 25px; border-radius: 4px;"
+							@click="reject" type="text" size="small">驳回</el-button>
+					</div>
+				</div>
+			</div>
+			<div class="mask" @click="closeImg" v-if="orgEnterImg">
+				<img class="org-img" :src="orgEnterImg">
+				<img src="../../assets/img/close-w.png" class="close-img">
+				<el-table-column label="招标采购商" min-width="200">
+					<template slot-scope="scope">
+						<p style="color: #2778BE;">{{scope.row.orgNm}}</p>
+					</template>
+				</el-table-column>
+				<el-table-column prop="crtTm" label="申请时间" min-width="200"></el-table-column>
+				<el-table-column label="审核状态" min-width="200">
+					<template slot-scope="scope">
+						<p v-if="scope.row.audit==1" style="color: #2778BE;">待审核</p>
+						<p v-if="scope.row.audit==2" style="color: #2778BE;">审核通过</p>
+						<p v-if="scope.row.audit==3" style="color: #E4393C;">审核不通过</p>
+					</template>
+				</el-table-column>
+				<el-table-column prop="options" label="审核意见" min-width="200" v-if="sonTabIndex==1">
+				</el-table-column>
+				<el-table-column label="操作" min-width="100" v-if="sonTabIndex==0">
+					<template slot-scope="scope">
+						<el-button type="text" size="small" @click="handleClickShenhe(scope.row)"
+							style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;"
+							v-if="auth1">审核</el-button>
+					</template>
+				</el-table-column>
+				</el-table>
 			</div>
 		</div>
 	</div>
@@ -394,7 +392,6 @@
 				} else {
 					this.attachment = []
 				}
-				this.attachment = res.data.attachment.split(',')
 				this.getInfo(this.attachment)
 			})
 			this.getList()
