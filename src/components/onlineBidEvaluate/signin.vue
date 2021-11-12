@@ -27,7 +27,9 @@
         <template slot-scope="scope">
           <div v-for="(item, index) in scope.row.orgItems" :key="index">
             {{ item.orgNm }}
-            <span style="color: red" v-show="item.signinStatus == 0">(未签到)</span>
+            <span style="color: red" v-show="item.signinStatus == 0"
+              >(未签到)</span
+            >
             <span v-show="item.signinStatus == 1">(已签到)</span>
           </div>
         </template>
@@ -178,7 +180,11 @@ export default {
     });
   },
   mounted() {
-    this.getList();
+      this.getList();
+
+    setInterval(() => {
+      this.getList();
+    }, 60000);
   },
 };
 </script>

@@ -115,10 +115,10 @@
                   style="
                     width: 100px;
                     height: 27px;
-                    border: 1px solid #2778be;
+                    border: 1px solid red;
                     line-height: 27px;
                     text-align: center;
-                    color: #2778be;
+                    color: red;
                     margin: 0 auto;
                   "
                 >
