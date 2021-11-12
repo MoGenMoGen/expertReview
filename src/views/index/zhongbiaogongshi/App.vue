@@ -59,14 +59,14 @@
 										<el-button @click="handleClickShenhe(scope.row,2)" type="text" size="small" 
 										v-if="scope.row.announcementOfResults>0&&scope.row.announcementOfResultsStatus==2&&auth2" >查看公示
 										</el-button>
-										<!-- <br> -->
+										<br>
 										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,0)" v-if="scope.row.announcementOfResults==0&&scope.row.announcementOfResultsStatus==0&&auth3"
 											style="background: #FFF;color: #2778BE; border-radius: 2px;width: 50px;border: 1px solid #2778BE;box-sizing: border-box;margin-bottom: 10px;">
 											发布</el-button>
-										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,3)" v-if="scope.row.announcementOfResults>0&&scope.row.announcementOfResultsStatus==3&&auth5"
+										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,3)" v-if="scope.row.announcementOfResults>0&&auth5"
 											style="background: #FFF;color: #2778BE; border-radius: 2px;width: 50px;border: 1px solid #2778BE;box-sizing: border-box;margin-bottom: 10px;">
 											修改</el-button>
-										<!-- <br> -->
+										<br>
 										<el-button type="text" size="small" @click="handleClickShenhe(scope.row,1)" v-if="scope.row.announcementOfResults>0&&scope.row.announcementOfResultsStatus!=2&&auth3"
 											style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;margin-left: 0;">
 											审核</el-button>
