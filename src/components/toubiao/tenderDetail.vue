@@ -141,7 +141,8 @@
 							:src="newItem" :preview-src-list="item.deposits.shipBidDepositVo.depositImgUrl"></el-image>
 						</div>
 						<div>申请时间：{{item.crtTm}}</div>
-						<div>
+						<div v-if="item.offerDtos">投标金额：{{item.offerDtos.shipBidOfferVo.offerAmt}}元</div>
+						<div v-if="item.newList.length>0">
 							投标文件：
 							<div style="display: flex; flex-wrap: wrap;">
 								<div class="fileList" v-for="(item1,index1) in item.newList"
