@@ -130,7 +130,7 @@
 					</div>
 				</div>
 			</div>
-		<!-- 	<div class="detailBox" v-if="info.audit==1&&auth">
+			<div class="detailBox" v-if="info.audit==1&&auth">
 				<div class="detailTitle">
 					<span>审核意见</span>
 					<div class="line">
@@ -145,7 +145,7 @@
 				<div class="btnRight"@click="reject">
 					驳回
 				</div>
-			</div> -->
+			</div>
 		</div>
 </template>
 
