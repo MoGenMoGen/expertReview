@@ -9,7 +9,7 @@
 				</div>
 				<div class="row2">
 					<div class="title">
-						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>项目工程编号</span>
+						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>项目编号</span>
 					</div>
 					<div class="right">
 						<el-input v-model="cd" class="margin_right" clearable placeholder="项目编号">
@@ -37,7 +37,7 @@
 						</el-select>
 					</div>
 				</div>
-			<!-- 	<div class="row2">
+				<!-- 	<div class="row2">
 					<div class="title">
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>采购单位</span>
 					</div>
@@ -150,7 +150,7 @@
 						<span>预算金额（万元）</span>
 					</div>
 					<div class="right">
-						<el-input v-model="budget"  class="margin_right" clearable placeholder="预算金额(万元)">
+						<el-input v-model="budget" class="margin_right" clearable placeholder="预算金额(万元)">
 						</el-input>
 					</div>
 				</div>
@@ -208,10 +208,10 @@
 				</div>
 				<div class="row2">
 					<div class="title">
-						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>招标范围</span>
+						<span style="color: red; margin-right: 5px; display: inline-block"></span><span>招标范围</span>
 					</div>
 					<div class="right">
-						<el-select v-model="viewRangeNm" clearable  value-key="nm" filterable placeholder="招标范围(机构类型)"
+						<el-select v-model="viewRangeNm" clearable value-key="nm" filterable placeholder="招标范围(机构类型)"
 							style="margin-left: 12px;" @change="select8">
 							<el-option v-for="item in optionsFive" :key="item.nm" :label="item.nm" :value="item">
 							</el-option>
@@ -236,7 +236,7 @@
 				</div>
 				<div class="row2">
 					<div class="title">
-						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>专家选取规则</span>
+						<span style="color: red; margin-right: 5px; display: inline-block"> </span><span>专家选取规则</span>
 					</div>
 					<div class="right">
 						<el-select v-model="ruleId" placeholder="专家选取规则模板" clearable filterable
@@ -277,8 +277,8 @@
 		          margin-right: 20px;
 		          padding: 10px 25px;
 		          border-radius: 4px;
-		        " @click="confirmTo" type="text" size="small" >确定</el-button>
-				
+		        " @click="confirmTo" type="text" size="small">确定</el-button>
+
 					<el-button style="
 		          background: #fff;
 		          color: #333;
@@ -314,7 +314,8 @@
 							</el-option>
 						</el-select>
 						<el-button plain @click='toSearch' v-if="auth1">查询</el-button>
-						<el-button type="primary" style="background-color:  #2778BE;" @click='addNew' v-if="auth2">新增</el-button>
+						<el-button type="primary" style="background-color:  #2778BE;" @click='addNew' v-if="auth2">新增
+						</el-button>
 					</div>
 					<div class="bodyTable">
 						<el-table :data="tableData" style="width: 100%" :cell-style="{
@@ -366,7 +367,8 @@
 							</el-table-column>
 							<el-table-column label="操作" min-width="50">
 								<template slot-scope="scope">
-									<el-button @click="tolook(scope.row)" type="text" size="small" v-if="auth5">查看</el-button>
+									<el-button @click="tolook(scope.row)" type="text" size="small" v-if="auth5">查看
+									</el-button>
 									<br>
 									<el-button type="text" size="small" style="color: #E4393C;"
 										@click='toModify(scope.row)' v-if="auth4">修改</el-button>
@@ -378,7 +380,7 @@
 						</el-table>
 					</div>
 					<div class="Footer">
-						<el-pagination background @current-change="handleCurrentChange" :current-page.sync="currentPage"
+						<el-pagination background @current-change="handleCurrentChange" :current-page.sync="pageNo"
 							:page-size="pageSize" layout="prev, pager, next, jumper" :total="total">
 						</el-pagination>
 					</div>
@@ -406,15 +408,16 @@
 	import detail from '@/components/zhaobiao/detail';
 	import change from '@/components/zhaobiao/change';
 	import topNav from '@/components/topNav';
+
 	export default {
 		data() {
 			return {
-				auth1:'',//查询权限
-				auth2:'',//新增权限
-				auth3:'',//删除权限
-				auth4:'',//修改权限
-				auth5:'',//查看权限
-				auth6:'',//审核权限
+				auth1: '', //查询权限
+				auth2: '', //新增权限
+				auth3: '', //删除权限
+				auth4: '', //修改权限
+				auth5: '', //查看权限
+				auth6: '', //审核权限
 				searchInput1: '',
 				searchInput2: '',
 				searchInput3: '',
@@ -478,7 +481,7 @@
 				form: {
 					file: ''
 				},
-				modifyId:'',
+				modifyId: '',
 				fileInfo: [],
 				radio: 1,
 				activeName: '',
@@ -507,6 +510,7 @@
 				optionsSix: [],
 				optionsSeven: [],
 				optionsEight: [],
+				flag: true,
 			}
 		},
 		computed: {
@@ -579,13 +583,13 @@
 				this.optionsThree = res.list
 			})
 			//获取权限
-			 this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:page')>-1)
-			 this.auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:add')>-1)
-			 this.auth3 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:del')>-1)
-			 this.auth4 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:upd')>-1)
-			 this.auth5 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:info')>-1)
-			 this.auth6 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:examine')>-1)
-			 console.log(this.auth1,this.auth2,this.auth3,this.auth4,this.auth5,this.auth6,);
+			this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:page') > -1)
+			this.auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:add') > -1)
+			this.auth3 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:del') > -1)
+			this.auth4 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:upd') > -1)
+			this.auth5 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:info') > -1)
+			this.auth6 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:examine') > -1)
+			console.log(this.auth1, this.auth2, this.auth3, this.auth4, this.auth5, this.auth6, );
 			this.getList()
 
 		},
@@ -644,7 +648,7 @@
 			//修改
 			toModify(row) {
 				this.showModify = true
-				this.modifyId=row.id
+				this.modifyId = row.id
 				this.api.getBidInfo(row.id).then(res => {
 					this.cd = res.data.cd
 					this.budget = res.data.budget
@@ -665,11 +669,11 @@
 					this.needDeposit = res.data.needDeposit
 					this.status = res.data.status
 					this.svsOn = res.data.svsOn
-					this.attachment=res.data.attachment
+					this.attachment = res.data.attachment
 					let modelList = res.data.attachment.split(',')
 					this.getInfo(modelList)
-					console.log('11',this.list);
-					if(this.list[0].fileNm){
+					console.log('11', this.list);
+					if (this.list[0].fileNm) {
 						for (let i = 0; i < this.list.length; i++) {
 							this.fileInfo.push({
 								name: this.list[i].fileNm,
@@ -677,8 +681,6 @@
 							})
 						}
 					}
-				
-
 					this.viewRangeNm = res.data.viewRangeNm
 					this.viewRangeCd = res.data.viewRangeCd
 					this.orgEnterIds = res.data.orgEnterIds
@@ -767,101 +769,101 @@
 				this.fileInfo = []
 			},
 			confirmTo() {
-				if(!this.cd){
+				if (!this.cd) {
 					this.$message({
 						type: "error",
 						message: "项目编号不能为空",
 					});
 					return false
 				}
-				if(!this.nm){
+				if (!this.nm) {
 					this.$message({
 						type: "error",
 						message: "项目名称不能为空",
 					});
 					return false
 				}
-				if(!this.svsId){
+				if (!this.svsId) {
 					this.$message({
 						type: "error",
 						message: "项目评定标准不能为空",
 					});
 					return false
 				}
-				if(!this.procurementMethodCd){
+				if (!this.procurementMethodCd) {
 					this.$message({
 						type: "error",
 						message: "采购方式不能为空",
 					});
 					return false
 				}
-				if(!this.bidTypesCd){
+				if (!this.bidTypesCd) {
 					this.$message({
 						type: "error",
 						message: "项目需求类型不能为空",
 					});
 					return false
 				}
-				if(!this.publishTm){
+				if (!this.publishTm) {
 					this.$message({
 						type: "error",
 						message: "发布时间不能为空",
 					});
 					return false
 				}
-				if(!this.completeTm){
+				if (!this.completeTm) {
 					this.$message({
 						type: "error",
 						message: "完成时间不能为空",
 					});
 					return false
 				}
-				if(!this.bidOpenTm){
+				if (!this.bidOpenTm) {
 					this.$message({
 						type: "error",
 						message: "开标时间不能为空",
 					});
 					return false
 				}
-				if(!this.bidEndTm){
+				if (!this.bidEndTm) {
 					this.$message({
 						type: "error",
 						message: "截标时间不能为空",
 					});
 					return false
 				}
-				if(!this.publisher){
+				if (!this.publisher) {
 					this.$message({
 						type: "error",
 						message: "发布人不能为空",
 					});
 					return false
 				}
-				if(!this.linkman){
+				if (!this.linkman) {
 					this.$message({
 						type: "error",
 						message: "联系人不能为空",
 					});
 					return false
 				}
-				if(!this.mob){
+				if (!this.mob) {
 					this.$message({
 						type: "error",
 						message: "联系电话不能为空",
 					});
 					return false
 				}
-				if(!this.budget){
+				if (!this.budget) {
 					this.$message({
 						type: "error",
 						message: "预算金额不能为空",
 					});
 					return false
 				}
-				if(!this.viewRangeCd){
+				if (!this.viewRangeCd&&!this.orgEnterIds) {
 					this.$message({
 						type: "error",
-						message: "招标范围（机构类型）不能为空",
+						message: "招标范围不能全为空",
 					});
 					return false
 				}
@@ -872,14 +874,14 @@
 				// 	});
 				// 	return false
 				// }
-				if(!this.ruleId){
-					this.$message({
-						type: "error",
-						message: "专家选取规则不能为空",
-					});
-					return false
-				}
-				if(!this.expertIds){
+				// if (!this.ruleId) {
+				// 	this.$message({
+				// 		type: "error",
+				// 		message: "专家选取规则不能为空",
+				// 	});
+				// 	return false
+				// }
+				if (!this.expertIds) {
 					this.$message({
 						type: "error",
 						message: "专家不能为空",
@@ -895,8 +897,8 @@
 					procurementMethodCd: this.procurementMethodCd,
 					bidTypesCd: this.bidTypesCd,
 					bidTypesNm: this.bidTypesNm,
-					publishTm: this.until.formatTime(this.publishTm).substring(0,10),
-					completeTm: this.until.formatTime(this.completeTm).substring(0,10),
+					publishTm: this.until.formatTime(this.publishTm).substring(0, 10),
+					completeTm: this.until.formatTime(this.completeTm).substring(0, 10),
 					bidOpenTm: this.until.formatTime(this.bidOpenTm),
 					bidEndTm: this.until.formatTime(this.bidEndTm),
 					publisher: this.publisher,
@@ -914,21 +916,31 @@
 					expertIdsList: this.expertIdsList,
 					expertIds: this.expertIds,
 					rmks: this.rmks,
-					id:this.modifyId
+					id: this.modifyId
 				}
-				if(this.newShow==true){
+				if (!this.flag) {
+					this.$message({
+						message: '请勿重复点击',
+						type: 'warning'
+					});
+				}
+				if (this.newShow == true && this.flag == true) {
+					this.flag = false
 					this.api.postBidAdd(obj).then(res => {
-							this.closeMask()
-							this.getList()
+						this.flag = true
+						this.closeMask()
+						this.getList()
 					})
 				}
-				if(this.showModify==true){
+				if (this.showModify == true && this.flag == true) {
+					this.flag == false
 					this.api.postBidUpd(obj).then(res => {
-							this.closeMask()
-							this.getList()
+						this.flag = true
+						this.closeMask()
+						this.getList()
 					})
 				}
-			
+
 			},
 			async getInfo(info) {
 				this.list = []
@@ -1000,7 +1012,7 @@
 					.join(",");
 			},
 			handleRemove(file, fileList) {
-				console.log('12131',fileList);
+				console.log('12131', fileList);
 				this.attachment = fileList.map((item) => item.url)
 					.join(",");
 			},
@@ -1053,7 +1065,7 @@
 					}).then(res => {
 						console.log('5573', res.list);
 						this.expertIdsList = res.list
-						this.expertIds=res.list.join(',')
+						this.expertIds = res.list.join(',')
 					})
 				}
 			},
@@ -1069,11 +1081,12 @@
 				this.search1cd = val
 			},
 			toSearch() {
-				this.getList()
+				
+				this.handleCurrentChange(1)
 			},
-			select3(val){
-				this.procurementMethodNm=val.nm
-				this.procurementMethodCd=val.cd
+			select3(val) {
+				this.procurementMethodNm = val.nm
+				this.procurementMethodCd = val.cd
 			}
 
 

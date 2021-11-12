@@ -52,7 +52,7 @@
 							</el-table-column>
 							<el-table-column prop="bidDecideTm" label="中标时间" min-width="100">
 							</el-table-column>
-							<el-table-column prop="attachment" label="招标文件数量" min-width="150">
+							<el-table-column prop="attachment2" label="招标文件数量" min-width="150">
 								
 							</el-table-column>
 							<el-table-column prop="file" label="状态" min-width="100">
@@ -443,7 +443,7 @@
 			
 					})
 				}
-				console.log(fileList2)
+				console.log('11',fileList2)
 				if(fileList2[0].url){
 					this.list = fileList2
 				}
@@ -464,10 +464,10 @@
 					this.total=res.page.total
 					for(let i=0;i<this.tableData.length;i++){
 						if(this.tableData[i].attachment){
-							this.tableData[i].attachment=this.tableData[i].attachment.split(',').length
+							this.tableData[i].attachment2=this.tableData[i].attachment.split(',').length
 						}
 						else{
-							this.tableData[i].attachment=0
+							this.tableData[i].attachment2=0
 						}
 					}
 				})

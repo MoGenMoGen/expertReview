@@ -257,7 +257,7 @@
 							<div class="detailContent">
 								<div class="collapse-item" v-for="(item,index) in infoList" :key="index">
 									<div class="collapse-top" @click="showMore(index)">
-										<div>招标采购商：<span style="color: #2778BE;">{{item.offer.orgNm}}</span></div>
+										<div>招标采购商：<span style="color: #2778BE;" v-if="item.offer">{{item.offer.orgNm}}</span></div>
 										<div>审核状态：<span
 												:style="{color:(item.apply.audit==2?'#2778BE':'#E4393C')}">{{item.apply.audit==2?'通过':'未通过'}}</span><img
 												:class="{'collapse-rotate':selectIndex==index}"
@@ -265,13 +265,13 @@
 									</div>
 									<div class="collapse-bottom" v-show="selectIndex==index">
 
-										<div :style="{color:(item.apply.deposits?'#606060':'#E4393C')}">
+										<div :style="{color:(item.apply.deposits?'#606060':'#E4393C')}" v-if="item.deposot">
 											保证金：{{item.deposot.refundTm?'已退':'未退'}}</div>
-										<div class="refundBack" @click="toRefundBack(item.deposot.id)">
+										<div class="refundBack" @click="toRefundBack(item.deposot.id)"  v-if="item.deposot">
 											保证金退还
 										</div>
-										<div v-if="item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
-										<div v-if="item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
+										<div v-if="item.deposot&&item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
+										<div v-if="item.deposot&&item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
 										<div class="" style="display: flex; flex-wrap: wrap;">
 
 
@@ -561,7 +561,9 @@
 
 							})
 						}
-						this.infoList[i].newList = fileList2
+						if(fileList2[0].url){
+							this.infoList[i].newList = fileList2
+						}
 					}
 					console.log('78789987', this.infoList);
 				})
@@ -745,6 +747,7 @@
 			height: 800px;
 			margin-left: 10px;
 			width: calc(~"100% - 210px");
+			background-color: #ffffff;
 
 			// width: 100%;
 			.content {

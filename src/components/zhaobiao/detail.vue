@@ -53,7 +53,6 @@
 								<p>2、截标时间：
 									<span style="color: red;">{{info.bidEndTm}}</span>
 								</p>
-								<p>（以我司招标办收到的投标标准时间为准）,逾期按弃权处理</p>
 								<p>3、联系人：
 									<span>{{info.linkman}}</span>
 								</p>
