@@ -148,6 +148,7 @@
 </template>
 
 <script>
+import bus from "@/bus.js";
 export default {
   data() {
     return {
@@ -177,6 +178,7 @@ export default {
           message: "更新成功!",
         });
         this.$emit("updateAndSave");
+        bus.$emit("upAverage");
       }
       setTimeout(() => {
         this.closeMask();

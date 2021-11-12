@@ -112,6 +112,10 @@ export default {
       this.isDel = data;
       console.log(222, data);
     });
+     bus.$on("upAverage", () => {
+       this.getScore();
+    });
+
 	this.bidId = this.until.getQueryString('id')
     this.getScore();
   },

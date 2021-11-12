@@ -15,9 +15,60 @@
       <div class="container">
         <div style="display: flex; padding: 20px; align-items: center">
           <div style="width: 90px">
-            <span style="color: red; margin-right: 5px">*</span> 视频上传：
+            <span style="color: red; margin-right: 5px">*</span> 视频地址：
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 5px;
+              "
+            >
+              <div
+                style="
+                  background: rgb(64, 158, 255);
+                  color: rgb(255, 255, 255);
+                  border: none;
+                  cursor: pointer;
+                  width: 35px;
+                  text-align: center;
+                "
+                @click="Add"
+              >
+                新增
+              </div>
+              <div
+                style="
+                  background: rgb(250, 182, 182);
+                  color: rgb(255, 255, 255);
+                  border: none;
+                  width: 35px;
+                  cursor: pointer;
+                  text-align: center;
+                "
+                @click="Del"
+              >
+                删除
+              </div>
+            </div>
           </div>
-          <div
+          <div>
+            <div
+              v-for="(item, index) in videoList"
+              :key="index"
+              style="margin-bottom: 5px"
+            >
+              <el-input
+                style="width: 600px"
+                placeholder="请输入视频地址"
+                v-model="item.url"
+                clearable
+              >
+              </el-input>
+            </div>
+          </div>
+
+          <!-- <div
             v-if="videoForm.showVideoPath != '' && !videoFlag"
             style="position: relative"
           >
@@ -63,14 +114,14 @@
               :percentage="videoUploadPercent"
               style="margin-top: 7px"
             ></el-progress>
-          </el-upload>
+          </el-upload> -->
         </div>
         <div style="display: flex; padding: 20px; align-items: center">
           <div style="width: 80px; padding-right: 6px">
             <span style="color: red; margin-right: 5px">*</span>视频名称:
           </div>
           <el-input
-            style="width: 250px"
+            style="width: 600px"
             placeholder="请输入名称"
             v-model="uploadData.title"
             clearable
@@ -82,7 +133,7 @@
             <span style="color: red; margin-right: 5px"></span>备注:
           </div>
           <el-input
-            style="width: 250px"
+            style="width: 600px"
             placeholder="请输入备注"
             type="textarea"
             autosize
@@ -139,6 +190,8 @@ export default {
       videoForm: {
         showVideoPath: "",
       },
+      // 视频地址数组
+      videoList: [{ url: "" }],
       uploadData: {
         bidId: "", //招标项目id
         title: "", //视频标题
@@ -157,6 +210,15 @@ export default {
     id: { default: "", type: Number },
   },
   methods: {
+    //添加视频地址
+    Add() {
+      this.videoList.push({ url: "" });
+    },
+    Del() {
+      if (this.videoList.length > 1) {
+        this.videoList.pop();
+      }
+    },
     closeMask() {
       this.$parent.showUpload = false;
     },
@@ -217,12 +279,15 @@ export default {
       this.uploadData.vedioUrl = "";
     },
     handleConfirm() {
-      if (!this.uploadData.vedioUrl) {
-        this.$message.error("请上传视频");
-        return false;
+      for (let item of this.videoList) {
+        if (this.reg.checkVideo(item.url) != "ok") {
+          this.$message.error(this.reg.checkVideo(item.url));
+          return false;
+        }
       }
-      else if(!this.uploadData.title){
-          this.$message.error("请输入视频名称");
+      this.uploadData.vedioUrl = this.videoList.map((item) => item.url).join(",");
+      if (!this.uploadData.title) {
+        this.$message.error("请输入视频名称");
         return false;
       }
 

@@ -154,11 +154,18 @@ export default {
       window.open(url);
     },
     async handleDecrypt(id) {
-      let data = await this.api.decrypt({
-        id,
-      });
-      console.log(data);
-      this.getList();
+      this.fullscreenLoading = true;
+      this.api
+        .decrypt({
+          id,
+        })
+        .then((res) => {
+          this.fullscreenLoading = false;
+          this.getList();
+        });
+      setTimeout(() => {
+        this.fullscreenLoading = false;
+      }, 5000);
     },
     toDetail(id) {
       this.showDetail = true;

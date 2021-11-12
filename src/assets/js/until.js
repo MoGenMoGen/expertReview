@@ -1,19 +1,18 @@
 
 class until {
-    //设置宽度
-    getWidth() {
-        let width = 0
-        let bWidth = 0
-        let widths = document.documentElement.clientWidth ||  document.body.clientWidth;
-        bWidth = widths>1200 ? widths : 1200
-        width = bWidth*0.9>1200 ? 1200 : bWidth*0.9
-        return{width,bWidth}
-    }
-  noShare(){
-      document.addEventListener('WeixinJSBridgeReady', function onBridgeReady()
-      {
-          WeixinJSBridge.call('hideOptionMenu');
-      });
+  //设置宽度
+  getWidth() {
+    let width = 0
+    let bWidth = 0
+    let widths = document.documentElement.clientWidth || document.body.clientWidth;
+    bWidth = widths > 1200 ? widths : 1200
+    width = bWidth * 0.9 > 1200 ? 1200 : bWidth * 0.9
+    return { width, bWidth }
+  }
+  noShare() {
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+      WeixinJSBridge.call('hideOptionMenu');
+    });
   }
   //对象数组方法去重
   arrayDeduplication(arr) {
@@ -22,7 +21,7 @@ class until {
       obj[next.matchMenuId]
         ? ""
         : (obj[next.matchMenuId] =
-            true && (next.type === 0 || next.type === 1) && curr.push(next));
+          true && (next.type === 0 || next.type === 1) && curr.push(next));
       return curr;
     }, []);
   }
@@ -278,9 +277,9 @@ class until {
     };
   }
   //计算时间差
-  TimeStep(times,endTime) {
+  TimeStep(times, endTime) {
     let start = new Date(times);
-    let end = endTime ? new Date(endTime) :  new Date();
+    let end = endTime ? new Date(endTime) : new Date();
     let count = (end.getTime() - start.getTime()) / 1000;
     let d = parseInt(count / (60 * 60) / 24);
     return d;
@@ -351,21 +350,21 @@ class until {
     }, 1000);
   }
   // 顶部导航
-  checkNav(obj,list) {
-	let data = ''
-	console.log(list)
-	list.forEach(item => {
-		if(item.name == obj.name) {
-			data = list
-			return
-		}
-	})
-	if(data=='') {
-		list.push(obj);
-		data = list;
-		this.seSave('navList',JSON.stringify(data))
-	}
-	return data
+  checkNav(obj, list) {
+    let data = ''
+    console.log(list)
+    list.forEach(item => {
+      if (item.name == obj.name) {
+        data = list
+        return
+      }
+    })
+    if (data == '') {
+      list.push(obj);
+      data = list;
+      this.seSave('navList', JSON.stringify(data))
+    }
+    return data
   }
   // 格式化日期,返回年月日时分秒
   formatTen(num) {
@@ -494,6 +493,21 @@ class reg {
     }
     return "ok";
   }
+  // 校验视频格式
+  checkVideo(str) {
+    let reg = /^https?:\/\/(.+\/)+.+(\.(swf|avi|flv|mpg|rm|mov|wav|asf|3gp|mkv|rmvb|mp4))$/i;
+    if (str == "") {
+      return "视频地址不能为空";
+    }
+    if (!reg.test(str)) {
+      return "请输入正确的视频地址";
+    }
+    return "ok";
+
+  }
+
+
+
 }
 
 export { until, reg, judge };
