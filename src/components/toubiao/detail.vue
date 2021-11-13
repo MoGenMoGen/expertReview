@@ -140,7 +140,7 @@
 			  }">
 						<el-table-column label="招标采购商" min-width="200">
 							<template slot-scope="scope">
-								<p style="color: #2778BE;cursor: pointer;">
+								<p style="color: #2778BE;cursor: pointer;" @click="showInfo(scope.row.orgId)">
 									{{scope.row.orgNm}}
 								</p>
 							</template>
@@ -188,6 +188,7 @@
 					</div>
 				</div>
 			</div>
+			<orgEnter v-if="orgEnterShow" :orgEnterId="orgEnterId"></orgEnter>
 		</div>
 	</div>
 </template>
@@ -197,6 +198,7 @@
 	import ppt from '@/assets/img/ppt.png'
 	import word from '@/assets/img/word.png'
 	import pdf from '@/assets/img/pdf.jpg'
+	import orgEnter from '@/components/toubiao/orgEnterInfo';
 	export default {
 		data() {
 			return {
@@ -214,6 +216,8 @@
 				options: '',
 				companyNm: '',
 				showPop: false,
+				orgEnterShow: false,
+				orgEnterId: ''
 			};
 		},
 		props: {
@@ -348,6 +352,10 @@
 				let urls = this.attachment.join(',')
 				window.open(`https://fb.ship88.cn/general/oss/aliDownload?urls=${urls}&zipName=''`)
 			},
+			showInfo(id) {
+				this.orgEnterShow = true
+				this.orgEnterId = id
+			}
 		},
 		async mounted() {
 			this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bidApply:audit') > -1)
@@ -362,7 +370,9 @@
 			})
 			this.getList()
 		},
-		components: {}
+		components: {
+			orgEnter
+		}
 	};
 </script>
 

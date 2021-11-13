@@ -150,6 +150,7 @@
 						</div>
 					</div>
 				</div>
+				<orgEnter v-if="orgEnterShow" :orgEnterId="orgEnterId"></orgEnter>
 			</div>
 		</div>
 		<my-footer></my-footer>
@@ -162,6 +163,7 @@
 	import leftMenu from '@/components/leftMenu';
 	import topNav from '@/components/topNav';
 	import detail from '@/components/toubiao/detail';
+	import orgEnter from '@/components/toubiao/orgEnterInfo';
 	export default {
 		data() {
 			return {
@@ -191,7 +193,9 @@
 				companyId: '',
 				companyNm: '',
 				showPop: false,
-				idea: ''
+				idea: '',
+				orgEnterShow: false,
+				orgEnterId: ''
 			}
 		},
 		computed: {
@@ -202,7 +206,8 @@
 			myHeader,
 			leftMenu,
 			detail,
-			topNav
+			topNav,
+			orgEnter
 		},
 		mounted() {
 			this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:info')>-1)
@@ -322,9 +327,8 @@
 				})
 			},
 			showInfo(id) {
-				this.api.getOrgEnterInfo(id).then(res => {
-					console.log(res)
-				})
+				this.orgEnterShow = true
+				this.orgEnterId = id
 			}
 		}
 	}
