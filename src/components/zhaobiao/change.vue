@@ -24,7 +24,6 @@
 					<div class="right">
 						<el-date-picker v-model="releTm" type="date" placeholder="选择日期">
 						</el-date-picker>
-						</el-input>
 					</div>
 				</div>
 				<div class="row2">
@@ -50,7 +49,7 @@
 					<div class="title">
 						<span style="color: red; margin-right: 1px; display: inline-block">* </span><span>公告类型</span>
 					</div>
-					<div class="right" style="margin-left: 12px;">
+					<div class="right">
 						<el-select v-model="value" value-key="nm" placeholder="请选择公告类型" @change="select1">
 							<el-option v-for="item in options" :key="item.id" :label="item.nm" :value="item">
 							</el-option>
@@ -80,8 +79,9 @@
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span>
 						<span>公告内容</span>
 					</div>
-					<div class="right" style="width: 80%;">
-						<MyEditor ref="myEditor"></MyEditor>
+					<!-- style="width: 100%;" -->
+					<div class="right">
+						<MyEditor  frameHeight=700 ref="myEditor"></MyEditor>
 
 					</div>
 				</div>
@@ -328,7 +328,6 @@
 					<div class="right">
 						<el-date-picker v-model="releTm" type="date" placeholder="选择日期">
 						</el-date-picker>
-						</el-input>
 					</div>
 				</div>
 				<div class="row2">
@@ -354,7 +353,7 @@
 					<div class="title">
 						<span style="color: red; margin-right: 1px; display: inline-block">* </span><span>公告类型</span>
 					</div>
-					<div class="right" style="margin-left: 12px;">
+					<div class="right">
 						<el-select v-model="value" value-key="nm" placeholder="请选择公告类型" @change="select1">
 							<el-option v-for="item in options" :key="item.id" :label="item.nm" :value="item">
 							</el-option>
@@ -382,8 +381,8 @@
 					<div class="title">
 						<span>公告内容</span>
 					</div>
-					<div class="right" style="width: 80%;">
-						<MyEditor ref="myEditor"></MyEditor>
+					<div class="right">
+						<MyEditor  frameHeight=700 ref="myEditor"></MyEditor>
 
 					</div>
 				</div>
@@ -455,393 +454,394 @@
 </template>
 
 <script>
-	import MyEditor from '@/components/myEditor'
+import MyEditor from "@/components/myEditor";
 
-	export default {
-		data() {
-			return {
-				auth1:'',//新增权限
-				auth2:'',//审核权限
-				auth3:'',//编辑权限
-				auth4:'',//删除权限
-				input1: '',
-				input2: '',
-				input3: '',
-				date1: '',
-				value: '',
-				value1: '',
-				rmks: '',
-				textarea: '',
-				num: '',
-				seq: '',
-				radio: 1,
-				title: '',
-				releTm: '',
-				opinion: '',
-				afficheTypeCd: '', //公告类型id
-				afficheTypeNm: '', //公告类型nm
-				addShow: false, //新增弹窗
-				checkShow: false, //审核弹窗
-				detailShow: false, //详情弹窗
-				editShow: false, //编辑弹窗
-				options: [],
-				optionsTwo: [],
-				value: '',
-				tableData: [],
-				multipleSelection: [],
-				detailInfo: {}
-			}
-		},
-		components: {
-			MyEditor
-		},
-		props: {
-			detailId: {
-				type: Number,
-				default: "0",
-			},
-			detailName: {
-				type: String,
-				default: "0",
-			}
-		},
-		mounted() {
-			this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bidAffiche:add')>-1)
-			this.auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bidAffiche:examine')>-1)
-			this.auth3 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bidAffiche:upd')>-1)
-			this.auth4 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bidAffiche:del')>-1)
-			this.getList()
-			this.api.getCatListByPcd({
-				cd: 'ANNOUNCEMENT_TYPE'
-			}).then(res => {
-				this.options = res.list
-			})
-		},
-		methods: {
-			getList() {
-				let query = this.query.new()
-				this.query.toW(query, 'bidId', this.detailId, 'EQ')
-				this.query.toO(query, 'seq', 'asc')
-				this.api.getBidAffichePage(this.query.toEncode(query)).then(res => {
-					this.tableData = res.data.list
-				})
-			},
-			handleSelectionChange(val) {
-				this.multipleSelection = val
-			},
-			toCheck(val) {
-				this.checkShow = true
-				this.api.getBidAfficheDetail(val.id).then(res => {
-					this.detailInfo = res
-				})
-			},
-			toDetail(val) {
-				this.detailShow = true
-				this.api.getBidAfficheDetail(val.id).then(res => {
-					this.detailInfo = res
-				})
-			},
-			toEdit(val) {
-				this.editShow = true
-				this.api.getBidAfficheDetail(val.id).then(res => {
-					this.detailInfo = res
-					this.title = res.title
-					this.releTm = res.releTm
-					this.value = res.afficheTypeNm
-					this.afficheTypeCd = res.afficheTypeCd,
-						this.afficheTypeNm = res.afficheTypeNm,
-						this.rmks = res.rmks
-					this.seq = res.seq
-					this.$refs.myEditor.msg = res.cont
+export default {
+  data() {
+    return {
+      auth1: "", //新增权限
+      auth2: "", //审核权限
+      auth3: "", //编辑权限
+      auth4: "", //删除权限
+      input1: "",
+      input2: "",
+      input3: "",
+      date1: "",
+      value: "",
+      value1: "",
+      rmks: "",
+      textarea: "",
+      num: "",
+      seq: "",
+      radio: 1,
+      title: "",
+      releTm: "",
+      opinion: "",
+      afficheTypeCd: "", //公告类型id
+      afficheTypeNm: "", //公告类型nm
+      addShow: false, //新增弹窗
+      checkShow: false, //审核弹窗
+      detailShow: false, //详情弹窗
+      editShow: false, //编辑弹窗
+      options: [],
+      optionsTwo: [],
+      value: "",
+      tableData: [],
+      multipleSelection: [],
+      detailInfo: {},
+    };
+  },
+  components: {
+    MyEditor,
+  },
+  props: {
+    detailId: {
+      type: Number,
+      default: "0",
+    },
+    detailName: {
+      type: String,
+      default: "0",
+    },
+  },
+  mounted() {
+    this.auth1 = JSON.parse(
+      this.until.seGet("authZ").indexOf("ship:bidAffiche:add") > -1
+    );
+    this.auth2 = JSON.parse(
+      this.until.seGet("authZ").indexOf("ship:bidAffiche:examine") > -1
+    );
+    this.auth3 = JSON.parse(
+      this.until.seGet("authZ").indexOf("ship:bidAffiche:upd") > -1
+    );
+    this.auth4 = JSON.parse(
+      this.until.seGet("authZ").indexOf("ship:bidAffiche:del") > -1
+    );
+    this.getList();
+    this.api
+      .getCatListByPcd({
+        cd: "ANNOUNCEMENT_TYPE",
+      })
+      .then((res) => {
+        this.options = res.list;
+      });
+  },
+  methods: {
+    getList() {
+      let query = this.query.new();
+      this.query.toW(query, "bidId", this.detailId, "EQ");
+      this.query.toO(query, "seq", "asc");
+      this.api.getBidAffichePage(this.query.toEncode(query)).then((res) => {
+        this.tableData = res.data.list;
+      });
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    toCheck(val) {
+      this.checkShow = true;
+      this.api.getBidAfficheDetail(val.id).then((res) => {
+        this.detailInfo = res;
+      });
+    },
+    toDetail(val) {
+      this.detailShow = true;
+      this.api.getBidAfficheDetail(val.id).then((res) => {
+        this.detailInfo = res;
+      });
+    },
+    toEdit(val) {
+      this.editShow = true;
+      this.api.getBidAfficheDetail(val.id).then((res) => {
+        this.detailInfo = res;
+        this.title = res.title;
+        this.releTm = res.releTm;
+        this.value = res.afficheTypeNm;
+        (this.afficheTypeCd = res.afficheTypeCd),
+          (this.afficheTypeNm = res.afficheTypeNm),
+          (this.rmks = res.rmks);
+        this.seq = res.seq;
+        this.$refs.myEditor.msg = res.cont;
+      });
+    },
+    toDelite(val) {
+      this.$confirm("确认删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          return this.api.getBidAfficheDel({
+            ids: val.id,
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        })
+        .then((res) => {
+          console.log("11", res);
+          if (res.code == 0) {
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            this.getList();
+          } else {
+            this.$message({
+              type: "error",
+              message: "删除失败!",
+            });
+          }
+        });
+    },
+    add() {
+      this.addShow = true;
+    },
+    closeMask() {
+      this.addShow = false;
+      this.checkShow = false;
+      this.detailShow = false;
+      this.editShow = false;
+      this.afficheTypeNm = "";
+      this.afficheTypeCd = "";
+      this.title = "";
+      this.releTm = "";
+      this.rmks = "";
+      this.value = "";
+    },
+    addSure() {
+      if (!this.title) {
+        this.$message({
+          type: "error",
+          message: "公告标题不能为空",
+        });
+        return false;
+      }
+      if (!this.releTm) {
+        this.$message({
+          type: "error",
+          message: "公告发布时间不能为空",
+        });
+        return false;
+      }
+      if (!this.afficheTypeCd) {
+        this.$message({
+          type: "error",
+          message: "公告类型不能为空",
+        });
+        return false;
+      }
+      if (!this.$refs.myEditor.msg) {
+        this.$message({
+          type: "error",
+          message: "公告内容不能为空",
+        });
+        return false;
+      }
 
-				})
-			},
-			toDelite(val) {
-				this.$confirm("确认删除?", "提示", {
-						confirmButtonText: "确定",
-						cancelButtonText: "取消",
-						type: "warning",
-					})
-					.then(() => {
-						return this.api.getBidAfficheDel({
-							ids: val.id
-						})
-					})
-					.catch(() => {
-						this.$message({
-							type: "info",
-							message: "已取消删除",
-						});
-					})
-					.then((res) => {
-						console.log('11', res);
-						if (res.code == 0) {
-							this.$message({
-								type: "success",
-								message: "删除成功!",
-							});
-							this.getList();
-						} else {
-							this.$message({
-								type: "error",
-								message: "删除失败!",
-							});
-						}
-					});
-
-			},
-			add() {
-				this.addShow = true
-			},
-			closeMask() {
-				this.addShow = false
-				this.checkShow = false
-				this.detailShow = false
-				this.editShow = false
-				this.afficheTypeNm = ''
-				this.afficheTypeCd = ''
-				this.title = ''
-				this.releTm = ''
-				this.rmks = ''
-				this.value = ''
-			},
-			addSure() {
-				if (!this.title) {
-					this.$message({
-						type: "error",
-						message: "公告标题不能为空",
-					});
-					return false
-				}
-				if (!this.releTm) {
-					this.$message({
-						type: "error",
-						message: "公告发布时间不能为空",
-					});
-					return false
-				}
-				if (!this.afficheTypeCd) {
-					this.$message({
-						type: "error",
-						message: "公告类型不能为空",
-					});
-					return false
-				}
-				if (!this.$refs.myEditor.msg) {
-					this.$message({
-						type: "error",
-						message: "公告内容不能为空",
-					});
-					return false
-				}
-
-				let obj = {
-					bidId: this.detailId,
-					afficheTypeCd: this.afficheTypeCd,
-					afficheTypeNm: this.afficheTypeNm,
-					title: this.title,
-					releTm: this.releTm,
-					cont: this.$refs.myEditor.msg,
-					rmks: this.rmks,
-				}
-				this.api.postBidAffiche(obj).then(res => {
-					this.closeMask()
-					this.getList()
-				})
-
-			},
-			select1(val) {
-				this.afficheTypeNm = val.nm
-				this.afficheTypeCd = val.id
-			},
-			handleChange(val) {
-				this.seq = val
-			},
-			sureTo() {
-				let obj = {
-					id: this.detailInfo.id,
-					audit: this.radio + 1,
-					options: this.opinion
-				}
-				this.api.postBidAfficheExamine(obj)
-					.then(res => {
-						this.checkShow = false
-						this.radio = 1
-						this.opinion = ''
-						this.getList()
-					})
-
-
-			},
-			updTo() {
-				let obj = {
-					id: this.detailInfo.id,
-					bidId: this.detailId,
-					afficheTypeCd: this.afficheTypeCd,
-					afficheTypeNm: this.afficheTypeNm,
-					title: this.title,
-					releTm: this.releTm,
-					cont: this.$refs.myEditor.msg,
-					rmks: this.rmks,
-					seq: this.seq,
-				}
-				this.api.postBidAfficheUpd(obj).then(res => {
-					this.closeMask()
-					this.getList()
-				})
-			}
-		}
-	}
+      let obj = {
+        bidId: this.detailId,
+        afficheTypeCd: this.afficheTypeCd,
+        afficheTypeNm: this.afficheTypeNm,
+        title: this.title,
+        releTm: this.releTm,
+        cont: this.$refs.myEditor.msg,
+        rmks: this.rmks,
+      };
+      this.api.postBidAffiche(obj).then((res) => {
+        this.closeMask();
+        this.getList();
+      });
+    },
+    select1(val) {
+      this.afficheTypeNm = val.nm;
+      this.afficheTypeCd = val.id;
+    },
+    handleChange(val) {
+      this.seq = val;
+    },
+    sureTo() {
+      let obj = {
+        id: this.detailInfo.id,
+        audit: this.radio + 1,
+        options: this.opinion,
+      };
+      this.api.postBidAfficheExamine(obj).then((res) => {
+        this.checkShow = false;
+        this.radio = 1;
+        this.opinion = "";
+        this.getList();
+      });
+    },
+    updTo() {
+      let obj = {
+        id: this.detailInfo.id,
+        bidId: this.detailId,
+        afficheTypeCd: this.afficheTypeCd,
+        afficheTypeNm: this.afficheTypeNm,
+        title: this.title,
+        releTm: this.releTm,
+        cont: this.$refs.myEditor.msg,
+        rmks: this.rmks,
+        seq: this.seq,
+      };
+      this.api.postBidAfficheUpd(obj).then((res) => {
+        this.closeMask();
+        this.getList();
+      });
+    },
+  },
+};
 </script>
 
 <style lang="less" scoped>
-	.content {
-		padding: 10px 20px;
-		height: 690px !important;
-		background-color: #ffffff;
-		box-sizing: border-box;
+.content {
+  padding: 10px 20px;
+  height: 690px !important;
+  background-color: #ffffff;
+  box-sizing: border-box;
 
-		.mask {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100vw;
-			height: 100%;
-			background: rgba(0, 0, 0, 0.5);
-			z-index: 50;
-			display: flex;
-			justify-content: center;
-			align-items: center;
+  .mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-			.table_box {
-				background: #fff;
-				padding: 20px;
-				width: 850px;
-				max-height: 80%;
-				overflow-y: scroll;
+    .table_box {
+      background: #fff;
+      padding: 20px;
+      width: 75%;
+      max-height: 80%;
+      overflow-y: scroll;
 
-				.top {
-					display: flex;
-					width: 100%;
-					justify-content: space-between;
-				}
+      .top {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+      }
 
-				.row2 {
-					width: 700px;
-					margin: 30px auto 20px;
-					display: flex;
-					align-items: center;
+      .row2 {
+        width: 100%;
+        margin: 30px auto 20px;
+        display: flex;
+        align-items: center;
 
-					// justify-content: space-between;
-					.title {
-						width: 100px;
-						display: flex;
-						align-items: center;
-						justify-content: end;
-						margin-right: 10px;
-					}
+        // justify-content: space-between;
+        .title {
+          width: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: end;
+          margin-right: 10px;
+        }
 
-					.right {
+        .right {
+          width: calc(~"100% - 200px");
 
-						.el-input,
-						.el-textarea {
-							height: 32px;
-							width: 370px;
-							margin-left: 12px;
+          .el-input,
+          .el-textarea,
+          .el-select {
+            height: 32px;
+            width: 100%;
+            margin-left: 12px;
+          }
 
+          .el-input-number {
+            height: 32px;
+            width: 360px;
+            margin-left: 12px;
+          }
+        }
+      }
 
-						}
+      .btn {
+        width: 300px;
+        margin: 40px auto 0;
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
 
-						.el-input-number {
-							height: 32px;
-							width: 160px;
-							margin-left: 12px;
-						}
-					}
-				}
+  .maskTwo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-				.btn {
-					width: 300px;
-					margin: 40px auto 0;
-					display: flex;
-					justify-content: center;
-				}
-			}
-		}
+    .table_box {
+      background: #fff;
+      padding: 20px;
+      width: 850px;
+      max-height: 80%;
+      overflow-y: scroll;
 
-		.maskTwo {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100vw;
-			height: 100vh;
-			background: rgba(0, 0, 0, 0.5);
-			z-index: 50;
-			display: flex;
-			justify-content: center;
-			align-items: center;
+      .top {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+      }
 
+      .row2 {
+        margin: 30px auto 20px;
+        display: flex;
+        align-items: center;
 
-			.table_box {
-				background: #fff;
-				padding: 20px;
-				width: 850px;
-				max-height: 80%;
-				overflow-y: scroll;
+        // justify-content: space-between;
+        .title {
+          width: 100px;
+          display: flex;
+          align-items: center;
+          justify-content: end;
+          margin-right: 10px;
+        }
 
-				.top {
-					display: flex;
-					width: 100%;
-					justify-content: space-between;
-				}
+        .right {
+          .el-input,
+          .el-textarea {
+            height: 32px;
+            width: 370px;
+            margin-left: 12px;
+          }
 
-				.row2 {
-					margin: 30px auto 20px;
-					display: flex;
-					align-items: center;
+          .el-input-number {
+            height: 32px;
+            width: 160px;
+            margin-left: 12px;
+          }
+        }
+      }
 
-					// justify-content: space-between;
-					.title {
-						width: 100px;
-						display: flex;
-						align-items: center;
-						justify-content: end;
-						margin-right: 10px;
-					}
+      .btn {
+        width: 300px;
+        margin: 40px auto 0;
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
 
-					.right {
+  .topBtn {
+    display: flex;
+  }
 
-						.el-input,
-						.el-textarea {
-							height: 32px;
-							width: 370px;
-							margin-left: 12px;
-						}
-
-						.el-input-number {
-							height: 32px;
-							width: 160px;
-							margin-left: 12px;
-						}
-					}
-				}
-
-				.btn {
-					width: 300px;
-					margin: 40px auto 0;
-					display: flex;
-					justify-content: center;
-				}
-			}
-		}
-
-		.topBtn {
-			display: flex;
-
-		}
-
-		.contenTable {
-			margin-top: 30px;
-		}
-	}
+  .contenTable {
+    margin-top: 30px;
+  }
+}
 </style>

@@ -16,7 +16,7 @@
     <!-- <div class="search_item"> -->
     <el-input placeholder="专家" v-model="SearchInfo.expertNm" clearable>
     </el-input>
-    <el-select
+    <!-- <el-select
       v-model="SearchInfo.procurementMethodCd"
       clearable
       placeholder="采购方式"
@@ -28,7 +28,7 @@
         :value="item.cd"
       >
       </el-option>
-    </el-select>
+    </el-select> -->
     <!-- <el-select v-model="value" clearable placeholder="项目状态">
       <el-option
         v-for="item in options"
