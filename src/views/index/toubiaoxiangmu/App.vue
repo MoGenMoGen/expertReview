@@ -73,7 +73,7 @@
 											</el-table-column>
 											<el-table-column label="保证金" min-width="150">
 												<template slot-scope="scope">
-													<p>{{scope.row.deposit>0?'已缴纳':'未缴纳'}}</p>
+													<p>{{depositStatusType[scope.row.depositStatus - 1]}}</p>
 												</template>
 											</el-table-column>
 											<el-table-column prop="crtTm" label="投标时间" min-width="150"></el-table-column>
@@ -160,7 +160,8 @@
 				procurementMethodCd: '',
 				bidEndTm: '',
 				publishTm: '',
-				showDetail: false
+				showDetail: false,
+				depositStatusType: ['无需缴纳','未缴纳','已缴纳','已退款']
 			}
 		},
 		computed: {

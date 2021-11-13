@@ -65,15 +65,21 @@
 								    background: '#f8f8f8',
 									'text-align': 'center',
 								  }">
-											<el-table-column prop="orgNm" label="采购单位" min-width="150"></el-table-column>
+											<el-table-column label="采购单位" min-width="150">
+												<template slot-scope="scope">
+													<p style="color: #2778BE;cursor: pointer;">
+														{{scope.row.orgNm}}
+													</p>
+												</template>
+											</el-table-column>
 											<el-table-column prop="realNm" label="采购人" min-width="150"></el-table-column>
 											<el-table-column prop="rmks" label="备注" min-width="150"></el-table-column>
 											<el-table-column prop="crtTm" label="申请时间" min-width="150"></el-table-column>
 											<el-table-column label="操作" min-width="100">
 												<template slot-scope="scope">
-													<el-button type="text" size="small" v-if="scope.row.audit==1" @click="handleClick(scope.row.bidId)"
+													<el-button type="text" size="small" v-if="scope.row.audit==1&&auth2" @click="handleClickShenhe(scope.row)"
 														style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;">
-														去审核</el-button>
+														审核</el-button>
 													<p style="color: #303030;" v-if="scope.row.audit==2">审核通过</p>
 													<p style="color: #303030;" v-if="scope.row.audit==3">审核驳回</p>
 												</template>
@@ -122,6 +128,28 @@
 				<div class="detail" v-if="showDetail">
 					<detail :id="id" :sonTabIndex="sonTabIndex"></detail>
 				</div>
+				<div class="mask" @click="closeMask" v-if="showPop">
+					<div class="table_box" @click.stop="">
+						<div class="top">
+							<p style="font-size: 20px">企业审核</p>
+							<img @click="closeMask" src="~assets/img/close.png"
+								style="width: 25px; height: 25px;cursor: pointer;" />
+						</div>
+						<div class="row2">
+							<span>{{companyNm}}</span>
+							<el-input v-model="idea" type="textarea" :rows="5" resize='none' placeholder="企业审核意见">
+							</el-input>
+						</div>
+						<div class="btn">
+							<el-button
+								style="background: #2778be; color: #fff; margin-right: 20px; padding: 10px 25px; border-radius: 4px;"
+								@click="pass" type="text" size="small">通过</el-button>
+							<el-button
+								style="background: #fff; color: #333; border: 1px solid #dddddd; padding: 10px 25px; border-radius: 4px;"
+								@click="reject" type="text" size="small">驳回</el-button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 		<my-footer></my-footer>
@@ -138,6 +166,7 @@
 		data() {
 			return {
 				auth1:'',//详情权限
+				auth2: '', //审核权限
 				id: '',
 				activeName: '',
 				thisNavList: [],
@@ -158,7 +187,11 @@
 				procurementMethodCd: '',
 				bidOpenTm: '',
 				bidEndTm: '',
-				showDetail: false
+				showDetail: false,
+				companyId: '',
+				companyNm: '',
+				showPop: false,
+				idea: ''
 			}
 		},
 		computed: {
@@ -173,6 +206,7 @@
 		},
 		mounted() {
 			this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:info')>-1)
+			this.auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bidApply:audit') > -1)
 			let obj = {
 				name: '报名审核',
 				url: './baomingshenhe.html',
@@ -250,7 +284,43 @@
 			handleClick(id) {
 				this.id = id
 				this.showDetail = true
-			}
+			},
+			handleClickShenhe(row) {
+				this.companyId = row.id
+				this.companyNm = row.orgNm
+				this.showPop = true
+			},
+			closeMask() {
+				this.showPop = false
+			},
+			pass() {
+				let data = {
+					"id": this.companyId,
+					"audit": 2,
+					"options": this.idea
+				}
+				this.api.postBidApplyAudit(data).then(res => {
+					if (res.code == 0) {
+						this.$message.success(res.msg)
+						this.showPop = false;
+						this.getList()
+					}
+				})
+			},
+			reject() {
+				let data = {
+					"id": this.companyId,
+					"audit": 3,
+					"options": this.idea
+				}
+				this.api.postBidApplyAudit(data).then(res => {
+					if (res.code == 0) {
+						this.$message.success(res.msg)
+						this.showPop = false;
+						this.getList()
+					}
+				})
+			},
 		}
 	}
 </script>
@@ -395,5 +465,66 @@
 
 	.gray {
 		color: #999999;
+	}
+	.mask {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.5);
+		z-index: 50;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	
+		.table_box {
+			background: #fff;
+			padding: 20px;
+			width: 450px;
+			max-height: 80%;
+			overflow-y: scroll;
+	
+			.top {
+				display: flex;
+				width: 100%;
+				justify-content: space-between;
+			}
+	
+			.row2 {
+				width: 400px;
+				padding: 30px;
+				box-sizing: border-box;
+				display: flex;
+				flex-direction: column;
+	
+				span {
+					font-size: 16px;
+					color: #2778BE;
+					margin-bottom: 20px;
+				}
+			}
+	
+			.btn {
+				width: 300px;
+				margin: 10px auto 0;
+				display: flex;
+				justify-content: center;
+			}
+		}
+	
+		.org-img {
+			// width: 75%;
+			// height: 60%;
+		}
+	
+		.close-img {
+			width: 40px;
+			height: 40px;
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			cursor: pointer;
+		}
 	}
 </style>

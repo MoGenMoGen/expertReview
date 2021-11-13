@@ -140,7 +140,7 @@
 			  }">
 						<el-table-column label="招标采购商" min-width="200">
 							<template slot-scope="scope">
-								<p style="color: #2778BE;cursor: pointer;" @click="showImg(scope.row.orgId)">
+								<p style="color: #2778BE;cursor: pointer;">
 									{{scope.row.orgNm}}
 								</p>
 							</template>
@@ -158,7 +158,7 @@
 						<el-table-column label="操作" min-width="100">
 							<template slot-scope="scope">
 								<el-button type="text" size="small" @click="handleClickShenhe(scope.row)"
-									v-if="scope.row.audit==1"
+									v-if="scope.row.audit==1&&auth1"
 									style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;">审核
 								</el-button>
 							</template>
@@ -188,33 +188,6 @@
 					</div>
 				</div>
 			</div>
-			<div class="mask" @click="closeImg" v-if="orgEnterImg">
-				<img class="org-img" :src="orgEnterImg">
-				<img src="../../assets/img/close-w.png" class="close-img">
-				<el-table-column label="招标采购商" min-width="200">
-					<template slot-scope="scope">
-						<p style="color: #2778BE;">{{scope.row.orgNm}}</p>
-					</template>
-				</el-table-column>
-				<el-table-column prop="crtTm" label="申请时间" min-width="200"></el-table-column>
-				<el-table-column label="审核状态" min-width="200">
-					<template slot-scope="scope">
-						<p v-if="scope.row.audit==1" style="color: #2778BE;">待审核</p>
-						<p v-if="scope.row.audit==2" style="color: #2778BE;">审核通过</p>
-						<p v-if="scope.row.audit==3" style="color: #E4393C;">审核不通过</p>
-					</template>
-				</el-table-column>
-				<el-table-column prop="options" label="审核意见" min-width="200" v-if="sonTabIndex==1">
-				</el-table-column>
-				<el-table-column label="操作" min-width="100" v-if="sonTabIndex==0">
-					<template slot-scope="scope">
-						<el-button type="text" size="small" @click="handleClickShenhe(scope.row)"
-							style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;"
-							v-if="auth1">审核</el-button>
-					</template>
-				</el-table-column>
-				</el-table>
-			</div>
 		</div>
 	</div>
 </template>
@@ -241,7 +214,6 @@
 				options: '',
 				companyNm: '',
 				showPop: false,
-				orgEnterImg: ''
 			};
 		},
 		props: {
@@ -334,8 +306,9 @@
 				this.api.postBidApplyAudit(data).then(res => {
 					if (res.code == 0) {
 						this.$message.success(res.msg)
-						this.$parent.showPop = false;
+						this.showPop = false;
 						this.$parent.getList()
+						this.getList()
 					}
 				})
 			},
@@ -348,8 +321,9 @@
 				this.api.postBidApplyAudit(data).then(res => {
 					if (res.code == 0) {
 						this.$message.success(res.msg)
-						this.$parent.showPop = false;
+						this.showPop = false;
 						this.$parent.getList()
+						this.getList()
 					}
 				})
 			},
@@ -374,14 +348,6 @@
 				let urls = this.attachment.join(',')
 				window.open(`https://fb.ship88.cn/general/oss/aliDownload?urls=${urls}&zipName=''`)
 			},
-			showImg(id) {
-				this.api.getOrgEnterInfo(id).then(res => {
-					this.orgEnterImg = res.businessLicense
-				})
-			},
-			closeImg() {
-				this.orgEnterImg = ''
-			}
 		},
 		async mounted() {
 			this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bidApply:audit') > -1)
