@@ -175,11 +175,13 @@ export default {
   },
   created() {
     bus.$on("SignSearch", (data) => {
+      console.log('created');
       this.SearchInfo = data;
       this.getList();
     });
   },
   mounted() {
+    console.log('mounted');
       this.getList();
 
     setInterval(() => {
