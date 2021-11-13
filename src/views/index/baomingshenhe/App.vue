@@ -67,7 +67,7 @@
 								  }">
 											<el-table-column label="采购单位" min-width="150">
 												<template slot-scope="scope">
-													<p style="color: #2778BE;cursor: pointer;">
+													<p style="color: #2778BE;cursor: pointer;" @click="showInfo(scope.row.orgId)">
 														{{scope.row.orgNm}}
 													</p>
 												</template>
@@ -321,6 +321,11 @@
 					}
 				})
 			},
+			showInfo(id) {
+				this.api.getOrgEnterInfo(id).then(res => {
+					console.log(res)
+				})
+			}
 		}
 	}
 </script>

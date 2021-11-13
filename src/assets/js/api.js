@@ -1063,7 +1063,7 @@ class api {
 	// 机构信息详情
 	getOrgEnterInfo(data) {
 		return new Promise(resolve => {
-			get('/ship/orgEnter/info/'+data).then(res => {
+			get('/ship/orgEnter/api/info/'+data).then(res => {
 				resolve(res.data)
 			})
 		})
