@@ -405,7 +405,7 @@ class api {
 	//招标新建
 	postBidAdd(data) {
 		return new Promise(resolve => {
-			post('/ship/bid/add', data).then(res => {
+			post('/ship/bid/addAndAffiche', data).then(res => {
 				resolve(res)
 			})
 		})
@@ -482,14 +482,7 @@ class api {
 			})
 		})
 	}
-	//招标新建
-	postBidAdd(data) {
-		return new Promise(resolve => {
-			post('/ship/bid/add', data).then(res => {
-				resolve(res)
-			})
-		})
-	}
+	
 	//招标修改
 	postBidUpd(data) {
 		return new Promise(resolve => {

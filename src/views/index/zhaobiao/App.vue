@@ -8,8 +8,6 @@
 						style="width: 25px; height: 25px;cursor: pointer;" alt="" />
 				</div>
 				<div class="" style="display: flex;">
-					
-				
 				<div class="rowLeft">
 					<div class="row2">
 						<div class="title">
@@ -268,7 +266,66 @@
 					</div>
 				</div>
 				</div>
+				<div class="top" style="margin-top: 20px;">
+					<p style="font-size: 20px">招标公告</p>
+				</div>
+				<div style="display: flex;">
+					
+			
+				<div class="rowLeft">
+					<div class="row2">
+						<div class="title">
+							<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>公告标题</span>
+						</div>
+						<div class="right">
+							<el-input v-model="title" class="margin_right" clearable placeholder="公告标题">
+							</el-input>
+						</div>
+					</div>
+			
+					<div class="row2">
+						<div class="title">
+							<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>排序</span>
+						</div>
+						<div class="right">
+							<el-input-number v-model="seq" @change="handleChange" :min="1" label=""></el-input-number>
+						</div>
+					</div>
+					
+				</div>
+				<div class="rowRight">
+					<div class="row2">
+						<div class="title">
+							<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>公告发布时间</span>
+						</div>
+						<div class="right">
+							<el-date-picker v-model="releTm" type="date" placeholder="选择日期">
+							</el-date-picker>
+							</el-input>
+						</div>
+					</div>
 				
+					<div class="row2">
+						<div class="title">
+							<p>备注</p>
+						</div>
+						<div class="right">
+							<el-input type="text" placeholder="备注" v-model="rmksTwo">
+							</el-input>
+						</div>
+					</div>
+					
+				</div>
+				</div>
+				<div class="row2" style="margin-left: 30px;">
+					<div class="title">
+						<span style="color: red; margin-right: 5px; display: inline-block">* </span>
+						<span>公告内容</span>
+					</div>
+					<div class="right" style="width: 100%;margin-top:30px;">
+						<MyEditor ref="myEditor" frameHeight=700></MyEditor>
+					</div>
+				</div>
 				
 				<!-- 	<div class="row2">
 					<div class="title">
@@ -430,7 +487,8 @@
 	import detail from '@/components/zhaobiao/detail';
 	import change from '@/components/zhaobiao/change';
 	import topNav from '@/components/topNav';
-	import check from '@/components/zhaobiao/check'
+	import check from '@/components/zhaobiao/check';
+	import MyEditor from '@/components/myEditor'
 	export default {
 		data() {
 			return {
@@ -467,7 +525,7 @@
 				currentPage: 1,
 				pageNum: 1,
 				formTwo: {
-
+					
 				},
 				audit: '', //项目状态
 				purchasingUnit: '', //采购单位
@@ -500,6 +558,11 @@
 				rule: '', //专家选取规则模板name
 				ruleId: '', //专家选取规则模板id
 				rmks: '', //备注
+				title:'',//公告标题
+				seq:'',//排序
+				releTm:'',//公告发布时间
+				rmksTwo:'',//公告备注
+				cont:'',//公告内容
 				form: {
 					file: ''
 				},
@@ -546,7 +609,8 @@
 			detail,
 			change,
 			topNav,
-			check
+			check,
+			MyEditor
 		},
 		mounted() {
 			let obj = {
@@ -721,6 +785,23 @@
 					this.expertIdsList = res.data.expertIds.split(',').map(Number)
 					this.rmks = res.data.rmks
 				})
+				let query = this.query.new()
+				this.query.toW(query, 'bidId', row.id, 'EQ')
+				this.query.toO(query, 'seq', 'asc')
+			this.api.getBidAffichePage(this.query.toEncode(query)).then(res => {
+				 console.log('1333',res);
+				 for(let i=0;i<res.data.list.length;i++){
+					 if(res.data.list[i].afficheTypeCd=='5635882628584448'){
+						 this.title=res.data.list[i].title
+						 this.seq=res.data.list[i].seq
+						 this.releTm=res.data.list[i].releTm
+						 this.rmksTwo=res.data.list[i].rmksTwo
+						 this.rmksTwo=res.data.list[i].rmksTwo
+						this.$refs.myEditor.msg =res.data.list[i].cont
+						 console.log('7879',this.cont);
+					 }
+				 }
+			})
 			},
 			toDelite(row) {
 				this.$confirm("确认删除?", "提示", {
@@ -798,6 +879,10 @@
 				this.rmks = '' //备注
 				this.list = []
 				this.fileInfo = []
+				this.title=''
+				this.seq=''
+				this.releTm=''
+				this.rmksTwo=''
 			},
 			confirmTo() {
 				if (!this.cd) {
@@ -920,34 +1005,44 @@
 					return false
 				}
 				let obj = {
-					cd: this.cd,
-					budget: this.budget,
-					nm: this.nm,
-					svsId: this.svsId,
-					procurementMethodNm: this.procurementMethodNm,
-					procurementMethodCd: this.procurementMethodCd,
-					bidTypesCd: this.bidTypesCd,
-					bidTypesNm: this.bidTypesNm,
-					publishTm: this.until.formatTime(this.publishTm).substring(0, 10),
-					completeTm: this.until.formatTime(this.completeTm).substring(0, 10),
-					bidOpenTm: this.until.formatTime(this.bidOpenTm),
-					bidEndTm: this.until.formatTime(this.bidEndTm),
-					publisher: this.publisher,
-					mob: this.mob,
-					linkman: this.linkman,
-					needDeposit: this.needDeposit,
-					status: this.status,
-					svsOn: this.svsOn,
-					attachment: this.attachment,
-					viewRangeNm: this.viewRangeNm,
-					viewRangeCd: this.viewRangeCd,
-					orgEnterIdsList: this.orgEnterIdsList,
-					orgEnterIds: this.orgEnterIds,
-					ruleId: this.ruleId,
-					expertIdsList: this.expertIdsList,
-					expertIds: this.expertIds,
-					rmks: this.rmks,
-					id: this.modifyId
+					shipBidAfficheRo:{
+						title:this.title,
+						seq:this.seq,
+						releTm:this.releTm,
+						cont: this.$refs.myEditor.msg,
+						rmks: this.rmksTwo,
+					},
+					shipBidRo:{
+						cd: this.cd,
+						budget: this.budget,
+						nm: this.nm,
+						svsId: this.svsId,
+						procurementMethodNm: this.procurementMethodNm,
+						procurementMethodCd: this.procurementMethodCd,
+						bidTypesCd: this.bidTypesCd,
+						bidTypesNm: this.bidTypesNm,
+						publishTm: this.until.formatTime(this.publishTm).substring(0, 10),
+						completeTm: this.until.formatTime(this.completeTm).substring(0, 10),
+						bidOpenTm: this.until.formatTime(this.bidOpenTm),
+						bidEndTm: this.until.formatTime(this.bidEndTm),
+						publisher: this.publisher,
+						mob: this.mob,
+						linkman: this.linkman,
+						needDeposit: this.needDeposit,
+						status: this.status,
+						svsOn: this.svsOn,
+						attachment: this.attachment,
+						viewRangeNm: this.viewRangeNm,
+						viewRangeCd: this.viewRangeCd,
+						orgEnterIdsList: this.orgEnterIdsList,
+						orgEnterIds: this.orgEnterIds,
+						ruleId: this.ruleId,
+						expertIdsList: this.expertIdsList,
+						expertIds: this.expertIds,
+						rmks: this.rmks,
+						id: this.modifyId
+					}
+			
 				}
 				if (!this.flag) {
 					this.$message({
@@ -961,7 +1056,10 @@
 						this.flag = true
 						this.closeMask()
 						this.getList()
+					}).catch(err => {
+						this.flag = true
 					})
+					
 				}
 				if (this.showModify == true && this.flag == true) {
 					this.flag == false
@@ -969,6 +1067,8 @@
 						this.flag = true
 						this.closeMask()
 						this.getList()
+					}).catch(err => {
+						this.flag = true
 					})
 				}
 
@@ -1118,8 +1218,10 @@
 			select3(val) {
 				this.procurementMethodNm = val.nm
 				this.procurementMethodCd = val.cd
-			}
-
+			},
+		handleChange(val) {
+			this.seq = val
+		},
 
 		}
 	}

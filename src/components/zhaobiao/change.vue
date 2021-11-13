@@ -442,7 +442,7 @@
 				</el-table-column>
 				<el-table-column label="操作" min-width="50">
 					<template slot-scope="scope">
-						<p style="cursor: pointer;min-width: 30px; color:#409eff;" @click="toCheck(scope.row)" v-if="auth2">审核</p>
+						<p style="cursor: pointer;min-width: 30px; color:#409eff;" @click="toCheck(scope.row)" v-if="auth2&&scope.row.afficheTypeCd!=5635882628584448">审核</p>
 						<p style="cursor: pointer; color:#409eff;" @click="toDetail(scope.row)">详情</p>
 						<p style="cursor: pointer;color:#409eff;" @click="toEdit(scope.row)" v-if="auth3">编辑</p>
 						<p style="cursor: pointer;color:red;" @click="toDelite(scope.row)" v-if="auth4">删除</p>
