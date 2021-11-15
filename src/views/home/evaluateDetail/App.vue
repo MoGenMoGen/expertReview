@@ -15,7 +15,7 @@
                 <div class="intro">
                     <p>评分人：{{name}}</p>
                     <p v-if="ifSubmit">招标采购商：{{reviewInfo.orgNm}}</p>
-                    <p class="score">合计总分：<span class="red">{{score}}分</span></p>
+                    <p class="score">合计总分：<span class="red">{{score.toFixed(2)}}分</span></p>
                 </div>
                 <table>
                     <thead>
@@ -41,7 +41,7 @@
                                     suffix-icon="el-icon-edit"
                                     v-model="item.score">
                             </el-input></td>
-                        <td v-for="(item,index) in tableList" :key="index+'5'"  v-if="!ifSubmit">{{item.score}}</td>
+                        <td v-for="(item,index) in tableList" :key="index+'5'"  v-if="!ifSubmit">{{item.score.toFixed(2)}}</td>
                     </tr>
                     <tr>
                         <td>加权得分</td>
@@ -51,7 +51,7 @@
                                 suffix-icon="el-icon-edit"
                                 v-model="item.weightedScore">
                         </el-input></td>
-                        <td v-for="(item,index) in tableList" :key="index+'7'" v-if="!ifSubmit">{{item.weightedScore}}</td>
+                        <td v-for="(item,index) in tableList" :key="index+'7'" v-if="!ifSubmit">{{item.weightedScore.toFixed(2)}}</td>
                     </tr>
                     <tr>
                         <td>评分说明</td>
@@ -208,13 +208,13 @@
                     item.weightedScore = null
                 }else{
                     item.score = parseInt(item.score)
-                    item.weightedScore = (item.score*item.weight*0.01).toFixed(2)
+                    item.weightedScore = (item.score*item.weight*0.01)
                 }
 
             },
             //下载
             toDown(){
-                let url = '/general/oss/aliDownload?urls='+this.info.attachment+'&zipName='+this.info.nm
+                let url = '/general/oss/aliDownload?urls='+this.reviewInfo.attachDecode+"&zipName=''"
                 window.open(url)
                 // this.api.downLoad(param)
             },

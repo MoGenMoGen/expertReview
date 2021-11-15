@@ -854,7 +854,7 @@ class api {
 	//项目评审结果（多个投标评分列表）
 	getBidOfferAll(data) {
 		return new Promise(resolve => {
-			get('/ship/bidOffer/page?query=' + data).then(res => {
+			get('/ship/bidOffer/list?query=' + data).then(res => {
 				resolve(res)
 			})
 		})
