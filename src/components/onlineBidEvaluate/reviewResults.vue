@@ -13,11 +13,16 @@
       :detailData="detailData"
     ></review-detail>
     <!-- 修改详情 -->
-    <edit-review-detail :id="id"  :info="detailData" @updateAndSave="getList" v-if="showEdit"></edit-review-detail>
+    <edit-review-detail
+      :id="id"
+      :info="detailData"
+      @updateAndSave="getList"
+      v-if="showEdit"
+    ></edit-review-detail>
 
     <div class="table_box">
       <el-table
-      max-height="500"
+        max-height="500"
         @selection-change="handleSelectionChange"
         :data="tableData"
         style="width: 100%"
@@ -201,7 +206,7 @@ import editReviewDetail from "./editReviewDetail.vue";
 export default {
   data() {
     return {
-		bidId: '',
+      bidId: "",
       isDel: false,
       pageNo: 1,
       pageSize: 10,
@@ -212,7 +217,7 @@ export default {
       id: "",
       type: 0,
       showDetail: false,
-      showEdit:false,
+      showEdit: false,
       SearchInfo: {
         bidNm: "", //招标项目
         orgNm: "", //投标机构
@@ -237,7 +242,7 @@ export default {
   },
 
   async mounted() {
-	  this.bidId = this.until.getQueryString('id')
+    this.bidId = this.until.getQueryString("id");
     this.getList();
   },
   methods: {
@@ -251,30 +256,34 @@ export default {
       this.getList();
     },
     async getList() {
-	  let qry = this.query.new();
-	  this.query.toP(qry, this.pageNo, this.pageSize);
-	  this.query.toO(qry, "crtTm", "desc");
-	  this.query.toW(qry, 'bidId',this.bidId,'EQ')
-	  // if(this.SearchInfo.bidNm) {
-		 //  this.query.toW(qry, "bidNm", this.SearchInfo.bidNm, "LK");
-	  // }
-	  if(this.SearchInfo.orgNm) {
-	  		  this.query.toW(qry, "orgNm", this.SearchInfo.orgNm, "LK");
-	  }
-	  if(this.SearchInfo.username) {
-	  		  this.query.toW(qry, "username", this.SearchInfo.username, "LK");
-	  }
-	  if(this.SearchInfo.realNm) {
-	  		  this.query.toW(qry, "realNm", this.SearchInfo.realNm, "LK");
-	  }
-	  if(this.SearchInfo.status) {
-	  		  this.query.toW(qry, "status", this.SearchInfo.status, "EQ");
-	  }
+      let qry = this.query.new();
+      this.query.toP(qry, this.pageNo, this.pageSize);
+      this.query.toO(qry, "crtTm", "desc");
+      this.query.toW(qry, "bidId", this.bidId, "EQ");
+      // if(this.SearchInfo.bidNm) {
+      //  this.query.toW(qry, "bidNm", this.SearchInfo.bidNm, "LK");
+      // }
+      if (this.SearchInfo.orgNm) {
+        this.query.toW(qry, "orgNm", this.SearchInfo.orgNm, "LK");
+      }
+      if (this.SearchInfo.username) {
+        this.query.toW(qry, "username", this.SearchInfo.username, "LK");
+      }
+      if (this.SearchInfo.realNm) {
+        this.query.toW(qry, "realNm", this.SearchInfo.realNm, "LK");
+      }
+      if (this.SearchInfo.status) {
+        this.query.toW(qry, "status", this.SearchInfo.status, "EQ");
+      }
       // 选取列表
-      let data = await this.api.reviewResultList(
-        this.query.toEncode(qry)
-      );
+      let data = await this.api.reviewResultList(this.query.toEncode(qry));
       this.tableData = data.data.list;
+      if (this.tableData.length > 0) {
+        this.tableData.forEach((item) => {
+          item.score = item.score.toFixed(2);
+          item.fullScore = item.score.toFixed(2);
+        });
+      }
       this.total = data.page.total;
     },
 

@@ -2,6 +2,7 @@
   <!-- 解密 -->
   <div style="max-width: 100%">
     <addVideoUpload
+      :info="info"
       :id="id"
       @updateAndSave="getList"
       v-if="showUpload"
@@ -9,25 +10,25 @@
     <div class="title">{{ detail.nm }} (项目编号:{{ detail.cd }})</div>
     <div class="video_top">
       <div class="small_title">评标视频</div>
-      <div class="btn_upload" @click="showUpload = true">上传</div>
+      <div class="btn_upload" @click="Upload">上传</div>
     </div>
     <div class="content">
-      <div  style="margin-top: 20px">
+      <div style="margin-top: 20px" class="video_list">
         <div
-          class="video_list"
           v-for="(item1, index1) in videoList"
+          class="video_item"
           :key="index1"
         >
-          <div
+          <!-- <div
             class="video_item"
             v-for="(item2, index2) in item1.vedioUrl.split(',')"
             :key="index2"
-          >
-            <video width="220" height="140" controls>
-              <source :src="item2" type="video/mp4" />
-              <source :src="item2" type="video/ogg" />
-              <source :src="item2" type="video/webm" />
-              <!-- <source
+          > -->
+          <video :src="item1.vedioUrl" width="220" height="140" controls>
+            <!-- <source :src="item1.vedioUrl" type="video/mp4" />
+            <source :src="item1.vedioUrl" type="video/ogg" />
+            <source :src="item1.vedioUrl" type="video/webm" /> -->
+            <!-- <source
           src="https://www.bilibili.com/video/BV173411C7LV?spm_id_from=333.851.b_7265636f6d6d656e64.2"
           type="video/ogg"
         />
@@ -35,14 +36,47 @@
           src="https://www.bilibili.com/video/BV173411C7LV?spm_id_from=333.851.b_7265636f6d6d656e64.2"
           type="video/webm"
         /> -->
-              您的浏览器不支持 HTML5 video 标签。
-            </video>
-            <div>
-              {{ item1.title }}
-              <span v-if="item1.rmks">({{ item1.rmks }})</span>
-            </div>
-            <div>{{ item1.vedioTm }}</div>
+            您的浏览器不支持 HTML5 video 标签。
+          </video>
+          <div>
+            {{ item1.title }}
+            <span v-if="item1.rmks">({{ item1.rmks }})</span>
           </div>
+          <div>{{ item1.vedioTm }}</div>
+          <div style="display: flex; align-items: center; padding: 0 5px">
+            <div
+              style="
+                background: rgb(250, 182, 182);
+                color: rgb(255, 255, 255);
+                border: none;
+                cursor: pointer;
+                width: 35px;
+                text-align: center;
+                margin-right: 5px;
+                padding: 5px;
+                border-radius: 4px;
+              "
+              @click="Edit(item1)"
+            >
+              编辑
+            </div>
+            <div
+              style="
+                background: red;
+                color: rgb(255, 255, 255);
+                border: none;
+                width: 35px;
+                cursor: pointer;
+                text-align: center;
+                padding: 5px;
+                border-radius: 4px;
+              "
+              @click="Del(item1.id)"
+            >
+              删除
+            </div>
+          </div>
+          <!-- </div> -->
         </div>
       </div>
       <!-- 分页 -->
@@ -73,9 +107,11 @@ export default {
       total: 0,
       videoList: [],
       showUpload: false,
+      info: {}, //上传子组件传值
     };
   },
   props: {
+    //项目id
     id: {
       type: Number,
       default: "",
@@ -111,6 +147,44 @@ export default {
       // console.log(`当前页: ${val}`);
       this.pageNo = val;
       this.getList();
+    },
+    Upload() {
+      this.info = {};
+      this.showUpload = true;
+    },
+    Edit(item) {
+      this.showUpload = true;
+      this.info = item;
+    },
+    Del(ids) {
+      this.$confirm("确认删除?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          return this.api.DelVideo({ ids });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        })
+        .then((res) => {
+          if (res.code == 0) {
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            this.getList();
+          } else {
+            this.$message({
+              type: "error",
+              message: "删除失败!",
+            });
+          }
+        });
     },
   },
   components: {

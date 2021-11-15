@@ -3,7 +3,8 @@
   <div id="mask" @click="closeMask">
     <div class="table_box" @click.stop="">
       <div class="top">
-        <p style="font-size: 20px; color: #636e72">上传</p>
+        <p style="font-size: 20px; color: #636e72" v-if="type == 1">上传</p>
+        <p style="font-size: 20px; color: #636e72" v-else>编辑</p>
         <img
           @click="closeMask"
           src="~assets/img/close.png"
@@ -16,7 +17,7 @@
         <div style="display: flex; padding: 20px; align-items: center">
           <div style="width: 90px">
             <span style="color: red; margin-right: 5px">*</span> 视频地址：
-            <div
+            <!-- <div
               style="
                 display: flex;
                 align-items: center;
@@ -50,22 +51,22 @@
               >
                 删除
               </div>
-            </div>
+            </div> -->
           </div>
           <div>
-            <div
+            <!-- <div
               v-for="(item, index) in videoList"
               :key="index"
               style="margin-bottom: 5px"
+            > -->
+            <el-input
+              style="width: 600px"
+              placeholder="请输入视频地址"
+              v-model="uploadData.vedioUrl"
+              clearable
             >
-              <el-input
-                style="width: 600px"
-                placeholder="请输入视频地址"
-                v-model="item.url"
-                clearable
-              >
-              </el-input>
-            </div>
+            </el-input>
+            <!-- </div> -->
           </div>
 
           <!-- <div
@@ -199,6 +200,7 @@ export default {
         vedioUrl: "", //视频地址
         sort: 1,
         rmks: "", //备注
+        type: 1, //1为新增上传，2为编辑上传
       },
     };
   },
@@ -208,6 +210,7 @@ export default {
       default: 0,
     },
     id: { default: "", type: Number },
+    info: { default: {}, type: Object },
   },
   methods: {
     //添加视频地址
@@ -279,31 +282,56 @@ export default {
       this.uploadData.vedioUrl = "";
     },
     handleConfirm() {
-      for (let item of this.videoList) {
-        if (this.reg.checkVideo(item.url) != "ok") {
-          this.$message.error(this.reg.checkVideo(item.url));
-          return false;
-        }
+      // for (let item of this.videoList) {
+      //   if (this.reg.checkVideo(item.url) != "ok") {
+      //     this.$message.error(this.reg.checkVideo(item.url));
+      //     return false;
+      //   }
+      // }
+      // this.uploadData.vedioUrl = this.videoList.map((item) => item.url).join(",");
+
+      if (this.reg.checkVideo(this.uploadData.vedioUrl) != "ok") {
+        this.$message.error(this.reg.checkVideo(this.uploadData.vedioUrl));
+        return false;
       }
-      this.uploadData.vedioUrl = this.videoList.map((item) => item.url).join(",");
+
       if (!this.uploadData.title) {
         this.$message.error("请输入视频名称");
         return false;
       }
 
       this.uploadData.vedioTm = moment().format("YYYY-MM-DD HH:mm:ss");
-      this.api.uploadVideo(this.uploadData).then((res) => {
-        if (res.code == 0) {
-          this.$message({
-            message: "上传成功",
-            type: "success",
-          });
-          this.$emit("updateAndSave");
-        } else {
-          this.$message.error("上传失败");
-        }
-        this.closeMask();
-      });
+      //新增上传
+      if (this.type == 1) {
+        this.api.uploadVideo(this.uploadData).then((res) => {
+          if (res.code == 0) {
+            this.$message({
+              message: "上传成功",
+              type: "success",
+            });
+            this.$emit("updateAndSave");
+          } else {
+            this.$message.error("上传失败");
+          }
+          this.closeMask();
+        });
+      }
+      //编辑
+      else if(this.type==2)
+      {
+         this.api.EditVideo(this.uploadData).then((res) => {
+          if (res.code == 0) {
+            this.$message({
+              message: "更新成功",
+              type: "success",
+            });
+            this.$emit("updateAndSave");
+          } else {
+            this.$message.error("更新失败");
+          }
+          this.closeMask();
+        });
+      }
     },
   },
   components: {},
@@ -311,7 +339,13 @@ export default {
     let { bWidth, width } = this.until.getWidth();
     //   this.bWidth = bWidth;
     this.width = width;
-    this.uploadData.bidId = this.id;
+    if (Object.keys(this.info).length > 0) {
+      this.uploadData = this.info;
+      this.type = 2;
+    } else {
+      this.uploadData.bidId = this.id;
+      this.type = 1;
+    }
   },
 };
 </script>

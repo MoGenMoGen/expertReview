@@ -43,7 +43,7 @@
     >
       删除
     </el-button>
-    <el-button type="success" round>报价平均得分:{{ score }}</el-button>
+    <el-button type="success" round>报价平均得分:{{ score.toFixed(2) }}</el-button>
   </div>
 </template>
 

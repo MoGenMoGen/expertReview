@@ -7,7 +7,30 @@
       v-if="showDetail"
     ></decryptDetail>
 
-    <div class="title">{{ detail.nm }} (项目编号:{{ detail.cd }})</div>
+    <div class="title">
+      {{ detail.nm }} (项目编号:{{ detail.cd }})
+
+      <div
+        v-if="auth1"
+        style="
+          width: 63px;
+          height: 27px;
+          background: #2778be;
+          color: #fff;
+          text-align: center;
+          line-height: 27px;
+          margin: 0 auto;
+          cursor: pointer;
+          display: inline-block;
+          border-radius: 4px;
+          margin-left: 4px;
+        "
+        v-loading.fullscreen.lock="fullscreenLoading"
+        @click="handleAllDecrypt"
+      >
+        一键解密
+      </div>
+    </div>
     <!-- <div class="small_title">标项1 （解密中）</div> -->
     <el-table
       max-height="504"
@@ -85,6 +108,23 @@
           >
             解密
           </div>
+          <div
+            v-else-if="scope.row.attachDecodeTm && auth1"
+            style="
+              width: 63px;
+              height: 27px;
+              background: #2778be;
+              color: #fff;
+              text-align: center;
+              line-height: 27px;
+              margin: 0 auto;
+              cursor: pointer;
+            "
+            v-loading.fullscreen.lock="fullscreenLoading"
+            @click="handleDecrypt(scope.row.id)"
+          >
+            重新解密
+          </div>
           <el-button
             style="color: #2778be"
             @click="toDetail(scope.row.id)"
@@ -151,7 +191,7 @@ export default {
   },
   methods: {
     toLink(url) {
-		console.log(1111111,url);
+      console.log(1111111, url);
       window.open(url);
     },
     async handleDecrypt(id) {
@@ -159,6 +199,20 @@ export default {
       this.api
         .decrypt({
           id,
+        })
+        .then((res) => {
+          this.fullscreenLoading = false;
+          this.getList();
+        });
+      setTimeout(() => {
+        this.fullscreenLoading = false;
+      }, 5000);
+    },
+    handleAllDecrypt() {
+      this.fullscreenLoading = true;
+      this.api
+        .AllDecrypt({
+          id:this.id
         })
         .then((res) => {
           this.fullscreenLoading = false;
@@ -177,13 +231,11 @@ export default {
       this.pageNo = val;
     },
     async getList() {
-	  let qry=this.query.new()
-	  this.query.toW(qry,'bidId',this.id,'EQ')
-	  this.query.toP(qry,this.pageNo,this.pageSize)
+      let qry = this.query.new();
+      this.query.toW(qry, "bidId", this.id, "EQ");
+      this.query.toP(qry, this.pageNo, this.pageSize);
       // 选取列表
-      let data = await this.api.decryptList(
-        this.query.toEncode(qry)
-      );
+      let data = await this.api.decryptList(this.query.toEncode(qry));
       this.tableData = data.data.list;
       for (let i = 0; i < this.tableData.length; i++) {
         this.tableData[i].newList = [];

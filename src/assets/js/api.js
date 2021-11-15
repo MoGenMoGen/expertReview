@@ -699,7 +699,7 @@ class api {
 	//项目公告删除
 	getBidAfficheDel(data) {
 		return new Promise(resolve => {
-			get('/ship/bidAffiche/del', data).then(res => { 
+			get('/ship/bidAffiche/del', data).then(res => {
 				resolve(res)
 			})
 		})
@@ -1004,6 +1004,22 @@ class api {
 			})
 		})
 	}
+	// 编辑视频上传
+	EditVideo(data) {
+		return new Promise(resolve => {
+			post('/ship/bidVedio/upd', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	//删除视频项
+	DelVideo(data) {
+		return new Promise(resolve => {
+			get('/ship/bidVedio/del', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
 	// 报名详情
 	signUpDetail(detailId) {
 		return new Promise(resolve => {
@@ -1020,24 +1036,32 @@ class api {
 			})
 		})
 	}
-	//已退款未退款详情
-	getPageWithWinBidOfferSum(data){
+	//全部解密
+	AllDecrypt(data) {
 		return new Promise(resolve => {
-			get('/ship/bid/pageWithWinBidOfferSum?query=' + data+'&experts=张,王').then(res => {
+			get('/ship/bidOffer/batchTranslate', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
+	//已退款未退款详情
+	getPageWithWinBidOfferSum(data) {
+		return new Promise(resolve => {
+			get('/ship/bid/pageWithWinBidOfferSum?query=' + data + '&experts=张,王').then(res => {
 				resolve(res.data)
 			})
 		})
 	}
 	//标后归档详情
-	getInfoWithWinBid(data){
+	getInfoWithWinBid(data) {
 		return new Promise(resolve => {
-			get('/ship/bid/infoWithWinBid/'+data).then(res => {
+			get('/ship/bid/infoWithWinBid/' + data).then(res => {
 				resolve(res.data)
 			})
 		})
 	}
 	//保证金退还
-	postReturnOfDownPayment(data){
+	postReturnOfDownPayment(data) {
 		return new Promise(resolve => {
 			post('/ship/bidDeposit/returnOfDownPayment', data).then(res => {
 				resolve(res)
@@ -1045,15 +1069,15 @@ class api {
 		})
 	}
 	//签到
-	sign(data){
+	sign(data) {
 		return new Promise(resolve => {
-			get('/ship/bidSignin/bidSignin/'+data).then(res => {
+			get('/ship/bidSignin/bidSignin/' + data).then(res => {
 				resolve(res.data)
 			})
 		})
 	}
 	//权限
-	getAuth(){
+	getAuth() {
 		return new Promise(resolve => {
 			get('/general/auth/getAuthz').then(res => {
 				resolve(res.data)
@@ -1063,7 +1087,7 @@ class api {
 	// 机构信息详情
 	getOrgEnterInfo(data) {
 		return new Promise(resolve => {
-			get('/ship/orgEnter/api/info/'+data).then(res => {
+			get('/ship/orgEnter/api/info/' + data).then(res => {
 				resolve(res.data)
 			})
 		})
