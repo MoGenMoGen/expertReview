@@ -130,6 +130,62 @@
 					</div>
 				</div>
 			</div>
+			<div class="detailBox">
+				<div class="detailTitle">
+					<span>招标公告</span>
+					<div class="line">
+					</div>
+				</div>
+				<div class="detailContent">
+					 <div class="leftbox">
+					 	<div class="leftList">
+					 		<div class="listName">
+					 			公告标题：
+					 		</div>
+					 		<div class="listContent">
+					 			{{tableData.title}}
+					 		</div>
+					 	</div>
+						<div class="leftList">
+							<div class="listName">
+								备注：
+							</div>
+							<div class="listContent">
+								{{tableData.rmks}}
+							</div>
+						</div>
+						</div>
+						<div class="rightbox">
+							<div class="rightList">
+								<div class="listName">
+									公告发布时间：
+								</div>
+								<div class="listContent">
+									{{tableData.crtTm}}
+								</div>
+							</div>
+							<div class="rightList">
+								<div class="listName">
+									排序：
+								</div>
+								<div class="listContent">
+									{{tableData.seq}}
+								</div>
+							</div>
+						</div>
+				</div>
+				<div class="cont">
+					<div class="contTitle">
+						公告内容
+					</div>
+					<div class="contContent" v-html="tableData.cont">
+					    
+					</div>
+					
+				</div>
+				  
+			</div>
+			
 		<!-- 	<div class="detailBox" v-if="info.audit==1&&auth">
 				<div class="detailTitle">
 					<span>审核意见</span>
@@ -162,6 +218,7 @@
 				info: {
 
 				},
+				tableData:{},
 				attachment: [],
 				list: [],
 				excel,
@@ -188,6 +245,17 @@
 				}
 			
 			})
+			let query = this.query.new();
+			this.query.toW(query, "bidId", this.detailId, "EQ");
+			this.query.toO(query, "seq", "asc");
+			this.api.getBidAffichePage(this.query.toEncode(query)).then((res) => {
+			  for(let i=0;i<res.data.list.length;i++){
+				  if(res.data.list[i].afficheTypeCd==5635882628584448){
+					this.tableData = res.data.list[i];
+				  }
+			  }
+			  console.log('1',this.tableData);
+			});
 		},
 		methods: {
 			download(){
@@ -399,6 +467,16 @@
 					width: 50%;
 					margin-top: 20px;
 					display: flex;
+				}
+			}
+			.cont{
+				width: 100%;
+				text-align: center;
+				.contTitle{
+					text-align: center;
+				}
+				.contContent{
+					text-align: center;
 				}
 			}
 		}

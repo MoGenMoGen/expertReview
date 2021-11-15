@@ -22,7 +22,7 @@
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>公告发布时间</span>
 					</div>
 					<div class="right">
-						<el-date-picker v-model="releTm" type="date" placeholder="选择日期">
+						<el-date-picker v-model="releTm" type="datetime" placeholder="选择日期">
 						</el-date-picker>
 					</div>
 				</div>
@@ -134,7 +134,7 @@
 							<span>公告发布时间：</span>
 						</div>
 						<div class="right">
-							{{detailInfo.releTm}}
+							{{detailInfo.crtTm}}
 						</div>
 					</div>
 					<div class="row2">
@@ -239,7 +239,7 @@
 							<span>公告发布时间：</span>
 						</div>
 						<div class="right">
-							{{detailInfo.releTm}}
+							{{detailInfo.crtTm}}
 						</div>
 					</div>
 					<div class="row2">
@@ -321,7 +321,7 @@
 						</el-input>
 					</div>
 				</div>
-				<div class="row2">
+				<!-- <div class="row2">
 					<div class="title">
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>公告发布时间</span>
 					</div>
@@ -329,7 +329,7 @@
 						<el-date-picker v-model="releTm" type="date" placeholder="选择日期">
 						</el-date-picker>
 					</div>
-				</div>
+				</div> -->
 				<div class="row2">
 					<div class="title">
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>项目名称</span>
@@ -427,7 +427,7 @@
 				</el-table-column>
 				<el-table-column prop="title" label="公告标题" min-width="100">
 				</el-table-column>
-				<el-table-column prop="releTm" label="公告发布时间" min-width="100">
+				<el-table-column prop="crtTm" label="公告发布时间" min-width="100">
 				</el-table-column>
 				<el-table-column prop="rmks" label="备注" min-width="100">
 				</el-table-column>
@@ -470,12 +470,12 @@ export default {
       value: "",
       value1: "",
       rmks: "",
+	  releTm:'',
       textarea: "",
       num: "",
       seq: "",
       radio: 1,
       title: "",
-      releTm: "",
       opinion: "",
       afficheTypeCd: "", //公告类型id
       afficheTypeNm: "", //公告类型nm
@@ -545,23 +545,24 @@ export default {
       });
     },
     toDetail(val) {
-      this.detailShow = true;
-      this.api.getBidAfficheDetail(val.id).then((res) => {
-        this.detailInfo = res;
-      });
+      // this.detailShow = true;
+      // this.api.getBidAfficheDetail(val.id).then((res) => {
+      //   this.detailInfo = res;
+      // });
+	  window.open('http://live.jinkworld.com/sinovat2/tradeInfo/zbDetail?id='+val.bidId+'&cid=1')
     },
     toEdit(val) {
       this.editShow = true;
       this.api.getBidAfficheDetail(val.id).then((res) => {
         this.detailInfo = res;
         this.title = res.title;
-        this.releTm = res.releTm;
         this.value = res.afficheTypeNm;
         (this.afficheTypeCd = res.afficheTypeCd),
           (this.afficheTypeNm = res.afficheTypeNm),
           (this.rmks = res.rmks);
         this.seq = res.seq;
         this.$refs.myEditor.msg = res.cont;
+		this.releTm=res.releTm
       });
     },
     toDelite(val) {
@@ -607,8 +608,8 @@ export default {
       this.editShow = false;
       this.afficheTypeNm = "";
       this.afficheTypeCd = "";
+	  this.releTm=''
       this.title = "";
-      this.releTm = "";
       this.rmks = "";
       this.value = "";
     },
@@ -620,13 +621,7 @@ export default {
         });
         return false;
       }
-      if (!this.releTm) {
-        this.$message({
-          type: "error",
-          message: "公告发布时间不能为空",
-        });
-        return false;
-      }
+    
       if (!this.afficheTypeCd) {
         this.$message({
           type: "error",
@@ -647,8 +642,8 @@ export default {
         afficheTypeCd: this.afficheTypeCd,
         afficheTypeNm: this.afficheTypeNm,
         title: this.title,
-        releTm: this.releTm,
         cont: this.$refs.myEditor.msg,
+		releTm:this.releTm,
         rmks: this.rmks,
       };
       this.api.postBidAffiche(obj).then((res) => {
@@ -683,10 +678,10 @@ export default {
         afficheTypeCd: this.afficheTypeCd,
         afficheTypeNm: this.afficheTypeNm,
         title: this.title,
-        releTm: this.releTm,
         cont: this.$refs.myEditor.msg,
         rmks: this.rmks,
         seq: this.seq,
+		releTm:this.releTm
       };
       this.api.postBidAfficheUpd(obj).then((res) => {
         this.closeMask();

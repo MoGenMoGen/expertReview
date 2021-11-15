@@ -42,26 +42,8 @@
 							</el-select>
 						</div>
 					</div>
-					<div class="row2">
-						<div class="title">
-							<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>报名截止时间</span>
-						</div>
-						<div class="right">
-							<el-date-picker v-model="completeTm" type="date" placeholder="报名截止时间" @change="pick2">
-							</el-date-picker>
-							</el-input>
-						</div>
-					</div>
-					<div class="row2">
-						<div class="title">
-							<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>开标时间</span>
-						</div>
-						<div class="right">
-							<el-date-picker v-model="bidOpenTm" type="datetime" placeholder="开标时间">
-							</el-date-picker>
-							</el-input>
-						</div>
-					</div>
+				
+				
 					<div class="row2">
 						<div class="title">
 							<span style="color: red; margin-right: 5px; display: inline-block">* </span>
@@ -75,13 +57,43 @@
 					<div class="row2">
 						<div class="title">
 							<span style="color: red; margin-right: 5px; display: inline-block">* </span>
-							<span>预算金额（元）</span>
+							<span>预算金额（万元）</span>
 						</div>
 						<div class="right">
-							<el-input v-model="budget" class="margin_right" clearable placeholder="预算金额(元)">
+							<el-input v-model="budget" class="margin_right" clearable placeholder="预算金额(万元)">
 							</el-input>
 						</div>
 					</div>
+					
+					<div class="row2">
+						<div class="title">
+							<!-- <span style="color: red; margin-right: 5px; display: inline-block">
+							</span> -->
+							<span>招标范围(可多选)</span>
+						</div>
+						<div class="right">
+							<el-select v-model="orgEnterIdsList" multiple filterable placeholder="招标范围(机构)"
+								style="margin-left: 12px;" @change="select5">
+								<el-option v-for="item in optionsSix" :key="item.id" :label="item.company" :value="item.id">
+								</el-option>
+							</el-select>
+							<p style="color: red;margin-left: 12px;">允许指定的机构参与报名投标(可多选)</p>
+						</div>
+					</div>
+					<div class="row2">
+						<div class="title">
+							<span style="color: red; margin-right: 5px; display: inline-block"></span><span>招标范围</span>
+						</div>
+						<div class="right">
+							<el-select v-model="viewRangeNm" clearable value-key="nm" filterable placeholder="招标范围(机构类型)"
+								style="margin-left: 12px;" @change="select8">
+								<el-option v-for="item in optionsFive" :key="item.nm" :label="item.nm" :value="item">
+								</el-option>
+							</el-select>
+							<p style="color: red;margin-left: 12px;">允许指定类型的所有机构参与报名投标</p>
+						</div>
+					</div>
+					
 					<div class="row2">
 						<div class="title">
 							<span style="color: red; margin-right: 5px; display: inline-block">* </span>
@@ -91,6 +103,31 @@
 							<el-radio-group v-model="status" style="margin-left: 12px;">
 								<el-radio :label="0">未发布</el-radio>
 								<el-radio :label="1">已发布</el-radio>
+							</el-radio-group>
+						</div>
+					</div>
+					<div class="row2">
+						<div class="title">
+							<span style="color: red; margin-right: 5px; display: inline-block">* </span>
+							<span>是否需缴纳保证金</span>
+						</div>
+						<div class="right">
+							<el-radio-group v-model="needDeposit" style="margin-left: 12px;" @change="radio1">
+								<el-radio :label="0">不需要</el-radio>
+								<el-radio :label="1">需要</el-radio>
+							</el-radio-group>
+						</div>
+					</div>
+					
+					<div class="row2">
+						<div class="title">
+							<span style="color: red; margin-right: 5px; display: inline-block">* </span>
+							<span>专家评定开关</span>
+						</div>
+						<div class="right">
+							<el-radio-group v-model="svsOn" style="margin-left: 12px;">
+								<el-radio :label="0">关闭</el-radio>
+								<el-radio :label="1">开启</el-radio>
 							</el-radio-group>
 						</div>
 					</div>
@@ -108,35 +145,6 @@
 									</el-upload>
 								</el-form-item>
 							</el-form>
-						</div>
-					</div>
-					<div class="row2">
-						<div class="title">
-							<!-- <span style="color: red; margin-right: 5px; display: inline-block">
-							</span> -->
-							<span>招标范围(可多选)</span>
-						</div>
-						<div class="right">
-							<el-select v-model="orgEnterIdsList" multiple filterable placeholder="招标范围(机构)"
-								style="margin-left: 12px;" @change="select5">
-								<el-option v-for="item in optionsSix" :key="item.id" :label="item.company" :value="item.id">
-								</el-option>
-							</el-select>
-							<span style="color: red;">允许指定的机构参与报名投标(可多选)</span>
-						</div>
-					</div>
-					<div class="row2">
-						<div class="title">
-							<span style="color: red; margin-right: 5px; display: inline-block">*
-							</span><span>已选专家（可多选）</span>
-						</div>
-						<div class="right">
-							<el-select v-model="expertIdsList" multiple filterable placeholder="已选专家"
-								style="margin-left: 12px;" @change="select7">
-								<el-option v-for="item in optionsEight" :key="item.id" :label="item.realNm"
-									:value="item.id">
-								</el-option>
-							</el-select>
 						</div>
 					</div>
 				</div>
@@ -174,10 +182,30 @@
 					</div>
 					<div class="row2">
 						<div class="title">
+							<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>报名截止时间</span>
+						</div>
+						<div class="right">
+							<el-date-picker v-model="completeTm" type="date" placeholder="报名截止时间" @change="pick2">
+							</el-date-picker>
+							</el-input>
+						</div>
+					</div>
+					<div class="row2">
+						<div class="title">
 							<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>截标时间</span>
 						</div>
 						<div class="right">
 							<el-date-picker v-model="bidEndTm" type="datetime" placeholder="截标时间">
+							</el-date-picker>
+							</el-input>
+						</div>
+					</div>
+					<div class="row2">
+						<div class="title">
+							<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>开标时间</span>
+						</div>
+						<div class="right">
+							<el-date-picker v-model="bidOpenTm" type="datetime" placeholder="开标时间">
 							</el-date-picker>
 							</el-input>
 						</div>
@@ -202,45 +230,7 @@
 							</el-input>
 						</div>
 					</div>
-					<div class="row2">
-						<div class="title">
-							<span style="color: red; margin-right: 5px; display: inline-block">* </span>
-							<span>是否需缴纳保证金</span>
-						</div>
-						<div class="right">
-							<el-radio-group v-model="needDeposit" style="margin-left: 12px;" @change="radio1">
-								<el-radio :label="0">不需要</el-radio>
-								<el-radio :label="1">需要</el-radio>
-							</el-radio-group>
-						</div>
-					</div>
 					
-					<div class="row2">
-						<div class="title">
-							<span style="color: red; margin-right: 5px; display: inline-block">* </span>
-							<span>专家评定开关</span>
-						</div>
-						<div class="right">
-							<el-radio-group v-model="svsOn" style="margin-left: 12px;">
-								<el-radio :label="0">关闭</el-radio>
-								<el-radio :label="1">开启</el-radio>
-							</el-radio-group>
-						</div>
-					</div>
-					
-					<div class="row2">
-						<div class="title">
-							<span style="color: red; margin-right: 5px; display: inline-block"></span><span>招标范围</span>
-						</div>
-						<div class="right">
-							<el-select v-model="viewRangeNm" clearable value-key="nm" filterable placeholder="招标范围(机构类型)"
-								style="margin-left: 12px;" @change="select8">
-								<el-option v-for="item in optionsFive" :key="item.nm" :label="item.nm" :value="item">
-								</el-option>
-							</el-select>
-							<span style="color: red;">允许指定类型的所有机构参与报名投标</span>
-						</div>
-					</div>
 					<div class="row2">
 						<div class="title">
 							<span style="color: red; margin-right: 5px; display: inline-block"> </span><span>专家选取规则</span>
@@ -253,6 +243,20 @@
 							</el-select>
 						</div>
 						<el-button type="primary" style="margin-left: 12px;" @click='chooseExpert'>选取专家</el-button>
+					</div>
+					<div class="row2">
+						<div class="title">
+							<span style="color: red; margin-right: 5px; display: inline-block">*
+							</span><span>已选专家（可多选）</span>
+						</div>
+						<div class="right">
+							<el-select v-model="expertIdsList" multiple filterable placeholder="已选专家"
+								style="margin-left: 12px;" @change="select7">
+								<el-option v-for="item in optionsEight" :key="item.id" :label="item.realNm"
+									:value="item.id">
+								</el-option>
+							</el-select>
+						</div>
 					</div>
 					
 					<div class="row2">
@@ -294,17 +298,15 @@
 					
 				</div>
 				<div class="rowRight">
-					<div class="row2">
-						<div class="title">
-							<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>公告发布时间</span>
-						</div>
-						<div class="right">
-							<el-date-picker v-model="releTm" type="date" placeholder="选择日期">
-							</el-date-picker>
-							</el-input>
-						</div>
-					</div>
-				
+							<div class="row2">
+								<div class="title">
+									<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>公告发布时间</span>
+								</div>
+								<div class="right">
+									<el-date-picker v-model="releTm" type="date" placeholder="选择日期">
+									</el-date-picker>
+								</div>
+							</div>
 					<div class="row2">
 						<div class="title">
 							<p>备注</p>
@@ -410,7 +412,7 @@
 							</el-table-column>
 							<el-table-column prop="procurementMethodNm" label="采购方式" min-width="80">
 							</el-table-column>
-							<el-table-column prop="budget" label="预算金额(元)" min-width="80">
+							<el-table-column prop="budget" label="预算金额(万元)" min-width="80">
 							</el-table-column>
 							<!-- <el-table-column prop="crtTm" label="创建时间" min-width="150">
 							</el-table-column> -->
@@ -559,10 +561,10 @@
 				ruleId: '', //专家选取规则模板id
 				rmks: '', //备注
 				title:'',//公告标题
-				seq:'',//排序
-				releTm:'',//公告发布时间
+				seq:1,//排序
 				rmksTwo:'',//公告备注
 				cont:'',//公告内容
+				releTm:'',//公告发布时间
 				form: {
 					file: ''
 				},
@@ -794,9 +796,8 @@
 					 if(res.data.list[i].afficheTypeCd=='5635882628584448'){
 						 this.title=res.data.list[i].title
 						 this.seq=res.data.list[i].seq
+						 this.rmksTwo=res.data.list[i].rmksTwo
 						 this.releTm=res.data.list[i].releTm
-						 this.rmksTwo=res.data.list[i].rmksTwo
-						 this.rmksTwo=res.data.list[i].rmksTwo
 						this.$refs.myEditor.msg =res.data.list[i].cont
 						 console.log('7879',this.cont);
 					 }
@@ -881,8 +882,8 @@
 				this.fileInfo = []
 				this.title=''
 				this.seq=''
-				this.releTm=''
 				this.rmksTwo=''
+				this.releTm=[]
 			},
 			confirmTo() {
 				if (!this.cd) {
@@ -1004,13 +1005,27 @@
 					});
 					return false
 				}
+				if(!this.title){
+					this.$message({
+						type: "error",
+						message: "公告标题不能为空",
+					});
+					return false
+				}
+				if(!this.$refs.myEditor.msg){
+					this.$message({
+						type: "error",
+						message: "公告内容不能为空",
+					});
+					return false
+				}
 				let obj = {
 					shipBidAfficheRo:{
 						title:this.title,
 						seq:this.seq,
-						releTm:this.releTm,
 						cont: this.$refs.myEditor.msg,
 						rmks: this.rmksTwo,
+						releTm:'',
 					},
 					shipBidRo:{
 						cd: this.cd,
@@ -1040,35 +1055,41 @@
 						expertIdsList: this.expertIdsList,
 						expertIds: this.expertIds,
 						rmks: this.rmks,
-						id: this.modifyId
+						id: this.modifyId,
+						releTm:this.until.formatTime(this.releTm)
+						
 					}
 			
 				}
+				console.log(this.flag)
 				if (!this.flag) {
 					this.$message({
 						message: '请勿重复点击',
 						type: 'warning'
 					});
+					return
 				}
 				if (this.newShow == true && this.flag == true) {
 					this.flag = false
+					setTimeout(()=>{
+						this.flag=true
+					},1000)
 					this.api.postBidAdd(obj).then(res => {
-						this.flag = true
+						console.log(111)
 						this.closeMask()
 						this.getList()
-					}).catch(err => {
-						this.flag = true
 					})
 					
 				}
 				if (this.showModify == true && this.flag == true) {
-					this.flag == false
+					this.flag = false
+					setTimeout(()=>{
+						this.flag=true
+					},1000)
 					this.api.postBidUpd(obj).then(res => {
 						this.flag = true
 						this.closeMask()
 						this.getList()
-					}).catch(err => {
-						this.flag = true
 					})
 				}
 
@@ -1307,7 +1328,7 @@
 				
 					// justify-content: space-between;
 					.title {
-						width: 100px;
+						width: 148px;
 						display: flex;
 						align-items: center;
 						justify-content: end;
@@ -1341,7 +1362,7 @@
 				
 					// justify-content: space-between;
 					.title {
-						width: 100px;
+						width: 148px;
 						display: flex;
 						align-items: center;
 						justify-content: end;
@@ -1390,7 +1411,7 @@
 			height: 800px;
 			margin-left: 10px;
 			width: calc(~"100% - 210px");
-
+			background-color: #ffffff;
 			// width: 100%;
 			.header {
 				// width:calc(~"100% - 210px");

@@ -92,6 +92,7 @@ function post(url, data) {
 				}
 			})
 			.catch(function (error) {
+				reject(error)
 				MessageBox({
 					message: JSON.stringify(error),
 					type: 'warning'
@@ -402,14 +403,7 @@ class api {
 			})
 		})
 	}
-	//招标新建
-	postBidAdd(data) {
-		return new Promise(resolve => {
-			post('/ship/bid/add', data).then(res => {
-				resolve(res)
-			})
-		})
-	}
+
 	//获取招标列表
 	getBidPage(data) {
 		return new Promise(resolve => {
@@ -485,8 +479,9 @@ class api {
 	//招标新建
 	postBidAdd(data) {
 		return new Promise(resolve => {
-			post('/ship/bid/add', data).then(res => {
+			post('/ship/bid/addAndAffiche', data).then(res => {
 				resolve(res)
+				console.log(res)
 			})
 		})
 	}
