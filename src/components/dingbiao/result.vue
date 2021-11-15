@@ -39,8 +39,8 @@
 						<el-table-column label="中标状态" min-width="100">
 							<template slot-scope="scope">
 								<p v-if="scope.row.bidStatus==0">未中标</p>
-								<p v-if="scope.row.bidStatus==1">已中标</p>
-								<p v-if="scope.row.bidStatus==2">开标中</p>
+								<p v-if="scope.row.bidStatus==1" style="color: #E4393C;">已中标</p>
+								<p v-if="scope.row.bidStatus==2" style="color: #2778BE;">开标中</p>
 							</template>
 						</el-table-column>
 						<el-table-column label="操作" min-width="100">

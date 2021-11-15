@@ -161,7 +161,7 @@
 									公告发布时间：
 								</div>
 								<div class="listContent">
-									{{tableData.crtTm}}
+									{{tableData.releTm}}
 								</div>
 							</div>
 							<div class="rightList">

@@ -57,10 +57,10 @@
 					<div class="row2">
 						<div class="title">
 							<span style="color: red; margin-right: 5px; display: inline-block">* </span>
-							<span>预算金额（万元）</span>
+							<span>预算金额（元）</span>
 						</div>
 						<div class="right">
-							<el-input v-model="budget" class="margin_right" clearable placeholder="预算金额(万元)">
+							<el-input v-model="budget" class="margin_right" clearable placeholder="预算金额(元)">
 							</el-input>
 						</div>
 					</div>
@@ -303,7 +303,7 @@
 									<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>公告发布时间</span>
 								</div>
 								<div class="right">
-									<el-date-picker v-model="releTm" type="date" placeholder="选择日期">
+									<el-date-picker v-model="releTm" type="datetime" placeholder="选择日期">
 									</el-date-picker>
 								</div>
 							</div>
@@ -412,7 +412,7 @@
 							</el-table-column>
 							<el-table-column prop="procurementMethodNm" label="采购方式" min-width="80">
 							</el-table-column>
-							<el-table-column prop="budget" label="预算金额(万元)" min-width="80">
+							<el-table-column prop="budget" label="预算金额(元)" min-width="80">
 							</el-table-column>
 							<!-- <el-table-column prop="crtTm" label="创建时间" min-width="150">
 							</el-table-column> -->
@@ -599,6 +599,7 @@
 				optionsSeven: [],
 				optionsEight: [],
 				flag: true,
+				BidAfficheInfo: {}
 			}
 		},
 		computed: {
@@ -794,6 +795,7 @@
 				 console.log('1333',res);
 				 for(let i=0;i<res.data.list.length;i++){
 					 if(res.data.list[i].afficheTypeCd=='5635882628584448'){
+						 this.BidAfficheInfo = res.data.list[i]
 						 this.title=res.data.list[i].title
 						 this.seq=res.data.list[i].seq
 						 this.rmksTwo=res.data.list[i].rmksTwo
@@ -1025,7 +1027,7 @@
 						seq:this.seq,
 						cont: this.$refs.myEditor.msg,
 						rmks: this.rmksTwo,
-						releTm:'',
+						releTm:this.until.formatTime(this.releTm),
 					},
 					shipBidRo:{
 						cd: this.cd,
@@ -1056,8 +1058,6 @@
 						expertIds: this.expertIds,
 						rmks: this.rmks,
 						id: this.modifyId,
-						releTm:this.until.formatTime(this.releTm)
-						
 					}
 			
 				}
@@ -1082,6 +1082,7 @@
 					
 				}
 				if (this.showModify == true && this.flag == true) {
+					obj.shipBidAfficheRo.id = this.BidAfficheInfo.id
 					this.flag = false
 					setTimeout(()=>{
 						this.flag=true

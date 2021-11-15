@@ -134,7 +134,7 @@
 							<span>公告发布时间：</span>
 						</div>
 						<div class="right">
-							{{detailInfo.crtTm}}
+							{{detailInfo.releTm}}
 						</div>
 					</div>
 					<div class="row2">
@@ -239,7 +239,7 @@
 							<span>公告发布时间：</span>
 						</div>
 						<div class="right">
-							{{detailInfo.crtTm}}
+							{{detailInfo.releTm}}
 						</div>
 					</div>
 					<div class="row2">
@@ -321,15 +321,15 @@
 						</el-input>
 					</div>
 				</div>
-				<!-- <div class="row2">
+				<div class="row2">
 					<div class="title">
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>公告发布时间</span>
 					</div>
 					<div class="right">
-						<el-date-picker v-model="releTm" type="date" placeholder="选择日期">
+						<el-date-picker v-model="releTm" type="datetime" placeholder="选择日期">
 						</el-date-picker>
 					</div>
-				</div> -->
+				</div>
 				<div class="row2">
 					<div class="title">
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>项目名称</span>
@@ -427,7 +427,7 @@
 				</el-table-column>
 				<el-table-column prop="title" label="公告标题" min-width="100">
 				</el-table-column>
-				<el-table-column prop="crtTm" label="公告发布时间" min-width="100">
+				<el-table-column prop="releTm" label="公告发布时间" min-width="100">
 				</el-table-column>
 				<el-table-column prop="rmks" label="备注" min-width="100">
 				</el-table-column>
@@ -643,7 +643,7 @@ export default {
         afficheTypeNm: this.afficheTypeNm,
         title: this.title,
         cont: this.$refs.myEditor.msg,
-		releTm:this.releTm,
+		releTm:this.until.formatTime(this.releTm),
         rmks: this.rmks,
       };
       this.api.postBidAffiche(obj).then((res) => {
@@ -681,7 +681,7 @@ export default {
         cont: this.$refs.myEditor.msg,
         rmks: this.rmks,
         seq: this.seq,
-		releTm:this.releTm
+		releTm:this.until.formatTime(this.releTm)
       };
       this.api.postBidAfficheUpd(obj).then((res) => {
         this.closeMask();
