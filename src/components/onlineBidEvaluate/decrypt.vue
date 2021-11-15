@@ -151,6 +151,7 @@ export default {
   },
   methods: {
     toLink(url) {
+		console.log(1111111,url);
       window.open(url);
     },
     async handleDecrypt(id) {
@@ -186,7 +187,7 @@ export default {
       this.tableData = data.data.list;
       for (let i = 0; i < this.tableData.length; i++) {
         this.tableData[i].newList = [];
-        let data = this.tableData[i].attachment.split(",");
+        let data = this.tableData[i].attachDecode.split(",");
         let data1 = [];
         let fileList2 = [];
         if (data.length > 0) {

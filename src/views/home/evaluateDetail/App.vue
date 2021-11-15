@@ -229,11 +229,11 @@
                     this.info = await this.api.reviewResult(this.id)
                     this.tableList = this.info.resultItems
                     this.reviewInfo = await this.api.projectDetail2(this.id)
-                    this.score = this.info.score
+                    this.score = this.info.score.toFixed(2)
                     this.nm = this.reviewInfo.bidNm
                 }
 
-                let arr = this.reviewInfo.attachment.split(',')
+                let arr = this.reviewInfo.attachDecode.split(',')
                 arr.forEach(item=>{
                     let index = item.indexOf('_')
                     let nm = item.slice(index+1)
