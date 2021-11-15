@@ -212,7 +212,7 @@ export default {
       pageSize: 10,
       total: 0,
       input: "",
-      tableData: [{ nm: "2020-12-12 14:45456456", status: 1 }],
+      tableData: [],
       ids: "",
       id: "",
       type: 0,

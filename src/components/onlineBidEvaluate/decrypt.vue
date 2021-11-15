@@ -177,6 +177,7 @@ export default {
       showDetail: false,
       detailId: "", //详情id
       bidId: 5042267656164352,
+      fullscreenLoading:false
     };
   },
   props: {
