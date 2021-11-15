@@ -34,7 +34,7 @@
             采购方式:<span class="value">{{ info.procurementMethodNm }}</span>
           </div>
           <div class="right">
-            预算金额（万元）:<span class="value">{{ info.budget }}</span>
+            预算金额（元）:<span class="value">{{ info.budget }}</span>
           </div>
         </div>
         <div class="row">

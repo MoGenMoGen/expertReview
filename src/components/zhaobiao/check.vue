@@ -20,7 +20,7 @@
 						</div>
 						<div class="leftList">
 							<div class="listName">
-								预算金额（万元）:
+								预算金额（元）:
 							</div>
 							<div class="listContent">
 								{{info.budget}}

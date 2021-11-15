@@ -28,10 +28,10 @@
 					</div>
 					<div class="middleBox">
 						<div class="middleLeft">
-							保证金未退金额：{{noRefund}}万元
+							保证金未退金额：{{noRefund}}元
 						</div>
 						<div class="middleRight">
-							保证金已退金额：{{refunded}}万元
+							保证金已退金额：{{refunded}}元
 						</div>
 					</div>
 					<div class="bodyTable">
@@ -54,7 +54,7 @@
 							</el-table-column>
 							<el-table-column prop="procurementMethodNm" label="采购方式" min-width="100">
 							</el-table-column>
-							<el-table-column prop="budget" label="预算金额(万元)" min-width="100">
+							<el-table-column prop="budget" label="预算金额(元)" min-width="100">
 							</el-table-column>
 							<el-table-column prop="crtTm" label="创建时间" min-width="150">
 							</el-table-column>
@@ -106,7 +106,7 @@
 									</div>
 									<div class="leftList">
 										<div class="listName">
-											预算金额（万元）
+											预算金额（元）
 										</div>
 										<div class="listContent">
 											{{info.budget}}

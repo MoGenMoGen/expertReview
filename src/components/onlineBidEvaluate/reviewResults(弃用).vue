@@ -27,7 +27,7 @@
           <div v-if="scope.row.status == 1">有效</div>
         </template>
       </el-table-column>
-      <el-table-column prop="offer" label="投标报价（万元）" min-width="172">
+      <el-table-column prop="offer" label="投标报价（元）" min-width="172">
       </el-table-column>
       <el-table-column label="专家评分" min-width="172">
         <template slot-scope="scope">

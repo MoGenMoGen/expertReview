@@ -41,7 +41,7 @@
 				</el-table-column>
 				<el-table-column prop="address" label="采购方式" min-width="100">
 				</el-table-column>
-				<el-table-column prop="address" label="预算金额(万元)" min-width="100">
+				<el-table-column prop="address" label="预算金额(元)" min-width="100">
 				</el-table-column>
 				<el-table-column prop="address" label="创建时间" min-width="150">
 				</el-table-column>
