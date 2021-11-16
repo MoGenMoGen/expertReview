@@ -62,11 +62,11 @@
         </div> -->
       </div>
       <!-- 解密前 -->
-      <div class="detailBox">
+      <div class="detailBox" v-if="!info.attachDecodeTm">
         <div class="detailTitle">
-          <span>招标文件</span>
+          <span>招标文件(加密)</span>
           <div class="line"></div>
-          <div class="back">加密</div>
+          <div class="back"></div>
         </div>
         <div class="detailContent">
           <div class="fileList" v-for="(item, index) in list1" :key="index">
@@ -90,9 +90,9 @@
         v-if="info.attachDecodeTm"
       >
         <div class="detailTitle">
-          <span>招标文件</span>
+          <span>招标文件(解密)</span>
           <div class="line"></div>
-          <div class="back">解密</div>
+          <div class="back"></div>
         </div>
         <div class="detailContent">
           <div class="fileList" v-for="(item, index) in list2" :key="index">
