@@ -294,6 +294,7 @@
 				this.list = fileList2
 			},
 			handleClickShenhe(row) {
+				this.options = ''
 				this.companyId = row.id
 				this.companyNm = row.orgNm
 				this.showPop = true

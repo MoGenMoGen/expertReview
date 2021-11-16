@@ -15,7 +15,7 @@
                 <div class="intro">
                     <p>评分人：{{name}}</p>
                     <p v-if="ifSubmit">招标采购商：{{reviewInfo.orgNm}}</p>
-                    <p class="score">合计总分：<span class="red">{{score.toFixed(2)}}分</span></p>
+                    <p class="score">合计总分：<span class="red">{{score}}分</span></p>
                 </div>
                 <table>
                     <thead>
@@ -41,7 +41,7 @@
                                     suffix-icon="el-icon-edit"
                                     v-model="item.score">
                             </el-input></td>
-                        <td v-for="(item,index) in tableList" :key="index+'5'"  v-if="!ifSubmit">{{item.score.toFixed(2)}}</td>
+                        <td v-for="(item,index) in tableList" :key="index+'5'"  v-if="!ifSubmit">{{item.score}}</td>
                     </tr>
                     <tr>
                         <td>加权得分</td>
@@ -123,6 +123,7 @@
                           this.score+=parseFloat(item.weightedScore)
                       }
                   })
+				  this.score = this.score.toFixed(2)
               }
           }
         },
@@ -208,7 +209,7 @@
                     item.weightedScore = null
                 }else{
                     item.score = parseInt(item.score)
-                    item.weightedScore = (item.score*item.weight*0.01)
+                    item.weightedScore = (item.score*item.weight*0.01).toFixed(2)
                 }
 
             },
@@ -221,7 +222,6 @@
             async getInfo(){
                 if(this.ifSubmit){
                     this.info = await this.api.reviewInfo(this.id)
-
                     this.tableList = this.info.items
                     this.reviewInfo = await this.api.projectDetail2(this.until.getQueryString('ids'))
                     this.nm = this.reviewInfo.bidNm
@@ -232,7 +232,6 @@
                     this.score = this.info.score.toFixed(2)
                     this.nm = this.reviewInfo.bidNm
                 }
-
                 let arr = this.reviewInfo.attachDecode.split(',')
                 arr.forEach(item=>{
                     let index = item.indexOf('_')

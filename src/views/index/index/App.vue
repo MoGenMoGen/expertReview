@@ -203,6 +203,8 @@
 				this.query.toP(qry,1,4)
 				this.query.toW(qry,'bidOpenTm',nowTime,'LT')
 				this.query.toWNull(qry,'bidColseTm')
+				// this.query.toW(qry,'audit','2','EQ')
+				// this.query.toW(qry,'status','1','EQ')
 				this.api.getBidPage(this.query.toEncode(qry)).then(res=>{
 					this.tableData=res.data.list
 				})

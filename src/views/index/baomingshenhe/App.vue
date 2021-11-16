@@ -291,6 +291,7 @@
 				this.showDetail = true
 			},
 			handleClickShenhe(row) {
+				this.idea = ''
 				this.companyId = row.id
 				this.companyNm = row.orgNm
 				this.showPop = true

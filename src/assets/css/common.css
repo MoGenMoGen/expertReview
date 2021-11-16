@@ -5,7 +5,7 @@ body,button,input,select,textarea{
 
 ::-webkit-scrollbar {
 	width: 4px;
-	height: 4px;
+	height: 8px;
 }
 ::-webkit-scrollbar-thumb {
 	background-color: #dcdde1;
