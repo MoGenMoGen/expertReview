@@ -60,21 +60,18 @@
 							</el-table-column>
 							<el-table-column label="状态" min-width="100">
 								<template slot-scope="scope">
-
-									<span v-if="scope.row.deposits.length>0" style="color: #E4393C;">
-										<p v-if="scope.row.deposits[0].paymentTm">已退还</p>
-										<p v-if="!scope.row.deposits[0].paymentTm">未退还</p>
-									</span>
-									<span v-if="scope.row.deposits.length==0" style="color: #2778BE;">
-										<p>未退还</p>
-									</span>
-
+									<span v-if="scope.row.depositReturnStatus==1" style="color: #E4393C;">未退还</span>
+									<span v-if="scope.row.depositReturnStatus==2" style="color: #E4393C;">部分退还</span>
+									<span v-if="scope.row.depositReturnStatus==3" style="color: rgb(39, 120, 190);">全部退还</span>
 								</template>
 							</el-table-column>
 							<el-table-column label="操作" min-width="50">
 								<template slot-scope="scope">
-									<el-button @click="tolook(scope.row)" type="text" size="small"
-										style="color: #2778BE;" v-if="auth2">查看</el-button>
+									<div @click="tolook(scope.row)" 	
+										style="color: rgb(39, 120, 190);font-size: 15px;cursor: pointer;" v-if="auth2">查看</div>
+										<div @click="toGuidang(scope.row)" class="" style="font-size: 15px;color:#ffffff;cursor: pointer;padding: 5px 10px;background-color:rgb(39, 120, 190);">
+											归档
+										</div>
 								</template>
 							</el-table-column>
 						</el-table>
@@ -216,9 +213,14 @@
 											@click="toLink(item.url)">
 										<p style="cursor: pointer;" @click="toLink(item.url)">{{item.fileNm}}</p>
 									</div>
-
 								</div>
-
+							</div>
+						</div>
+						<div class="detailBox">
+							<div class="detailTitle">
+								<span>视频</span>
+								<div class="line">
+								</div>
 							</div>
 						</div>
 						<div class="detailBox">
@@ -267,9 +269,9 @@
 
 										<div :style="{color:(item.apply.deposits?'#606060':'#E4393C')}" v-if="item.deposot">
 											保证金：{{item.deposot.refundTm?'已退':'未退'}}</div>
-										<div class="refundBack" @click="toRefundBack(item.deposot.id)"  v-if="item.deposot">
+										<!-- <div class="refundBack" @click="toRefundBack(item.deposot.id)"  v-if="item.deposot">
 											保证金退还
-										</div>
+										</div> -->
 										<div v-if="item.deposot&&item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
 										<div v-if="item.deposot&&item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
 										<div class="" style="display: flex; flex-wrap: wrap;">
@@ -506,7 +508,10 @@
 					this.infoList = res
 					for (let i = 0; i < this.infoList.length; i++) {
 						this.infoList[i].newList = []
-						let data = this.infoList[i].deposot.depositImgUrl.split(',')
+						if( this.infoList[i].deposot)
+						{
+							let data = this.infoList[i].deposot.depositImgUrl.split(',')
+						
 						let data1 = []
 						let fileList2 = []
 						if (data.length > 0) {
@@ -564,6 +569,8 @@
 						if(fileList2[0].url){
 							this.infoList[i].newList = fileList2
 						}
+						}
+						
 					}
 					console.log('78789987', this.infoList);
 				})
@@ -572,6 +579,22 @@
 			},
 			back() {
 				this.showDetail = false
+			},
+			toGuidang(val){
+				if(val.depositReturnStatus!=3){
+					this.$message({
+						type: "error",
+						message: "保证金未全部退还，归档失败",
+					});
+					return false
+				}
+				let obj={
+					id:val.id,
+					file:1
+				}
+				this.api.shipBidUpdFile(obj).then(res=>{
+					this.getList()
+				})
 			},
 			async getInfo(info) {
 				this.list = []
@@ -747,15 +770,14 @@
 			height: 800px;
 			margin-left: 10px;
 			width: calc(~"100% - 210px");
-			background-color: #ffffff;
-
+			
 			// width: 100%;
 			.content {
 				margin-top: 10px;
 				background-color: #ffffff;
 				width: 100%;
 				height: 740px;
-
+				margin-top: 10px;
 				.topSeachBox {
 					padding: 20px;
 					box-sizing: border-box;
@@ -822,12 +844,13 @@
 			}
 
 			.detail {
-				height: 690px;
+				height: 740px;
 				box-sizing: border-box;
 				overflow-y: scroll;
 				background-color: white;
 				// margin-left: 10px;
 				padding: 29px 41px;
+				margin-top: 10px;
 
 				.detailBox {
 					.detailTitle {

@@ -57,7 +57,7 @@
 					</div>
 				</div>
 
-				<div class="row2">
+				<!-- <div class="row2">
 					<div class="title">
 						<p>备注</p>
 					</div>
@@ -65,15 +65,15 @@
 						<el-input type="text" placeholder="备注" v-model="rmks">
 						</el-input>
 					</div>
-				</div>
-				<div class="row2">
+				</div> -->
+			<!-- 	<div class="row2">
 					<div class="title">
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>排序</span>
 					</div>
 					<div class="right">
 						<el-input-number v-model="seq" @change="handleChange" :min="1" label=""></el-input-number>
 					</div>
-				</div>
+				</div> -->
 				<div class="row2">
 					<div class="title">
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span>
@@ -159,7 +159,7 @@
 					</div>
 				
 				</div>
-				<div class="onRight" style="width:50%;">
+				<!-- <div class="onRight" style="width:50%;">
 					<div class="row2">
 						<div class="title">
 							<p>排序：</p>
@@ -177,7 +177,7 @@
 						</div>
 					</div>
 
-				</div>
+				</div> -->
 				<div class="" style="width: 100%; " >
 					<div class="row2" style="display:flex;flex-direction: column;">
 					  <div class="title">
@@ -208,7 +208,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="maskTwo" @click="closeMask" v-if="detailShow==true">
+		<!-- <div class="maskTwo" @click="closeMask" v-if="detailShow==true">
 			<div class="table_box" @click.stop="" style="display: flex; flex-wrap: wrap;">
 				<div class="top">
 					<p style="font-size: 20px">详情</p>
@@ -304,7 +304,7 @@
 		        " @click="closeMask" type="text" size="small">取消</el-button>
 				</div>
 			</div>
-		</div>
+		</div> -->
 		<div class="mask" @click="closeMask" v-if="editShow==true">
 			<div class="table_box" @click.stop="">
 				<div class="top">
@@ -360,7 +360,7 @@
 						</el-select>
 					</div>
 				</div>
-				<div class="row2">
+			<!-- 	<div class="row2">
 					<div class="title">
 						<p>备注</p>
 					</div>
@@ -368,15 +368,15 @@
 						<el-input type="text" placeholder="备注" v-model="rmks">
 						</el-input>
 					</div>
-				</div>
-				<div class="row2">
+				</div> -->
+				<!-- <div class="row2">
 					<div class="title">
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>排序</span>
 					</div>
 					<div class="right">
 						<el-input-number v-model="seq" @change="handleChange" :min="1" label=""></el-input-number>
 					</div>
-				</div>
+				</div> -->
 				<div class="row2">
 					<div class="title">
 						<span>公告内容</span>
@@ -429,8 +429,8 @@
 				</el-table-column>
 				<el-table-column prop="releTm" label="公告发布时间" min-width="100">
 				</el-table-column>
-				<el-table-column prop="rmks" label="备注" min-width="100">
-				</el-table-column>
+				<!-- <el-table-column prop="rmks" label="备注" min-width="100">
+				</el-table-column> -->
 				<el-table-column label="审核状态" min-width="100">
 					<template slot-scope="scope">
 						<p v-if="scope.row.audit==1" style="color: #f56c6c;">等待审核</p>
@@ -469,11 +469,9 @@ export default {
       date1: "",
       value: "",
       value1: "",
-      rmks: "",
 	  releTm:'',
       textarea: "",
       num: "",
-      seq: "",
       radio: 1,
       title: "",
       opinion: "",
@@ -559,8 +557,6 @@ export default {
         this.value = res.afficheTypeNm;
         (this.afficheTypeCd = res.afficheTypeCd),
           (this.afficheTypeNm = res.afficheTypeNm),
-          (this.rmks = res.rmks);
-        this.seq = res.seq;
         this.$refs.myEditor.msg = res.cont;
 		this.releTm=res.releTm
       });
@@ -610,7 +606,6 @@ export default {
       this.afficheTypeCd = "";
 	  this.releTm=''
       this.title = "";
-      this.rmks = "";
       this.value = "";
     },
     addSure() {
@@ -644,7 +639,6 @@ export default {
         title: this.title,
         cont: this.$refs.myEditor.msg,
 		releTm:this.until.formatTime(this.releTm),
-        rmks: this.rmks,
       };
       this.api.postBidAffiche(obj).then((res) => {
         this.closeMask();
@@ -654,9 +648,6 @@ export default {
     select1(val) {
       this.afficheTypeNm = val.nm;
       this.afficheTypeCd = val.id;
-    },
-    handleChange(val) {
-      this.seq = val;
     },
     sureTo() {
       let obj = {
@@ -679,8 +670,6 @@ export default {
         afficheTypeNm: this.afficheTypeNm,
         title: this.title,
         cont: this.$refs.myEditor.msg,
-        rmks: this.rmks,
-        seq: this.seq,
 		releTm:this.until.formatTime(this.releTm)
       };
       this.api.postBidAfficheUpd(obj).then((res) => {

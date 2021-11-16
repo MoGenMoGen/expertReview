@@ -20,7 +20,7 @@
 						</div>
 						<div class="leftList">
 							<div class="listName">
-								预算金额（元）:
+								预算金额(元):
 							</div>
 							<div class="listContent">
 								{{info.budget}}
@@ -146,14 +146,14 @@
 					 			{{tableData.title}}
 					 		</div>
 					 	</div>
-						<div class="leftList">
+						<!-- <div class="leftList">
 							<div class="listName">
 								备注：
 							</div>
 							<div class="listContent">
 								{{tableData.rmks}}
 							</div>
-						</div>
+						</div> -->
 						</div>
 						<div class="rightbox">
 							<div class="rightList">
@@ -164,14 +164,14 @@
 									{{tableData.releTm}}
 								</div>
 							</div>
-							<div class="rightList">
+							<!-- <div class="rightList">
 								<div class="listName">
 									排序：
 								</div>
 								<div class="listContent">
 									{{tableData.seq}}
 								</div>
-							</div>
+							</div> -->
 						</div>
 				</div>
 				<div class="cont">
@@ -471,12 +471,10 @@
 			}
 			.cont{
 				width: 100%;
-				text-align: center;
 				.contTitle{
 					text-align: center;
 				}
 				.contContent{
-					text-align: center;
 				}
 			}
 		}

@@ -5,11 +5,11 @@
 				:closable="item.canClose"></el-tab-pane>
 		</el-tabs>
 		<el-dropdown @command="handleCommand">
-			<el-button style="background-color: #2778BE;color: #fff;">
+			<el-button style="background-color: #ffffff;color: #2778BE;border: 1px solid #2778BE;padding: 10px;">
 				更多<i class="el-icon-arrow-down el-icon--right"></i>
 			</el-button>
 			<el-dropdown-menu slot="dropdown">
-				<el-dropdown-item command="search">搜索</el-dropdown-item>
+				<!-- <el-dropdown-item command="search">搜索</el-dropdown-item> -->
 				<el-dropdown-item command="other">关闭其他</el-dropdown-item>
 				<el-dropdown-item command="all">关闭所有</el-dropdown-item>
 				<el-dropdown-item command="stroage">清除缓存</el-dropdown-item>

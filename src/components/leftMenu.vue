@@ -156,8 +156,8 @@
         ">标后</span>
 				</template>
 				<el-menu-item-group>
-					<el-menu-item index="6-1" :class="currentIndex == '6-1' ? 'active' : ''" v-if="auth16">保证金退还</el-menu-item>
-					<el-menu-item index="6-2" :class="currentIndex == '6-2' ? 'active' : ''" v-if="auth17">已归档项目</el-menu-item>
+					<el-menu-item index="6-1" :class="currentIndex == '6-1' ? 'active' : ''" v-if="auth16">未归档</el-menu-item>
+					<el-menu-item index="6-2" :class="currentIndex == '6-2' ? 'active' : ''" v-if="auth17">已归档</el-menu-item>
 				</el-menu-item-group>
 			</el-submenu>
 		</el-menu>

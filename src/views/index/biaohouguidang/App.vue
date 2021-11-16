@@ -26,7 +26,7 @@
 							</el-option>
 						</el-select>
 						<el-button plain @click='search'>查询</el-button>
-						<el-button plain type="primary" @click='toTotalfile'>归档</el-button>
+						<!-- <el-button plain type="primary" @click='toTotalfile'>归档</el-button> -->
 					</div>
 					<div class="bodyTable">
 						<el-table  ref="multipleTable":data="tableData" style="width: 100%" tooltip-effect="dark" :cell-style="{
@@ -57,10 +57,10 @@
 							</el-table-column>
 							<el-table-column prop="file" label="状态" min-width="100">
 								<template slot-scope="scope">
-									<span v-if="scope.row.file=='1'||!scope.row.file" style="color: #E4393C;">
+									<span v-if="scope.row.file=='0'||!scope.row.file" style="color: #E4393C;">
 										未归档
 									</span>
-									<span v-if="scope.row.file=='2'" style="color: #2778BE;">
+									<span v-if="scope.row.file=='1'" style="color: #2778BE;">
 										已归档
 									</span>
 					
@@ -70,8 +70,8 @@
 								<template slot-scope="scope">
 									<!-- <el-button @click="tolook(scope.row)" type="text" size="small" style="color: #2778BE;">查看</el-button> -->
 									<p style="color:#2778BE ; cursor: pointer;" @click="toDetail(scope.row)" v-if="auth2">查看</p>
-									<div style="color:#ffffff ; padding: 4px 8px; background-color:#2778BE ;box-sizing: border-box; cursor: pointer;"@click="cancelFile(scope.row)" v-if="scope.row.file==2&&auth4">取消归档</div>
-									<div style="color:#ffffff ; padding: 4px 8px;background-color:#2778BE ;box-sizing: border-box; cursor: pointer;"@click="toFile(scope.row)" v-if="(scope.row.file==1||!scope.row.file)&&auth4">归档</div>
+									<div style="color:#ffffff ; padding: 4px 8px; background-color:#2778BE ;box-sizing: border-box; cursor: pointer;"@click="cancelFile(scope.row)" v-if="auth4">取消归档</div>
+									<!-- <div style="color:#ffffff ; padding: 4px 8px;background-color:#2778BE ;box-sizing: border-box; cursor: pointer;"@click="toFile(scope.row)" v-if="(scope.row.file==1||!scope.row.file)&&auth4">归档</div> -->
 								</template>
 							</el-table-column>
 						</el-table>
@@ -103,7 +103,7 @@
 									</div>
 									<div class="leftList">
 										<div class="listName">
-											预算金额（元）
+											预算金额（万元）
 										</div>
 										<div class="listContent">
 											{{info.budget}}
@@ -217,6 +217,16 @@
 							</div>
 						</div>
 						<div class="detailBox">
+							<div class="detailTitle">
+								<span>视频</span>
+								<div class="line">
+								</div>
+							</div>
+							<div class="detailContent">
+							
+							</div>
+						</div>
+						<div class="detailBox" style="margin-top: 20px;">
 							<div class="detailTitle">
 								<div class="line">
 								</div>
@@ -492,6 +502,7 @@
 			},
 			toDetail(val){
 				this.showDetail=true
+				let qry=this.query.new()
 				this.api.getBidInfo(val.id).then(res=>{
 					this.info=res.data
 					if(res.data.attachment){
@@ -578,32 +589,34 @@
 			search(){
 				this.getList()
 			},
-			toFile(val){
-				this.info=val
-				this.info.file=2
-				this.api.postBidUpd(this.info).then(res=>{
-					this.getList()
-				})
-			},
+			// toFile(val){
+			// 	this.info=val
+			// 	this.info.file=2
+			// 	this.api.postBidUpd(this.info).then(res=>{
+			// 		this.getList()
+			// 	})
+			// },
 			toLink(url){
 			 window.open(url)	
 			},
 			cancelFile(val){
-				this.info=val
-				this.info.file=1
-				this.api.postBidUpd(this.info).then(res=>{
+				let obj={
+					id:val.id,
+					file:0
+				}
+				this.api.shipBidUpdFile(obj).then(res=>{
 					this.getList()
 				})
-			},
-			toTotalfile(){
-				for(let i=0;i<this.fileList.length;i++){
-					this.fileList[i].file=2
-					this.api.postBidUpd(this.fileList[i]).then(res=>{
-						this.getList()
-				})
-				}
+			}, 
+			// toTotalfile(){
+			// 	for(let i=0;i<this.fileList.length;i++){
+			// 		this.fileList[i].file=2
+			// 		this.api.postBidUpd(this.fileList[i]).then(res=>{
+			// 			this.getList()
+			// 	})
+			// 	}
 				
-			},
+			// },
 			handleCurrentChange(val){
 				this.pageNo = `${val}`
 				this.getList()
@@ -670,13 +683,13 @@
 			height: 800px;
 			margin-left: 10px;
 			width: calc(~"100% - 210px");
-			background-color: #ffffff;
 			// width: 100%;
 			.content{
 				margin-top: 10px;
 				background-color: #ffffff;
 				width: 100%;
 				height: 740px;
+				margin-top: 10px;
 				.topSeachBox{
 					padding: 20px;
 					box-sizing: border-box;
@@ -733,13 +746,13 @@
 				}
 			}
 			.detail {
-				height: 690px;
+				height: 740px;
 				box-sizing: border-box;
 				overflow-y: scroll;
 				background-color: white;
 				// margin-left: 10px;
 				padding: 29px 41px;
-			
+				margin-top: 10px;
 				.detailBox {
 					.detailTitle {
 						display: flex;

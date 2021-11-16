@@ -1087,6 +1087,14 @@ class api {
 			})
 		})
 	}
+	//归档
+	shipBidUpdFile(data){
+		return new Promise(resolve => {
+			post('/ship/bid/updFile', data).then(res => {
+				resolve(res)
+			})
+		})
+	}
 }
 
 export {

@@ -57,14 +57,26 @@
 					<div class="row2">
 						<div class="title">
 							<span style="color: red; margin-right: 5px; display: inline-block">* </span>
-							<span>预算金额（元）</span>
+							<span>预算金额(元)</span>
 						</div>
 						<div class="right">
 							<el-input v-model="budget" class="margin_right" clearable placeholder="预算金额(元)">
 							</el-input>
 						</div>
 					</div>
-					
+					<div class="row2">
+						<div class="title">
+							<span style="color: red; margin-right: 5px; display: inline-block"></span><span>招标类型</span>
+						</div>
+						<div class="right">
+							<el-select v-model="viewRangeNm" clearable value-key="nm" filterable placeholder="招标类型"
+								style="margin-left: 12px;" @change="select8">
+								<el-option v-for="item in optionsFive" :key="item.nm" :label="item.nm" :value="item">
+								</el-option>
+							</el-select>
+							<p style="color: red;margin-left: 12px;">允许指定类型的所有机构参与报名投标</p>
+						</div>
+					</div>
 					<div class="row2">
 						<div class="title">
 							<!-- <span style="color: red; margin-right: 5px; display: inline-block">
@@ -80,19 +92,7 @@
 							<p style="color: red;margin-left: 12px;">允许指定的机构参与报名投标(可多选)</p>
 						</div>
 					</div>
-					<div class="row2">
-						<div class="title">
-							<span style="color: red; margin-right: 5px; display: inline-block"></span><span>招标范围</span>
-						</div>
-						<div class="right">
-							<el-select v-model="viewRangeNm" clearable value-key="nm" filterable placeholder="招标范围(机构类型)"
-								style="margin-left: 12px;" @change="select8">
-								<el-option v-for="item in optionsFive" :key="item.nm" :label="item.nm" :value="item">
-								</el-option>
-							</el-select>
-							<p style="color: red;margin-left: 12px;">允许指定类型的所有机构参与报名投标</p>
-						</div>
-					</div>
+			
 					
 					<div class="row2">
 						<div class="title">
@@ -192,10 +192,10 @@
 					</div>
 					<div class="row2">
 						<div class="title">
-							<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>截标时间</span>
+							<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>投标截止时间</span>
 						</div>
 						<div class="right">
-							<el-date-picker v-model="bidEndTm" type="datetime" placeholder="截标时间">
+							<el-date-picker v-model="bidEndTm" type="datetime" placeholder="投标截止时间">
 							</el-date-picker>
 							</el-input>
 						</div>
@@ -287,14 +287,14 @@
 						</div>
 					</div>
 			
-					<div class="row2">
+				<!-- 	<div class="row2">
 						<div class="title">
 							<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>排序</span>
 						</div>
 						<div class="right">
 							<el-input-number v-model="seq" @change="handleChange" :min="1" label=""></el-input-number>
 						</div>
-					</div>
+					</div> -->
 					
 				</div>
 				<div class="rowRight">
@@ -307,7 +307,7 @@
 									</el-date-picker>
 								</div>
 							</div>
-					<div class="row2">
+				<!-- 	<div class="row2">
 						<div class="title">
 							<p>备注</p>
 						</div>
@@ -315,7 +315,7 @@
 							<el-input type="text" placeholder="备注" v-model="rmksTwo">
 							</el-input>
 						</div>
-					</div>
+					</div> -->
 					
 				</div>
 				</div>
@@ -370,7 +370,7 @@
 			<leftMenu tabIndex='1-1'></leftMenu>
 			<div class="right">
 				<topNav :activeName='activeName' :list="thisNavList"></topNav>
-				<div class="content" v-if="showDetail==false&&showCheck==false">
+				<div class="content" v-if="showDetail==false&&showCheck==false" style="margin-top: 10px;">
 					<div class="topSeachBox">
 						<el-input placeholder="项目编号" v-model="searchInput1" clearable>
 						</el-input>
@@ -418,7 +418,7 @@
 							</el-table-column> -->
 							<el-table-column prop="publishTm" label="发布日期" min-width="100"></el-table-column>
 							<el-table-column prop="completeTm" label="报名截止日期" min-width="100"></el-table-column>
-							<el-table-column prop="bidEndTm" label="截标时间" min-width="100"></el-table-column>
+							<el-table-column prop="bidEndTm" label="投标截止时间" min-width="100"></el-table-column>
 							<el-table-column prop="bidOpenTm" label="开标时间" min-width="100"></el-table-column>
 							<el-table-column label="保证金" min-width="150">
 								<template slot-scope="scope">
@@ -490,7 +490,7 @@
 	import change from '@/components/zhaobiao/change';
 	import topNav from '@/components/topNav';
 	import check from '@/components/zhaobiao/check';
-	import MyEditor from '@/components/myEditor'
+	import MyEditor from  '@/components/myEditor'
 	export default {
 		data() {
 			return {
@@ -543,7 +543,7 @@
 				publishTm: '', //发布时间
 				completeTm: '', //完成时间
 				bidOpenTm: '', //开标时间
-				bidEndTm: '', //截标时间
+				bidEndTm: '', //投标截止时间
 				publisher: '', //发布人
 				mob: '', //联系电话
 				linkman: '', //联系人
@@ -561,8 +561,6 @@
 				ruleId: '', //专家选取规则模板id
 				rmks: '', //备注
 				title:'',//公告标题
-				seq:1,//排序
-				rmksTwo:'',//公告备注
 				cont:'',//公告内容
 				releTm:'',//公告发布时间
 				form: {
@@ -782,7 +780,9 @@
 					this.viewRangeNm = res.data.viewRangeNm
 					this.viewRangeCd = res.data.viewRangeCd
 					this.orgEnterIds = res.data.orgEnterIds
-					this.orgEnterIdsList = res.data.orgEnterIds.split(',').map(Number)
+					if(this.orgEnterIds){
+						this.orgEnterIdsList = res.data.orgEnterIds.split(',').map(Number)
+					}
 					this.ruleId = res.data.ruleId
 					this.expertIds = res.data.expertIds
 					this.expertIdsList = res.data.expertIds.split(',').map(Number)
@@ -797,8 +797,6 @@
 					 if(res.data.list[i].afficheTypeCd=='5635882628584448'){
 						 this.BidAfficheInfo = res.data.list[i]
 						 this.title=res.data.list[i].title
-						 this.seq=res.data.list[i].seq
-						 this.rmksTwo=res.data.list[i].rmksTwo
 						 this.releTm=res.data.list[i].releTm
 						this.$refs.myEditor.msg =res.data.list[i].cont
 						 console.log('7879',this.cont);
@@ -863,7 +861,7 @@
 				this.publishTm = '' //发布时间
 				this.completeTm = '' //完成时间
 				this.bidOpenTm = '' //开标时间
-				this.bidEndTm = '' //截标时间
+				this.bidEndTm = '' //投标截止时间
 				this.publisher = '' //发布人
 				this.mob = '' //联系电话
 				this.linkman = '' //联系人
@@ -883,9 +881,7 @@
 				this.list = []
 				this.fileInfo = []
 				this.title=''
-				this.seq=''
-				this.rmksTwo=''
-				this.releTm=[]
+				this.releTm=''
 			},
 			confirmTo() {
 				if (!this.cd) {
@@ -947,7 +943,7 @@
 				if (!this.bidEndTm) {
 					this.$message({
 						type: "error",
-						message: "截标时间不能为空",
+						message: "投标截止时间不能为空",
 					});
 					return false
 				}
@@ -1010,7 +1006,14 @@
 				if(!this.title){
 					this.$message({
 						type: "error",
-						message: "公告标题不能为空",
+						message: "标题不能为空",
+					});
+					return false
+				}
+				if(!this.releTm){
+					this.$message({
+						type: "error",
+						message: "公告发布时间不能为空",
 					});
 					return false
 				}
@@ -1024,9 +1027,7 @@
 				let obj = {
 					shipBidAfficheRo:{
 						title:this.title,
-						seq:this.seq,
 						cont: this.$refs.myEditor.msg,
-						rmks: this.rmksTwo,
 						releTm:this.until.formatTime(this.releTm),
 					},
 					shipBidRo:{
@@ -1241,9 +1242,6 @@
 				this.procurementMethodNm = val.nm
 				this.procurementMethodCd = val.cd
 			},
-		handleChange(val) {
-			this.seq = val
-		},
 
 		}
 	}
@@ -1412,7 +1410,6 @@
 			height: 800px;
 			margin-left: 10px;
 			width: calc(~"100% - 210px");
-			background-color: #ffffff;
 			// width: 100%;
 			.header {
 				// width:calc(~"100% - 210px");
@@ -1458,7 +1455,6 @@
 				background-color: #ffffff;
 				width: 100%;
 				height: 740px;
-
 				.topSeachBox {
 					// width: 100%;
 					padding: 20px;
