@@ -381,6 +381,13 @@ class until {
     return year + "-" + this.formatTen(month) + "-" + this.formatTen(day) + " " + this.formatTen(hour) + ":" + this.formatTen(minute) +
       ":" + this.formatTen(second);
   }
+  formatTimeTwo(date) {
+    let myDate = new Date(date)
+    let year = myDate.getFullYear();
+    let month = myDate.getMonth() + 1;
+    let day = myDate.getDate();
+    return year + "-" + this.formatTen(month) + "-" + this.formatTen(day)
+  }
 }
 //touch判断方向
 class judge {

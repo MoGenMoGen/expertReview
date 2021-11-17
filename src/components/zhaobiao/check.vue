@@ -42,7 +42,7 @@
 								{{info.crtTm}}
 							</div>
 						</div>
-						<div class="leftList">
+						<div class="leftList" style="display: flex;align-items: flex-start;">
 							<div class="listName">
 								备注说明：
 							</div>
@@ -50,7 +50,7 @@
 								<p>1、开标时间：
 									<span style="color: red;">{{info.bidOpenTm}}</span>
 								</p>
-								<p>2、截标时间：
+								<p>2、招标截止时间：
 									<span style="color: red;">{{info.bidEndTm}}</span>
 								</p>
 								<p>3、联系人：
@@ -154,14 +154,7 @@
 					 			{{tableData.title}}
 					 		</div>
 					 	</div>
-						<div class="leftList">
-							<div class="listName">
-								备注：
-							</div>
-							<div class="listContent">
-								{{tableData.rmks}}
-							</div>
-						</div>
+						
 						</div>
 						<div class="rightbox">
 							<div class="rightList">
@@ -172,14 +165,7 @@
 									{{tableData.crtTm}}
 								</div>
 							</div>
-							<div class="rightList">
-								<div class="listName">
-									排序：
-								</div>
-								<div class="listContent">
-									{{tableData.seq}}
-								</div>
-							</div>
+						
 						</div>
 				</div>
 				<div class="cont">
@@ -353,20 +339,20 @@
 	}
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	.detail {
-		height: 690px;
+		height:740px;
 		box-sizing: border-box;
 		overflow-y: scroll;
 		background-color: white;
 		// margin-left: 10px;
 		padding: 29px 41px;
-
+		margin-top: 10px;
 		.detailBox {
 			textarea {
 				margin: 30px 50px;
-				width: 70%;
-				height: 200px;
+				width: 50%;
+				height: 100px;
 				resize: none;
 				padding: 20px;
 			}
@@ -471,12 +457,10 @@
 			}
 			.cont{
 				width: 100%;
-				text-align: center;
 				.contTitle{
 					text-align: center;
 				}
 				.contContent{
-					text-align: center;
 				}
 			}
 		}

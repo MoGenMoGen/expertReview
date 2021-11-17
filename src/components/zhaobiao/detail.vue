@@ -42,16 +42,16 @@
 								{{info.crtTm}}
 							</div>
 						</div>
-						<div class="leftList">
+						<div class="leftList" style="display: flex; align-items: flex-start;">
 							<div class="listName">
 								备注说明：
 							</div>
 							<div class="listContent">
-								<p>1、开标时间：
-									<span style="color: red;">{{info.bidOpenTm}}</span>
-								</p>
-								<p>2、截标时间：
+								<p>1、招标截止时间：
 									<span style="color: red;">{{info.bidEndTm}}</span>
+								</p>
+								<p>2、开标时间：
+									<span style="color: red;">{{info.bidOpenTm}}</span>
 								</p>
 								<p>3、联系人：
 									<span>{{info.linkman}}</span>
@@ -347,15 +347,14 @@
 				console.log(fileList2)
 				this.list = fileList2
 				console.log('151', this.list)
-				
 			},
 		}
 	}
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 	.detail {
-		height: 690px;
+		height: 680px !important;
 		box-sizing: border-box;
 		overflow-y: scroll;
 		background-color: white;
@@ -474,8 +473,7 @@
 				.contTitle{
 					text-align: center;
 				}
-				.contContent{
-				}
+				
 			}
 		}
 

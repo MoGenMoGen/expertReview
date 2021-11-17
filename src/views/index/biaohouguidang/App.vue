@@ -103,7 +103,7 @@
 									</div>
 									<div class="leftList">
 										<div class="listName">
-											预算金额（万元）
+											预算金额(元)
 										</div>
 										<div class="listContent">
 											{{info.budget}}
@@ -136,7 +136,6 @@
 											<p>2、招标截止时间：
 												<span style="color: red;">{{info.bidEndTm}}</span>
 											</p>
-											<p>（以我司招标办收到的投标标准时间为准）,逾期按弃权处理</p>
 											<p>3、联系人：
 												<span>{{info.linkman}}</span>
 											</p>
@@ -223,7 +222,16 @@
 								</div>
 							</div>
 							<div class="detailContent">
-							
+								<div class="fileList" v-for="(item,index) in videoList" :key='index' >
+									<span>
+										{{index+1}}、
+									</span>
+									<div >
+										<video :src="item.vedioUrl" controls style="width: 200px;height: 200px;">
+										</video>
+									</div>
+									
+								</div>
 							</div>
 						</div>
 						<div class="detailBox" style="margin-top: 20px;">
@@ -262,25 +270,51 @@
 							<div class="detailContent">
 								<div class="collapse-item" v-for="(item,index) in infoList" :key="index">
 									<div class="collapse-top" @click="showMore(index)">
-										<div>招标采购商：<span style="color: #2778BE;" v-if="item.offer">{{item.offer.orgNm}}</span></div>
+										<div>招标采购商：<span style="color: #2778BE;" v-if="item.apply">{{item.apply.orgNm}}</span></div>
 										<div>审核状态：<span :style="{color:(item.apply.audit==2?'#2778BE':'#E4393C')}">{{item.apply.audit==2?'通过':'未通过'}}</span><img :class="{'collapse-rotate':selectIndex==index}" src="../../../assets/img/arrowDownG.png"></div>
 									</div>
-									<div class="collapse-bottom" v-show="selectIndex==index">
-										<div v-if="item.deposot" :style="{color:(item.apply.deposits?'#606060':'#E4393C')}">保证金：{{item.apply.deposits?'已缴':'未缴'}}、{{item.deposot.refundTm?'已退':'未退'}}</div>
-										<div v-if="item.deposot&&item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
-										<div v-if="item.deposot&&item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
-										<div class="" style="display: flex; flex-wrap: wrap;" >
-										<div class="fileList" v-for="(item1,index1) in item.newList" v-if="newList" :key='index1' >
-											<span>
-												{{index1+1}}、
-											</span>
-											<div  >
-												<img :src="item1.img"  style="width: 100px; height: 100px; cursor: pointer;" @click="toLink(item1.url)" >
-												<p style="cursor: pointer;" @click="toLink(item1.url)">{{item1.fileNm}}</p>
+									<div class="collapse-bottom" v-show="selectIndex==index" >
+										<div style="display: flex;">
+										<div class="leftBox">
+											<div v-if="item.apply.depositStatus==1" style="color:#606060;">保证金：无需缴纳</div>
+											<div v-if="item.apply.depositStatus==2" style="color:#E4393C;">保证金：应缴未缴</div>
+											<div v-if="item.apply.depositStatus==3" style="color:#2778BE;">保证金：已缴纳</div>
+											<div v-if="item.apply.depositStatus==4" style="color:#2778BE;">保证金：已退款</div>
+											<div v-if="item.deposot&&item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
+											<div v-if="item.deposot&&item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
+										</div>
+										<div class="rightBox" style="display: flex;">
+											<div class="title" style="color: #2778BE;">
+												专家评标信息:
 											</div>
-											
+											<div class="rightContent" style="margin: 0 0 0  15px  " >
+												<div class="contentList"  v-for="(item1,index1) in item.SvsResult"  >
+													<div class="name">
+														<span>专家姓名：{{item1.shipBidSvsResultVo.username}}</span>
+														<span style="margin-left: 15px;">专家评分：{{item1.shipBidSvsResultVo.score}}</span>
+													</div>
+												
+												</div>
+											</div>
 										</div>
+											</div>
+										<div class="imgList" v-if="item.deposot">
+											<div class="listTitle">
+												保证金上传凭证：
+											</div>
+											<div class="listContent">
+												<el-image  :src="item2"  :preview-src-list=" item.deposot.depositImgUrl" v-for="(item2,index2) in item.deposot.depositImgUrl" :key="index2"> </el-image>
+											</div>
 										</div>
+										<div class="imgList" v-if="item.deposot">
+											<div class="listTitle">
+												保证金退回凭证：
+											</div>
+											<div class="listContent">
+												<el-image  :src="item2"  :preview-src-list=" item.deposot.refundImgUrl" v-for="(item2,index2) in item.deposot.refundImgUrl" :key="index2"> </el-image>
+											</div>
+										</div>
+										<div style="color:#606060;">投标报价金额：</div>
 									</div>
 								</div>
 							</div>
@@ -310,6 +344,7 @@
 				auth2:'',//详情权限
 				auth3:'',//详情下方信息权限
 				auth4:'',//归档权限
+				videoList:[],
 				excel,
 				ppt,
 				word,
@@ -503,6 +538,13 @@
 			toDetail(val){
 				this.showDetail=true
 				let qry=this.query.new()
+				this.query.toW(qry,'bidId',val.id,"EQ")
+				this.query.toO(qry,'sort','asc')
+				this.api.bidVideoList(this.query.toEncode(qry)).then(res=>{
+					this.videoList=res.data.list
+					
+				
+				})
 				this.api.getBidInfo(val.id).then(res=>{
 					this.info=res.data
 					if(res.data.attachment){
@@ -513,6 +555,12 @@
 				})
 				this.api.getInfoWithWinBid(val.id).then(res=>{
 					this.infoList=res
+					this.infoList.forEach(item=>{
+						if(item.deposot){
+							item.deposot.depositImgUrl=item.deposot.depositImgUrl.split(",")
+							item.deposot.refundImgUrl=item.deposot.refundImgUrl.split(",")
+						}
+					})
 					for(let i=0;i<this.infoList.length;i++){
 						this.infoList[i].newList = []
 						let data
@@ -830,7 +878,7 @@
 			
 						.rightbox {
 							width: 50%;
-			
+							
 							.rightList {
 								display: flex;
 								margin-bottom: 30px;
@@ -882,9 +930,32 @@
 								box-sizing: border-box;
 								font-size: 14px;
 								color: #606060;
-								div {
-									margin: 15px 0;
+								.leftBox{
+									width: 50%;
+									div {
+										margin: 15px 0;
+									}
 								}
+								.rightBox{
+									width: 50%;
+									display: flex;
+									div {
+										margin: 15px 0;
+									}
+								}
+								.imgList{
+									margin-top: 10px;
+									.listContent{
+										display: flex;
+										flex: warp;
+										.el-image{
+											width: 150px;
+											height: 150px;
+											margin-left: 15px;
+										}
+									}
+								}
+								
 							}
 						}
 						
