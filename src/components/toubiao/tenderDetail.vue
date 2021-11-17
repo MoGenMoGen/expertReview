@@ -401,7 +401,7 @@
 			padding: 30px;
 			box-sizing: border-box;
 			display: flex;
-
+			flex-direction: column;
 			.list {
 				margin-top: 30px;
 				font-size: 14px;
