@@ -9,7 +9,7 @@
 					<div class="content-top" v-if="auth1">
 						<div v-for="(item,index) in menuList" :key="index" class="content-top-item">
 							<img :src="item.imgUrl">
-							<div style="width: 56px;">
+							<div style="width: 70px;">
 								<p :style="{color: item.color}">{{item.num}}</p>
 								<p>{{item.name}}</p>
 							</div>
@@ -97,14 +97,9 @@
 					name: '项目立项',
 					color: '#1D8BEB'
 				},{
-					imgUrl: img2,
-					num: 0,
-					name: '招标文件',
-					color: '#FF8F35'
-				},{
 					imgUrl: img3,
 					num: 0,
-					name: '发标',
+					name: '在线开标',
 					color: '#7944F6'
 				},{
 					imgUrl: img4,
@@ -114,7 +109,7 @@
 				},{
 					imgUrl: img5,
 					num: 0,
-					name: '开标',
+					name: '在线评标',
 					color: '#C832DA'
 				},{
 					imgUrl: img6,
@@ -124,9 +119,14 @@
 				},{
 					imgUrl: img7,
 					num: 0,
-					name: '缴费管理',
+					name: '保证金审核',
 					color: '#FF434C'
-				},
+				},{
+					imgUrl: img2,
+					num: 0,
+					name: '保证金退还',
+					color: '#FF8F35'
+				}
 				// {
 				// 	imgUrl: img8,
 				// 	num: 0,

@@ -140,7 +140,7 @@
 							保证金凭证：<el-image v-for="(newItem,newIndex) in item.deposits.shipBidDepositVo.depositImgUrl" :key="newIndex" 
 							:src="newItem" :preview-src-list="item.deposits.shipBidDepositVo.depositImgUrl"></el-image>
 						</div>
-						<div>申请时间：{{item.crtTm}}</div>
+						<div>上传时间：{{item.crtTm}}</div>
 						<div v-if="item.offerDtos">投标金额：{{item.offerDtos.shipBidOfferVo.offerAmt}}元</div>
 						<div v-if="item.newList.length>0">
 							投标文件：
