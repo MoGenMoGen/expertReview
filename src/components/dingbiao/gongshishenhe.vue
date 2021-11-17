@@ -40,29 +40,29 @@
 			</div>
 			<div class="btn">
 				<el-button v-if="type==0"
-					style="background: #2778be; color: #fff; margin-right: 20px; padding: 10px 25px; border-radius: 4px;"
-					@click="submit" type="text" size="small">确定</el-button>
-				<el-button v-if="type==0"
 					style="background: #fff; color: #333; border: 1px solid #dddddd; padding: 10px 25px; border-radius: 4px;"
 					@click="closeMask" type="text" size="small">取消</el-button>
-				<el-button v-if="type==1"
+				<el-button v-if="type==0"
 					style="background: #2778be; color: #fff; margin-right: 20px; padding: 10px 25px; border-radius: 4px;"
-					@click="verify" type="text" size="small">通过</el-button>
+					@click="submit" type="text" size="small">确定</el-button>
 				<el-button v-if="type==1"
 					style="background: #fff; color: #333; border: 1px solid #dddddd; padding: 10px 25px; border-radius: 4px;"
 					@click="reject" type="text" size="small">驳回</el-button>
+				<el-button v-if="type==1"
+					style="background: #2778be; color: #fff; margin-right: 20px; padding: 10px 25px; border-radius: 4px;"
+					@click="verify" type="text" size="small">通过</el-button>
+				<el-button v-if="type==2"
+					style="background: #fff; color: #333; border: 1px solid #dddddd; padding: 10px 25px; border-radius: 4px;"
+					@click="closeMask" type="text" size="small">取消</el-button>
 				<el-button v-if="type==2"
 					style="background: #2778be; color: #fff; margin-right: 20px; padding: 10px 25px; border-radius: 4px;"
 					@click="closeMask" type="text" size="small">确定</el-button>
-				<el-button v-if="type==2"
+				<el-button v-if="type==3"
 					style="background: #fff; color: #333; border: 1px solid #dddddd; padding: 10px 25px; border-radius: 4px;"
 					@click="closeMask" type="text" size="small">取消</el-button>
 				<el-button v-if="type==3"
 					style="background: #2778be; color: #fff; margin-right: 20px; padding: 10px 25px; border-radius: 4px;"
 					@click="update" type="text" size="small">确定</el-button>
-				<el-button v-if="type==3"
-					style="background: #fff; color: #333; border: 1px solid #dddddd; padding: 10px 25px; border-radius: 4px;"
-					@click="closeMask" type="text" size="small">取消</el-button>
 			</div>
 		</div>
 	</div>

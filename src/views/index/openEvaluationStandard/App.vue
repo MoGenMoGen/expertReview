@@ -27,13 +27,7 @@
               clearable
             >
             </el-input>
-            <button
-              @click="Search"
-              class="btn margin_right"
-              style="border: 1px solid #e0e0e0; cursor: pointer"
-            >
-              查询
-            </button>
+			<el-button plain @click="Search" style="margin-right: 15px;">查询</el-button>
             <button
               class="btn margin_right"
               style="

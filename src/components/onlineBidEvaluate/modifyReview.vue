@@ -35,6 +35,19 @@
         </div>
       </div>
       <div class="btn">
+		  <el-button
+		    style="
+		      background: #fff;
+		      color: #333;
+		      border: 1px solid #dddddd;
+		      padding: 10px 25px;
+		      border-radius: 4px;
+		    "
+		    @click="handleClick(scope.row)"
+		    type="text"
+		    size="small"
+		    >取消</el-button
+		  >
         <el-button
           style="
             background: #2778be;
@@ -47,19 +60,6 @@
           type="text"
           size="small"
           >提交</el-button
-        >
-        <el-button
-          style="
-            background: #fff;
-            color: #333;
-            border: 1px solid #dddddd;
-            padding: 10px 25px;
-            border-radius: 4px;
-          "
-          @click="handleClick(scope.row)"
-          type="text"
-          size="small"
-          >取消</el-button
         >
       </div>
     </div>

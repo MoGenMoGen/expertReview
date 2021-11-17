@@ -53,7 +53,7 @@
             </el-select> -->
             <!-- </div> -->
             <!-- </div> -->
-            <button class="btn_query" @click="Search">查询</button>
+			<el-button plain @click="Search" style="margin-right: 15px;">查询</el-button>
             <button
               class="btn_evaluation"
               @click="toPage('./onlineBidEvaluate.html')"

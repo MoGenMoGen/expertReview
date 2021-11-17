@@ -1,5 +1,13 @@
 
 class until {
+	imgStyle(cont){
+	  let myContent = cont.replace(/<img[^>]*>/gi, function (match, capture) {
+	    return match.replace(/(<img[^>]*)(\/?>)/gi, "$1style='max-width:100%;height:auto;' $2")
+	    // return match.replace(/style\s*?=\s*?([‘"])[\s\S]*?\1/ig, 'style="max-width:100%;height:auto;"') // 替换style
+	
+	  })
+	  return myContent
+	}
   //设置宽度
   getWidth() {
     let width = 0

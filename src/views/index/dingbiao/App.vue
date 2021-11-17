@@ -23,7 +23,7 @@
 							<el-date-picker v-model="bidEndTm" type="datetimerange" style="flex: 2;margin-right: 10px;margin-bottom: 10px;" range-separator="" start-placeholder="投标截止时间段">
 							</el-date-picker>
 							<!-- <el-date-picker v-model="value3" type="datetime" style="flex: 2;" placeholder="实际投标时间"></el-date-picker> -->
-							<el-button plain type="primary" @click="searchList" v-if="auth1">查询</el-button>
+							<el-button plain @click="searchList" v-if="auth1">查询</el-button>
 						</div>
 					</div>
 					<div class="content-list">
