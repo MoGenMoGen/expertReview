@@ -865,7 +865,7 @@ class api {
 	// 修改中标
 	postBidOfferUpd(data) {
 		return new Promise(resolve => {
-			post('/ship/bidOffer/upd?', data).then(res => {
+			post('/ship/bidOffer/apis/upd', data).then(res => {
 				resolve(res)
 			})
 		})

@@ -135,7 +135,7 @@
 					</div>
 					<div class="collapse-bottom" v-show="selectIndex==index">
 						<div style="color:#E4393C" v-if="info.needDeposit==0">保证金：无需缴纳</div>
-						<div v-if="info.needDeposit==1" :style="{color:(item.deposits&&item.deposits.shipBidDepositVo.audit==2?'#606060':'#E4393C')}">保证金：{{item.deposits&&item.deposits.shipBidDepositVo.audit==2?`已缴(${item.deposits.shipBidDepositVo.depositAmt}元)`:`未缴(${item.deposits.shipBidDepositVo.depositAmt}元)`}}</div>
+						<div v-if="info.needDeposit==1" :style="{color:(item.deposits&&item.deposits.shipBidDepositVo.audit==2?'#606060':'#E4393C')}">保证金：{{item.deposits&&item.deposits.shipBidDepositVo.audit==2?`已缴(${item.deposits.shipBidDepositVo.depositAmt}元)`:`未缴`}}</div>
 						<div class="deposits-img" v-if="item.deposits">
 							保证金凭证：<el-image v-for="(newItem,newIndex) in item.deposits.shipBidDepositVo.depositImgUrl" :key="newIndex" 
 							:src="newItem" :preview-src-list="item.deposits.shipBidDepositVo.depositImgUrl"></el-image>

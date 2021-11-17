@@ -18,7 +18,7 @@ export default {
         // 初始容器宽度
         initialFrameWidth: "100%",
         // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
-        serverUrl: `https://www.ship88.cn/general/ueditor/exec?action=config&=&noCache=${(new Date()).getTime()}`,
+        serverUrl: `https://www.ship88.cn/general/ueditor/exec`,
         // serverUrl: "https://www.ship88.cn/general/oss/upload",
 
         // UEDITOR_HOME_URL: "@/static/UEditor/",
