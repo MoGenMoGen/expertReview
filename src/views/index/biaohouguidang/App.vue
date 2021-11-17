@@ -147,7 +147,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="rightbox">
+								<div class="rightBox">
 									<div class="rightList">
 										<div class="listName">
 											项目名称：
@@ -282,8 +282,17 @@
 											<div v-if="item.apply.depositStatus==4" style="color:#2778BE;">保证金：已退款</div>
 											<div v-if="item.deposot&&item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
 											<div v-if="item.deposot&&item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
+											<div class="imgList" v-if="item.deposot">
+												<div class="listTitle">
+													保证金上传凭证：
+												</div>
+												<div class="listContent">
+													<el-image  :src="item2"  :preview-src-list=" item.deposot.depositImgUrl" v-for="(item2,index2) in item.deposot.depositImgUrl" :key="index2"> </el-image>
+												</div>
+											</div>
 										</div>
-										<div class="rightBox" style="display: flex;">
+										<div class="rightBox" >
+											<div  style="display: flex;">
 											<div class="title" style="color: #2778BE;">
 												专家评标信息:
 											</div>
@@ -296,24 +305,19 @@
 												
 												</div>
 											</div>
-										</div>
 											</div>
-										<div class="imgList" v-if="item.deposot">
-											<div class="listTitle">
-												保证金上传凭证：
-											</div>
-											<div class="listContent">
-												<el-image  :src="item2"  :preview-src-list=" item.deposot.depositImgUrl" v-for="(item2,index2) in item.deposot.depositImgUrl" :key="index2"> </el-image>
-											</div>
-										</div>
-										<div class="imgList" v-if="item.deposot">
-											<div class="listTitle">
-												保证金退回凭证：
-											</div>
-											<div class="listContent">
-												<el-image  :src="item2"  :preview-src-list=" item.deposot.refundImgUrl" v-for="(item2,index2) in item.deposot.refundImgUrl" :key="index2"> </el-image>
+											<div class="imgList" v-if="item.deposot">
+												<div class="listTitle">
+													保证金退回凭证：
+												</div>
+												<div class="listContent">
+													<el-image  :src="item2"  :preview-src-list=" item.deposot.refundImgUrl" v-for="(item2,index2) in item.deposot.refundImgUrl" :key="index2"> </el-image>
+												</div>
 											</div>
 										</div>
+											</div>
+									
+										
 										<div style="color:#606060;">投标报价金额：</div>
 									</div>
 								</div>
@@ -833,7 +837,6 @@
 					.detailContent {
 						padding: 30px;
 						box-sizing: border-box;
-						display: flex;
 						.list{
 							margin-top: 30px;
 							font-size: 14px;
@@ -938,7 +941,6 @@
 								}
 								.rightBox{
 									width: 50%;
-									display: flex;
 									div {
 										margin: 15px 0;
 									}
