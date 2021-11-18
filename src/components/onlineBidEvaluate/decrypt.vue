@@ -207,7 +207,7 @@ export default {
         });
       setTimeout(() => {
         this.fullscreenLoading = false;
-      }, 5000);
+      }, 30000);
     },
     handleAllDecrypt() {
       this.fullscreenLoading = true;
@@ -221,7 +221,7 @@ export default {
         });
       setTimeout(() => {
         this.fullscreenLoading = false;
-      }, 5000);
+      }, 30000);
     },
     toDetail(id) {
       this.showDetail = true;
@@ -326,6 +326,8 @@ export default {
   border-left: 4px solid #2778be;
   margin-bottom: 20px;
   line-height: 15px;
+  display: flex;
+  align-items: center;
 }
 
 .small_title {

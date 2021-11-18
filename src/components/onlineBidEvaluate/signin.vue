@@ -64,7 +64,7 @@
       <el-table-column prop="bidOpenTm" label="开标时间" min-width="146">
       </el-table-column>
       <el-table-column label="状态" min-width="146">
-        <template slot-scope="scope">
+        <template>
           <div style="color: #39a520">· 评标中</div>
           <!-- <div v-if="scope.row.status == 2" style="color: 'pink'">已完成</div> -->
         </template>
@@ -186,7 +186,7 @@ export default {
 
     setInterval(() => {
       this.getList();
-    }, 60000);
+    }, 30000);
   },
 };
 </script>
