@@ -340,8 +340,8 @@
 
 					</div>
 				</div>
-				<div class="row2" style="margin-left: 30px;">
-					<div class="title" style="margin-left: 48.5px;">
+				<div class="row2" >
+					<div class="title" style="display: flex;justify-content: end; width: 148px;">
 						<span style="color: red; margin-right: 1px; display: inline-block">* </span>
 						<span>公告内容</span>
 					</div>
@@ -1113,7 +1113,7 @@
 					this.flag = false
 					setTimeout(() => {
 						this.flag = true
-					}, 1000)
+					}, 2000	)
 					this.api.postBidAdd(obj).then(res => {
 						console.log(111)
 						this.closeMask()

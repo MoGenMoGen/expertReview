@@ -44,7 +44,7 @@
 						</div>
 						<div class="leftList" style="display: flex;align-items: flex-start;">
 							<div class="listName">
-								备注说明：
+								说明：
 							</div>
 							<div class="listContent">
 								<p>1、开标时间：
@@ -130,14 +130,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="detailBox" v-if="info.audit==1&&auth">
-				<div class="detailTitle">
-					<span>审核意见</span>
-					<div class="line">
-					</div>
-				</div>
-				<textarea rows="" cols="" v-model="options"></textarea>
-			</div>
+			
 			<div class="detailBox">
 				<div class="detailTitle">
 					<span>招标公告</span>
@@ -178,6 +171,14 @@
 					
 				</div>
 				  
+			</div>
+			<div class="detailBox" v-if="info.audit==1&&auth">
+				<div class="detailTitle">
+					<span>审核意见</span>
+					<div class="line">
+					</div>
+				</div>
+				<textarea rows="" cols="" v-model="options"></textarea>
 			</div>
 			<div class="bottomBtn" v-if="info.audit==1">
 				<div class="btnLeft" @click="getPast">

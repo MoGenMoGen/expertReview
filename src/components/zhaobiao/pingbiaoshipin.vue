@@ -7,7 +7,7 @@
 	   		</video>
 	   	</div> -->
 		<div >
-			<video :src="item" controls  width="200" height="200" style="margin-left: 20px;">
+			<video :src="item.vedioUrl" controls  width="200" height="200" style="margin-left: 20px;">
 			</video>
 		</div>
 	   	

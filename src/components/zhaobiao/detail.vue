@@ -44,7 +44,7 @@
 						</div>
 						<div class="leftList" style="display: flex; align-items: flex-start;">
 							<div class="listName">
-								备注说明：
+								说明：
 							</div>
 							<div class="listContent">
 								<p>1、招标截止时间：

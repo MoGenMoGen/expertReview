@@ -127,7 +127,7 @@
 									</div>
 									<div class="leftList">
 										<div class="listName">
-											备注说明：
+											说明：
 										</div>
 										<div class="listContent">
 											<p>1、标书投放时间：

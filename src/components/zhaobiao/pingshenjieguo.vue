@@ -244,31 +244,21 @@ export default {
       let qry = this.query.new();
       this.query.toP(qry, this.pageNo, this.pageSize);
       this.query.toO(qry, "crtTm", "desc");
-      this.query.toW(qry, "bidId", this.bidId, "EQ");
+      this.query.toW(qry, "id", this.bidId, "EQ");
       // if(this.SearchInfo.bidNm) {
       //  this.query.toW(qry, "bidNm", this.SearchInfo.bidNm, "LK");
       // }
-      if (this.SearchInfo.orgNm) {
-        this.query.toW(qry, "orgNm", this.SearchInfo.orgNm, "LK");
-      }
-      if (this.SearchInfo.username) {
-        this.query.toW(qry, "username", this.SearchInfo.username, "LK");
-      }
-      if (this.SearchInfo.realNm) {
-        this.query.toW(qry, "realNm", this.SearchInfo.realNm, "LK");
-      }
-      if (this.SearchInfo.status) {
-        this.query.toW(qry, "status", this.SearchInfo.status, "EQ");
-      }
+ 
       // 选取列表
-      let data = await this.api.reviewResultList(this.query.toEncode(qry));
+      let data = await this.api.getBidPage(this.query.toEncode(qry));
       this.tableData = data.data.list;
-      if (this.tableData.length > 0) {
-        this.tableData.forEach((item) => {
-          item.score = item.score.toFixed(2);
-          item.fullScore = item.score.toFixed(2);
-        });
-      }
+	  console.log('8899',this.tableData);
+      // if (this.tableData.length > 0) {
+      //   this.tableData.forEach((item) => {
+      //     item.score = item.score.toFixed(2);
+      //     item.fullScore = item.score.toFixed(2);
+      //   });
+      // }
       this.total = data.page.total;
     },
 
