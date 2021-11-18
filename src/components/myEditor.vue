@@ -17,7 +17,7 @@ export default {
         initialFrameHeight: 200,
         // 初始容器宽度
         initialFrameWidth: "100%",
-        // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）
+        // 上传文件接口（这个地址是我为了方便各位体验文件上传功能搭建的临时接口，请勿在生产环境使用！！！）注意跨域问题
         serverUrl: "https://fb.ship88.cn/general/ueditor/exec",
         // serverUrl: "https://www.ship88.cn/general/oss/upload",
 
