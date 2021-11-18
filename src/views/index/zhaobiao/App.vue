@@ -1,6 +1,6 @@
 <template>
 	<div id="home" :style="{width:bWidth + 'px'}" v-loading="loading">
-		<div class="mask" @click="closeMask" v-if="newShow==true||showModify==true">
+		<div class="mask" v-if="newShow==true||showModify==true">
 			<div class="table_box" @click.stop="">
 				<div class="top">
 					<p style="font-size: 20px">新增项目</p>
@@ -494,6 +494,16 @@
 						<el-tab-pane label="招标变更/澄清" name="second">
 							<change :detailId='detailId' :detailName='detailName'></change>
 						</el-tab-pane>
+						<el-tab-pane label="评标视频" name="third">
+							<pingbiaoshipin :detailId='detailId' :detailName='detailName'></pingbiaoshipin>
+						</el-tab-pane>
+						<el-tab-pane label="评审结果" name="fourth">
+							<pingshenjieguo :detailId='detailId' :detailName='detailName'></pingshenjieguo>
+						</el-tab-pane>
+						<el-tab-pane label="投标信息" name="fifth">
+							<toubiaoxinxi :detailId='detailId' :detailName='detailName'></toubiaoxinxi>
+						</el-tab-pane>
+						
 					</el-tabs>
 				</div>
 				<div v-if="showCheck==true">
@@ -511,6 +521,9 @@
 	import leftMenu from '@/components/leftMenu';
 	import detail from '@/components/zhaobiao/detail';
 	import change from '@/components/zhaobiao/change';
+	import pingbiaoshipin from '@/components/zhaobiao/pingbiaoshipin';
+	import pingshenjieguo from '@/components/zhaobiao/pingshenjieguo';
+	import toubiaoxinxi from '@/components/zhaobiao/toubiaoxinxi';
 	import topNav from '@/components/topNav';
 	import check from '@/components/zhaobiao/check';
 	import MyEditor from '@/components/myEditor'
@@ -634,7 +647,10 @@
 			change,
 			topNav,
 			check,
-			MyEditor
+			MyEditor,
+			pingbiaoshipin,
+			pingshenjieguo,
+			toubiaoxinxi
 		},
 		mounted() {
 			let obj = {
