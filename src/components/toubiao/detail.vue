@@ -42,7 +42,7 @@
 					</div>
 					<div class="leftList">
 						<div class="listName">
-							备注说明：
+							备注：
 						</div>
 						<div class="listContent">
 							{{info.rmks}}
@@ -106,6 +106,7 @@
 			</div>
 			<div class="detailBox">
 				<div class="detailTitle">
+					<span>项目审核</span>
 					<div class="line"></div>
 				</div>
 				<div class="detailContent" style=" display:flex; flex-direction: column;">

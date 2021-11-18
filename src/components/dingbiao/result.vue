@@ -45,20 +45,21 @@
 						</el-table-column>
 						<el-table-column label="操作" min-width="100">
 							<template slot-scope="scope">
-								<el-button @click="handleClick(scope.row)" type="text" size="small">中标</el-button>
+								<el-button @click="handleClick(scope.row)" type="text" size="small"
+								style="background: #FFF;color: #2778BE; border-radius: 2px;width: 50px;border: 1px solid #2778BE;box-sizing: border-box;margin-bottom: 10px;">中标</el-button>
 							</template>
 						</el-table-column>
 					</el-table>
 				</div>
 			</div>
-			<div class="btn">
+			<!-- <div class="btn">
 				<el-button
 					style="background: #fff; color: #333; border: 1px solid #dddddd; padding: 10px 25px; border-radius: 4px;"
 					@click="closeMask" type="text" size="small">取消</el-button>
 				<el-button
 					style="background: #2778be; color: #fff; margin-right: 20px; padding: 10px 25px; border-radius: 4px;"
 					@click="closeMask" type="text" size="small">确定</el-button>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>

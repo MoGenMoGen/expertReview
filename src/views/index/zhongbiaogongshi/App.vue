@@ -53,7 +53,7 @@
 								<el-table-column prop="procurementMethodNm" label="采购方式" min-width="150"></el-table-column>
 								<el-table-column prop="bidOpenTm" label="开标时间" min-width="100"></el-table-column>
 								<el-table-column prop="budget" label="预算金额(元)" min-width="100"></el-table-column>
-								<el-table-column prop="applyNum" label="投标项" min-width="100"></el-table-column>
+								<el-table-column prop="applyNum" label="有效标数" min-width="100"></el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
 										<el-button @click="handleClickShenhe(scope.row,2)" type="text" size="small" 

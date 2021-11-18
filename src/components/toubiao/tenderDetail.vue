@@ -6,7 +6,7 @@
 				<div class="line"></div>
 				<div class="back" @click="back">< 返回 </div>
 			</div>
-			<div class="detailContent">
+			<div class="detailContent" style="display: flex;flex-direction: row;">
 				<div class="leftbox">
 					<div class="leftList">
 						<div class="listName">
@@ -42,7 +42,7 @@
 					</div>
 					<div class="leftList">
 						<div class="listName">
-							备注说明：
+							备注：
 						</div>
 						<div class="listContent">
 							{{info.rmks}}
@@ -105,6 +105,7 @@
 		</div>
 		<div class="detailBox" v-if="auth1">
 			<div class="detailTitle">
+				<span>项目审核</span>
 				<div class="line"></div>
 			</div>
 			<div class="detailContent" style=" display:flex; flex-direction: column;">
@@ -136,11 +137,11 @@
 					<div class="collapse-bottom" v-show="selectIndex==index">
 						<div style="color:#E4393C" v-if="info.needDeposit==0">保证金：无需缴纳</div>
 						<div v-if="info.needDeposit==1" :style="{color:(item.deposits&&item.deposits.shipBidDepositVo.audit==2?'#606060':'#E4393C')}">保证金：{{item.deposits&&item.deposits.shipBidDepositVo.audit==2?`已缴(${item.deposits.shipBidDepositVo.depositAmt}元)`:`未缴`}}</div>
-						<div class="deposits-img" v-if="item.deposits">
+						<div class="deposits-img" v-if="(item.deposits&&item.deposits.shipBidDepositVo.audit==2)||info.needDeposit==0">
 							保证金凭证：<el-image v-for="(newItem,newIndex) in item.deposits.shipBidDepositVo.depositImgUrl" :key="newIndex" 
 							:src="newItem" :preview-src-list="item.deposits.shipBidDepositVo.depositImgUrl"></el-image>
 						</div>
-						<div>上传时间：{{item.crtTm}}</div>
+						<div v-if="item.deposits">保证金上传时间：{{item.deposits.shipBidDepositVo.crtTm}}</div>
 						<div v-if="item.offerDtos">投标金额：{{item.offerDtos.shipBidOfferVo.offerAmt}}元</div>
 						<div v-if="item.newList.length>0">
 							投标文件：
@@ -153,12 +154,12 @@
 									<div>
 										<img :src="item1.img"
 											style="width: 100px; height: 100px;">
-										<p>
-											{{item1.fileNm}}</p>
+										<p>{{item1.fileNm}}</p>
 									</div>
 								</div>
 							</div>
 						</div>
+						<div v-if="item.offerDtos">资料上传时间：{{item.offerDtos.shipBidOfferVo.crtTm}}</div>
 					</div>
 				</div>
 			</div>

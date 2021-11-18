@@ -9,7 +9,7 @@
 			</div> -->
 			<div class="container">
 				<p class="title">
-					<img :src="orgEnterInfo.logo">
+					<img :src="orgEnterInfo.logo?orgEnterInfo.logo:logo">
 					<span>{{orgEnterInfo.company}}</span>
 				</p>
 				<div class="two-item">
@@ -90,10 +90,12 @@
 </template>
 
 <script>
+	import logo from '@/assets/img/公司logo.png';
 	import moment from "moment";
 	export default {
 		data() {
 			return {
+				logo,
 				orgEnterInfo: {}
 			};
 		},
@@ -174,6 +176,7 @@
 						height: 55px;
 						border-radius: 50%;
 						margin-right: 16px;
+						object-fit: contain;
 					}
 				}
 				.two-item {

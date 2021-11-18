@@ -171,6 +171,13 @@
 					});
 					return
 				}
+				if(v.signin.shipBidSigninVo.signinStatus!=1) {
+					this.$message({
+						message: '还未签到，请签到',
+						type: 'warning'
+					});
+					return
+				}
 				// console.log('评审')
 				// return
 				let url = './evaluateDetail.html?id=' + v.svsId + '&ids=' + id2 + '&projectId=' + v.id
