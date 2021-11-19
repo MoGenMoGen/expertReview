@@ -1095,6 +1095,14 @@ class api {
 			})
 		})
 	}
+	//报价单详情
+	getBidOfferDetail(data){
+		return new Promise(resolve => {
+			get('/ship/bidOffer/info/' + data).then(res => {
+				resolve(res.data)
+			})
+		})
+	}
 }
 
 export {

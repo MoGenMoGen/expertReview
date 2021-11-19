@@ -127,7 +127,7 @@
 									</div>
 									<div class="leftList">
 										<div class="listName">
-											说明：
+												说明：
 										</div>
 										<div class="listContent">
 											<p>1、标书投放时间：
@@ -275,7 +275,7 @@
 									</div>
 									<div class="collapse-bottom" v-show="selectIndex==index" >
 										<div style="display: flex;">
-										<div class="leftBox">
+										
 											<div v-if="item.apply.depositStatus==1" style="color:#606060;">保证金：无需缴纳</div>
 											<div v-if="item.apply.depositStatus==2" style="color:#E4393C;">保证金：应缴未缴</div>
 											<div v-if="item.apply.depositStatus==3" style="color:#2778BE;">保证金：已缴纳</div>
@@ -290,8 +290,8 @@
 													<el-image  :src="item2"  :preview-src-list=" item.deposot.depositImgUrl" v-for="(item2,index2) in item.deposot.depositImgUrl" :key="index2"> </el-image>
 												</div>
 											</div>
-										</div>
-										<div class="rightBox" >
+										
+	
 											<div  style="display: flex;">
 											<div class="title" style="color: #2778BE;">
 												专家评标信息:
@@ -314,11 +314,23 @@
 													<el-image  :src="item2"  :preview-src-list=" item.deposot.refundImgUrl" v-for="(item2,index2) in item.deposot.refundImgUrl" :key="index2"> </el-image>
 												</div>
 											</div>
-										</div>
 											</div>
-									
-										
-										<div style="color:#606060;">投标报价金额：</div>
+									<div style="color:#2778BE;">投标报价金额：<span>{{item.offer.shipBidOfferVo.offerAmt}}</span></div>
+									<div class="fileTitle"  v-if="item.offer.shipBidOfferVo.attachDecode">
+										投标文件
+									</div>
+									<div style="display: flex;flex-wrap: wrap;" v-if="item.offer.shipBidOfferVo.attachDecode">
+										 <div class="fileImg" v-for="(item1,index1) in item.newList" :key="index1" style="margin: 0 20px;" >
+										     <span>
+										     	{{index1+1}}、
+										     </span>
+										     <div>
+										     	<img :src="item1.img"  style="width: 100px; height: 100px; cursor: pointer;" @click="toLink(item1.url)"  >
+										     	<p style="cursor: pointer;"  @click="toLink(item1.url)">{{item1.fileNm}}</p>
+										     </div>
+										     
+										 </div>
+									</div>
 									</div>
 								</div>
 							</div>
@@ -561,17 +573,22 @@
 					this.infoList=res
 					this.infoList.forEach(item=>{
 						if(item.deposot){
-							item.deposot.depositImgUrl=item.deposot.depositImgUrl.split(",")
-							item.deposot.refundImgUrl=item.deposot.refundImgUrl.split(",")
+							if(item.deposot.depositImgUrl){
+								item.deposot.depositImgUrl=item.deposot.depositImgUrl.split(",")
+							}
+							if(item.deposot.refundImgUrl){
+								item.deposot.refundImgUrl=item.deposot.refundImgUrl.split(",")
+							}
 						}
 					})
+					
 					for(let i=0;i<this.infoList.length;i++){
 						this.infoList[i].newList = []
 						let data
-						if(this.infoList[i].apply.attachment==''){
+						if(this.infoList[i].offer.shipBidOfferVo.attachDecode==''){
 							data = []
 						} else {
-							data = this.infoList[i].apply.attachment.split(',')
+							data =this.infoList[i].offer.shipBidOfferVo.attachDecode.split(',')
 						}
 						let data1 = []
 						let fileList2 = []

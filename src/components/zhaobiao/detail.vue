@@ -344,9 +344,7 @@
 
 					})
 				}
-				console.log(fileList2)
 				this.list = fileList2
-				console.log('151', this.list)
 			},
 		}
 	}

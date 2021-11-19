@@ -91,7 +91,7 @@
 							<div class="back" @click="back">
 								< 返回 </div>
 							</div>
-							<div class="detailContent">
+							<div class="detailContent" style="display: flex;">
 								<div class="leftbox">
 									<div class="leftList">
 										<div class="listName">
@@ -125,7 +125,7 @@
 											{{info.crtTm}}
 										</div>
 									</div>
-									<div class="leftList">
+									<div class="leftList" style="display: flex; align-items: flex-start;">
 										<div class="listName">
 											说明：
 										</div>
@@ -253,7 +253,7 @@
 							<div class="detailContent">
 								<div class="collapse-item" v-for="(item,index) in infoList" :key="index">
 									<div class="collapse-top" @click="showMore(index)">
-										<div>招标采购商：<span style="color: #2778BE;" v-if="item.offer">{{item.offer.orgNm}}</span></div>
+										<div>招标采购商：<span style="color: #2778BE;" v-if="item.apply">{{item.apply.orgNm}}</span></div>
 										<div>审核状态：<span
 												:style="{color:(item.apply.audit==2?'#2778BE':'#E4393C')}">{{item.apply.audit==2?'通过':'未通过'}}</span><img
 												:class="{'collapse-rotate':selectIndex==index}"
@@ -878,7 +878,6 @@
 					.detailContent {
 						padding: 30px;
 						box-sizing: border-box;
-						display: flex;
 
 						.list {
 							margin-top: 30px;
