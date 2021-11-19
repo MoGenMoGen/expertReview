@@ -156,6 +156,8 @@
 			.top {
 			  display: flex;
 			  width: 100%;
+			  padding: 30px;
+			  box-sizing: border-box;
 			  justify-content: space-between;
 			  margin-bottom: 10px;
 			}
