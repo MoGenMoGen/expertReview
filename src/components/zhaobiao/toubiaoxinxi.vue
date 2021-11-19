@@ -14,6 +14,7 @@
 						<div v-if="item.apply.depositStatus==4" style="color:#2778BE;">保证金：已退款</div>
 						<div v-if="item.deposot&&item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
 						<div v-if="item.deposot&&item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
+						<div v-if="item.deposot&&item.deposot.refundTm">保证金上传金额：{{item.deposot.depositAmt}}</div>
 					<div class="imgList" v-if="item.deposot">
 							<div class="listTitle">
 								保证金上传凭证：
