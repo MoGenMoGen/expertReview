@@ -2,11 +2,11 @@
 	<!--评标上传视频 -->
 	<div id="mask" @click="closeMask">
 		<div class="table_box" @click.stop="">
-			<!-- <div class="top">
-				<p style="font-size: 20px; color: #636e72">资质信息</p>
+			<div class="top">
+				<p style="font-size: 20px; color: #636e72"></p>
 				<img @click="closeMask" src="~assets/img/close.png"
 					style="width: 25px; height: 25px; cursor: pointer" />
-			</div> -->
+			</div>
 			<div class="container">
 				<p class="title">
 					<img :src="orgEnterInfo.logo?orgEnterInfo.logo:logo">
