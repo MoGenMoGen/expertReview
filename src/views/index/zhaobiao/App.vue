@@ -404,7 +404,7 @@
 						<!-- <el-date-picker v-model="searchDate" type="datetime" placeholder="创建时间">
 						</el-date-picker> -->
 						<el-date-picker style="margin-left: 30px;" v-model="searchDate" type="daterange"
-							range-separator="至" start-placeholder="发布时间区间(开始)" end-placeholder="发布时间区间(结尾)"
+							range-separator="至" start-placeholder="发布时间(开始)" end-placeholder="发布时间(结尾)"
 							unlink-panels>
 						</el-date-picker>
 						<el-select v-model="search2" clearable placeholder="项目状态" @change="searchSelectTwo">

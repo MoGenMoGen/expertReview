@@ -547,7 +547,7 @@ export default {
       // this.api.getBidAfficheDetail(val.id).then((res) => {
       //   this.detailInfo = res;
       // });
-	  window.open('http://live.jinkworld.com/sinovat2/tradeInfo/zbDetail?id='+val.bidId+'&cid=1')
+	  window.open('http://live.jinkworld.com/sinovat2/tradeInfo/zbDetail?id='+val.bidId+'&cid=1'+'&flag=1')
     },
     toEdit(val) {
       this.editShow = true;

@@ -34,14 +34,14 @@
 								{{info.publishTm}}
 							</div>
 						</div>
-						<div class="leftList">
+					<!-- 	<div class="leftList">
 							<div class="listName">
 								创建时间：
 							</div>
 							<div class="listContent">
 								{{info.crtTm}}
 							</div>
-						</div>
+						</div> -->
 						<div class="leftList" style="display: flex; align-items: flex-start;">
 							<div class="listName">
 								说明：
