@@ -3,15 +3,16 @@
 	<div id="mask" @click="closeMask">
 		<div class="table_box" @click.stop="">
 			<div class="top">
-				<p style="font-size: 20px; color: #636e72"></p>
-				<img @click="closeMask" src="~assets/img/close.png"
-					style="width: 25px; height: 25px; cursor: pointer" />
+				<div class="title">
+					<div style="display: flex;align-items: center;">
+						<img :src="orgEnterInfo.logo?orgEnterInfo.logo:logo">
+						<span>{{orgEnterInfo.company}}</span>
+					</div>
+					<img @click="closeMask" src="~assets/img/close.png"
+						style="width: 25px; height: 25px; cursor: pointer" />
+				</div>
 			</div>
 			<div class="container">
-				<p class="title">
-					<img :src="orgEnterInfo.logo?orgEnterInfo.logo:logo">
-					<span>{{orgEnterInfo.company}}</span>
-				</p>
 				<div class="two-item">
 					<p>公司名称：{{orgEnterInfo.company}}</p>
 					<p>入驻身份：{{orgEnterInfo.identityNm}}</p>
@@ -151,20 +152,38 @@
 		.table_box {
 			width: 875px;
 			max-height: 670px;
-			overflow-y: scroll;
+			// overflow-y: scroll;
 			background: #fff;
 			.top {
 			  display: flex;
 			  width: 100%;
-			  padding: 30px;
 			  box-sizing: border-box;
 			  justify-content: space-between;
-			  margin-bottom: 10px;
+			  .title {
+			  	width: 100%;
+			  	padding: 30px;
+				padding-bottom: 20px;
+			  	box-sizing: border-box;
+			  	display: flex;
+			  	align-items: center;
+				justify-content: space-between;
+			  	font-size: 18px;
+			  	color: #2478BE;
+			  	img {
+			  		width: 55px;
+			  		height: 55px;
+			  		border-radius: 50%;
+			  		margin-right: 16px;
+			  		object-fit: contain;
+			  	}
+			  }
 			}
 			.container {
 				display: flex;
 				flex-direction: column;
 				box-sizing: border-box;
+				max-height: 565px;
+				overflow-y: scroll;
 				.title {
 					width: 100%;
 					padding: 30px;
