@@ -265,12 +265,12 @@
 										<!-- <div class="refundBack" @click="toRefundBack(item.deposot.id)"  v-if="item.deposot">
 											保证金退还
 										</div> -->
+										<div v-if="item.deposot&&item.deposot.depositAmt">保证金金额：{{item.deposot.depositAmt}}</div>
 										<div v-if="item.deposot&&item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
 										<div v-if="item.deposot&&item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
+										<div style="margin-bottom: 0;">保证金支付凭证：</div>
 										<div class="" style="display: flex; flex-wrap: wrap;">
-
-
-											<div class="fileList" v-for="(item1,index1) in item.newList"
+											<div style="margin-top: 0;" class="fileList" v-for="(item1,index1) in item.newList"
 												v-if="item.newList" :key='index1'>
 												<span>
 													{{index1+1}}、
@@ -282,7 +282,22 @@
 													<p style="cursor: pointer;" @click="toLink(item1.url)">
 														{{item1.fileNm}}</p>
 												</div>
-
+											</div>
+										</div>
+										<div style="margin-bottom: 0;">保证金退回凭证：</div>
+										<div class="" style="display: flex; flex-wrap: wrap;">
+											<div style="margin-top: 0;" class="fileList" v-for="(item1,index1) in item.newListTwo"
+												v-if="item.newListTwo" :key='index1'>
+												<span>
+													{{index1+1}}、
+												</span>
+												<div>
+													<img :src="item1.img"
+														style="width: 100px; height: 100px; cursor: pointer;"
+														@click="toLink(item1.url)">
+													<p style="cursor: pointer;" @click="toLink(item1.url)">
+														{{item1.fileNm}}</p>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -501,12 +516,14 @@
 					this.infoList = res
 					for (let i = 0; i < this.infoList.length; i++) {
 						this.infoList[i].newList = []
+						this.infoList[i].newListTwo = []
 						if( this.infoList[i].deposot)
 						{
 							let data = this.infoList[i].deposot.depositImgUrl.split(',')
-						
+							let dataTwo=this.infoList[i].deposot.refundImgUrl.split(',')
 						let data1 = []
 						let fileList2 = []
+						let fileList3=[]
 						if (data.length > 0) {
 							data.forEach(v => {
 								let type = v.split('.')[v.split('.').length - 1]
@@ -559,8 +576,63 @@
 
 							})
 						}
+						if (dataTwo.length > 0) {
+							dataTwo.forEach(v => {
+								let type = v.split('.')[v.split('.').length - 1]
+								let nmList = v.split('.com/') //分割出url后的内容
+								let nm = ""
+								nmList.forEach((j, z) => { //防止文件名中有 .com/ 所以循环加入
+									if (z != 0) {
+										nm += j
+									}
+								})
+								nmList = nm.split('_') //分割随机字符后的内容
+								nm = ""
+								nmList.forEach((j, z) => { //防止文件名中有 _ 所以循环
+									if (z != 0) {
+										nm += j
+									}
+								})
+								nm = nm.split('.' + type)[0]
+								if (type == 'pdf') {
+									fileList3.push({
+										url: v,
+										img: this.pdf,
+										'fileNm': nm
+									})
+								} else if (type == 'doc' || type == 'docx') {
+									fileList3.push({
+										url: v,
+										img: this.word,
+										'fileNm': nm
+									})
+								} else if (type == 'ppt' || type == 'pptx') {
+									fileList3.push({
+										url: v,
+										img: this.ppt,
+										'fileNm': nm
+									})
+								} else if (type == 'xls' || type == 'xlsx') {
+									fileList3.push({
+										url: v,
+										img: this.excel,
+										'fileNm': nm
+									})
+								} else {
+									fileList3.push({
+										url: v,
+										img: v,
+										'fileNm': nm
+									})
+								}
+						
+							})
+						}
 						if(fileList2[0].url){
 							this.infoList[i].newList = fileList2
+						}
+						if(fileList3[0].url){
+							this.infoList[i].newListTwo = fileList3
 						}
 						}
 						
@@ -586,6 +658,10 @@
 					file:1
 				}
 				this.api.shipBidUpdFile(obj).then(res=>{
+					this.$message({
+						type: "success",
+						message: "归档成功",
+					});
 					this.getList()
 				})
 			},
