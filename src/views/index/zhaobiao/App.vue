@@ -74,7 +74,7 @@
 								<span>预算金额(元)</span>
 							</div>
 							<div class="right">
-								<el-input v-model="budget" class="margin_right" clearable placeholder="预算金额(元)">
+								<el-input type="number" v-model="budget" class="margin_right" clearable placeholder="预算金额(元)">
 								</el-input>
 							</div>
 						</div>
@@ -1292,7 +1292,7 @@
 		}
 	}
 </script>
-<style type="text/css">
+<style type="text/css" lang="less">
 	.el-tabs__item {
 		width: 100px;
 		padding: 0;
@@ -1305,6 +1305,21 @@
 
 	.el-button--text {
 		padding: 1px 10px;
+	}
+	input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
+	  -webkit-appearance: none !important;
+	  -moz-appearance: none !important;
+	  -o-appearance: none !important;
+	  -ms-appearance: none !important;
+	  appearance: none !important;
+	  margin: 0;
+	}
+	input[type="number"]{
+	  -webkit-appearance:textfield;
+	  -moz-appearance:textfield;
+	  -o-appearance:textfield;
+	  -ms-appearance:textfield;
+	  appearance:textfield;
 	}
 </style>
 <style lang="less" scoped>
@@ -1320,6 +1335,7 @@
 			padding: 20px 0;
 		}
 	}
+	
 </style>
 <style lang="less" scoped>
 	@import url("../../../assets/css/init.less");
