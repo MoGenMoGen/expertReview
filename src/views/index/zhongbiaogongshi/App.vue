@@ -299,7 +299,7 @@
 						}
 
 						.el-button {
-							flex: 1;
+							width: 100px;
 							margin-bottom: 10px;
 						}
 

@@ -189,7 +189,14 @@
 				</div>
 			
 
-
+				<el-button style="
+				  background: #fff;
+				  color: #333;
+				  border: 1px solid #dddddd;
+				  padding: 10px 25px;
+				  border-radius: 4px;
+				" @click="closeMask" type="text" size="small">取消</el-button>
+				</div>
 				<div class="btn">
 					<el-button style="
 		          background: #2778be;
@@ -198,14 +205,6 @@
 		          padding: 10px 25px;
 		          border-radius: 4px;
 		        " @click="sureTo" type="text" size="small">确定</el-button>
-					<el-button style="
-		          background: #fff;
-		          color: #333;
-		          border: 1px solid #dddddd;
-		          padding: 10px 25px;
-		          border-radius: 4px;
-		        " @click="closeMask" type="text" size="small">取消</el-button>
-				</div>
 			</div>
 		</div>
 		<!-- <div class="maskTwo" @click="closeMask" v-if="detailShow==true">
