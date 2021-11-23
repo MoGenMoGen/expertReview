@@ -80,8 +80,8 @@
 													<el-button type="text" size="small" v-if="scope.row.audit==1&&auth2" @click="handleClickShenhe(scope.row)"
 														style="background: #2778BE;color: #ffffff; border-radius: 2px;width: 50px;">
 														审核</el-button>
-													<p style="color: #303030;" v-if="scope.row.audit==2">审核通过</p>
-													<p style="color: #303030;" v-if="scope.row.audit==3">审核驳回</p>
+													<p style="color: #2778BE;" v-if="scope.row.audit==2">审核通过</p>
+													<p style="color: #E4393C;" v-if="scope.row.audit==3">审核驳回</p>
 												</template>
 											</el-table-column>
 										</el-table>
