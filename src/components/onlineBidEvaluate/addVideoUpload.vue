@@ -202,6 +202,7 @@ export default {
         rmks: "", //备注
         type: 1, //1为新增上传，2为编辑上传
       },
+      type:1
     };
   },
   props: {
