@@ -14,17 +14,17 @@
 						<el-input placeholder="联系人" v-model="linkman" clearable>
 						</el-input>
 						<el-select v-model="value" clearable placeholder="采购方式" @change="select1">
-							<el-option v-for="item in options" :key="item.nm" :label="item.nm" :value="item.cd">
+							<el-option v-for="item in options" :key="item.cd" :label="item.nm" :value="item.cd">
 							</el-option>
 						</el-select>
-						<el-date-picker v-model="date1" type="datetime" placeholder="创建时间">
+						<el-date-picker v-model="date1" type="datetime" placeholder="创建时间" style="width: 15%;">
 						</el-date-picker>
 
 						<el-select v-model="value1" clearable placeholder="项目状态" @change="select2">
 							<el-option v-for="item in optionsTwo" :key="item.nm" :label="item.nm" :value="item.cd">
 							</el-option>
 						</el-select>
-						<el-button plain type="primary" @click='searchTo'>查询</el-button>
+						<el-button plain  @click='searchTo'>查询</el-button>
 					</div>
 					<div class="middleBox">
 						<div class="middleLeft">
@@ -854,19 +854,19 @@
 					flex-wrap: wrap;
 
 					.el-input {
-						width: 20%;
+						width: 11%;
 						margin-left: 30px;
 						margin-bottom: 20px;
 					}
 
 					.el-select {
-						width: 20%;
+						width:13%;
 						margin-left: 30px;
 						margin-bottom: 20px;
 					}
 
 					.el-button {
-						width: 20%;
+						width:7%;
 						margin-left: 30px;
 						margin-bottom: 20px;
 					}

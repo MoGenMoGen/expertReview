@@ -475,7 +475,7 @@
 										@click='toDelite(scope.row)' v-if="auth3">删除</el-button>
 									<br>
 									<el-button type="text" size="small" style="color:  #E4393C;"
-										@click='toCheck(scope.row)' v-if="auth6">审核</el-button>
+										@click='toCheck(scope.row)' v-if="auth6&&scope.row.audit==1">审核</el-button>
 								</template>
 							</el-table-column>
 						</el-table>
@@ -1124,14 +1124,15 @@
 				if (this.showModify == true && this.flag == true) {
 					obj.shipBidAfficheRo.id = this.BidAfficheInfo.id
 					this.flag = false
-					setTimeout(() => {
-						this.flag = true
-					}, 1000)
+					
 					this.api.postBidUpd(obj).then(res => {
 						this.flag = true
 						this.closeMask()
 						this.getList()
 					})
+					setTimeout(() => {
+						this.flag = true
+					}, 1000)
 				}
 
 			},
@@ -1379,6 +1380,7 @@
 				display: flex;
 				width: 100%;
 				justify-content: space-between;
+				
 			}
 
 			.rowLeft {

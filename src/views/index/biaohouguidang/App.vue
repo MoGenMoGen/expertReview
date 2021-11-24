@@ -18,7 +18,7 @@
 								:value="item.cd">
 							</el-option>
 						</el-select>
-						<el-date-picker v-model="bidDecideTm" type="datetime" placeholder="中标时间">
+						<el-date-picker v-model="bidDecideTm" type="datetime" placeholder="中标时间" style="width:15% ;">
 						</el-date-picker>
 						<el-select v-model="value1" clearable placeholder="文件归档状态" @change="select2">
 							<el-option v-for="item in optionsTwo" :key="item.nm" :label="item.nm"
@@ -768,17 +768,17 @@
 					display: flex;
 					flex-wrap: wrap;
 					.el-input {
-						width: 20%;
+						width: 11%;
 						margin-left: 30px;
 						margin-bottom: 20px;
 					}
 					.el-select {
-						width: 20%;
+						width: 13%;
 						margin-left: 30px;
 						margin-bottom: 20px;
 					}
 					.el-button {
-						width:9.1%;
+						width:7%;
 						margin-left: 30px;
 						margin-bottom: 20px;
 					}

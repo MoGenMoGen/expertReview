@@ -1,7 +1,7 @@
 const axios = require('axios');
 import qs from 'qs';
 import {
-	MessageBox
+	MessageBox,Loading
 } from 'element-ui'
 
 function get(url, data) {
@@ -68,14 +68,28 @@ function post(url, data) {
 			"sinovat-token": window.sessionStorage.getItem("token")
 		}
 	}
+	   Loading.service({
+	    lock: true,
+	    text: 'Loading',
+	    spinner: 'el-icon-loading',
+	    background: 'rgba(0, 0, 0, 0.7)'
+	  });
 
 	let promise = new Promise((resolve, reject) => {
+		
 		axios.post(url, data, {
 			headers: header
 		})
 			.then(function (res) {
+				Loading.service({
+				  lock: true,
+				  text: 'Loading',
+				  spinner: 'el-icon-loading',
+				  background: 'rgba(0, 0, 0, 0.7)'
+				}).close();
 				if (res.data.code === 0) {
 					resolve(res.data)
+					    
 				} else if (res.data.code === 401) {
 					MessageBox.confirm('您未登录，立即登录?', '提示', {
 						confirmButtonText: '确定',
@@ -92,12 +106,19 @@ function post(url, data) {
 				}
 			})
 			.catch(function (error) {
+				Loading.service({
+				  lock: true,
+				  text: 'Loading',
+				  spinner: 'el-icon-loading',
+				  background: 'rgba(0, 0, 0, 0.7)'
+				}).close();
 				reject(error)
 				MessageBox({
 					message: JSON.stringify(error),
 					type: 'warning'
 				});
 			});
+			
 	});
 	return promise;
 }

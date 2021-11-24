@@ -1,7 +1,7 @@
 <template>
 <div class="containerTwo">
-	<div class="detailBox" >
-		<div class="detailContent">
+	<div class="detailBox" v-if="infoList.length>0" >
+		<div class="detailContent" >
 			<div class="collapse-item" v-for="(item,index) in infoList" :key="index">
 				<div class="collapse-top" @click="showMore(index)">
 					<div>招标采购商：<span style="color: #2778BE;" v-if="item.apply">{{item.apply.orgNm}}</span></div>
@@ -162,6 +162,7 @@
 		     this.id=this.detailId
 			 this.api.getInfoWithWinBid(this.id).then(res=>{
 			 	this.infoList=res
+				console.log(456,res);
 			 	this.infoList.forEach(item=>{
 			 		if(item.deposot){
 						if(item.deposot.depositImgUrl){
