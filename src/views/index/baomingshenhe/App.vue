@@ -73,7 +73,7 @@
 												</template>
 											</el-table-column>
 											<el-table-column prop="realNm" label="采购人" min-width="150"></el-table-column>
-											<el-table-column prop="rmks" label="备注" min-width="150"></el-table-column>
+											<el-table-column prop="options" label="审核意见" min-width="150"></el-table-column>
 											<el-table-column prop="crtTm" label="申请时间" min-width="150"></el-table-column>
 											<el-table-column label="操作" min-width="100">
 												<template slot-scope="scope">
