@@ -137,27 +137,6 @@
 							{{detailInfo.releTm}}
 						</div>
 					</div>
-					<div class="row2">
-						<div class="title">
-							<span>审核：</span>
-						</div>
-						<div class="right">
-							<el-radio-group v-model="radio">
-								<el-radio :label="1">通过</el-radio>
-								<el-radio :label="2">驳回</el-radio>
-							</el-radio-group>
-						</div>
-					</div>
-					<div class="row2">
-						<div class="title">
-							<span>审核意见：</span>
-						</div>
-						<div class="right">
-							<el-input v-model="opinion" type="text" clearable placeholder="审核意见" style="width: 300px;">
-							</el-input>
-						</div>
-					</div>
-				
 				</div>
 				<!-- <div class="onRight" style="width:50%;">
 					<div class="row2">
@@ -187,8 +166,26 @@
 					  </div>
 					</div>
 				</div>
-			
-
+				<div class="row2">
+					<div class="title">
+						<span>审核：</span>
+					</div>
+					<div class="right">
+						<el-radio-group v-model="radio">
+							<el-radio :label="1">通过</el-radio>
+							<el-radio :label="2">驳回</el-radio>
+						</el-radio-group>
+					</div>
+				</div>
+				<div class="row2">
+					<div class="title">
+						<span>审核意见：</span>
+					</div>
+					<div class="right">
+						<el-input v-model="opinion" type="text" clearable placeholder="审核意见" style="width: 300px;">
+						</el-input>
+					</div>
+				</div>
 				
 				<div class="btn">
 					<el-button style="
