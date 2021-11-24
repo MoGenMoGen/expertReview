@@ -231,7 +231,7 @@
 			},
 			//项目详情
 			toDetail(id) {
-				this.until.href('./projectDetail.html?id' + id)
+				this.until.href('./projectDetail.html?id=' + id)
 			},
 			//页面跳转
 			toPage(url) {

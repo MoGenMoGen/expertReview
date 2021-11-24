@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div class="personInfo main" :style="{width:width + 'px'}">
-                <p class="pos">首页 > <span>项目议标评定表</span></p>
+                <p class="pos"><span style="color: #999999;cursor: pointer;" @click="toPage('./index.html')">首页 > </span><span>项目议标评定表</span></p>
                 <h3>{{nm}}</h3>
                 <div class="intro">
                     <p>评分人：{{name}}</p>
@@ -66,7 +66,7 @@
                 <div class="submit">
                     <p>说明： 1、指标权重可调</p>
                     <span @click="toPage('./index.html')">< 返回首页</span>
-                    <button  v-if="ifSubmit">取消</button>
+                    <button  v-if="ifSubmit" @click="toPage('./index.html')">取消</button>
                     <button @click="submit"  v-if="ifSubmit">确认提交</button>
                 </div>
                 <div class="file">

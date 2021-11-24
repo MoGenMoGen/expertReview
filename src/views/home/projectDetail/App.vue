@@ -10,14 +10,17 @@
                 </div>
             </div>
             <div class="personInfo main" :style="{width:width + 'px'}">
-                <p class="pos">首页 > <span>项目议标评定表</span></p>
+                <p class="pos"><span style="color: #999999;cursor: pointer;" @click="toPage('./index.html')">首页 > </span><span>项目议标评定表</span></p>
                 <h3>{{info.nm}}</h3>
                 <div class="cont">
-                    <p>1、标书投放时间：<span class="red">{{info.publishTm}}</span></p>
-                    <p>2、招标截止时间：<span class="red">{{info.completeTm}}</span>  前（以我司招标办收到的投标书时前（以我司招标办收到的投标书时间为准），逾期按弃权处理。</p>
-                    <p>3、联 系 人：{{info.publisher}}</p>
-                    <p>4、联系电话：{{info.mob}}</p>
-                    {{info.rmks}}
+					<p>1、项 目 编 号：{{info.cd}}</p>
+					<p>2、预 算 金 额：{{info.budget}}</p>
+                    <p>3、发 布 时 间：<span class="red">{{info.publishTm}}</span></p>
+                    <!-- <p>4、招标截止时间：<span class="red">{{info.completeTm}}</span></p> -->
+					<p>4、开 标 时 间：<span class="red">{{info.bidOpenTm}}</span></p>
+                    <p>5、联 系 人：{{info.publisher}}</p>
+                    <p>6、联系电话：{{info.mob}}</p>
+                    <!-- {{info.rmks}} -->
                 </div>
                 <div class="file">
                     <div class="title"><img :src="file"/><p>附件：</p><span @click="toDown"><img :src="down"/>全部下载</span></div>
@@ -157,6 +160,11 @@
             .cont{
                 color: #666666;
                 line-height: 34px;
+				display: flex;
+				flex-wrap: wrap;
+				p {
+					width: 50%;
+				}
             }
         }
         .file{
