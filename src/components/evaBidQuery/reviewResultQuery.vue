@@ -43,7 +43,7 @@
     >
       删除
     </el-button>
-    <el-button type="success" round>报价平均得分:{{ score.toFixed(2) }}</el-button>
+    <!-- <el-button type="success" round>报价平均得分:{{ score.toFixed(2) }}</el-button> -->
   </div>
 </template>
 
@@ -78,7 +78,7 @@ export default {
     async Search() {
       // 触发绑定的事件，并向外传递参数。
       bus.$emit("reviewSearch", this.SearchInfo);
-      this.getScore();
+      // this.getScore();
     },
     DelSelectRule() {
       bus.$emit("DelItem");
@@ -113,11 +113,11 @@ export default {
       console.log(222, data);
     });
      bus.$on("upAverage", () => {
-       this.getScore();
+      //  this.getScore();
     });
 
 	this.bidId = this.until.getQueryString('id')
-    this.getScore();
+    // this.getScore();
   },
 };
 </script>

@@ -178,7 +178,7 @@ export default {
           message: "更新成功!",
         });
         this.$emit("updateAndSave");
-        bus.$emit("upAverage");
+        // bus.$emit("upAverage");
       }
       setTimeout(() => {
         this.closeMask();
@@ -190,6 +190,7 @@ export default {
     let { bWidth, width } = this.until.getWidth();
     //   this.bWidth = bWidth;
     this.width = width;
+    console.log(this.info)
     this.detailData = await this.api.extraReviewResultDetail(this.id);
   },
 };

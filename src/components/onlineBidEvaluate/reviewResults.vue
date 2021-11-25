@@ -174,7 +174,7 @@
             <i
               class="el-icon-edit"
               style="color: #409eff; margin-right: 10px; cursor: pointer"
-              @click="EditExpertBase(scope.row.id)"
+              @click="EditExpertBase(scope.row.id,scope.row)"
             ></i>
             <i
               @click="DelSelectRule(scope.row.id)"
@@ -280,17 +280,19 @@ export default {
       this.tableData = data.data.list;
       if (this.tableData.length > 0) {
         this.tableData.forEach((item) => {
-          item.score = item.score.toFixed(2);
-          item.fullScore = item.score.toFixed(2);
+          item.score = parseFloat(item.score).toFixed(2);
+          item.fullScore = parseFloat(item.score).toFixed(2);
         });
       }
       this.total = data.page.total;
     },
 
     // 修改
-    EditExpertBase(id) {
+    EditExpertBase(id,item) {
       this.showEdit = true;
       this.id = id;
+      this.detailData = item;
+
     },
     // 进入子列表
     toDetail(id, item) {
