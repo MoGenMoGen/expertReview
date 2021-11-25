@@ -63,7 +63,7 @@
 							保证金缴纳：
 						</div>
 						<div class="listContent">
-							{{info.needDeposit==0?'是':'否'}}
+							{{info.needDeposit==0?'不需要':'需要'}}
 						</div>
 					</div>
 					<div class="rightList">
