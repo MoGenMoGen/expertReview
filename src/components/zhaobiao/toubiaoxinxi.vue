@@ -15,7 +15,8 @@
 						<div v-if="item.deposot&&item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
 						<div v-if="item.deposot&&item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
 						<div v-if="item.deposot&&item.deposot.refundTm">保证金上传金额：{{item.deposot.depositAmt}}</div>
-					<div class="imgList" v-if="item.deposot">
+						<div class="" style="display: flex;">
+					<div class="imgList" v-if="item.deposot" style="width: 50%;">
 							<div class="listTitle">
 								保证金上传凭证：
 							</div>
@@ -23,13 +24,14 @@
 								<el-image  :src="item2"  :preview-src-list=" item.deposot.depositImgUrl" v-for="(item2,index2) in item.deposot.depositImgUrl" :key="index2"> </el-image>
 							</div>
 						</div>
-						<div class="imgList" v-if="item.deposot.refundImgUrl">
+						<div class="imgList" v-if="item.deposot.refundImgUrl" style="width: 50%;">
 							<div class="listTitle">
 								保证金退回凭证：
 							</div>
 							<div class="listContent">
 								<el-image  :src="item2"  :preview-src-list=" item.deposot.refundImgUrl"  v-for="(item2,index2) in item.deposot.refundImgUrl" :key="index2"> </el-image>
 							</div>
+						</div>
 						</div>
 					<div style="color:#2778BE;">投标报价金额：<span>{{item.offer.shipBidOfferVo.offerAmt}}</span></div>
 					<div class="fileTitle"  v-if="item.offer.shipBidOfferVo.attachDecode">

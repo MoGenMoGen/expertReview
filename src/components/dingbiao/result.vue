@@ -93,7 +93,7 @@
 				  cancelButtonText: '取消',
 				  type: 'warning'
 				}).then(() => {
-				  // row.bidStatus=1
+				  row.bidStatus=1
 				  this.api.postBidOfferUpd(row).then(res => {
 					  console.log(res)
 					  if(res.code==0) {

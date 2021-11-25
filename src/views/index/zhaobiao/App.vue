@@ -74,7 +74,7 @@
 								<span>预算金额(元)</span>
 							</div>
 							<div class="right">
-								<el-input type="number" v-model="budget" class="margin_right" clearable placeholder="预算金额(元)">
+								<el-input v-model="budget" class="margin_right" clearable placeholder="预算金额(元)">
 								</el-input>
 							</div>
 						</div>
@@ -220,7 +220,7 @@
 								</span><span>投标截止时间</span>
 							</div>
 							<div class="right">
-								<el-date-picker v-model="bidEndTm" type="datetime" placeholder="投标截止时间">
+								<el-date-picker v-model="bidEndTm" type="datetime" placeholder="投标截止时间"@change="pick3" >
 								</el-date-picker>
 								</el-input>
 							</div>
@@ -231,7 +231,7 @@
 								</span><span>开标时间</span>
 							</div>
 							<div class="right">
-								<el-date-picker v-model="bidOpenTm" type="datetime" placeholder="开标时间">
+								<el-date-picker v-model="bidOpenTm" type="datetime" placeholder="开标时间" @change='pick4'>
 								</el-date-picker>
 								</el-input>
 							</div>
@@ -1245,9 +1245,38 @@
 				this.viewRangeCd = val.cd
 				this.viewRangeNm = val.nm
 			},
-			pick1(val) {},
+			pick1(val) {
+				if(val.getTime()>=this.completeTm.getTime()){
+					this.$message.error('发布时间不能大于报名截止时间');
+					this.publishTm=''
+				}
+			},
 			pick2(val) {
-
+				if(val.getTime()<=this.publishTm.getTime()){
+						this.$message.error('报名截止时间不能小于发布时间');
+						this.completeTm=''
+				}
+				if(val.getTime()>=this.bidEndTm.getTime()){
+					this.$message.error('报名截止时间不能大于投标截止时间');
+					this.completeTm=''
+				}
+			},
+			pick3(val){
+				if(val.getTime()<=this.completeTm.getTime()){
+						this.$message.error('投标截止时间不能小于报名截止时间');
+						this.bidEndTm=''
+				}
+				if(val.getTime()>=this.bidOpenTm.getTime()){
+					this.$message.error('投标截止时间不能大于开标时间');
+					this.bidEndTm=''
+				}
+			},
+			pick4(val){
+				if(val.getTime()<=this.bidEndTm.getTime()){
+						this.$message.error('开标时间不能小于投标截止时间');
+						this.bidOpenTm=''
+				}
+				
 			},
 			radio1(val) {},
 			chooseExpert() {
@@ -1293,7 +1322,7 @@
 		}
 	}
 </script>
-<style type="text/css" lang="less">
+<style type="text/css">
 	.el-tabs__item {
 		width: 100px;
 		padding: 0;
@@ -1306,21 +1335,6 @@
 
 	.el-button--text {
 		padding: 1px 10px;
-	}
-	input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
-	  -webkit-appearance: none !important;
-	  -moz-appearance: none !important;
-	  -o-appearance: none !important;
-	  -ms-appearance: none !important;
-	  appearance: none !important;
-	  margin: 0;
-	}
-	input[type="number"]{
-	  -webkit-appearance:textfield;
-	  -moz-appearance:textfield;
-	  -o-appearance:textfield;
-	  -ms-appearance:textfield;
-	  appearance:textfield;
 	}
 </style>
 <style lang="less" scoped>
@@ -1336,7 +1350,6 @@
 			padding: 20px 0;
 		}
 	}
-	
 </style>
 <style lang="less" scoped>
 	@import url("../../../assets/css/init.less");

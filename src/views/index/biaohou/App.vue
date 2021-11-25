@@ -17,8 +17,8 @@
 							<el-option v-for="item in options" :key="item.cd" :label="item.nm" :value="item.cd">
 							</el-option>
 						</el-select>
-						<el-date-picker v-model="date1" type="datetime" placeholder="创建时间" style="width: 15%;">
-						</el-date-picker>
+						<!-- <el-date-picker v-model="date1" type="datetime" placeholder="创建时间" style="width: 15%;">
+						</el-date-picker> -->
 
 						<el-select v-model="value1" clearable placeholder="项目状态" @change="select2">
 							<el-option v-for="item in optionsTwo" :key="item.nm" :label="item.nm" :value="item.cd">
@@ -56,8 +56,8 @@
 							</el-table-column>
 							<el-table-column prop="budget" label="预算金额(元)" min-width="100">
 							</el-table-column>
-							<el-table-column prop="crtTm" label="创建时间" min-width="150">
-							</el-table-column>
+							<!-- <el-table-column prop="crtTm" label="创建时间" min-width="150">
+							</el-table-column> -->
 							<el-table-column label="状态" min-width="100">
 								<template slot-scope="scope">
 									<span v-if="scope.row.depositReturnStatus==1" style="color: #E4393C;">未退还</span>
@@ -117,14 +117,14 @@
 											{{info.publishTm}}
 										</div>
 									</div>
-									<div class="leftList">
+								<!-- 	<div class="leftList">
 										<div class="listName">
 											创建时间：
 										</div>
 										<div class="listContent">
 											{{info.crtTm}}
 										</div>
-									</div>
+									</div> -->
 									<div class="leftList" style="display: flex; align-items: flex-start;">
 										<div class="listName">
 											说明：
