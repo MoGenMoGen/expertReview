@@ -514,13 +514,21 @@
 				})
 				this.api.getInfoWithWinBid(val.id).then(res => {
 					this.infoList = res
+						let data =[]
+						let dataTwo=[]
 					for (let i = 0; i < this.infoList.length; i++) {
 						this.infoList[i].newList = []
 						this.infoList[i].newListTwo = []
 						if( this.infoList[i].deposot)
 						{
-							let data = this.infoList[i].deposot.depositImgUrl.split(',')
-							let dataTwo=this.infoList[i].deposot.refundImgUrl.split(',')
+							if(this.infoList[i].deposot.depositImgUrl){
+								data = this.infoList[i].deposot.depositImgUrl.split(',')
+								console.log(7878979,data);
+							}
+							if(this.infoList[i].deposot.refundImgUrl){
+								dataTwo=this.infoList[i].deposot.refundImgUrl.split(',')
+							}
+							console.log(4111,data);
 						let data1 = []
 						let fileList2 = []
 						let fileList3=[]
@@ -628,10 +636,10 @@
 						
 							})
 						}
-						if(fileList2[0].url){
+						if(fileList2.length>0){
 							this.infoList[i].newList = fileList2
 						}
-						if(fileList3[0].url){
+						if(fileList3.length>0){
 							this.infoList[i].newListTwo = fileList3
 						}
 						}

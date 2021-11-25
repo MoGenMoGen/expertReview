@@ -1018,7 +1018,7 @@
 				if (!this.viewRangeCd && !this.orgEnterIds) {
 					this.$message({
 						type: "error",
-						message: "招标范围不能全为空",
+						message: "招标范围和招标类型不能全为空",
 					});
 					return false
 				}
