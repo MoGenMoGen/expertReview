@@ -339,6 +339,8 @@
 	export default {
 		data() {
 			return {
+				detailId1:'',
+				detailId2:'',
 				aveScore: '',
 				detailInfo: {},
 				bidId: "",
@@ -397,16 +399,17 @@
 			},
 			toDetail(id, item) {
 				this.showDetail = true;
-				this.getListTwo(item)
+				this.getListTwo(item.id)
 			},
 			toDetailTwo(item){
 				this.showDetailTwo=true
-				this.getListThree(item)
+				this.getListThree(item.id)
 				console.log(11);
 			},
-			getListThree(item){
+			getListThree(id){
 				let qry = this.query.new()
-				this.query.toW(qry, 'svsResultId', item.id + '', 'EQ')
+				this.detailId2=id
+				this.query.toW(qry, 'svsResultId', this.detailId2 + '', 'EQ')
 				this.query.toO(qry, 'crtTm', 'desc')
 				this.query.toP(qry, this.pageNoThree, this.pageSizeThree)
 				this.api.reviewResultDetail(this.query.toEncode(qry)).then(res => {
@@ -414,16 +417,17 @@
 					this.totalThree=res.page.total
 				})
 			},
-			getListTwo(item){
+			getListTwo(id){
 				let qry = this.query.new()
-				this.query.toW(qry, 'bidOfferId', item.id + '', 'EQ')
+				this.detailId1=id
+				this.query.toW(qry, 'bidOfferId', this.detailId1+ '', 'EQ')
 				this.query.toO(qry, 'crtTm', 'desc')
 				this.query.toP(qry, this.pageNoTwo, this.pageSizeTwo)
 				this.api.reviewResultList(this.query.toEncode(qry)).then(res => {
 					this.detailList = res.data.list,
 					this.totalTwo=res.page.total
 				})
-				this.api.getBidOfferDetail(item.id).then(res => {
+				this.api.getBidOfferDetail(id).then(res => {
 					this.detailInfo = res
 				})
 				
@@ -438,11 +442,11 @@
 			},
 			handleCurrentChangeTwo(val){
 				this.pageNoTwo = val;
-				this.getListTwo()
+				this.getListTwo(this.detailId1)
 			},
 			handleCurrentChangeThree(val){
 				this.pageNoThree = val;
-				this.getListThree()
+				this.getListThree(this.detailId2)
 			},
 			async getList() {
 				let qry = this.query.new();
