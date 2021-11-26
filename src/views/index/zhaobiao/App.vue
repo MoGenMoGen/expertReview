@@ -868,6 +868,14 @@
 								type: "success",
 								message: "删除成功!",
 							});
+							if(this.tableData.length==1){
+								if(this.pageNo>2){
+									this.pageNo--
+								}
+								else{
+									this.pageNo=1
+								}
+							}
 							this.getList();
 						} else {
 							this.$message({
@@ -1247,33 +1255,34 @@
 				this.viewRangeNm = val.nm
 			},
 			pick1(val) {
-				if(val.getTime()>=this.completeTm.getTime()){
+				if(this.completeTm&&val.getTime()>=this.completeTm.getTime()){
 					this.$message.error('发布时间不能大于报名截止时间');
 					this.publishTm=''
 				}
 			},
 			pick2(val) {
-				if(val.getTime()<=this.publishTm.getTime()){
+				console.log(this.publishTm)
+				if(this.publishTm&&val.getTime()<=this.publishTm.getTime()){
 						this.$message.error('报名截止时间不能小于发布时间');
 						this.completeTm=''
 				}
-				if(val.getTime()>=this.bidEndTm.getTime()){
+				if(this.bidEndTm&&val.getTime()>=this.bidEndTm.getTime()){
 					this.$message.error('报名截止时间不能大于投标截止时间');
 					this.completeTm=''
 				}
 			},
 			pick3(val){
-				if(val.getTime()<=this.completeTm.getTime()){
+				if(this.completeTm&&val.getTime()<=this.completeTm.getTime()){
 						this.$message.error('投标截止时间不能小于报名截止时间');
 						this.bidEndTm=''
 				}
-				if(val.getTime()>=this.bidOpenTm.getTime()){
+				if(this.bidOpenTm&&val.getTime()>=this.bidOpenTm.getTime()){
 					this.$message.error('投标截止时间不能大于开标时间');
 					this.bidEndTm=''
 				}
 			},
 			pick4(val){
-				if(val.getTime()<=this.bidEndTm.getTime()){
+				if(this.bidEndTm&&val.getTime()<=this.bidEndTm.getTime()){
 						this.$message.error('开标时间不能小于投标截止时间');
 						this.bidOpenTm=''
 				}
