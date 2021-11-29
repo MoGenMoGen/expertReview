@@ -187,7 +187,9 @@
             },
             //页面跳转
             toPage(url){
-                this.until.href(url)
+				if(url) {
+					this.until.href(url)
+				}
             },
 			toMore() {
 				this.toPage('./onlineBidEvaluate.html')
