@@ -7,7 +7,7 @@
 				<topNav :activeName='activeName' :list="thisNavList"></topNav>
 				<div class="content">
 					<div class="content-top" v-if="auth1">
-						<div v-for="(item,index) in menuList" :key="index" class="content-top-item">
+						<div v-for="(item,index) in menuList" :key="index" class="content-top-item" @click="toPage(item.linkUrl)">
 							<img :src="item.imgUrl">
 							<div style="width: 70px;">
 								<p :style="{color: item.color}">{{item.num}}</p>
@@ -95,27 +95,32 @@
 					imgUrl: img1,
 					num: 0,
 					name: '项目立项',
-					color: '#1D8BEB'
+					color: '#1D8BEB',
+					linkUrl: './zhaobiao.html'
 				},{
 					imgUrl: img3,
 					num: 0,
 					name: '在线开标',
-					color: '#7944F6'
+					color: '#7944F6',
+					linkUrl: './openOnlineBid.html'
 				},{
 					imgUrl: img4,
 					num: 0,
 					name: '报名企业',
-					color: '#07D2D8'
+					color: '#07D2D8',
+					linkUrl: './baomingshenhe.html'
 				},{
 					imgUrl: img5,
 					num: 0,
 					name: '在线评标',
-					color: '#C832DA'
+					color: '#C832DA',
+					linkUrl: './onlineBidEvaluate.html'
 				},{
 					imgUrl: img6,
 					num: 0,
 					name: '定标',
-					color: '#476EEC'
+					color: '#476EEC',
+					linkUrl: './dingbiao.html'
 				},{
 					imgUrl: img7,
 					num: 0,
@@ -268,6 +273,7 @@
 					// padding: 0 10px;
 					// box-sizing: border-box;
 					.content-top-item {
+						cursor: pointer;
 						width: calc(~"(100% - 30px)/4");
 						height: 130px;
 						display: flex;
