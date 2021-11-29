@@ -177,7 +177,7 @@ export default {
       showDetail: false,
       detailId: "", //详情id
       bidId: 5042267656164352,
-      fullscreenLoading:false
+      fullscreenLoading: false,
     };
   },
   props: {
@@ -207,13 +207,14 @@ export default {
         });
       setTimeout(() => {
         this.fullscreenLoading = false;
+        this.getList();
       }, 30000);
     },
     handleAllDecrypt() {
       this.fullscreenLoading = true;
       this.api
         .AllDecrypt({
-          id:this.id
+          id: this.id,
         })
         .then((res) => {
           this.fullscreenLoading = false;
@@ -221,6 +222,7 @@ export default {
         });
       setTimeout(() => {
         this.fullscreenLoading = false;
+        this.getList();
       }, 30000);
     },
     toDetail(id) {

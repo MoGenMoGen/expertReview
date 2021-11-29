@@ -281,7 +281,7 @@ export default {
       if (this.tableData.length > 0) {
         this.tableData.forEach((item) => {
           item.score = parseFloat(item.score).toFixed(2);
-          item.fullScore = parseFloat(item.score).toFixed(2);
+          item.fullScore = parseFloat(item.fullScore).toFixed(2);
         });
       }
       this.total = data.page.total;

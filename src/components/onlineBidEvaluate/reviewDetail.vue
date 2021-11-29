@@ -131,7 +131,7 @@ export default {
   data() {
     return {
       pageNo: 1,
-      pageSize: 5,
+      pageSize: 6,
       total: 0,
       ids: "",
       tableData: [],
