@@ -318,7 +318,7 @@
 											</div>
 										
 											</div>
-									<div style="color:#2778BE;">投标报价金额：<span>{{item.offer.shipBidOfferVo.offerAmt}}</span></div>
+									<!-- <div style="color:#2778BE;">投标报价金额：<span>{{item.offer.shipBidOfferVo.offerAmt}}</span></div> -->
 									<div class="fileTitle"  v-if="item.offer.shipBidOfferVo.attachDecode">
 										投标文件
 									</div>

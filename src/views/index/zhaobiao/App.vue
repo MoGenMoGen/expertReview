@@ -746,7 +746,7 @@
 				}
 				this.query.toO(query5, 'crtTm', 'desc')
 				this.query.toP(query5, this.pageNo, this.pageSize)
-				// this.query.toW(query5,'file','0','EQ')
+				this.query.toW(query5,'file','0','EQ')
 				this.api.getBidPage(this.query.toEncode(query5)).then(res => {
 					this.tableData = res.data.list
 					this.total = res.page.total
