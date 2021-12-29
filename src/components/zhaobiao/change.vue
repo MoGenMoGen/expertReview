@@ -537,7 +537,8 @@ export default {
     toCheck(val) {
       this.checkShow = true;
       this.api.getBidAfficheDetail(val.id).then((res) => {
-        this.detailInfo = res;
+        res.cont=this.until.imgStyle(res.cont)
+		this.detailInfo = res;
       });
     },
     toDetail(val) {
@@ -545,7 +546,7 @@ export default {
       // this.api.getBidAfficheDetail(val.id).then((res) => {
       //   this.detailInfo = res;
       // });
-	  window.open('http://live.jinkworld.com/sinovat2/tradeInfo/zbDetail?id='+val.bidId+'&cid=1'+'&flag=1')
+	  window.open('https://www.ship88.cn/sinovat/tradeInfo/zbDetail?id='+val.bidId+'&cid=1'+'&flag=1')
     },
     toEdit(val) {
       this.editShow = true;
@@ -772,6 +773,7 @@ export default {
       width: 850px;
       max-height: 80%;
       overflow-y: scroll;
+	  box-sizing: border-box;
 
       .top {
         display: flex;
