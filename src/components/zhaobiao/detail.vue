@@ -106,6 +106,14 @@
 								审核驳回
 							</div>
 						</div>
+						<div class="rightList" v-if="info.options">
+							<div class="listName">
+								审核意见：
+							</div>
+							<div class="listContent">
+								{{info.options}}
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

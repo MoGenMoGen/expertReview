@@ -158,7 +158,7 @@
 										<el-upload ref="uploadExcel" action="/general/oss/upload" :auto-upload="true"
 											:on-change="fileChange" :on-success="handleSuccess"
 											:on-remove="handleRemove" :on-error="handleError" :file-list="fileInfo"
-											:on-preview="HandFilePreView">
+											:on-preview="HandFilePreView" >
 											<el-button size="small" plain style="width: 100px;height: 30px;">选择文件
 											</el-button>
 										</el-upload>
@@ -1225,8 +1225,9 @@
 					message: `文件上传失败`
 				});
 			},
-			HandFilePreView() {
-
+			HandFilePreView(file) {
+					console.log(file);
+					window.open(file.response.data)
 			},
 			select1(val) {
 				this.svsId = val
