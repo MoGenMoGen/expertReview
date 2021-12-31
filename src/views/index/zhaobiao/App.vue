@@ -135,7 +135,16 @@
 								</el-radio-group>
 							</div>
 						</div>
-
+						<div class="row2" v-if="needDeposit==1">
+							<div class="title">
+								<span style="color: red; margin-right: 5px; display: inline-block">* </span>
+								<span>保证金金额(元)</span>
+							</div>
+							<div class="right">
+								<el-input v-model="depositAmount" style="margin-left: 12px;" clearable placeholder="保证金金额(元)">
+								</el-input>
+							</div>
+						</div>
 						<div class="row2">
 							<div class="title">
 								<span style="color: red; margin-right: 5px; display: inline-block">* </span>
@@ -439,17 +448,23 @@
 							</el-table-column>
 							<!-- <el-table-column prop="crtTm" label="创建时间" min-width="150">
 							</el-table-column> -->
-							<el-table-column prop="publishTm" label="发布日期" min-width="100"></el-table-column>
+							<!-- <el-table-column prop="publishTm" label="发布日期" min-width="100"></el-table-column> -->
 							<el-table-column prop="completeTm" label="报名截止日期" min-width="100"></el-table-column>
 							<el-table-column prop="bidEndTm" label="投标截止时间" min-width="100"></el-table-column>
 							<el-table-column prop="bidOpenTm" label="开标时间" min-width="100"></el-table-column>
 							<el-table-column label="保证金" min-width="70">
 								<template slot-scope="scope">
-									<p v-if="scope.row.needDeposit==1">需要缴纳</p>
+									<p v-if="scope.row.needDeposit==1">{{scope.row.depositAmount}}</p>
 									<p v-if="scope.row.needDeposit==0">不需缴纳</p>
 								</template>
 							</el-table-column>
-							<el-table-column prop="options" label="审核意见" min-width="100"></el-table-column>
+							<el-table-column prop="options" label="审核意见" min-width="100">
+								<template slot-scope="scope">
+									<el-tooltip class="item" effect="dark" :content="scope.row.options" placement="top">
+									  <p>{{scope.row.options?scope.row.options.substring(0,5)+'...':''}}</p>
+									</el-tooltip>
+								</template>
+							</el-table-column>
 							<el-table-column prop="audit" label="状态" min-width="100">
 								<template slot-scope="scope">
 									<span v-if="scope.row.audit==1" style="color: #E4393C;">
@@ -566,6 +581,7 @@
 				formTwo: {
 
 				},
+				depositAmount: '', //保证金金额
 				audit: '', //项目状态
 				purchasingUnit: '', //采购单位
 				cd: '', //项目工程编号
@@ -807,6 +823,7 @@
 					this.status = res.data.status
 					this.svsOn = res.data.svsOn
 					this.attachment = res.data.attachment
+					this.depositAmount = res.data.depositAmount
 					let modelList = res.data.attachment.split(',')
 					this.getInfo(modelList)
 					console.log('11', this.list);
@@ -931,6 +948,7 @@
 				this.fileInfo = []
 				this.title = ''
 				this.releTm = ''
+				this.depositAmount = ''
 			},
 			confirmTo() {
 				if (!this.cd) {
@@ -1073,6 +1091,15 @@
 					});
 					return false
 				}
+				if(this.needDeposit==1) {
+					if(!this.depositAmount) {
+						this.$message({
+							type: "error",
+							message: "保证金金额不能为空",
+						});
+						return false
+					}
+				}
 				let obj = {
 					shipBidAfficheRo: {
 						title: this.title,
@@ -1108,6 +1135,7 @@
 						expertIds: this.expertIds,
 						rmks: this.rmks,
 						id: this.modifyId,
+						depositAmount: this.depositAmount
 					}
 
 				}
@@ -1228,7 +1256,11 @@
 			},
 			HandFilePreView(file) {
 					console.log(file);
-					window.open(file.response.data)
+					if(file.response) {
+						window.open(file.response.data)
+					} else {
+						window.open(file.url)
+					}
 			},
 			select1(val) {
 				this.svsId = val

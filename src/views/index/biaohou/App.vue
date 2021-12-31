@@ -164,7 +164,7 @@
 											不需要
 										</div>
 										<div class="listContent" v-else>
-											需要
+											{{info.depositAmount}}
 										</div>
 									</div>
 									<div class="rightList">

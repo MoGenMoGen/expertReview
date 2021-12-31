@@ -73,7 +73,13 @@
 												</template>
 											</el-table-column>
 											<el-table-column prop="realNm" label="采购人" min-width="150"></el-table-column>
-											<el-table-column prop="options" label="审核意见" min-width="150"></el-table-column>
+											<el-table-column prop="options" label="审核意见" min-width="150">
+												<template slot-scope="scope">
+													<el-tooltip class="item" effect="dark" :content="scope.row.options" placement="top">
+													  <p>{{scope.row.options?scope.row.options.substring(0,10)+'...':''}}</p>
+													</el-tooltip>
+												</template>
+											</el-table-column>
 											<el-table-column prop="crtTm" label="申请时间" min-width="150"></el-table-column>
 											<el-table-column label="操作" min-width="100">
 												<template slot-scope="scope">

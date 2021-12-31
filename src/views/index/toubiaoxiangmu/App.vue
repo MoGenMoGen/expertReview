@@ -93,7 +93,7 @@
 								</el-table-column>
 								<el-table-column prop="cd" label="项目编号" min-width="150"></el-table-column>
 								<el-table-column prop="nm" label="项目名称" min-width="150"></el-table-column>
-								<el-table-column prop="publishTm" label="发布日期" min-width="150"></el-table-column>
+								<!-- <el-table-column prop="publishTm" label="发布日期" min-width="150"></el-table-column> -->
 								<el-table-column prop="completeTm" label="报名截止日期" min-width="150"></el-table-column>
 								<el-table-column prop="bidEndTm" label="截标时间" min-width="150"></el-table-column>
 								<el-table-column prop="bidOpenTm" label="开标时间" min-width="150"></el-table-column>

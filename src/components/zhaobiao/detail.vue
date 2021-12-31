@@ -81,7 +81,7 @@
 								不需要
 							</div>
 							<div class="listContent" v-else>
-								需要
+								{{info.depositAmount}}
 							</div>
 						</div>
 						<div class="rightList">
@@ -463,7 +463,7 @@
 							font-size: 14px;
 							font-weight: 400;
 							color: #606060;
-
+							max-width: 460px;
 						}
 					}
 				}
