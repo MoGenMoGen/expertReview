@@ -1,6 +1,6 @@
 <template>
   <!-- 新增专家库 -->
-  <div id="mask" @click="closeMask">
+  <div id="mask">
     <div class="table_box" @click.stop="">
       <div class="top">
         <p style="font-size: 20px" v-if="type != 2">新增</p>

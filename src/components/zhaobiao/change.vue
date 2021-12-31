@@ -19,6 +19,17 @@
 				</div>
 				<div class="row2">
 					<div class="title">
+						<span style="color: red; margin-right: 1px; display: inline-block">* </span><span>公告类型</span>
+					</div>
+					<div class="right">
+						<el-select v-model="value" value-key="nm" placeholder="请选择公告类型" @change="select1">
+							<el-option v-for="item in options" :key="item.id" :label="item.nm" :value="item">
+							</el-option>
+						</el-select>
+					</div>
+				</div>
+				<div class="row2">
+					<div class="title">
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>公告发布时间</span>
 					</div>
 					<div class="right">
@@ -45,17 +56,7 @@
 						</el-input>
 					</div>
 				</div>
-				<div class="row2">
-					<div class="title">
-						<span style="color: red; margin-right: 1px; display: inline-block">* </span><span>公告类型</span>
-					</div>
-					<div class="right">
-						<el-select v-model="value" value-key="nm" placeholder="请选择公告类型" @change="select1">
-							<el-option v-for="item in options" :key="item.id" :label="item.nm" :value="item">
-							</el-option>
-						</el-select>
-					</div>
-				</div>
+				
 
 				<!-- <div class="row2">
 					<div class="title">
@@ -320,6 +321,17 @@
 				</div>
 				<div class="row2">
 					<div class="title">
+						<span style="color: red; margin-right: 1px; display: inline-block">* </span><span>公告类型</span>
+					</div>
+					<div class="right">
+						<el-select v-model="value" value-key="nm" placeholder="请选择公告类型" @change="select1">
+							<el-option v-for="item in options" :key="item.id" :label="item.nm" :value="item">
+							</el-option>
+						</el-select>
+					</div>
+				</div>
+				<div class="row2">
+					<div class="title">
 						<span style="color: red; margin-right: 5px; display: inline-block">* </span><span>公告发布时间</span>
 					</div>
 					<div class="right">
@@ -344,17 +356,6 @@
 					<div class="right">
 						<el-input v-model="detailId" class="margin_right" clearable placeholder="项目id" disabled="true">
 						</el-input>
-					</div>
-				</div>
-				<div class="row2">
-					<div class="title">
-						<span style="color: red; margin-right: 1px; display: inline-block">* </span><span>公告类型</span>
-					</div>
-					<div class="right">
-						<el-select v-model="value" value-key="nm" placeholder="请选择公告类型" @change="select1">
-							<el-option v-for="item in options" :key="item.id" :label="item.nm" :value="item">
-							</el-option>
-						</el-select>
 					</div>
 				</div>
 			<!-- 	<div class="row2">
@@ -630,7 +631,7 @@ export default {
         });
         return false;
       }
-
+	  this.matchTime()
       let obj = {
         bidId: this.detailId,
         afficheTypeCd: this.afficheTypeCd,
@@ -671,12 +672,56 @@ export default {
         cont: this.$refs.myEditor.msg,
 		releTm:this.until.formatTime(this.releTm)
       };
+	  this.matchTime()
       this.api.postBidAfficheUpd(obj).then((res) => {
         this.closeMask();
         this.getList();
       });
     },
+	matchTime() {
+		if(this.afficheTypeCd=='5635883070706688') {
+			this.tableData.forEach(item => {
+				if(item.afficheTypeCd=='5635882628584448') {
+					if((this.releTm.getTime() - new Date(item.releTm).getTime())<=0) {
+						this.$message({
+						  type: "error",
+						  message: "变更公告发布时间不能小与招标公告发布时间",
+						});
+						this.releTm = ''
+						return
+					}
+				}
+			})
+		} else if (this.afficheTypeCd=='5635883361522688') {
+			this.tableData.forEach(item => {
+				if(item.afficheTypeCd=='5635883070706688') {
+					if((this.releTm.getTime() - new Date(item.releTm).getTime())<=0) {
+						this.$message({
+						  type: "error",
+						  message: "结果公告发布时间不能小与变更公告发布时间",
+						});
+						this.releTm = ''
+						return
+					}
+				} else if (item.afficheTypeCd=='5635882628584448') {
+					if((this.releTm.getTime() - new Date(item.releTm).getTime())<=0) {
+						this.$message({
+						  type: "error",
+						  message: "结果公告发布时间不能小与招标公告发布时间",
+						});
+						this.releTm = ''
+						return
+					}
+				}
+			})
+		}
+	}
   },
+  watch:{
+	  releTm(newVal,oldVal) {
+		  this.matchTime()
+	  }
+  }
 };
 </script>
 
