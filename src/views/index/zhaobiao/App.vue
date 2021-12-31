@@ -443,12 +443,13 @@
 							<el-table-column prop="completeTm" label="报名截止日期" min-width="100"></el-table-column>
 							<el-table-column prop="bidEndTm" label="投标截止时间" min-width="100"></el-table-column>
 							<el-table-column prop="bidOpenTm" label="开标时间" min-width="100"></el-table-column>
-							<el-table-column label="保证金" min-width="150">
+							<el-table-column label="保证金" min-width="70">
 								<template slot-scope="scope">
 									<p v-if="scope.row.needDeposit==1">需要缴纳</p>
 									<p v-if="scope.row.needDeposit==0">不需缴纳</p>
 								</template>
 							</el-table-column>
+							<el-table-column prop="options" label="审核意见" min-width="100"></el-table-column>
 							<el-table-column prop="audit" label="状态" min-width="100">
 								<template slot-scope="scope">
 									<span v-if="scope.row.audit==1" style="color: #E4393C;">
@@ -1346,6 +1347,9 @@
 
 	.el-button--text {
 		padding: 1px 10px;
+	}
+	.el-upload-list__item .el-icon-close-tip{
+		display: none !important;
 	}
 </style>
 <style lang="less" scoped>
