@@ -102,7 +102,7 @@
 							<div class="right">
 								<el-select v-model="orgEnterIdsList" multiple filterable placeholder="招标范围(机构)"
 									style="margin-left: 12px;" @change="select5">
-									<el-option v-for="item in optionsSix" :key="item.id" :label="item.company"
+									<el-option v-for="item in optionsSix" :key="item.id" :label="item.company+'['+item.identityNm+']'"
 										:value="item.id">
 									</el-option>
 								</el-select>
@@ -333,7 +333,7 @@
 								</span><span>公告发布时间</span>
 							</div>
 							<div class="right">
-								<el-date-picker v-model="releTm" type="datetime" placeholder="选择日期">
+								<el-date-picker v-model="releTm" type="datetime" placeholder="选择日期" @change="pick5">
 								</el-date-picker>
 							</div>
 						</div>
@@ -451,7 +451,7 @@
 							</el-table-column>
 							<!-- <el-table-column prop="crtTm" label="创建时间" min-width="150">
 							</el-table-column> -->
-							<!-- <el-table-column prop="publishTm" label="发布日期" min-width="100"></el-table-column> -->
+							<el-table-column prop="publishTm" label="发布日期" min-width="100"></el-table-column>
 							<el-table-column prop="completeTm" label="报名截止日期" min-width="100"></el-table-column>
 							<el-table-column prop="bidEndTm" label="投标截止时间" min-width="100"></el-table-column>
 							<el-table-column prop="bidOpenTm" label="开标时间" min-width="100"></el-table-column>
@@ -1324,6 +1324,12 @@
 						this.bidOpenTm=''
 				}
 				
+			},
+			pick5(val){
+				if(this.publishTm&&val.getTime()<this.publishTm.getTime()){
+					this.$message.error('公告发布时间不能小于发布时间');
+					this.releTm=''
+				}
 			},
 			radio1(val) {},
 			chooseExpert() {
