@@ -214,19 +214,103 @@ export default {
       }, 30000);
     },
     handleAllDecrypt() {
+      console.log(1111);
       this.fullscreenLoading = true;
+      console.log(this.fullscreenLoading);
       this.api
         .AllDecrypt({
           id: this.id,
         })
         .then((res) => {
-          this.fullscreenLoading = false;
-          this.getList();
+          // this.fullscreenLoading = false;
+          // this.getList();
         });
-      setTimeout(() => {
-        this.fullscreenLoading = false;
-        this.getList();
-      }, 30000);
+      // setTimeout(() => {
+      //   this.fullscreenLoading = false;
+      //   this.getList();
+      // }, 30000);
+      let qry = this.query.new();
+      this.query.toW(qry, "bidId", this.id, "EQ");
+      this.query.toP(qry, this.pageNo, this.pageSize);
+      let ifDecrypt = false; //是否解密完成
+      let timer = setInterval(() => {
+        if (!ifDecrypt) {
+          this.api.decryptList(this.query.toEncode(qry)).then((res) => {
+            this.tableData = res.data.list;
+            this.total = res.page.total;
+            //当列表中所有项都有解密时间attachDecodeTm解密完成，关闭加载中，停止刷新
+            let isall = this.tableData.every((item) => item.attachDecodeTm);
+            this.fullscreenLoading = !isall;
+            ifDecrypt = isall;
+            if (isall) {
+              time = false;
+              for (let i = 0; i < this.tableData.length; i++) {
+                this.tableData[i].newList = [];
+                let data = this.tableData[i].attachDecode.split(",");
+                let data1 = [];
+                let fileList2 = [];
+                if (data.length > 0) {
+                  data.forEach((v) => {
+                    let type = v.split(".")[v.split(".").length - 1];
+                    let nmList = v.split(".com/"); //分割出url后的内容
+                    let nm = "";
+                    nmList.forEach((j, z) => {
+                      //防止文件名中有 .com/ 所以循环加入
+                      if (z != 0) {
+                        nm += j;
+                      }
+                    });
+                    nmList = nm.split("_"); //分割随机字符后的内容
+                    nm = "";
+                    nmList.forEach((j, z) => {
+                      //防止文件名中有 _ 所以循环
+                      if (z != 0) {
+                        nm += j;
+                      }
+                    });
+                    nm = nm.split("." + type)[0];
+                    if (type == "pdf") {
+                      fileList2.push({
+                        url: v,
+                        img: this.pdf,
+                        fileNm: nm,
+                      });
+                    } else if (type == "doc" || type == "docx") {
+                      fileList2.push({
+                        url: v,
+                        img: this.word,
+                        fileNm: nm,
+                      });
+                    } else if (type == "ppt" || type == "pptx") {
+                      fileList2.push({
+                        url: v,
+                        img: this.ppt,
+                        fileNm: nm,
+                      });
+                    } else if (type == "xls" || type == "xlsx") {
+                      fileList2.push({
+                        url: v,
+                        img: this.excel,
+                        fileNm: nm,
+                      });
+                    } else {
+                      fileList2.push({
+                        url: v,
+                        img: v,
+                        fileNm: nm,
+                      });
+                    }
+                  });
+                }
+                console.log(fileList2);
+                this.tableData[i].newList = fileList2;
+              }
+            }
+          });
+        } else {
+          clearInterval(timer);
+        }
+      }, 5000);
     },
     toDetail(id) {
       this.showDetail = true;
@@ -241,11 +325,15 @@ export default {
       this.query.toW(qry, "bidId", this.id, "EQ");
       this.query.toP(qry, this.pageNo, this.pageSize);
       // 选取列表
-      let data = await this.api.decryptList(this.query.toEncode(qry));
-      this.tableData = data.data.list;
+      let res = await this.api.decryptList(this.query.toEncode(qry));
+      this.tableData = res.data.list;
       for (let i = 0; i < this.tableData.length; i++) {
         this.tableData[i].newList = [];
-        let data = this.tableData[i].attachDecode.split(",");
+
+        let data = [];
+        if (this.tableData[i].attachDecode) {
+          data = this.tableData[i].attachDecode.split(",");
+        }
         let data1 = [];
         let fileList2 = [];
         if (data.length > 0) {
@@ -304,7 +392,7 @@ export default {
         console.log(fileList2);
         this.tableData[i].newList = fileList2;
       }
-      this.total = data.page.total;
+      this.total = res.page.total;
       console.log(1111343, this.tableData);
     },
   },
