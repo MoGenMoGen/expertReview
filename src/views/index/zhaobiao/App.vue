@@ -3,7 +3,8 @@
 		<div class="mask" v-if="newShow==true||showModify==true">
 			<div class="table_box" @click.stop="">
 				<div class="top">
-					<p style="font-size: 20px">新增项目</p>
+					<p style="font-size: 20px" v-if="newShow">新增项目</p>
+					<p style="font-size: 20px" v-if="showModify">修改项目</p>
 					<img @click="closeMask" src="~assets/img/close.png"
 						style="width: 25px; height: 25px;cursor: pointer;" alt="" />
 				</div>
@@ -1292,41 +1293,65 @@
 				this.viewRangeNm = val.nm
 			},
 			pick1(val) {
-				if(this.completeTm&&val.getTime()>=this.completeTm.getTime()){
+				let completeTm = ''
+				if(typeof(this.completeTm)=='string') {
+					completeTm = this.completeTm+' 00:00:00'
+				} else {
+					completeTm = this.completeTm
+				}
+				if(this.completeTm&&val.getTime()>=new Date(completeTm).getTime()){
 					this.$message.error('发布时间不能大于报名截止时间');
 					this.publishTm=''
 				}
 			},
 			pick2(val) {
 				console.log(this.publishTm)
-				if(this.publishTm&&val.getTime()<=this.publishTm.getTime()){
+				let publishTm = ''
+				if(typeof(this.publishTm)=='string') {
+					publishTm = this.publishTm+' 00:00:00'
+				} else {
+					publishTm = this.publishTm
+				}
+				if(this.publishTm&&val.getTime()<=new Date(publishTm).getTime()){
 						this.$message.error('报名截止时间不能小于发布时间');
 						this.completeTm=''
 				}
-				if(this.bidEndTm&&val.getTime()>=this.bidEndTm.getTime()){
+				if(this.bidEndTm&&val.getTime()>=new Date(this.bidEndTm).getTime()){
 					this.$message.error('报名截止时间不能大于投标截止时间');
 					this.completeTm=''
 				}
 			},
 			pick3(val){
-				if(this.completeTm&&val.getTime()<=this.completeTm.getTime()){
+				let completeTm = ''
+				if(typeof(this.completeTm)=='string') {
+					completeTm = this.completeTm+' 00:00:00'
+				} else {
+					completeTm = this.completeTm
+				}
+				if(this.completeTm&&val.getTime()<=new Date(completeTm).getTime()){
 						this.$message.error('投标截止时间不能小于报名截止时间');
 						this.bidEndTm=''
 				}
-				if(this.bidOpenTm&&val.getTime()>=this.bidOpenTm.getTime()){
+				if(this.bidOpenTm&&val.getTime()>=new Date(this.bidOpenTm).getTime()){
 					this.$message.error('投标截止时间不能大于开标时间');
 					this.bidEndTm=''
 				}
 			},
 			pick4(val){
-				if(this.bidEndTm&&val.getTime()<=this.bidEndTm.getTime()){
+				if(this.bidEndTm&&val.getTime()<=new Date(this.bidEndTm).getTime()){
 						this.$message.error('开标时间不能小于投标截止时间');
 						this.bidOpenTm=''
 				}
 				
 			},
 			pick5(val){
-				if(this.publishTm&&val.getTime()<this.publishTm.getTime()){
+				let publishTm = ''
+				if(typeof(this.publishTm)=='string') {
+					publishTm = this.publishTm+' 00:00:00'
+				} else {
+					publishTm = this.publishTm
+				}
+				if(this.publishTm&&val.getTime()<new Date(publishTm).getTime()){
 					this.$message.error('公告发布时间不能小于发布时间');
 					this.releTm=''
 				}
