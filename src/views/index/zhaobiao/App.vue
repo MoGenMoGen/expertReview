@@ -449,6 +449,9 @@
 							<el-table-column prop="procurementMethodNm" label="采购方式" min-width="80">
 							</el-table-column>
 							<el-table-column prop="budget" label="预算金额(元)" min-width="80">
+								<template slot-scope="scope">
+									{{scope.row.budget?fmoney(scope.row.budget):""}}
+								</template>
 							</el-table-column>
 							<!-- <el-table-column prop="crtTm" label="创建时间" min-width="150">
 							</el-table-column> -->
@@ -458,7 +461,7 @@
 							<el-table-column prop="bidOpenTm" label="开标时间" min-width="100"></el-table-column>
 							<el-table-column label="保证金" min-width="70">
 								<template slot-scope="scope">
-									<p v-if="scope.row.needDeposit==1">{{scope.row.depositAmount}}</p>
+									<p v-if="scope.row.needDeposit==1">{{scope.row.depositAmount?fmoney(scope.row.depositAmount):''}}</p>
 									<p v-if="scope.row.needDeposit==0">不需缴纳</p>
 								</template>
 							</el-table-column>
@@ -744,6 +747,16 @@
 
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			//获取招标列表
 			getList() {
 				let query5 = this.query.new()

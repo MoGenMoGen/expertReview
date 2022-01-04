@@ -23,13 +23,13 @@
           </div>
         </div>
         <div class="infoItem">
-          <div class="left">
+          <!-- <div class="left">
             <div class="title">报价金额</div>
             <el-input :disabled="true" v-model="info.offerAmt"></el-input>
-          </div>
+          </div> -->
           <div class="left">
             <div class="title">报价时间</div>
-            <el-input :disabled="true" v-model="info.offerTm"></el-input>
+            <el-input :disabled="true" style="width: 632px" v-model="info.offerTm"></el-input>
           </div>
         </div>
         <div class="infoItem">

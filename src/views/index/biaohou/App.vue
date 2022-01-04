@@ -28,10 +28,10 @@
 					</div>
 					<div class="middleBox">
 						<div class="middleLeft">
-							保证金未退金额：{{noRefund}}元
+							保证金未退金额：{{fmoney(noRefund)}}元
 						</div>
 						<div class="middleRight">
-							保证金已退金额：{{refunded}}元
+							保证金已退金额：{{fmoney(refunded)}}元
 						</div>
 					</div>
 					<div class="bodyTable">
@@ -58,6 +58,9 @@
 							<el-table-column prop="procurementMethodNm" label="采购方式" min-width="100">
 							</el-table-column>
 							<el-table-column prop="budget" label="预算金额(元)" min-width="100">
+								<template slot-scope="scope">
+									{{scope.row.budget?fmoney(scope.row.budget):''}}
+								</template>
 							</el-table-column>
 							<!-- <el-table-column prop="crtTm" label="创建时间" min-width="150">
 							</el-table-column> -->
@@ -109,7 +112,7 @@
 											预算金额（元）
 										</div>
 										<div class="listContent">
-											{{info.budget}}
+											{{info.budget?fmoney(info.budget):''}}
 										</div>
 									</div>
 									<div class="leftList">
@@ -167,7 +170,7 @@
 											不需要
 										</div>
 										<div class="listContent" v-else>
-											{{info.depositAmount}}
+											{{info.depositAmount?fmoney(info.depositAmount):''}}
 										</div>
 									</div>
 									<div class="rightList">
@@ -268,7 +271,7 @@
 										<!-- <div class="refundBack" @click="toRefundBack(item.deposot.id)"  v-if="item.deposot">
 											保证金退还
 										</div> -->
-										<div v-if="item.deposot&&item.deposot.depositAmt">保证金金额：{{item.deposot.depositAmt}}</div>
+										<div v-if="item.deposot&&item.deposot.depositAmt">保证金金额：{{item.deposot.depositAmt?fmoney(item.deposot.depositAmt):''}}</div>
 										<div v-if="item.deposot&&item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
 										<div v-if="item.deposot&&item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
 										<div style="margin-bottom: 0;">保证金支付凭证：</div>
@@ -463,6 +466,16 @@
 
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			getList() {
 				let query = this.query.new()
 				this.query.toP(query, this.pageNo, this.pageSize)

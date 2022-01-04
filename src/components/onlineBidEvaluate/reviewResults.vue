@@ -56,13 +56,13 @@
           min-width="75"
         >
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           label="报价金额"
           show-overflow-tooltip="true"
           prop="offerAmt"
           sortable
           min-width="75"
-        >
+        > -->
         </el-table-column>
         <el-table-column
           label="报价时间"

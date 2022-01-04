@@ -21,7 +21,7 @@
 							预算金额（元）：
 						</div>
 						<div class="listContent">
-							{{info.budget}}
+							{{info.budget?fmoney(info.budget):''}}
 						</div>
 					</div>
 					<div class="leftList">
@@ -63,7 +63,7 @@
 							保证金缴纳：
 						</div>
 						<div class="listContent">
-							{{info.needDeposit==0?'不需要':info.depositAmount}}
+							{{info.needDeposit==0?'不需要':info.depositAmount?fmoney(info.depositAmount):''}}
 						</div>
 					</div>
 					<div class="rightList">
@@ -206,6 +206,16 @@
 			}
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			back() {
 				this.$parent.showDetail = false
 			},

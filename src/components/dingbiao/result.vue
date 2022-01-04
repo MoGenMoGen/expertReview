@@ -34,7 +34,11 @@
 						  }">
 						<el-table-column type="index" label="序号" min-width="50"></el-table-column>
 						<el-table-column prop="orgNm" label="供应商名称" min-width="150"></el-table-column>
-						<el-table-column prop="offerAmt" label="最终报价（元）" min-width="100"></el-table-column>
+						<el-table-column prop="offerAmt" label="最终报价（元）" min-width="100">
+							<template slot-scope="scope">
+								{{scope.row.offerAmt?fmoney(scope.row.offerAmt):''}}
+							</template>
+						</el-table-column>
 						<el-table-column prop="aveScore" label="平均得分" min-width="100"></el-table-column>
 						<el-table-column label="中标状态" min-width="100">
 							<template slot-scope="scope">
@@ -84,6 +88,16 @@
 			}
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			closeMask() {
 				this.$parent.showResult = false;
 			},

@@ -51,7 +51,11 @@
 								<!-- <el-table-column prop="unit" label="采购单位" min-width="150"></el-table-column> -->
 								<el-table-column prop="procurementMethodNm" label="采购方式" min-width="150"></el-table-column>
 								<el-table-column prop="bidOpenTm" label="开标时间" min-width="100"></el-table-column>
-								<el-table-column prop="budget" label="预算金额(元)" min-width="100"></el-table-column>
+								<el-table-column prop="budget" label="预算金额(元)" min-width="100">
+									<template slot-scope="scope">
+										{{scope.row.budget?fmoney(scope.row.budget):''}}
+									</template>
+								</el-table-column>
 								<el-table-column prop="applyNum" label="有效标数" min-width="100"></el-table-column>
 								<el-table-column label="操作" min-width="100">
 									<template slot-scope="scope">
@@ -144,6 +148,16 @@
 			})
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			getWidth() {
 				let {
 					bWidth,

@@ -18,10 +18,10 @@
         <div class="infoItem">
           投标机构: <span style="margin-left: 5px">{{ detailData.orgNm }}</span>
         </div>
-        <div class="infoItem rightItem">
+        <!-- <div class="infoItem rightItem">
           报价金额:
           <span style="margin-left: 5px">{{ detailData.offerAmt }}</span>
-        </div>
+        </div> -->
         <div class="infoItem">
           报价时间:
           <span style="margin-left: 5px">{{ detailData.offerTm }}</span>

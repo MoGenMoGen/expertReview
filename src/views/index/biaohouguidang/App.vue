@@ -109,7 +109,7 @@
 											预算金额(元)
 										</div>
 										<div class="listContent">
-											{{info.budget}}
+											{{info.budget?fmoney(info.budget):''}}
 										</div>
 									</div>
 									<div class="leftList">
@@ -167,7 +167,7 @@
 											不需要
 										</div>
 										<div class="listContent" v-else>
-											{{info.depositAmount}}
+											{{info.depositAmount?fmoney(info.depositAmount):''}}
 										</div>
 									</div>
 									<div class="leftList">
@@ -285,7 +285,7 @@
 											<div v-if="item.apply.depositStatus==4" style="color:#2778BE;">保证金：已退款</div>
 											<div v-if="item.deposot&&item.deposot.crtTm">缴费时间：{{item.deposot.crtTm}}</div>
 											<div v-if="item.deposot&&item.deposot.refundTm">退保时间：{{item.deposot.refundTm}}</div>
-											<div v-if="item.deposot&&item.deposot.refundTm">保证金上传金额：{{item.deposot.depositAmt}}</div>
+											<div v-if="item.deposot&&item.deposot.refundTm">保证金上传金额：{{item.deposot.depositAmt?fmoney(item.deposot.depositAmt):''}}</div>
 											<div class="" style="display: flex;">
 											<div class="imgList" v-if="item.deposot">
 												<div class="listTitle">
@@ -446,6 +446,16 @@
 		   this.getList()
 		},
 		methods: {
+			fmoney(s, n) {
+			    n = n > 0 && n <= 20 ? n : 2;
+			    s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+			    var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+			    var t = "";
+			    for (let i = 0; i < l.length; i++) {
+			        t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+			    }
+			    return t.split("").reverse().join("") + "." + r;
+			},
 			downLoad(){
 				console.log(111, this.attachment);
 			window.open(`https://fb.ship88.cn/general/oss/aliDownload?urls=${this.attachment}&zipName=''`)

@@ -107,6 +107,9 @@
             >
             </el-table-column>
             <el-table-column label="预算金额" prop="budget" min-width="146">
+				<template slot-scope="scope">
+					{{scope.row.budget?fmoney(scope.row.budget):""}}
+				</template>
             </el-table-column>
 
             <el-table-column prop="status" label="状态" min-width="146">
@@ -368,6 +371,16 @@ export default {
     this.getList();
   },
   methods: {
+	  fmoney(s, n) {
+	      n = n > 0 && n <= 20 ? n : 2;
+	      s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + "";
+	      var l = s.split(".")[0].split("").reverse(), r = s.split(".")[1];
+	      var t = "";
+	      for (let i = 0; i < l.length; i++) {
+	          t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+	      }
+	      return t.split("").reverse().join("") + "." + r;
+	  },
     getWidth() {
       let { bWidth, width } = this.until.getWidth();
       this.bWidth = bWidth;
