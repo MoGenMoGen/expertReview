@@ -685,7 +685,7 @@ export default {
 					if((this.releTm.getTime() - new Date(item.releTm).getTime())<=0) {
 						this.$message({
 						  type: "error",
-						  message: "变更公告发布时间不能小与招标公告发布时间",
+						  message: "变更公告发布时间不能小于招标公告发布时间",
 						});
 						this.releTm = ''
 						return
@@ -698,7 +698,7 @@ export default {
 					if((this.releTm.getTime() - new Date(item.releTm).getTime())<=0) {
 						this.$message({
 						  type: "error",
-						  message: "结果公告发布时间不能小与变更公告发布时间",
+						  message: "结果公告发布时间不能小于变更公告发布时间",
 						});
 						this.releTm = ''
 						return
@@ -707,7 +707,7 @@ export default {
 					if((this.releTm.getTime() - new Date(item.releTm).getTime())<=0) {
 						this.$message({
 						  type: "error",
-						  message: "结果公告发布时间不能小与招标公告发布时间",
+						  message: "结果公告发布时间不能小于招标公告发布时间",
 						});
 						this.releTm = ''
 						return

@@ -18,9 +18,9 @@
         <div class="infoItem">
           投标机构: <span style="margin-left: 5px">{{ info.orgNm }}</span>
         </div>
-        <div class="infoItem">
+        <!-- <div class="infoItem">
           报价金额: <span style="margin-left: 5px">{{ info.offerAmt }}</span>
-        </div>
+        </div> -->
         <div class="infoItem">
           备注: <span style="margin-left: 5px">{{ info.rmks }}</span>
         </div>

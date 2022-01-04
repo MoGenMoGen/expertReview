@@ -34,12 +34,20 @@
 						</div>
 						<div class="row2">
 							<div class="title">
+								</span><span>报价时间：</span>
+							</div>
+							<div class="right">
+								{{detailInfo.offerTm}}
+							</div>
+						</div>
+						<!-- <div class="row2">
+							<div class="title">
 								</span><span>报价金额：</span>
 							</div>
 							<div class="right">
 								{{detailInfo.offerAmt}}
 							</div>
-						</div>
+						</div> -->
 						<div class="showScore">
 							报价平均得分：{{aveScore}}
 						</div>
@@ -61,14 +69,6 @@
 								{{detailInfo.orgNm}}
 							</div>
 						</div>
-						<div class="row2">
-							<div class="title">
-								</span><span>报价时间：</span>
-							</div>
-							<div class="right">
-								{{detailInfo.offerTm}}
-							</div>
-						</div>
 					</div>
 
 				</div>
@@ -88,8 +88,8 @@
 						</el-table-column>
 						<el-table-column label="投标机构" show-overflow-tooltip="true" prop="orgNm" sortable min-width="75">
 						</el-table-column>
-						<el-table-column label="报价金额" show-overflow-tooltip="true" prop="offerAmt" sortable
-							min-width="75">
+						<!-- <el-table-column label="报价金额" show-overflow-tooltip="true" prop="offerAmt" sortable
+							min-width="75"> -->
 						</el-table-column>
 						<el-table-column label="报价时间" show-overflow-tooltip="true" prop="offerTm" sortable
 							min-width="75">
@@ -226,8 +226,8 @@
 				</el-table-column>
 				<el-table-column label="投标机构" show-overflow-tooltip="true" prop="orgNm" sortable min-width="75">
 				</el-table-column>
-				<el-table-column label="报价金额" show-overflow-tooltip="true" prop="offerAmt" sortable min-width="75">
-				</el-table-column>
+				<!-- <el-table-column label="报价金额" show-overflow-tooltip="true" prop="offerAmt" sortable min-width="75">
+				</el-table-column> -->
 				<el-table-column label="报价时间" show-overflow-tooltip="true" prop="offerTm" sortable min-width="75">
 				</el-table-column>
 				<el-table-column label="专家账号" show-overflow-tooltip="true" prop="username" sortable min-width="75">

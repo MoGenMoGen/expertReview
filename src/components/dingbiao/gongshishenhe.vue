@@ -19,7 +19,7 @@
 				</div>
 				<div class="row2-item" v-if="type==1||type==2">公告标题：{{info.title}}</div>
 				<div class="row2-item" v-if="type==0||type==3" style="align-items: center;"><span style="color: #E4393C;">*</span>发布时间：
-					<el-date-picker v-model="submitInfo.releTm" type="datetime" placeholder="选择日期时间"></el-date-picker>
+					<el-date-picker v-model="submitInfo.releTm" type="datetime" placeholder="选择日期时间" @change="check"></el-date-picker>
 				</div>
 				<div class="row2-item" v-if="type==1||type==2">发布时间：{{info.releTm}}</div>
 				<div class="row2-item" v-if="type==0||type==3"><span style="color: #E4393C;">*</span>公示内容：
@@ -83,7 +83,8 @@
 					releTm: '',
 					cont: ''
 				},
-				info: {}
+				info: {},
+				tableData: []
 			};
 		},
 		props: {
@@ -100,6 +101,14 @@
 			}
 		},
 		methods: {
+			getList() {
+			  let query = this.query.new();
+			  this.query.toW(query, "bidId", this.row.id, "EQ");
+			  this.query.toO(query, "seq", "asc");
+			  this.api.getBidAffichePage(this.query.toEncode(query)).then((res) => {
+			    this.tableData = res.data.list;
+			  });
+			},
 			closeMask() {
 				this.$parent.showShenhe = false;
 			},
@@ -180,6 +189,30 @@
 						this.$parent.getList()
 					}
 				})
+			},
+			check(val) {
+				console.log(val.getTime() - new Date(this.tableData[0].releTm).getTime())
+				this.tableData.forEach(item => {
+					if(item.afficheTypeCd=='5635883070706688') {
+						if((val.getTime() - new Date(item.releTm).getTime())<=0) {
+							this.$message({
+							  type: "error",
+							  message: "结果公告发布时间不能小于变更公告发布时间",
+							});
+							this.submitInfo.releTm = ''
+							return
+						}
+					} else if (item.afficheTypeCd=='5635882628584448') {
+						if((val.getTime() - new Date(item.releTm).getTime())<=0) {
+							this.$message({
+							  type: "error",
+							  message: "结果公告发布时间不能小于招标公告发布时间",
+							});
+							this.submitInfo.releTm = ''
+							return
+						}
+					}
+				})
 			}
 		},
 		async mounted() {
@@ -200,6 +233,7 @@
 					this.$refs.myEditor.msg=this.info.cont
 				})
 			}
+			this.getList()
 		},
 		components: {
 			myEditor
