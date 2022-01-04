@@ -48,6 +48,9 @@
       }"
     >
       <el-table-column type="index" label="序号" min-width="100">
+		  <template slot-scope="scope">
+		  	<span>{{(pageNo - 1) * pageSize + scope.$index + 1}}</span>
+		  </template>
       </el-table-column>
       <el-table-column label="供应商名称" prop="orgNm" min-width="200">
       </el-table-column>
