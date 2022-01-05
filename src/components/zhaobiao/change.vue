@@ -682,7 +682,7 @@ export default {
 		if(this.afficheTypeCd=='5635883070706688') {
 			this.tableData.forEach(item => {
 				if(item.afficheTypeCd=='5635882628584448') {
-					if((this.releTm.getTime() - new Date(item.releTm).getTime())<=0) {
+					if((new Date(this.releTm).getTime() - new Date(item.releTm).getTime())<=0) {
 						this.$message({
 						  type: "error",
 						  message: "变更公告发布时间不能小于招标公告发布时间",
@@ -695,7 +695,7 @@ export default {
 		} else if (this.afficheTypeCd=='5635883361522688') {
 			this.tableData.forEach(item => {
 				if(item.afficheTypeCd=='5635883070706688') {
-					if((this.releTm.getTime() - new Date(item.releTm).getTime())<=0) {
+					if((new Date(this.releTm).getTime() - new Date(item.releTm).getTime())<=0) {
 						this.$message({
 						  type: "error",
 						  message: "结果公告发布时间不能小于变更公告发布时间",
@@ -704,7 +704,7 @@ export default {
 						return
 					}
 				} else if (item.afficheTypeCd=='5635882628584448') {
-					if((this.releTm.getTime() - new Date(item.releTm).getTime())<=0) {
+					if((new Date(this.releTm).getTime() - new Date(item.releTm).getTime())<=0) {
 						this.$message({
 						  type: "error",
 						  message: "结果公告发布时间不能小于招标公告发布时间",
