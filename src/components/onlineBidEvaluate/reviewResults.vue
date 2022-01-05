@@ -176,11 +176,11 @@
               style="color: #409eff; margin-right: 10px; cursor: pointer"
               @click="EditExpertBase(scope.row.id,scope.row)"
             ></i>
-            <i
+            <!-- <i
               @click="DelSelectRule(scope.row.id)"
               class="el-icon-delete"
               style="color: #409eff; cursor: pointer"
-            ></i>
+            ></i> -->
           </template>
         </el-table-column>
       </el-table>

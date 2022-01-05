@@ -76,8 +76,8 @@
 								</p>
 								<p v-else>
 									<span @click.stop="toReview(scope.row,item.id,)"><img :src="review" />评审</span>
-									<span @click.stop="toIgnore(scope.row,item.id)" class="gray"><img
-											:src="ignore" />忽略</span>
+									<!-- <span @click.stop="toIgnore(scope.row,item.id)" class="gray"><img
+											:src="ignore" />忽略</span> -->
 								</p>
 							</div>
 						</template>
