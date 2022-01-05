@@ -670,7 +670,7 @@
 				this.showDetail = false
 			},
 			toGuidang(val){
-				if(val.depositReturnStatus!=3){
+				if(val.needDeposit==1&&val.depositReturnStatus!=3){
 					this.$message({
 						type: "error",
 						message: "保证金未全部退还，归档失败",
