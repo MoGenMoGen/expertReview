@@ -66,9 +66,10 @@
 							</el-table-column> -->
 							<el-table-column label="状态" min-width="100">
 								<template slot-scope="scope">
-									<span v-if="scope.row.depositReturnStatus==1" style="color: #E4393C;">未退还</span>
-									<span v-if="scope.row.depositReturnStatus==2" style="color: #E4393C;">部分退还</span>
-									<span v-if="scope.row.depositReturnStatus==3" style="color: rgb(39, 120, 190);">全部退还</span>
+									<span v-if="scope.row.needDeposit==0">无需退还</span>
+									<span v-if="scope.row.needDeposit==1&&scope.row.depositReturnStatus==1" style="color: #E4393C;">未退还</span>
+									<span v-if="scope.row.needDeposit==1&&scope.row.depositReturnStatus==2" style="color: #E4393C;">部分退还</span>
+									<span v-if="scope.row.needDeposit==1&&scope.row.depositReturnStatus==3" style="color: rgb(39, 120, 190);">全部退还</span>
 								</template>
 							</el-table-column>
 							<el-table-column label="操作" min-width="50">
