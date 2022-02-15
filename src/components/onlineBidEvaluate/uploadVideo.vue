@@ -10,7 +10,7 @@
     <div class="title">{{ detail.nm }} (项目编号:{{ detail.cd }})</div>
     <div class="video_top">
       <div class="small_title">评标视频</div>
-      <div class="btn_upload" @click="Upload">上传</div>
+      <div class="btn_upload" @click="Upload" v-if="auth2">上传</div>
     </div>
     <div class="content">
       <div style="margin-top: 20px" class="video_list">
@@ -108,6 +108,8 @@ export default {
       videoList: [],
       showUpload: false,
       info: {}, //上传子组件传值
+	  auth1: '', //视频查询
+	  auth2: '' //视频上传
     };
   },
   props: {
@@ -191,10 +193,14 @@ export default {
     addVideoUpload,
   },
   mounted() {
+	  this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bidVedio:page')>-1) 
+	  this.auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bidVedio:add')>-1) 
     this.api.getBidInfo(this.id).then((res) => {
       this.detail = res.data;
     });
-    this.getList();
+	if(this.auth1) {
+		this.getList();
+	}
   },
 };
 </script>
