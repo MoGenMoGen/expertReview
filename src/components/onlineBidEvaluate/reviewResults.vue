@@ -172,6 +172,7 @@
         <el-table-column label="操作" min-width="75">
           <template slot-scope="scope">
             <i
+			  v-if="auth1"
               class="el-icon-edit"
               style="color: #409eff; margin-right: 10px; cursor: pointer"
               @click="EditExpertBase(scope.row.id,scope.row)"
@@ -226,6 +227,7 @@ export default {
         status: "", //是否有效
       },
       detailData: {},
+	  auth1: '' // 评审结果
     };
   },
   computed: {},
@@ -242,6 +244,7 @@ export default {
   },
 
   async mounted() {
+	this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bidSvsResult2:page')>-1)
     this.bidId = this.until.getQueryString("id");
     this.getList();
   },

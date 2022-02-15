@@ -49,7 +49,9 @@
 						</el-table-column>
 						<el-table-column label="操作" min-width="100">
 							<template slot-scope="scope">
-								<el-button @click="handleClick(scope.row)" type="text" size="small"
+								<el-button 
+								v-if="auth1"
+								@click="handleClick(scope.row)" type="text" size="small"
 								style="background: #FFF;color: #2778BE; border-radius: 2px;width: 50px;border: 1px solid #2778BE;box-sizing: border-box;margin-bottom: 10px;">中标</el-button>
 							</template>
 						</el-table-column>
@@ -73,6 +75,7 @@
 		data() {
 			return {
 				tableData: [],
+				auth1: ''
 			};
 		},
 		props: {
@@ -134,6 +137,7 @@
 			}
 		},
 		async mounted() {
+			this.auth1= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidOffer:upd')>-1)
 			this.getList()
 		},
 		components: {
