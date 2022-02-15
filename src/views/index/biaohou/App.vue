@@ -436,9 +436,9 @@
 			topNav
 		},
 		mounted() {
-			this.auth1= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:pageWithWinBidOffer')>-1)
-			this.auth2= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:info')>-1)
-			this.auth3= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:infoWithWinBid')>-1)
+			this.auth1= JSON.parse(this.until.seGet('authZ')).indexOf('ship:bid12:pageWithWinBidOffer')>-1
+			this.auth2= JSON.parse(this.until.seGet('authZ')).indexOf('ship:bid:info')>-1
+			this.auth3= JSON.parse(this.until.seGet('authZ')).indexOf('ship:bid:infoWithWinBid')>-1
 			let obj = {
 				name: '标后',
 				url: './biaohou.html',

@@ -423,8 +423,8 @@
 		},
 		mounted() {
 			this.auth1= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:pageWithWinBid')>-1)
-			this.auth2= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:info4')>-1)
-			this.auth3= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:infoWithWinBid')>-1)
+			this.auth2= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid4:info')>-1)
+			this.auth3= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid2:infoWithWinBid')>-1)
 			this.auth4= JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:file')>-1)
 			let obj = {
 				name: '标后',

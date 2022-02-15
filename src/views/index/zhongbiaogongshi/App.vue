@@ -144,7 +144,7 @@
 			this.auth3= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidAffiche:examine')>-1)
 			this.auth4= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidAffiche:add')>-1)
 			this.auth5= JSON.parse(this.until.seGet('authZ').indexOf('ship:bidAffiche:upd')>-1)
-			
+			console.log(this.until.seGet('authZ'))
 			let obj = {
 				name: '中标公示',
 				url: './zhongbiaogongshi.html',
@@ -157,7 +157,9 @@
 			window.onresize = () => {
 				this.getWidth()
 			}
-			this.getList()
+			if(this.auth1) {
+				this.getList()
+			}
 			this.api.getCatListByPcd({cd:'PROCUREMENT_METHOD'}).then(res => {
 				this.options = res.list
 			})

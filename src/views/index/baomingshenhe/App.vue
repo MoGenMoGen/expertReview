@@ -216,7 +216,7 @@
 			orgEnter
 		},
 		mounted() {
-			this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:info2')>-1)
+			this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid2:info')>-1)
 			this.auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bidApply:audit') > -1)
 			let obj = {
 				name: '报名审核',

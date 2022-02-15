@@ -736,10 +736,10 @@
 			})
 			//获取权限
 			this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:page') > -1)
-			this.auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:add2') > -1)
-			this.auth3 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:del3') > -1)
+			this.auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid2:add') > -1)
+			this.auth3 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid3:del') > -1)
 			this.auth4 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:upd') > -1)
-			this.auth5 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:info3') > -1)
+			this.auth5 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid3:info') > -1)
 			this.auth6 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:examine') > -1)
 
 			console.log(this.auth1, this.auth2, this.auth3, this.auth4, this.auth5, this.auth6, );

@@ -503,16 +503,16 @@ export default {
   },
   mounted() {
     this.auth1 = JSON.parse(
-      this.until.seGet("authZ").indexOf("ship:bidAffiche:add") > -1
+      this.until.seGet("authZ").indexOf("ship:bidAffiche3:add") > -1
     );
     this.auth2 = JSON.parse(
-      this.until.seGet("authZ").indexOf("ship:bidAffiche:examine") > -1
+      this.until.seGet("authZ").indexOf("ship:bidAffiche2:examine") > -1
     );
     this.auth3 = JSON.parse(
-      this.until.seGet("authZ").indexOf("ship:bidAffiche:upd") > -1
+      this.until.seGet("authZ").indexOf("ship:bidAffiche3:upd") > -1
     );
     this.auth4 = JSON.parse(
-      this.until.seGet("authZ").indexOf("ship:bidAffiche:del") > -1
+      this.until.seGet("authZ").indexOf("ship:bidAffiche2:del") > -1
     );
     this.getList();
     this.api
