@@ -372,7 +372,9 @@
 				}
 				this.getInfo(this.attachment)
 			})
-			this.getList()
+			if(this.auth1) {
+				this.getList()
+			}
 		},
 		components: {}
 	};

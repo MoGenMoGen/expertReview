@@ -490,13 +490,13 @@
 								<template slot-scope="scope">
 									<el-button @click="tolook(scope.row)" type="text" size="small" v-if="auth5">查看
 									</el-button>
-									<br>
+									<br v-if="auth5">
 									<el-button type="text" size="small" style="color: #E4393C;"
 										@click='toModify(scope.row)' v-if="auth4">修改</el-button>
-									<br>
+									<br v-if="auth4">
 									<el-button type="text" size="small" style="color: #909090;"
 										@click='toDelite(scope.row)' v-if="auth3">删除</el-button>
-									<br>
+									<br v-if="auth3">
 									<el-button type="text" size="small" style="color:  #E4393C;"
 										@click='toCheck(scope.row)' v-if="auth6&&scope.row.audit==1">审核</el-button>
 								</template>

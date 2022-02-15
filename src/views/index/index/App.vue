@@ -172,12 +172,14 @@
 				this.thisNavList = list
 			}
 			this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:homePageNum')>-1) 
-			this.auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:page')>-1)
+			this.auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:page2')>-1)
             this.getWidth()
             window.onresize = () => {
                 this.getWidth()
             }
-			this.getData()
+			if(this.auth2) {
+				this.getData()
+			}
         },
         methods:{
 			fmoney(s, n) {
