@@ -178,7 +178,7 @@
 		},
 		mounted() {
 			this.auth1 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:pageWithApplyOdder')>-1)
-			this.auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:info')>-1)
+			this.auth2 = JSON.parse(this.until.seGet('authZ').indexOf('ship:bid:info5')>-1)
 			let obj = {
 				name: '投标项目',
 				url: './toubiaoxiangmu.html',
