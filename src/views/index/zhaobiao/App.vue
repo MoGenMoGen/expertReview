@@ -1359,13 +1359,23 @@
 			},
 			pick5(val){
 				let publishTm = ''
+				let completeTm = ''
 				if(typeof(this.publishTm)=='string') {
 					publishTm = this.publishTm+' 00:00:00'
 				} else {
 					publishTm = this.publishTm
 				}
+				if(typeof(this.completeTm)=='string') {
+					completeTm = this.completeTm+' 00:00:00'
+				} else {
+					completeTm = this.completeTm
+				}
 				if(this.publishTm&&val.getTime()<new Date(publishTm).getTime()){
 					this.$message.error('公告发布时间不能小于发布时间');
+					this.releTm=''
+				}
+				if(this.completeTm&&val.getTime()>new Date(completeTm).getTime()){
+					this.$message.error('公告发布时间不能大于报名截止时间');
 					this.releTm=''
 				}
 			},

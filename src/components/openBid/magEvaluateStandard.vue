@@ -332,7 +332,7 @@ export default {
     }
     .row1 {
       font-size: 15px;
-      margin-left: 30px;
+      // margin-left: 30px;
       margin-bottom: 30px;
       color: #7f8c8d;
     }

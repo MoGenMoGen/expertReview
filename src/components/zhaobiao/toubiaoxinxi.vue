@@ -5,7 +5,7 @@
 			<div class="collapse-item" v-for="(item,index) in infoList" :key="index">
 				<div class="collapse-top" @click="showMore(index)">
 					<div>招标采购商：<span style="color: #2778BE;" v-if="item.apply">{{item.apply.orgNm}}</span></div>
-					<div>审核状态：<span :style="{color:(item.apply.audit==2?'#2778BE':'#E4393C')}">{{item.apply.audit==2?'通过':'未通过'}}</span><img :class="{'collapse-rotate':selectIndex==index}" src="../../assets/img/arrowDownG.png"></div>
+					<div>审核状态：<span :style="{color:(item.apply.audit==2?'#2778BE':'#E4393C')}">{{!item.apply?'未提交':item.deposot.audit==1?'待审核':item.deposot.audit==2?'审核通过':'审核驳回'}}</span><img :class="{'collapse-rotate':selectIndex==index}" src="../../assets/img/arrowDownG.png"></div>
 				</div>
 				<div class="collapse-bottom" v-show="selectIndex==index" >
 						<div v-if="item.apply.depositStatus==1" style="color:#606060;">保证金：无需缴纳</div>
@@ -46,7 +46,6 @@
 						     	<img :src="item1.img"  style="width: 100px; height: 100px; cursor: pointer;" @click="toLink(item1.url)"  >
 						     	<p style="cursor: pointer;"  @click="toLink(item1.url)">{{item1.fileNm}}</p>
 						     </div>
-						     
 						 </div>
 					</div>
 				</div>
@@ -163,6 +162,7 @@
 		mounted() {
 		     this.id=this.detailId
 			 this.api.getInfoWithWinBid(this.id).then(res=>{
+				 console.log("res",res)
 			 	this.infoList=res
 				console.log(456,res);
 			 	this.infoList.forEach(item=>{

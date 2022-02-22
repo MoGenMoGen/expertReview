@@ -13,7 +13,7 @@
                 <p class="pos"><span style="color: #999999;cursor: pointer;" @click="toPage('./index.html')">首页 > </span><span>项目议标评定表</span></p>
                 <h3>{{nm}}</h3>
                 <div class="intro">
-                    <p>评分人：{{name}}</p>
+                    <p>评分人1：{{name}}</p>
                     <p v-if="ifSubmit">招标采购商：{{reviewInfo.orgNm}}</p>
                     <p class="score">合计总分：<span class="red">{{score}}分</span></p>
                 </div>
@@ -63,6 +63,21 @@
                     </tr>
                     </tbody>
                 </table>
+				<div class="pageChange">
+					<div class="totalPage">
+						总页数:{{(total/6+1).toFixed(0)}}
+					</div>
+					<div class="lastPage" @click="LastPage">
+						上一页
+					</div>
+					<div class="nowpage">
+						{{pageIndex>=6?pageIndex/6+1:pageIndex+1}}
+					</div>
+					<div class="nextPage" @click="nextPage">
+						下一页
+					</div>
+					
+				</div>
                 <div class="submit">
                     <p>说明： 1、指标权重可调</p>
                     <span @click="toPage('./index.html')">< 返回首页</span>
@@ -105,6 +120,8 @@
                 info:{},
                 reviewInfo:{},
                 fileList:[],
+				pageIndex:0,
+				total:'',
             }
         },
         computed: {
@@ -153,6 +170,34 @@
             toPage(url){
                 this.until.href(url)
             },
+			nextPage(){
+				
+				if(this.pageIndex>=(this.total-6)){
+					   this.$message({
+					          message: '已经是最后一页了',
+					          type: 'warning'
+					        });
+					return
+				}
+				this.pageIndex+=6
+				console.log(11,this.pageIndex);
+				this.getInfo()
+			
+			},
+			LastPage(){
+				
+			
+				if(this.pageIndex<=0){
+					this.$message({
+					       message: '已经是第一页了',
+					       type: 'warning'
+					     });
+						return
+				}
+				this.pageIndex-=6
+				console.log(11,this.pageIndex);
+				this.getInfo()
+			},
             //提交
             async submit(){
                 let index = this.tableList.findIndex(item=>item.weightedScore==null)
@@ -222,25 +267,32 @@
             async getInfo(){
                 if(this.ifSubmit){
                     this.info = await this.api.reviewInfo(this.id)
-                    this.tableList = this.info.items
+					this.total=this.info.items.length
+                    this.tableList = this.info.items.splice(this.pageIndex,6)
                     this.reviewInfo = await this.api.projectDetail2(this.until.getQueryString('ids'))
                     this.nm = this.reviewInfo.bidNm
                 }else {
+					
                     this.info = await this.api.reviewResult(this.id)
                     this.tableList = this.info.resultItems
+					this.total=this.info.items.length
+					this.tableList = this.info.items.splice(this.pageIndex,6)
                     this.reviewInfo = await this.api.projectDetail2(this.id)
                     this.score = this.info.score.toFixed(2)
                     this.nm = this.reviewInfo.bidNm
                 }
-                let arr = this.reviewInfo.attachDecode.split(',')
-                arr.forEach(item=>{
-                    let index = item.indexOf('_')
-                    let nm = item.slice(index+1)
-                    this.fileList.push({
-                        nm:nm,
-                        url:item
-                    })
-                })
+				if(this.reviewInfo.attachDecode){
+					let arr = this.reviewInfo.attachDecode.split(',')
+					arr.forEach(item=>{
+					    let index = item.indexOf('_')
+					    let nm = item.slice(index+1)
+					    this.fileList.push({
+					        nm:nm,
+					        url:item
+					    })
+					})
+				}
+            
             },
 
         }
@@ -345,12 +397,16 @@
 
     }
     table{
+		width: 100%;
+		overflow: scroll;
         margin-bottom: 20px;
         tr{
-            width: 100%;
+            max-width: 100%;
             display: flex;
             display: -webkit-flex;
+			
             td{
+				word-break: break-word;
                 flex: 1;
                 padding: 15px 8px;
                 color: #666666;
@@ -389,6 +445,37 @@
             }
         }
     }
+	.pageChange{
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		.lastPage{
+			margin-left: 15px;
+			padding: 6px 20px;
+			border: 1px solid #cccccc;
+			border-radius: 4px;
+			cursor: pointer;
+			color: #CCCCCC;
+		}
+		.lastPage:hover{
+			border: 1px solid #2778BE;
+			color: #2778BE;
+		}
+		.nowpage{
+			margin: 0 15px;
+		}
+		.nextPage{
+			padding: 6px 20px;
+			border: 1px solid #cccccc;
+			border-radius: 4px;
+			cursor: pointer;
+			color: #CCCCCC;
+		}
+		.nextPage:hover{
+			border: 1px solid #2778BE;
+			color: #2778BE;
+		}
+	}
     .submit{
         width: 100%;
         height: 60px;
