@@ -113,7 +113,9 @@
         <div class="pageChange" v-show="total > 0">
           <div class="totalPage">
             <!-- 总页数:{{(total/6+1).toFixed(0)}} -->
-            总页数:{{ total % 6 > 0 ? total / 6 + 1 : total / 6 }}
+            总页数:{{
+              total % 6 > 0 ? parseInt(total / 6 + 1) : parseInt(total / 6)
+            }}
           </div>
           <div class="lastPage" @click="LastPage">上一页</div>
           <div class="nowpage">
@@ -224,8 +226,8 @@ export default {
     },
     nextPage() {
       let index = 0;
-      if (this.total % 6 != 0) index = this.total / 6 + 1;
-      else index = this.total / 6;
+      if (this.total % 6 != 0) index = parseInt(this.total / 6 + 1);
+      else index = parseInt(this.total / 6);
       if (this.pageIndex >= index) {
         this.$message({
           message: "已经是最后一页了",
@@ -234,8 +236,12 @@ export default {
         return;
       }
       this.pageIndex += 1;
+      this.tableList = this.info.items.slice(
+        (this.pageIndex - 1) * 6,
+        this.pageIndex * 6
+      );
       console.log(11, this.pageIndex);
-      this.getInfo();
+      // this.getInfo();
     },
     LastPage() {
       if (this.pageIndex <= 1) {
@@ -246,8 +252,12 @@ export default {
         return;
       }
       this.pageIndex -= 1;
+      this.tableList = this.info.items.slice(
+        (this.pageIndex - 1) * 6,
+        this.pageIndex * 6
+      );
       console.log(11, this.pageIndex);
-      this.getInfo();
+      // this.getInfo();
     },
     //提交
     async submit() {
@@ -328,7 +338,10 @@ export default {
       if (this.ifSubmit) {
         this.info = await this.api.reviewInfo(this.id);
         this.total = this.info.items.length;
-        this.tableList = this.info.items.splice(this.pageIndex, 6);
+        this.tableList = this.info.items.slice(
+          (this.pageIndex - 1) * 6,
+          this.pageIndex * 6
+        );
         this.reviewInfo = await this.api.projectDetail2(
           this.until.getQueryString("ids")
         );
@@ -337,7 +350,10 @@ export default {
         this.info = await this.api.reviewResult(this.id);
         this.tableList = this.info.resultItems;
         this.total = this.info.items.length;
-        this.tableList = this.info.items.splice(this.pageIndex, 6);
+        this.tableList = this.info.items.slice(
+          (this.pageIndex - 1) * 6,
+          this.pageIndex * 6
+        );
         this.reviewInfo = await this.api.projectDetail2(this.id);
         this.score = this.info.score.toFixed(2);
         this.nm = this.reviewInfo.bidNm;
