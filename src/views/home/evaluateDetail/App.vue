@@ -189,12 +189,24 @@ export default {
       deep: true,
       handler: function () {
         this.score = 0;
-        this.tableList.forEach((item) => {
-          if (item.weightedScore) {
-            this.score += parseFloat(item.weightedScore);
-          }
-        });
-        this.score = this.score.toFixed(2);
+		if(this.ifSubmit){
+			this.info.items.forEach((item) => {
+			  if (item.weightedScore) {
+			    this.score += parseFloat(item.weightedScore);
+			  }
+			});
+			this.score = this.score.toFixed(2);
+			
+		}
+		else{
+			this.info.resultItems.forEach((item) => {
+			  if (item.weightedScore) {
+			    this.score += parseFloat(item.weightedScore);
+			  }
+			});
+			this.score = this.score.toFixed(2);
+		}
+       
       },
     },
   },
