@@ -104,7 +104,7 @@
             </tr>
             <tr>
               <td>评分标准</td>
-              <td v-for="(item, index) in tableList" :key="index + '9'">
+              <td v-for="(item, index) in tableList" :key="index + '9'" style="white-space: pre-line;">
                 {{ item.norm }}
               </td>
             </tr>
@@ -222,46 +222,99 @@ export default {
     },
     //页面跳转
     toPage(url) {
-      this.until.href(url);
+		if(url=='./index.html'&& this.info.items)
+		{
+			let index = this.info.items.findIndex(
+			  (item) => item.weightedScore == null
+			);
+			if (index > -1) {
+			  this.$message({
+			    message: "请输入所有小组成员评分",
+			    type: "warning",
+			  });
+			  return;
+			}
+			else{
+				this.until.href(url);
+			}
+		}
+		else{
+			this.until.href(url);
+		}
     },
     nextPage() {
-      let index = 0;
-      if (this.total % 6 != 0) index = parseInt(this.total / 6 + 1);
-      else index = parseInt(this.total / 6);
-      if (this.pageIndex >= index) {
-        this.$message({
-          message: "已经是最后一页了",
-          type: "warning",
-        });
-        return;
-      }
-      this.pageIndex += 1;
-      this.tableList = this.info.items.slice(
-        (this.pageIndex - 1) * 6,
-        this.pageIndex * 6
-      );
-      console.log(11, this.pageIndex);
+		if(this.ifSubmit){
+			let index = 0;
+			if (this.total % 6 != 0) index = parseInt(this.total / 6 + 1);
+			else index = parseInt(this.total / 6);
+			if (this.pageIndex >= index) {
+			  this.$message({
+			    message: "已经是最后一页了",
+			    type: "warning",
+			  });
+			  return;
+			}
+			this.pageIndex += 1;
+			this.tableList = this.info.items.slice(
+			  (this.pageIndex - 1) * 6,
+			  this.pageIndex * 6
+			);
+		}
+		else{
+			let index = 0;
+			if (this.total % 6 != 0) index = parseInt(this.total / 6 + 1);
+			else index = parseInt(this.total / 6);
+			if (this.pageIndex >= index) {
+			  this.$message({
+			    message: "已经是最后一页了",
+			    type: "warning",
+			  });
+			  return;
+			}
+			this.pageIndex += 1;
+			this.tableList = this.info.resultItems.slice(
+			  (this.pageIndex - 1) * 6,
+			  this.pageIndex * 6
+			);
+		}
+    
       // this.getInfo();
     },
     LastPage() {
-      if (this.pageIndex <= 1) {
-        this.$message({
-          message: "已经是第一页了",
-          type: "warning",
-        });
-        return;
-      }
-      this.pageIndex -= 1;
-      this.tableList = this.info.items.slice(
-        (this.pageIndex - 1) * 6,
-        this.pageIndex * 6
-      );
-      console.log(11, this.pageIndex);
+		if(this.ifSubmit){
+			if (this.pageIndex <= 1) {
+			  this.$message({
+			    message: "已经是第一页了",
+			    type: "warning",
+			  });
+			  return;
+			}
+			this.pageIndex -= 1;
+			this.tableList = this.info.items.slice(
+			  (this.pageIndex - 1) * 6,
+			  this.pageIndex * 6
+			);
+		}
+		else{
+			if (this.pageIndex <= 1) {
+			  this.$message({
+			    message: "已经是第一页了",
+			    type: "warning",
+			  });
+			  return;
+			}
+			this.pageIndex -= 1;
+			this.tableList = this.info.resultItems.slice(
+			  (this.pageIndex - 1) * 6,
+			  this.pageIndex * 6
+			);
+		}
+  
       // this.getInfo();
     },
     //提交
     async submit() {
-      let index = this.tableList.findIndex(
+      let index = this.info.items.findIndex(
         (item) => item.weightedScore == null
       );
       if (index > -1) {
@@ -275,7 +328,7 @@ export default {
       // return
       this.loading = true;
       let list = [];
-      this.tableList.forEach((item) => {
+      this.info.items.forEach((item) => {
         list.push({
           bidId: this.until.getQueryString("projectId"),
           bidNm: this.nm,
@@ -348,9 +401,10 @@ export default {
         this.nm = this.reviewInfo.bidNm;
       } else {
         this.info = await this.api.reviewResult(this.id);
+		console.log(7987987,this.info);
         this.tableList = this.info.resultItems;
-        this.total = this.info.items.length;
-        this.tableList = this.info.items.slice(
+        this.total = this.info.resultItems.length;
+        this.tableList = this.info.resultItems.slice(
           (this.pageIndex - 1) * 6,
           this.pageIndex * 6
         );
