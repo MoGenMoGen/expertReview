@@ -94,7 +94,12 @@
         </el-table-column>
         <el-table-column prop="tips" label="评分说明" sortable min-width="187">
         </el-table-column>
-        <el-table-column prop="norm" label="评分标准" sortable min-width="187">
+        <el-table-column  label="评分标准" sortable min-width="187" >
+			<template slot-scope="scope">
+				<div style="white-space: pre-line; text-align: left;" >
+					{{scope.row.norm}}
+				</div>
+			</template>
         </el-table-column>
         <el-table-column prop="seq" label="排序(正序)" sortable min-width="127">
         </el-table-column>
