@@ -18,6 +18,12 @@
         <div class="infoItem">
           投标机构: <span style="margin-left: 5px">{{ info.orgNm }}</span>
         </div>
+        <div class="infoItem">
+          联系人: <span style="margin-left: 5px">{{ info.linkman }}</span>
+        </div>
+        <div class="infoItem">
+          联系电话: <span style="margin-left: 5px">{{ info.phone }}</span>
+        </div>
         <!-- <div class="infoItem">
           报价金额: <span style="margin-left: 5px">{{ info.offerAmt }}</span>
         </div> -->
